@@ -1,0 +1,12 @@
+﻿Id,MachineId,Description,FailureRate,MDT,AssetCost,RepairCost
+1,N1,Node1,0,0,0,0
+2,M1,Power Supply Unit PSU,5000,96,1000,10000
+3,N2,Node2,0,0,0,0
+4,M2,Standby Generator,500,168,1000,10000
+5,M3,FW Pump independednt,50,168,1000,10000
+6,N3,Node3,0,0,0,0
+7,M4,UV Fire Detector,5,168,1000,10000
+8,M5,Fire detection Panel,10,24,1000,10000
+9,N4,Node4,0,0,0,0
+10,M6,Fire water pump failure causing network pressure drop,60,24,1000,10000
+11,N5,Node5,0,0,0,0

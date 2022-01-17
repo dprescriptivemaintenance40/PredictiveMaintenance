@@ -1,0 +1,8 @@
+
+Plant/.vs
+Plant/Plant/bin
+Plant/Plant/Migrations
+Plant/Plant/obj
+Plant/Plant/wwwroot/dist
+Plant/Plant/wwwroot/Vis/node_modules
+Plant/Plant/wwwroot/Vis/out-tsc

@@ -1,0 +1,15 @@
+#mynetwork {
+    width: 1200px;
+    height: 650px;
+    border: 1px solid lightgray;
+  }
+  p {
+    margin: 0;
+}
+.confirmation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+        

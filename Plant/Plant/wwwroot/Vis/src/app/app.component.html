@@ -1,0 +1,25 @@
+<mat-toolbar>
+    Dynamic Prescriptive Maintenance
+</mat-toolbar>
+    
+    <mat-sidenav-container>
+        <mat-sidenav mode = "side" opened>
+         
+            <button mat-button (click) = "Home()" class="menu-button">
+                <mat-icon>home</mat-icon>
+                <span>Home</span>
+            </button>
+            <button mat-button (click) = "Network()" class="menu-button">
+                <mat-icon>info</mat-icon>
+                <span>Network Diagram</span>
+            </button>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <div class="content mat-elevation-z8">
+                <router-outlet></router-outlet>   
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+
+
+
