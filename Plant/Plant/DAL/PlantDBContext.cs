@@ -20,6 +20,9 @@ namespace Plant.DAL
         public DbSet<FinalElement> FinalElements { get; set; }
         public DbSet<CompressorModel> CompressorsModel { get; set; }
         public DbSet<PumpModel> PumpsModel { get; set; }
+        public DbSet<RCM> RCMs { get; set; }
+        public DbSet<FailureModes> FailureModes { get; set; }
+        public DbSet<MSS> MSS { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -105,6 +108,22 @@ namespace Plant.DAL
              .HasOne(p => p.equipments)
              .WithMany(p => p.pumpModel)
              .HasForeignKey(p => p.EquipmentId);
+
+            modelBuilder.Entity<RCM>().ToTable("tblRCM");
+            modelBuilder.Entity<RCM>().HasKey(r => r.RCMId);
+            modelBuilder.Entity<FailureModes>().ToTable("tblRCMFailureModel");
+            modelBuilder.Entity<FailureModes>().HasKey(r => r.FailureModeId);
+            modelBuilder.Entity<MSS>().ToTable("tblMSS");
+            modelBuilder.Entity<MSS>().HasKey(r => r.MSSId);
+
+            modelBuilder.Entity<FailureModes>()
+                .HasOne(r => r.RCM)
+                .WithMany(r => r.failureModes)
+                .HasForeignKey(r => r.RCMId);
+            modelBuilder.Entity<MSS>()
+                .HasOne(r => r.FailureModes)
+                .WithMany(r => r.MSS)
+                .HasForeignKey(r => r.FailureModeId);
         }
 
     }

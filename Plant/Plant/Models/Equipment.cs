@@ -22,5 +22,6 @@ namespace Plant.Models
         public List<CompressorModel> compressorModel { get; set; }
         public List<PumpModel> pumpModel { get; set; }
         public Network networks { get; set; }
+        public RCM RCM { get; set; }
     }
 }
