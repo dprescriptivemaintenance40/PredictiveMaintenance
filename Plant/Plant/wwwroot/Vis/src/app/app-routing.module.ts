@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './Home/home.component';
-import { FMEAComponent } from './RCM/FMEA/FMEA.component';
-import { VisComponent } from './Vis/Vis.component';
+import { LoginRegistrationComponent } from './login-registration/login-registration.component';
+import { AuthGuard } from './Shared/Auth.guard';
 
 const routes: Routes = [
-  {path:'Home',component:HomeComponent},
-  {path:'Vis',component:VisComponent},
-  {path:'FMEA', component: FMEAComponent}
+  { path: '', redirectTo: 'Login', pathMatch: 'full' },
+  { path: 'Login', component: LoginRegistrationComponent },
+  { path: 'Home', loadChildren: () => import('./Home/home.module').then(a => a.HomeModule), canActivate: [AuthGuard] },
 ];
 
 @NgModule({

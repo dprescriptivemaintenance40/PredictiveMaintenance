@@ -1,58 +1,51 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { VisComponent } from './Vis/Vis.component';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatButtonModule} from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatSidenavModule} from '@angular/material/sidenav';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpClientModule} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import {APP_BASE_HREF} from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
-import { HomeComponent } from './Home/home.component';
-import { FMEAComponent } from './RCM/FMEA/FMEA.component';
+import { OrganizationChartModule } from 'primeng/organizationchart'
+import { LoginRegistrationComponent } from './login-registration/login-registration.component';
+// import { SharedModule } from './Shared/shared.module';
+import {CardModule} from 'primeng/card';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 
 @NgModule({
   declarations: [    
     AppComponent,
-    VisComponent,
-    HomeComponent,
-    FMEAComponent
+    LoginRegistrationComponent,
   ],
   imports: [    
     CommonModule,
     FormsModule,    
+    PanelMenuModule,
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatButtonModule,
-    MatIconModule,
     DialogModule,
     TableModule,
-    MatDividerModule,
     ToastModule,
     ButtonModule,
+    CardModule,
     DynamicDialogModule,
+    OrganizationChartModule,
+    // SharedModule
    
   ],
-  entryComponents: [],
   bootstrap: [AppComponent],
-  providers: [{provide: APP_BASE_HREF, useValue : '/' } ]
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy }]
 })
 export class AppModule {
 }
