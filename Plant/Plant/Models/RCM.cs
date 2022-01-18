@@ -18,6 +18,7 @@ namespace Plant.Models
         public string MSSAdded { get; set; }
         public string EquipmentCriticalityType { get; set; }  
         public List<FailureModes> failureModes { get; set; }
+        public Equipment equipment { get; set; }
 
     }
 

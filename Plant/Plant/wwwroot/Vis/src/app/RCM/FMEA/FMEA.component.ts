@@ -17,7 +17,7 @@ import { SafeUrl } from '@angular/platform-browser';
   styleUrls: ['./FMEA.component.scss', '../../../../../assets/orgchart.scss'],
   providers: [MessageService],
 })
-export class PrescriptiveAddComponent implements OnInit {
+export class FMEAComponent implements OnInit {
   displayModal: boolean;
   showModalDialog() {
         this.displayModal = true;
@@ -357,13 +357,13 @@ export class PrescriptiveAddComponent implements OnInit {
     if (this.fullPath.length > 4) {
       const params = new HttpParams()
         .set("fullPath", this.fullPath)
-      var url : string =  this.prescriptiveContantAPI.FMEADeleteFileUpload
-      this.prescriptiveBLService.DeleteWithParam(url,params).subscribe(
-        res => {
-          this.fileUpload = ""
-          this.fileAttachmentEnable = false
-        }
-      )
+      // var url : string =  this.prescriptiveContantAPI.FMEADeleteFileUpload
+      // this.prescriptiveBLService.DeleteWithParam(url,params).subscribe(
+      //   res => {
+      //     this.fileUpload = ""
+      //     this.fileAttachmentEnable = false
+      //   }
+      // )
     }
 
   }
@@ -472,62 +472,62 @@ export class PrescriptiveAddComponent implements OnInit {
     const params = new HttpParams()
       .set('MachineType', this.MachineType)
       .set('EquipmentType', this.EquipmentType)
-    var url : string = this.prescriptiveContantAPI.FMEADropdownData;
-    this.prescriptiveBLService.getWithParameters( url ,params).subscribe(
-      res => {
-        this.dropDownData = [];
-        this.functionFailureData = [];
-        this.functionModeData = [];
-        console.log(res)
-        this.dropDownData = res;
-        this.dropedMode=[];
+    // var url : string = this.prescriptiveContantAPI.FMEADropdownData;
+    // this.prescriptiveBLService.getWithParameters( url ,params).subscribe(
+    //   res => {
+    //     this.dropDownData = [];
+    //     this.functionFailureData = [];
+    //     this.functionModeData = [];
+    //     console.log(res)
+    //     this.dropDownData = res;
+    //     this.dropedMode=[];
 
-        this.dropDownData.forEach(element => {
-          if (element.Function == "Function Failure") {
-            this.functionFailureData.push(element)
-          } else if (element.Function == "Function Mode") {
-            this.functionModeData.push(element)
-          }
+    //     this.dropDownData.forEach(element => {
+    //       if (element.Function == "Function Failure") {
+    //         this.functionFailureData.push(element)
+    //       } else if (element.Function == "Function Mode") {
+    //         this.functionModeData.push(element)
+    //       }
 
-        });
-        this.functionfailure = this.functionFailureData;
-        this.failuerMode = this.functionModeData;
-      })
+    //     });
+    //     this.functionfailure = this.functionFailureData;
+    //     this.failuerMode = this.functionModeData;
+    //   })
   }
 
  
     async GeneratePrescription() {
         if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
 
-              var url : string =  this.prescriptiveContantAPI.FMEATagCheck
-          await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
-                (res: any) => {
-                  var check = 0;
-                  res.forEach(element => {
-                    if(element.TagNumber == this.TagNumber){
-                        check = 1;
-                    }
-                  });
+          //     var url : string =  this.prescriptiveContantAPI.FMEATagCheck
+          // await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
+          //       (res: any) => {
+          //         var check = 0;
+          //         res.forEach(element => {
+          //           if(element.TagNumber == this.TagNumber){
+          //               check = 1;
+          //           }
+          //         });
         
-                  if(check === 0){
-                    this.getDropDownLookMasterData();
-                    this.prescriptiveSelect = false;
-                    this.prescriptiveSteps = true;
-                    this.prescriptiveFuntion = true;
-                    this.prescriptiveFunctionFailure = false;
-                    this.prescriptiveFailureMode = false;
-                    this.prescriptiveEffect = false;
-                    this.prescriptiveEffect1 = false
-                    this.prescriptiveTree = false;
-                    this.activeIndex = 0;
-                  }else{
-                    this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Tag Number is already Existing, if you want to add something you can update it from Assets List' });
-                  }
+          //         if(check === 0){
+          //           this.getDropDownLookMasterData();
+          //           this.prescriptiveSelect = false;
+          //           this.prescriptiveSteps = true;
+          //           this.prescriptiveFuntion = true;
+          //           this.prescriptiveFunctionFailure = false;
+          //           this.prescriptiveFailureMode = false;
+          //           this.prescriptiveEffect = false;
+          //           this.prescriptiveEffect1 = false
+          //           this.prescriptiveTree = false;
+          //           this.activeIndex = 0;
+          //         }else{
+          //           this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Tag Number is already Existing, if you want to add something you can update it from Assets List' });
+          //         }
 
-                }, err => {
-                  console.log(err.error);
-                }
-              )
+          //       }, err => {
+          //         console.log(err.error);
+          //       }
+          //     )
             
         } else if (this.EquipmentType.length == 0) {
           this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Equipment Type is missing' });
@@ -848,16 +848,16 @@ export class PrescriptiveAddComponent implements OnInit {
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
-  var url : string =  this.prescriptiveContantAPI.FMEASaveConsequence
-  this.prescriptiveBLService.PutData(url,this.centrifugalPumpPrescriptiveOBJ).subscribe(
-     res => {
-        console.log(res);
-        this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-        this.router.navigateByUrl('/Home/Prescriptive/List');
-        this.SaveConcequencesEnable = false;
-        this.PatternNextOnPrescriptiveTree = true;
-      }, err => { console.log(err.err) }
-    )
+  // var url : string =  this.prescriptiveContantAPI.FMEASaveConsequence
+  // this.prescriptiveBLService.PutData(url,this.centrifugalPumpPrescriptiveOBJ).subscribe(
+  //    res => {
+  //       console.log(res);
+  //       this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
+  //       this.router.navigateByUrl('/Home/Prescriptive/List');
+  //       this.SaveConcequencesEnable = false;
+  //       this.PatternNextOnPrescriptiveTree = true;
+  //     }, err => { console.log(err.err) }
+  //   )
     const element = document.querySelector("#prescriptive")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     
@@ -897,21 +897,21 @@ export class PrescriptiveAddComponent implements OnInit {
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
-  var url :string =  this.prescriptiveContantAPI.FMEATreeSave
-  this.prescriptiveBLService.postWithoutHeaders(url, this.centrifugalPumpPrescriptiveOBJ)
-    .subscribe(
-      res => {
-        console.log(res);
-        this.treeResponseData = res;
-        localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
-        this.prescriptiveTreeNextEnable = true
-        this.prescriptiveTreeUpdateEnable = false;
-        this.prescriptiveTreeSubmitEnable = false;
-        this.prescriptiveTreeBackEnable = false
+  // var url :string =  this.prescriptiveContantAPI.FMEATreeSave
+  // this.prescriptiveBLService.postWithoutHeaders(url, this.centrifugalPumpPrescriptiveOBJ)
+  //   .subscribe(
+  //     res => {
+  //       console.log(res);
+  //       this.treeResponseData = res;
+  //       localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
+  //       this.prescriptiveTreeNextEnable = true
+  //       this.prescriptiveTreeUpdateEnable = false;
+  //       this.prescriptiveTreeSubmitEnable = false;
+  //       this.prescriptiveTreeBackEnable = false
 
-      },
-      err => { console.log(err.Message) }
-    )
+  //     },
+  //     err => { console.log(err.Message) }
+  //   )
   }
 
   PushConcequences() {

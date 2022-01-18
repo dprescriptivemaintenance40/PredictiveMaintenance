@@ -1,4 +1,3 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -20,13 +19,15 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { HomeComponent } from './Home/home.component';
+import { FMEAComponent } from './RCM/FMEA/FMEA.component';
 
 
 @NgModule({
   declarations: [    
     AppComponent,
     VisComponent,
-    HomeComponent
+    HomeComponent,
+    FMEAComponent
   ],
   imports: [    
     CommonModule,
