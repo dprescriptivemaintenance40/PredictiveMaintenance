@@ -20,6 +20,7 @@ import { CommonLoadingComponent } from "./Loading/common-loading.component";
 import { SafePipe } from "./safe.pipe";
 import { TooltipModule } from 'primeng/tooltip';
 import { TabViewModule } from 'primeng/tabview';
+import { OrganizationChartModule } from "./organization-chart/organization-chart.component";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import {CalendarModule} from 'primeng/calendar';
@@ -43,6 +44,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
         PasswordModule,
         MessagesModule,
         MessageModule,
+        OrganizationChartModule,
         CardModule,
         StepsModule,
         RadioButtonModule,
@@ -68,6 +70,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
         PasswordModule,
         MessagesModule,
         MessageModule,
+        OrganizationChartModule,
         CardModule,
         StepsModule,
         RadioButtonModule,
