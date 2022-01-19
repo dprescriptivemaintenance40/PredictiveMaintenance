@@ -16,7 +16,7 @@ namespace Plant.Controllers
         public IActionResult Index()
         {
             return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(),
-                 "wwwroot/dist/Vis", "index.html"), "text/HTML");
+                 "wwwroot/dist/DPM", "index.html"), "text/HTML");
         }
 
         public IActionResult Privacy()
