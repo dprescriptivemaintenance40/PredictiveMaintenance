@@ -30,7 +30,7 @@ export class VisComponent implements OnInit {
   public compressorList:any = [];
   public arrayBuffer: any
   public HistoricalData:boolean =false;
-  public Graph:boolean = false;
+  public FMEA:boolean = false;
   public FunctionUpdate:boolean = false;
   public currentNodeObj:Equipment=new Equipment();
   public sifObj:SIF = new SIF();
@@ -223,7 +223,7 @@ export class VisComponent implements OnInit {
   historicalData(){
     this.HistoricalData = true;
   }
-  graph(){
-    this.Graph = true;
+  fmea(){
+    this.FMEA = true;
   }
 }
