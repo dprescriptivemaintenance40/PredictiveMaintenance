@@ -1,3 +1,5 @@
+import { Equipment } from "src/app/home/Vis/Vis.model";
+
 export class RCM
     {
         public RCMId : number = 0 ;
@@ -12,7 +14,9 @@ export class RCM
         public FCAAdded : string = "";
         public MSSAdded : string = "";
         public EquipmentCriticalityType : string = "";
-        public FailureModes : any = []
+        public FailureModes :Array<FailureModes>=Array<FailureModes>();
+      //  public equipment:Equipment=null;
+       // public equipment:Equipment=new Equipment();
     }
 
     export class FailureModes
@@ -32,14 +36,14 @@ export class RCM
         public Rating : string = "";
         public MaintainenancePractice : string = "";
         public FrequencyMaintainenance : string = "";
-        public ConditionMonitoring : string = "";
+        public ConditionMonitoring : string ="";
         public AttachmentDBPath : string = "";
         public AttachmentFullPath : string = "";
         public Remark : string = "";
         public Pattern : string = "";
         public FCACondition : string = "";
         public FCAInterval : number  = 0;
-        public FCAFFI : string = "";
+        public FCAFFI : string ="";
         public FCAComment : string = "";
         public FCAAlpha : number = 0;
         public FCABeta : number = 0;
@@ -48,18 +52,23 @@ export class RCM
         public FCAUpdateIntervals : string = "";
         public FCAUpdateConditions : string = "";
         public MSSStartergyList : string = "";
-        public MSS : any = []   
+        public MSS : Array<MSS>=new Array<MSS>();
+     //   public RCM:RCM=null;
+      //  public RCM:RCM=new RCM();
     }
 
     export class MSS
     {
-        public MSSId
-        public RCMId
-        public FailureModeId
-        public MSSStartergy
-        public MSSMaintenanceInterval
-        public MSSAvailability
-        public MSSMaintenanceTask
-        public MSSIntervalSelectionCriteria
-        public MSSFinalAvaliability
+        public MSSId: number = 0;
+        public RCMId: number = 0;
+        public FailureModeId: number = 0;
+        public MSSStartergy: string = "";
+        public MSSMaintenanceInterval: string = "";
+        public MSSAvailability: string = "";
+        public MSSMaintenanceTask: string = "";
+        public MSSIntervalSelectionCriteria: string = "";
+        public MSSFinalAvaliability: string = "";
+     //   public FailureModes:FailureModes=null;
+       // public FailureModes:FailureModes=new FailureModes();
     }
+   

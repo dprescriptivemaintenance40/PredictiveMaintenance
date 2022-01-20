@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { Equipment, SIF,TempCompressorModel } from './Vis.model';
+import { Equipment, SIF,CompressorModel } from './Vis.model';
 // import * as XLSX from 'xlsx';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
@@ -34,7 +34,7 @@ export class VisComponent implements OnInit {
   public FunctionUpdate:boolean = false;
   public currentNodeObj:Equipment=new Equipment();
   public sifObj:SIF = new SIF();
-  public TempcompressorModelObj:TempCompressorModel = new TempCompressorModel();
+  public TempcompressorModelObj:CompressorModel = new CompressorModel();
 
   constructor(public http:HttpClient,
     private router : Router) { }
