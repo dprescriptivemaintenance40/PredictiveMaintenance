@@ -897,7 +897,7 @@ export class FMEAComponent implements OnInit {
     // this.RCMOBJ.FunctionRatedHead = this.FunctionRatedHead
     // this.RCMOBJ.FunctionPeriodType = this.FunctionPeriodType
     this.RCMOBJ.FunctionFailure = this.FunctionFailure
-    // this.RCMOBJ.Type = this.Type
+    this.RCMOBJ.EquipmentCriticalityType = this.Type
     this.RCMOBJ.FailureModeWithLSETree = JSON.stringify(this.data1)
     this.RCMOBJ.failureModes = []
     for (let index = 0; index < this.FMChild.length; index++) {
