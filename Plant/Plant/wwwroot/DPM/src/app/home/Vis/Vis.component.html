@@ -14,16 +14,8 @@
       <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file"
         accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
     </div>
-    <!-- </p> -->
     <ng-template pTemplate="footer">
       <p-button icon="pi pi-check" (click)="HistoricalData=false" label="Ok" styleClass="p-button-text"></p-button>
     </ng-template>
   </p-dialog>
-  <p-dialog header="FMEA" [(visible)]="FMEA" [modal]="true" [style]="{width: '70%',height:'200px'}"
-    [draggable]="false" [resizable]="false">
-    <ng-template pTemplate="footer">
-      <p-button icon="pi pi-check" (click)="FMEA=false" label="Ok" styleClass="p-button-text"></p-button>
-    </ng-template>
-</p-dialog>
-
 </p-dialog>

@@ -15,17 +15,17 @@ import { SafeUrl } from '@angular/platform-browser';
   selector: 'FMEA',
   templateUrl: './FMEA.component.html',
   styleUrls: ['./FMEA.component.scss',
-  // './../../../assets/orgchart.scss'
-],
+    // './../../../assets/orgchart.scss'
+  ],
   providers: [MessageService],
 })
 export class FMEAComponent implements OnInit {
   displayModal: boolean;
   showModalDialog() {
-        this.displayModal = true;
+    this.displayModal = true;
   };
   checked: boolean = false;
-  
+
   public MachineType: string = "";
   private FMCount: number = 0;
   private FMCount1: number = 0;
@@ -59,7 +59,7 @@ export class FMEAComponent implements OnInit {
   public TagNumber: string = "";
   public dropDownData: any = [];
   public treeResponseData: any = [];
-  public RadioValue : string = '';
+  public RadioValue: string = '';
 
   public FunctionFluidType: string = "";
   public FunctionRatedHead: string = "";
@@ -76,7 +76,7 @@ export class FMEAComponent implements OnInit {
   private consequenceC;
   private consequenceD;
   private consequenceE;
-  public StartConsequences : boolean = false;
+  public StartConsequences: boolean = false;
   private finalConsequence;
   public functionfailure: any = [];
   public failuerMode: any = [];
@@ -167,13 +167,13 @@ export class FMEAComponent implements OnInit {
   private isNewEntity: boolean = false;
   public uploadedAttachmentList: any[] = [];
   public ViewPatterns: boolean = false;
-  public FCAViewEnabled : boolean = false;
+  public FCAViewEnabled: boolean = false;
   public FCAView: any;
 
-  public PatternFailuerAll: boolean  = false
+  public PatternFailuerAll: boolean = false
   public interval: string = ""
   public intervalValue: number = 0;
-   
+
   public ffInterval: string = ""
   public ffIntervalValue: number = 0;
 
@@ -185,66 +185,69 @@ export class FMEAComponent implements OnInit {
   public FailuerMaintenance: boolean = false
   public FailuerComments: boolean = false
 
- public failuerrate: boolean  = true
- public failurewarning: boolean  = true
- public warningsign: boolean = true
- public intervaldeteacting: boolean  = true
- public failuerevident: boolean  = true
- public failuermaintenance: boolean  = true
- public failuercomments: boolean  = true
+  public failuerrate: boolean = true
+  public failurewarning: boolean = true
+  public warningsign: boolean = true
+  public intervaldeteacting: boolean = true
+  public failuerevident: boolean = true
+  public failuermaintenance: boolean = true
+  public failuercomments: boolean = true
 
- 
- public FCAInterval : number = 0
- public FCAComment : any = []
- public FCACondition : any = []
- public FCAFFInterval : number = 0
 
- public FCAData : any = []
- public FCAFreeText : string = ""
- public Vibration : string = ""
- public Noice : string = ""
- public Leakage : string = ""
- public PerformanceDrop : string = ""
- public TempratureChange : string = ""
- public EmmisionChange : string = ""
- public IncreaseLubricantConsumption : string = ""
- public Other : string = ""
+  public FCAInterval: number = 0
+  public FCAComment: any = []
+  public FCACondition: any = []
+  public FCAFFInterval: number = 0
 
- public HumanSenses : string = ""
- public ExistingInstumentation : string = ""
- public NewInstumentation : string = ""
- public ProcessCondtions : string = ""
- public SampleAnyalysis : string = ""
+  public FCAData: any = []
+  public FCAFreeText: string = ""
+  public Vibration: string = ""
+  public Noice: string = ""
+  public Leakage: string = ""
+  public PerformanceDrop: string = ""
+  public TempratureChange: string = ""
+  public EmmisionChange: string = ""
+  public IncreaseLubricantConsumption: string = ""
+  public Other: string = ""
 
- public CommentFIEYN : string = ""
- public CommentFIEYN2 : string = ""
- 
- public Interval : boolean = true;
- public Condition : boolean = true;
- public FCAFFI : boolean = true;
+  public HumanSenses: string = ""
+  public ExistingInstumentation: string = ""
+  public NewInstumentation: string = ""
+  public ProcessCondtions: string = ""
+  public SampleAnyalysis: string = ""
 
- public FCAFreeTextCancel1: boolean  = true
- public FCAFreeTextSave1: boolean  = true
+  public CommentFIEYN: string = ""
+  public CommentFIEYN2: string = ""
 
- public patternaddshow: boolean  = false
- public FunctionFailure : string = ""
- public Type : string = "";
+  public Interval: boolean = true;
+  public Condition: boolean = true;
+  public FCAFFI: boolean = true;
 
+  public FCAFreeTextCancel1: boolean = true
+  public FCAFreeTextSave1: boolean = true
+
+  public patternaddshow: boolean = false
+  public FunctionFailure: string = ""
+  public Type: string = "";
+  public state: any = [];
 
   constructor(private messageService: MessageService,
+    private httpObj: HttpClient,
     public formBuilder: FormBuilder,
     public title: Title,
     public router: Router,
-    private route : ActivatedRoute,
-    private changeDetectorRef: ChangeDetectorRef) { 
-      var type ;
-      this.route.params.subscribe(params => {
-        type = params['type'];
-        if(type !== undefined){
-          this.Type =type;
-        }
-       });
-    }
+    private route: ActivatedRoute,
+    private changeDetectorRef: ChangeDetectorRef) {
+    var type;
+    this.route.params.subscribe(params => {
+      type = params['type'];
+      if (type !== undefined) {
+        this.Type = type;
+      }
+    });
+
+    this.state = window.history.state;
+  }
 
 
 
@@ -434,8 +437,8 @@ export class FMEAComponent implements OnInit {
     console.log(this.EquipmentType)
   }
 
-  FailureModeSelected(value, event){
-    if(event.target.checked === false){
+  FailureModeSelected(value, event) {
+    if (event.target.checked === false) {
       var findIndexOF = value.PrescriptiveLookupMasterId
       var index = -1;
       var filteredObj = this.dropedMode.find((item, i) => {
@@ -447,15 +450,15 @@ export class FMEAComponent implements OnInit {
       this.failuerMode[index].checked = false;
       this.dropedMode.splice(index, 1)
     }
-    
-    if(event.target.checked === true){
+
+    if (event.target.checked === true) {
       let obj = {}
-      obj['Date']= value.Date;
-      obj['Description']= value.Description;
-      obj['EquipmentType']= value.EquipmentType;
-      obj['Function']= value.Function;
-      obj['MachineType']= value.MachineType;
-      obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
+      obj['Date'] = value.Date;
+      obj['Description'] = value.Description;
+      obj['EquipmentType'] = value.EquipmentType;
+      obj['Function'] = value.Function;
+      obj['MachineType'] = value.MachineType;
+      obj['PrescriptiveLookupMasterId'] = value.PrescriptiveLookupMasterId;
       this.dropedMode.push(obj);
 
       var fIO = value.PrescriptiveLookupMasterId
@@ -474,77 +477,86 @@ export class FMEAComponent implements OnInit {
     const params = new HttpParams()
       .set('MachineType', this.MachineType)
       .set('EquipmentType', this.EquipmentType)
-    // var url : string = this.prescriptiveContantAPI.FMEADropdownData;
-    // this.prescriptiveBLService.getWithParameters( url ,params).subscribe(
-    //   res => {
-    //     this.dropDownData = [];
-    //     this.functionFailureData = [];
-    //     this.functionModeData = [];
-    //     console.log(res)
-    //     this.dropDownData = res;
-    //     this.dropedMode=[];
+    this.httpObj.get('https://portal.dpmaianalytics.com/api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
 
-    //     this.dropDownData.forEach(element => {
-    //       if (element.Function == "Function Failure") {
-    //         this.functionFailureData.push(element)
-    //       } else if (element.Function == "Function Mode") {
-    //         this.functionModeData.push(element)
-    //       }
+      res => {
+        this.dropDownData = [];
+        this.functionFailureData = [];
+        this.functionModeData = [];
+        console.log(res)
+        this.dropDownData = res;
+        this.dropedMode = [];
 
-    //     });
-    //     this.functionfailure = this.functionFailureData;
-    //     this.failuerMode = this.functionModeData;
-    //   })
+        this.dropDownData.forEach(element => {
+          if (element.Function == "Function Failure") {
+            this.functionFailureData.push(element)
+          } else if (element.Function == "Function Mode") {
+            this.functionModeData.push(element)
+          }
+
+        });
+        this.functionfailure = this.functionFailureData;
+        this.failuerMode = this.functionModeData;
+      })
   }
 
- 
-    async GeneratePrescription() {
-        if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
 
-          //     var url : string =  this.prescriptiveContantAPI.FMEATagCheck
-          // await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
-          //       (res: any) => {
-          //         var check = 0;
-          //         res.forEach(element => {
-          //           if(element.TagNumber == this.TagNumber){
-          //               check = 1;
-          //           }
-          //         });
-        
-          //         if(check === 0){
-          //           this.getDropDownLookMasterData();
-          //           this.prescriptiveSelect = false;
-          //           this.prescriptiveSteps = true;
-          //           this.prescriptiveFuntion = true;
-          //           this.prescriptiveFunctionFailure = false;
-          //           this.prescriptiveFailureMode = false;
-          //           this.prescriptiveEffect = false;
-          //           this.prescriptiveEffect1 = false
-          //           this.prescriptiveTree = false;
-          //           this.activeIndex = 0;
-          //         }else{
-          //           this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Tag Number is already Existing, if you want to add something you can update it from Assets List' });
-          //         }
+  async GeneratePrescription() {
+    if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
+      this.getDropDownLookMasterData();
+      this.prescriptiveSelect = false;
+      this.prescriptiveSteps = true;
+      this.prescriptiveFuntion = true;
+      this.prescriptiveFunctionFailure = false;
+      this.prescriptiveFailureMode = false;
+      this.prescriptiveEffect = false;
+      this.prescriptiveEffect1 = false
+      this.prescriptiveTree = false;
+      this.activeIndex = 0;
+      // var url : string =  this.prescriptiveContantAPI.FMEATagCheck
+      // await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
+      //       (res: any) => {
+      //         var check = 0;
+      //         res.forEach(element => {
+      //           if(element.TagNumber == this.TagNumber){
+      //               check = 1;
+      //           }
+      //         });
 
-          //       }, err => {
-          //         console.log(err.error);
-          //       }
-          //     )
-            
-        } else if (this.EquipmentType.length == 0) {
-          this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Equipment Type is missing' });
+      //         if(check === 0){
+      //           this.getDropDownLookMasterData();
+      //           this.prescriptiveSelect = false;
+      //           this.prescriptiveSteps = true;
+      //           this.prescriptiveFuntion = true;
+      //           this.prescriptiveFunctionFailure = false;
+      //           this.prescriptiveFailureMode = false;
+      //           this.prescriptiveEffect = false;
+      //           this.prescriptiveEffect1 = false
+      //           this.prescriptiveTree = false;
+      //           this.activeIndex = 0;
+      //         }else{
+      //           this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Tag Number is already Existing, if you want to add something you can update it from Assets List' });
+      //         }
 
-        } else if (this.TagNumber.length == 0) {
-          this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'TagNumber is missing' });
-        }
-      }
+      //       }, err => {
+      //         console.log(err.error);
+      //       }
+      //     )
+
+    } else if (this.EquipmentType.length == 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Equipment Type is missing' });
+
+    } else if (this.TagNumber.length == 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'TagNumber is missing' });
+    }
+  }
   FunctionBack() {
     this.prescriptiveSelect = true
-    this.prescriptiveSteps= false
-    this.prescriptiveFuntion= false
+    this.prescriptiveSteps = false
+    this.prescriptiveFuntion = false
   }
   FunctionNext() {
-      if (this.FunctionFluidType.length > 0) {
+    if (this.FunctionFluidType.length > 0) {
       this.prescriptiveFuntion = false;
       this.prescriptiveFunctionFailure = true;
       this.activeIndex = 1;
@@ -567,14 +579,14 @@ export class FMEAComponent implements OnInit {
     this.activeIndex = 0;
   }
   FunctionFailureNext() {
-    if(this.FunctionFailure.length>0){
+    if (this.FunctionFailure.length > 0) {
       this.prescriptiveFunctionFailure = false;
       this.prescriptiveFailureMode = true;
       this.activeIndex = 2;
-    }else{
+    } else {
       this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Function Failure is missing' });
     }
- 
+
   }
 
   FailuerModeInput($event) {
@@ -604,7 +616,7 @@ export class FMEAComponent implements OnInit {
             type: "person",
             styleClass: "p-person",
             expanded: true,
-            data: {  name: this.FunctionFailure},
+            data: { name: this.FunctionFailure },
             children: this.InsertLSEffect
           }
         ]
@@ -682,7 +694,7 @@ export class FMEAComponent implements OnInit {
     const element = document.querySelector("#scolltoAddConsequence")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
- async ADDFailuerEffect() {
+  async ADDFailuerEffect() {
     if (this.failuerModeLocalEffects !== ''
       && this.failuerModeSystemEffects !== '' && this.DownTimeFactor !== 0
       && this.ScrapeFactor !== 0 && this.SafetyFactor !== 0
@@ -746,15 +758,15 @@ export class FMEAComponent implements OnInit {
       this.Remark = "";
       this.fileUpload = "";
       this.FileId = "";
-    } else if(this.DownTimeFactor == 0  ) {
+    } else if (this.DownTimeFactor == 0) {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'DownTime Factor is Missing' });
-    }else if(this.ScrapeFactor == 0  ){
+    } else if (this.ScrapeFactor == 0) {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Scrape Factor is Missing' });
-    }else if(this.SafetyFactor == 0  ){
+    } else if (this.SafetyFactor == 0) {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Safety Factor is Missing' });
-    }else if(this.ProtectionFactor == 0  ){
+    } else if (this.ProtectionFactor == 0) {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Protection Factor is Missing' });
-    }else if(this.FrequencyFactor == 0  ){
+    } else if (this.FrequencyFactor == 0) {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Frequency Factor is Missing' });
     }
     const element = document.querySelector("#FactorstoLocal")
@@ -850,19 +862,19 @@ export class FMEAComponent implements OnInit {
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
-  // var url : string =  this.prescriptiveContantAPI.FMEASaveConsequence
-  // this.prescriptiveBLService.PutData(url,this.centrifugalPumpPrescriptiveOBJ).subscribe(
-  //    res => {
-  //       console.log(res);
-  //       this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-  //       this.router.navigateByUrl('/Home/Prescriptive/List');
-  //       this.SaveConcequencesEnable = false;
-  //       this.PatternNextOnPrescriptiveTree = true;
-  //     }, err => { console.log(err.err) }
-  //   )
+    // var url : string =  this.prescriptiveContantAPI.FMEASaveConsequence
+    // this.prescriptiveBLService.PutData(url,this.centrifugalPumpPrescriptiveOBJ).subscribe(
+    //    res => {
+    //       console.log(res);
+    //       this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
+    //       this.router.navigateByUrl('/Home/Prescriptive/List');
+    //       this.SaveConcequencesEnable = false;
+    //       this.PatternNextOnPrescriptiveTree = true;
+    //     }, err => { console.log(err.err) }
+    //   )
     const element = document.querySelector("#prescriptive")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    
+
   }
 
   treeSave() {
@@ -895,25 +907,25 @@ export class FMEAComponent implements OnInit {
       obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
       obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
-      obj['Type']=this.Type;
+      obj['Type'] = this.Type;
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
-  // var url :string =  this.prescriptiveContantAPI.FMEATreeSave
-  // this.prescriptiveBLService.postWithoutHeaders(url, this.centrifugalPumpPrescriptiveOBJ)
-  //   .subscribe(
-  //     res => {
-  //       console.log(res);
-  //       this.treeResponseData = res;
-  //       localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
-  //       this.prescriptiveTreeNextEnable = true
-  //       this.prescriptiveTreeUpdateEnable = false;
-  //       this.prescriptiveTreeSubmitEnable = false;
-  //       this.prescriptiveTreeBackEnable = false
+    // var url :string =  this.prescriptiveContantAPI.FMEATreeSave
+    // this.prescriptiveBLService.postWithoutHeaders(url, this.centrifugalPumpPrescriptiveOBJ)
+    //   .subscribe(
+    //     res => {
+    //       console.log(res);
+    //       this.treeResponseData = res;
+    //       localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
+    //       this.prescriptiveTreeNextEnable = true
+    //       this.prescriptiveTreeUpdateEnable = false;
+    //       this.prescriptiveTreeSubmitEnable = false;
+    //       this.prescriptiveTreeBackEnable = false
 
-  //     },
-  //     err => { console.log(err.Message) }
-  //   )
+    //     },
+    //     err => { console.log(err.Message) }
+    //   )
   }
 
   PushConcequences() {
@@ -973,7 +985,7 @@ export class FMEAComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
     const element = document.querySelector("#prescriptive")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  
+
   }
   FailureEffectNext() {
     this.prescriptiveFailureMode = false;
@@ -1471,18 +1483,18 @@ export class FMEAComponent implements OnInit {
     }
   }
 
- 
-  ConsequenceSelected(a){
-    if(this.Consequences1 === true){
+
+  ConsequenceSelected(a) {
+    if (this.Consequences1 === true) {
       this.dropedConsequenceFailureMode = []
       this.dropedConsequenceFailureMode.push(a)
-    }else if(this.Consequences2 === true){
+    } else if (this.Consequences2 === true) {
       this.dropedConsequenceEffectFailureMode = []
       this.dropedConsequenceEffectFailureMode.push(a)
-    }else if(this.Consequences3 === true){
+    } else if (this.Consequences3 === true) {
       this.dropedConsequenceCombinationFailureMode = []
       this.dropedConsequenceCombinationFailureMode.push(a)
-    }else if(this.Consequences4 === true){
+    } else if (this.Consequences4 === true) {
       this.dropedConsequenceAffectFailureMode = []
       this.dropedConsequenceAffectFailureMode.push(a)
     }
@@ -1492,5 +1504,5 @@ export class FMEAComponent implements OnInit {
 
 
 }
-  
+
 

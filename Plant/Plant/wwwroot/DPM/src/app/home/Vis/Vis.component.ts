@@ -5,6 +5,7 @@ import { Equipment, SIF,TempCompressorModel } from './Vis.model';
 // import * as XLSX from 'xlsx';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 declare var vis:any;
 
@@ -19,7 +20,7 @@ export class VisComponent implements OnInit {
   @ViewChild("siteConfigNetwork") networkContainer: ElementRef;
   @ViewChild("svgNetwork") svgNetworkContainer: ElementRef;
 
-  popup:any=[];
+  public popup:any=[];
   public network: any;
   public plant:any =[];
   public EquipmentId :any = [];
@@ -30,13 +31,13 @@ export class VisComponent implements OnInit {
   public compressorList:any = [];
   public arrayBuffer: any
   public HistoricalData:boolean =false;
-  public FMEA:boolean = false;
   public FunctionUpdate:boolean = false;
   public currentNodeObj:Equipment=new Equipment();
   public sifObj:SIF = new SIF();
   public TempcompressorModelObj:TempCompressorModel = new TempCompressorModel();
 
-  constructor(public http:HttpClient) { }
+  constructor(public http:HttpClient,
+    private router : Router) { }
 
   ngOnInit() {
      
@@ -146,7 +147,6 @@ export class VisComponent implements OnInit {
         this.popup= document.getElementById("FunctionUpdate")
       if (clickProperties.nodes.length == 1) {
         this.FunctionUpdate = true;
-        this.popup.style.display = 'block';
         this.EquipmentId=clickProperties.nodes[0];
         this.currentNodeObj=new Equipment();
         this.currentNodeObj= ((this.plant[0].networks[0].equipmentList.filter(r => r.TagNumber ===this.EquipmentId)[0]) || (this.plant[0].networks[0].equipmentList.filter(r => r.EquipmentId === this.sif[0].EquipmentId ))[0]);
@@ -223,7 +223,7 @@ export class VisComponent implements OnInit {
   historicalData(){
     this.HistoricalData = true;
   }
-  fmea(){
-    this.FMEA = true;
+  public fmea(){
+    this.router.navigateByUrl('/Home/FMEA', { state : { Machine : this.currentNodeObj} })
   }
 }
