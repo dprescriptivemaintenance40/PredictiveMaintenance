@@ -7,6 +7,7 @@ namespace Plant.Models
     {
         [Key]
         public int RCMId { get; set; }
+        public string TagNumber { get; set; }
         public int OrganizationId { get; set; }
         public int EquipmentId { get; set; }
         public string MachineType { get; set; }

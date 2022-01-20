@@ -255,6 +255,7 @@ export class FMEAComponent implements OnInit {
     this.state = window.history.state;    
     this.RCMOBJ.EquipmentId = this.state.Machine.EquipmentId
     this.RCMOBJ.OrganizationId = this.state.OrganizationId;
+    this.RCMOBJ.TagNumber = this.state.Machine.MachineId
   }
 
 
@@ -510,7 +511,7 @@ export class FMEAComponent implements OnInit {
 
 
   async GeneratePrescription() {
-    if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
+    if (this.EquipmentType.length > 0 && this.RCMOBJ.TagNumber.length > 0) {
       this.getDropDownLookMasterData();
       this.prescriptiveSelect = false;
       this.prescriptiveSteps = true;
