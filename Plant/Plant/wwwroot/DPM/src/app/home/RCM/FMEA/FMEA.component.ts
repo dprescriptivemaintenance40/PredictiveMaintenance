@@ -60,7 +60,7 @@ export class FMEAComponent implements OnInit {
   public EquipmentList: any = []
   public TagNumber: string = "";
   public dropDownData: any = [];
-  public treeResponseData: any = [];
+  public treeResponseData: RCM =new RCM();
   public RadioValue: string = '';
 
   public FunctionFluidType: string = "";
@@ -844,14 +844,15 @@ export class FMEAComponent implements OnInit {
       res.Consequence = temp2
     })
     this.RCMOBJ.failureModes = []
-    this.RCMOBJ.RCMId = this.treeResponseData.CFPPrescriptiveId;
+    this.RCMOBJ.RCMId = this.treeResponseData.RCMId;
     // this.RCMOBJ.Type = this.treeResponseData.Type;
     this.RCMOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
-    localStorage.setItem('TestingOBj', JSON.stringify(this.data1))
+    localStorage.setItem('TestingOBj', JSON.stringify(this.data1));
+    
     for (let index = 0; index < this.FMChild.length; index++) {
       let obj = new FailureModes();
-      obj.FailureModeId = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
-      obj.RCMId = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
+      obj.FailureModeId = this.treeResponseData.failureModes[index].FailureModeId;
+      obj.RCMId = this.treeResponseData.failureModes[index].RCMId;
       obj.FailureMode = this.FMChild[index].data.name;
       obj.LocalEffect = this.FMChild[index].children[0].children[0].data.name;
       obj.SystemEffect = this.FMChild[index].children[0].children[1].data.name;;
@@ -861,11 +862,11 @@ export class FMEAComponent implements OnInit {
       obj.SafetyFactor = this.FactoryToAddInFM[index].SafetyFactor
       obj.ProtectionFactor = this.FactoryToAddInFM[index].ProtectionFactor
       obj.FrequencyFactor = this.FactoryToAddInFM[index].FrequencyFactor
-      obj.CriticalityFactor = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CriticalityFactor;
-      obj.Rating = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].Rating;
-      obj.MaintainenancePractice = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
-      obj.FrequencyMaintainenance = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
-      obj.ConditionMonitoring = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
+      obj.CriticalityFactor = this.treeResponseData.failureModes[index].CriticalityFactor;
+      obj.Rating = this.treeResponseData.failureModes[index].Rating;
+      obj.MaintainenancePractice = this.treeResponseData.failureModes[index].MaintainenancePractice;
+      obj.FrequencyMaintainenance = this.treeResponseData.failureModes[index].FrequencyMaintainenance;
+      obj.ConditionMonitoring = this.treeResponseData.failureModes[index].ConditionMonitoring;
       obj.AttachmentDBPath = this.FactoryToAddInFM[index].AttachmentDBPath
       obj.AttachmentFullPath = this.FactoryToAddInFM[index].AttachmentFullPath
       obj.Remark = this.FactoryToAddInFM[index].Remark
@@ -923,8 +924,9 @@ export class FMEAComponent implements OnInit {
 
     this.RCMBLService.postWithoutHeaders(this.RCMConstantAPI.FMEATreeSave, this.RCMOBJ)
       .subscribe(
-        res => {
+        (res:any) => {
           console.log(res);
+          this.treeResponseData=new RCM();
           this.treeResponseData = res;
           localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
           this.prescriptiveTreeNextEnable = true
