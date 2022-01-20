@@ -3,6 +3,7 @@ import { Equipment } from "src/app/home/Vis/Vis.model";
 export class RCM
     {
         public RCMId : number = 0 ;
+        public OrganizationId : number = 0;
         public EquipmentId : number = 0;
         public MachineType : string = "";
         public EquipmentType : string = "";
@@ -14,9 +15,7 @@ export class RCM
         public FCAAdded : string = "";
         public MSSAdded : string = "";
         public EquipmentCriticalityType : string = "";
-        public FailureModes :Array<FailureModes>=Array<FailureModes>();
-      //  public equipment:Equipment=null;
-       // public equipment:Equipment=new Equipment();
+        public failureModes :Array<FailureModes>=Array<FailureModes>();
     }
 
     export class FailureModes
@@ -53,8 +52,7 @@ export class RCM
         public FCAUpdateConditions : string = "";
         public MSSStartergyList : string = "";
         public MSS : Array<MSS>=new Array<MSS>();
-     //   public RCM:RCM=null;
-      //  public RCM:RCM=new RCM();
+        public RCM:RCM=new RCM();
     }
 
     export class MSS

@@ -8,8 +8,8 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SafeUrl } from '@angular/platform-browser';
-import {FailureModes, RCM} from 'src/app/shared/Models/rcm.models';
-import {RCMContantAPI} from './Shared/rcmConstant';
+import { FailureModes, RCM } from 'src/app/shared/Models/rcm.models';
+import { RCMContantAPI } from './Shared/rcmConstant';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 @Component({
@@ -26,7 +26,7 @@ export class FMEAComponent implements OnInit {
     this.displayModal = true;
   };
   checked: boolean = false;
-  
+
 
   public MachineType: string = "";
   private FMCount: number = 0;
@@ -227,7 +227,7 @@ export class FMEAComponent implements OnInit {
 
   public FCAFreeTextCancel1: boolean = true
   public FCAFreeTextSave1: boolean = true;
-  public FailureModeObj:FailureModes=new FailureModes();
+  public FailureModeObj: FailureModes = new FailureModes();
 
   public patternaddshow: boolean = false
   public FunctionFailure: string = ""
@@ -241,8 +241,8 @@ export class FMEAComponent implements OnInit {
     public router: Router,
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
-    private RCMConstantAPI:RCMContantAPI,
-    private RCMBLService:CommonBLService,) {
+    private RCMConstantAPI: RCMContantAPI,
+    private RCMBLService: CommonBLService,) {
     var type;
     this.route.params.subscribe(params => {
       type = params['type'];
@@ -251,7 +251,10 @@ export class FMEAComponent implements OnInit {
       }
     });
 
-    this.state = window.history.state;
+    this.RCMOBJ = new RCM();
+    this.state = window.history.state;    
+    this.RCMOBJ.EquipmentId = this.state.Machine.EquipmentId
+    this.RCMOBJ.OrganizationId = this.state.OrganizationId;
   }
 
 
@@ -839,13 +842,13 @@ export class FMEAComponent implements OnInit {
     this.data1[0].children[0].children.forEach((res: any) => {
       res.Consequence = temp2
     })
-    this.RCMOBJ.FailureModes = []
+    this.RCMOBJ.failureModes = []
     this.RCMOBJ.RCMId = this.treeResponseData.CFPPrescriptiveId;
-   // this.RCMOBJ.Type = this.treeResponseData.Type;
+    // this.RCMOBJ.Type = this.treeResponseData.Type;
     this.RCMOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
     localStorage.setItem('TestingOBj', JSON.stringify(this.data1))
     for (let index = 0; index < this.FMChild.length; index++) {
-      let obj ;
+      let obj;
       obj['CPPFMId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
       obj['CFPPrescriptiveId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
       obj['FunctionMode'] = this.FMChild[index].data.name;
@@ -865,7 +868,7 @@ export class FMEAComponent implements OnInit {
       obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
       obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
-      this.RCMOBJ.FailureModes.push(obj)
+      this.RCMOBJ.failureModes.push(obj)
     }
     // var url : string =  this.prescriptiveContantAPI.FMEASaveConsequence
     // this.prescriptiveBLService.PutData(url,this.centrifugalPumpPrescriptiveOBJ).subscribe(
@@ -884,12 +887,11 @@ export class FMEAComponent implements OnInit {
 
   treeSave() {
     this.isNewEntity = false;
-    this.prescriptiveTreeBackEnable = false
-    this.RCMOBJ.EquipmentId=this.state.Machine.TagNumber
-    this.RCMOBJ.MachineType = this.MachineType
+    this.prescriptiveTreeBackEnable = false;
+    this.RCMOBJ.MachineType = this.MachineType;
     this.MachineType = "";
     this.isNewEntity = false;
-    this.RCMOBJ.EquipmentType = this.EquipmentType
+    this.RCMOBJ.EquipmentType = this.EquipmentType;
     // this.RCMOBJ.TagNumber = this.TagNumber
     // this.RCMOBJ.FunctionFluidType = this.FunctionFluidType
     // this.RCMOBJ.FunctionRatedHead = this.FunctionRatedHead
@@ -897,44 +899,47 @@ export class FMEAComponent implements OnInit {
     this.RCMOBJ.FunctionFailure = this.FunctionFailure
     // this.RCMOBJ.Type = this.Type
     this.RCMOBJ.FailureModeWithLSETree = JSON.stringify(this.data1)
-    this.RCMOBJ.FailureModes=[]
+    this.RCMOBJ.failureModes = []
     for (let index = 0; index < this.FMChild.length; index++) {
-      
-      let obj;
-      obj['FailureModeId'] = 0;
-      obj['RCMId'] = 0;
-      obj['FailureMode'] = this.FMChild[index].data.name;
-      obj['LocalEffect'] = this.FMChild[index].children[0].children[0].data.name;
-      obj['SystemEffect'] = this.FMChild[index].children[0].children[1].data.name;
-      obj['Consequence'] = "";
-      obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor
-      obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor
-      obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
-      obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
-      obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
-      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
-      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
-      obj['Remark'] = this.FactoryToAddInFM[index].Remark
-      obj['Type']=this.Type;
-      
-      this.RCMOBJ.FailureModes.push(obj)
+
+      let obj = new FailureModes();
+      obj.FailureModeId = 0;
+      obj.RCMId = 0;
+      obj.FailureMode = this.FMChild[index].data.name;
+      obj.LocalEffect = this.FMChild[index].children[0].children[0].data.name;
+      obj.SystemEffect = this.FMChild[index].children[0].children[1].data.name;
+      obj.Consequence = "";
+      obj.DownTimeFactor = this.FactoryToAddInFM[index].DownTimeFactor
+      obj.ScrapeFactor = this.FactoryToAddInFM[index].ScrapeFactor
+      obj.SafetyFactor = this.FactoryToAddInFM[index].SafetyFactor
+      obj.ProtectionFactor = this.FactoryToAddInFM[index].ProtectionFactor
+      obj.FrequencyFactor = this.FactoryToAddInFM[index].FrequencyFactor
+      obj.AttachmentDBPath = this.FactoryToAddInFM[index].AttachmentDBPath
+      obj.AttachmentFullPath = this.FactoryToAddInFM[index].AttachmentFullPath
+      obj.Remark = this.FactoryToAddInFM[index].Remark
+      // obj.Type =this.Type;
+
+      this.RCMOBJ.failureModes.push(obj)
     }
 
-  var url :string =  this.RCMConstantAPI.FMEATreeSave
-  this.RCMBLService.postWithHeaders(url, this.RCMOBJ)
-    .subscribe(
-      res => {
-        console.log(res);
-        this.treeResponseData = res;
-        localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
-        this.prescriptiveTreeNextEnable = true
-        this.prescriptiveTreeUpdateEnable = false;
-        this.prescriptiveTreeSubmitEnable = false;
-        this.prescriptiveTreeBackEnable = false
+    this.RCMBLService.postWithoutHeaders(this.RCMConstantAPI.FMEATreeSave, this.RCMOBJ)
+      .subscribe(
+        res => {
+          console.log(res);
+          this.treeResponseData = res;
+          localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
+          this.prescriptiveTreeNextEnable = true
+          this.prescriptiveTreeUpdateEnable = false;
+          this.prescriptiveTreeSubmitEnable = false;
+          this.prescriptiveTreeBackEnable = false
 
-      },
-      err => { console.log(err.Message) }
-    )
+        },
+        err => { console.log(err.Message);
+           this.RCMOBJ.failureModes = [];
+           this.router.navigateByUrl('/Home/LandingPage')
+          }
+
+      )
   }
 
   PushConcequences() {

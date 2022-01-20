@@ -36,6 +36,8 @@ export class VisComponent implements OnInit {
   public sifObj:SIF = new SIF();
   public TempcompressorModelObj:CompressorModel = new CompressorModel();
 
+  private OrganizationId : number = 0;
+
   constructor(public http:HttpClient,
     private router : Router) { }
 
@@ -50,6 +52,7 @@ export class VisComponent implements OnInit {
   
     this.plant = plant;
     console.log(this.plant)
+    this.OrganizationId = this.plant[0].OrganizationId;
     this.plant[0].networks[0].equipmentList.forEach(async element => {
       var image : string = "";
 
@@ -224,6 +227,6 @@ export class VisComponent implements OnInit {
     this.HistoricalData = true;
   }
   public fmea(){
-    this.router.navigateByUrl('/Home/FMEA', { state : { Machine : this.currentNodeObj} })
+    this.router.navigateByUrl('/Home/FMEA', { state : { Machine : this.currentNodeObj, OrganizationId:this.OrganizationId} })
   }
 }

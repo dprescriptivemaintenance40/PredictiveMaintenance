@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Plant.Models
 {
@@ -19,7 +20,8 @@ namespace Plant.Models
         public string MSSAdded { get; set; }
         public string EquipmentCriticalityType { get; set; }  
         public List<FailureModes> failureModes { get; set; }
-        public Equipment equipment { get; set; }
+        //[NotMapped]
+        //public Equipment equipment { get; set; }
 
     }
 
