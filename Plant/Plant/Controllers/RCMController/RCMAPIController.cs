@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Plant.DAL;
+using Plant.Models;
+using System.Net.Http.Headers;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,34 +13,15 @@ namespace Plant.Controllers.RCMController
     [ApiController]
     public class RCMAPIController : ControllerBase
     {
-        private readonly DPMDal _context;
+        private readonly PlantDBContext _context;
         private IWebHostEnvironment _hostingEnvironment;
 
-        public RCMAPIController(DPMDal context, IWebHostEnvironment hostingEnvironment)
+        public RCMAPIController(PlantDBContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
         }
-        // GET: api/<RCMAPIController>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<RCMModel>>> GetPrescriptive()
-        {
-            try
-            {
-                string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                return await _context.RCMs.Where(a => a.UserId == userId)
-                                                           .Include(a => a.FailureModes)
-                                                           .ThenInclude(a => a.MSS)
-                                                           .OrderByDescending(a => a.RCMId)
-                                                           .ToListAsync();
 
-            }
-            catch (Exception exe)
-            {
-
-                return BadRequest(exe.Message);
-            }
-        }
 
         // GET api/<RCMAPIController>/5
         [HttpGet("{id}")]
@@ -120,12 +102,12 @@ namespace Plant.Controllers.RCMController
         // PUT api/<RCMAPIController>/5
         [HttpPut]
         [Route("SaveConsequence")]
-        public async Task<IActionResult> SaveConsequence(RCMModel rcmModels)
+        public async Task<IActionResult> SaveConsequence(RCM rcmModels)
         {
 
-            RCMModel rcmModel = new RCMModel();
+            RCM rcmModel = new RCM();
             rcmModel = await _context.RCMs.FindAsync(rcmModels.RCMId);
-            rcmModel.FailureModes = rcmModels.FailureModes;
+            rcmModel.failureModes = rcmModels.failureModes;
             rcmModel.FMWithConsequenceTree = rcmModels.FMWithConsequenceTree;
 
             _context.Entry(rcmModel).State = EntityState.Modified;
@@ -136,14 +118,14 @@ namespace Plant.Controllers.RCMController
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RCMModelModelExists(rcmModels.RCMId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                //if (!RCMModelExists(rcmModels.RCMId))
+                //{
+                //    return NotFound();
+                //}
+                //else
+                //{
+                //    throw;
+                //}
             }
 
             return NoContent();
@@ -152,14 +134,14 @@ namespace Plant.Controllers.RCMController
 
         [HttpPost]
         [Route("SaveFMEA")]
-        public async Task<ActionResult<RCMModel>> SaveFMEA([FromBody] RCMModel rcmModel)
+        public async Task<ActionResult<RCM>> SaveFMEA([FromBody] RCM rcmModel)
         {
             try
             {
                 List<int> Calculation = new List<int>();
 
-                var FailureModeData = rcmModel.FailureModes;
-                rcmModel.FailureModes = new List<FailureMode>();
+                var FailureModeData = rcmModel.failureModes;
+                rcmModel.failureModes = new List<FailureModes>();
 
                 foreach (var item in FailureModeData)
                 {
@@ -210,54 +192,11 @@ namespace Plant.Controllers.RCMController
 
                     item.CriticalityFactor = MULT;
 
-                    rcmModel.FailureModes.Add(item);
+                    rcmModel.failureModes.Add(item);
 
                 }
 
-                var CF = Calculation.Sum();
-                prescriptiveModel.ComponentCriticalityFactor = CF;
 
-                if (CF > 1000)
-                {
-                    rcmModel.ComponentRating = "A";
-                    rcmModel.CMaintainenancePractice = "CBM and OBM Both";
-                    rcmModel.CFrequencyMaintainenance = "Daily Condition Monitoring, or Online Monitoring";
-                    rcmModel.CConditionMonitoring = "Vibration Monitoring";
-                }
-                else if ((500 < CF) && (CF < 1000))
-                {
-                    rcmModel.ComponentRating = "B";
-                    rcmModel.CMaintainenancePractice = "OBM";
-                    rcmModel.CFrequencyMaintainenance = "Twice a week Condition Monitoring";
-                    rcmModel.CConditionMonitoring = "Vibration Monitoring";
-                }
-                else if ((200 < CF) && (CF <= 500))
-                {
-                    rcmModel.ComponentRating = "C";
-                    rcmModel.CMaintainenancePractice = "PM";
-                    rcmModel.CFrequencyMaintainenance = "Weekly Condition Monitoring";
-                    rcmModel.CConditionMonitoring = "Vibration Monitoring";
-                }
-                else if ((100 < CF) && (CF <= 200))
-                {
-                    rcmModel.ComponentRating = "D";
-                    rcmModel.CMaintainenancePractice = "TBM";
-                    rcmModel.CFrequencyMaintainenance = "Half of PF interval, typically Monthly or fortnightly, time based maintenance";
-                    rcmModel.CConditionMonitoring = "Not Answered";
-                }
-                else if ((0 < CF) && (CF < 100))
-                {
-                    rcmModel.ComponentRating = "E";
-                    rcmModel.CMaintainenancePractice = "Breakdown Maintenance";
-                    rcmModel.CFrequencyMaintainenance = "All the time of Failure";
-                    rcmModel.CConditionMonitoring = "Not Answered";
-                }
-
-                string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                DateTime d1 = DateTime.Now;
-                rcmModel.Date = d1.Date;
-                rcmModel.UserId = userId;
-                rcmModel.CriticalityAssesmentId = 14; // CriticalityAssesmentModelTable record with PrimaryKey number 14 is hardcoded for now
                 _context.RCMs.Add(rcmModel);
                 await _context.SaveChangesAsync();
 
