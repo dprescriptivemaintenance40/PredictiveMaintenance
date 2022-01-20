@@ -200,7 +200,7 @@ namespace Plant.Controllers.RCMController
                 _context.RCMs.Add(rcmModel);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetPrescriptiveById", new { id = rcmModel.RCMId }, rcmModel);
+                return Ok(rcmModel);
             }
             catch (Exception exe)
             {
