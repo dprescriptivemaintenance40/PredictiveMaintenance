@@ -849,40 +849,38 @@ export class FMEAComponent implements OnInit {
     this.RCMOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
     localStorage.setItem('TestingOBj', JSON.stringify(this.data1))
     for (let index = 0; index < this.FMChild.length; index++) {
-      let obj;
-      obj['CPPFMId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
-      obj['CFPPrescriptiveId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
-      obj['FunctionMode'] = this.FMChild[index].data.name;
-      obj['LocalEffect'] = this.FMChild[index].children[0].children[0].data.name;
-      obj['SystemEffect'] = this.FMChild[index].children[0].children[1].data.name;;
-      obj['Consequence'] = this.FMChild[index].children[0].children[2].data.name;
-      obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor
-      obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor
-      obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
-      obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
-      obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
-      obj['CriticalityFactor'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CriticalityFactor;
-      obj['Rating'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].Rating;
-      obj['MaintainenancePractice'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
-      obj['FrequencyMaintainenance'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
-      obj['ConditionMonitoring'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
-      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
-      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
-      obj['Remark'] = this.FactoryToAddInFM[index].Remark
+      let obj = new FailureModes();
+      obj.FailureModeId = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
+      obj.RCMId = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
+      obj.FailureMode = this.FMChild[index].data.name;
+      obj.LocalEffect = this.FMChild[index].children[0].children[0].data.name;
+      obj.SystemEffect = this.FMChild[index].children[0].children[1].data.name;;
+      obj.Consequence = this.FMChild[index].children[0].children[2].data.name;
+      obj.DownTimeFactor = this.FactoryToAddInFM[index].DownTimeFactor
+      obj.ScrapeFactor = this.FactoryToAddInFM[index].ScrapeFactor
+      obj.SafetyFactor = this.FactoryToAddInFM[index].SafetyFactor
+      obj.ProtectionFactor = this.FactoryToAddInFM[index].ProtectionFactor
+      obj.FrequencyFactor = this.FactoryToAddInFM[index].FrequencyFactor
+      obj.CriticalityFactor = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CriticalityFactor;
+      obj.Rating = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].Rating;
+      obj.MaintainenancePractice = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
+      obj.FrequencyMaintainenance = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
+      obj.ConditionMonitoring = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
+      obj.AttachmentDBPath = this.FactoryToAddInFM[index].AttachmentDBPath
+      obj.AttachmentFullPath = this.FactoryToAddInFM[index].AttachmentFullPath
+      obj.Remark = this.FactoryToAddInFM[index].Remark
       this.RCMOBJ.failureModes.push(obj)
     }
-    // var url : string =  this.prescriptiveContantAPI.FMEASaveConsequence
-    // this.prescriptiveBLService.PutData(url,this.centrifugalPumpPrescriptiveOBJ).subscribe(
-    //    res => {
-    //       console.log(res);
-    //       this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-    //       this.router.navigateByUrl('/Home/Prescriptive/List');
-    //       this.SaveConcequencesEnable = false;
-    //       this.PatternNextOnPrescriptiveTree = true;
-    //     }, err => { console.log(err.err) }
-    //   )
-    const element = document.querySelector("#prescriptive")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    this.RCMBLService.PutData(this.RCMConstantAPI.SaveConsequence,this.RCMOBJ).subscribe(
+       res => {
+          console.log(res);
+          this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
+          this.router.navigateByUrl('/Home/LandingPage');
+        }, err => { console.log(err.err) 
+          this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something wrong Happen, plz try again later' });
+          this.router.navigateByUrl('/Home/LandingPage')
+        }
+      )
 
   }
 
@@ -937,6 +935,7 @@ export class FMEAComponent implements OnInit {
         },
         err => { console.log(err.Message);
            this.RCMOBJ.failureModes = [];
+           this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something wrong Happen, plz try again later' });
            this.router.navigateByUrl('/Home/LandingPage')
           }
 

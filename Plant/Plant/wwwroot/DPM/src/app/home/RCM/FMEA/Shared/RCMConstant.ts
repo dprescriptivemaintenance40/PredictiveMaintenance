@@ -9,6 +9,7 @@ export class RCMContantAPI {
     public FMEATagCheck: string = '/PrescriptiveAPI';
     public FMEADropdownData: string = '/PrescriptiveLookupMasterAPI/GetRecords';
     public FMEATreeSave: string = '/RCMAPI/SaveFMEA';
+    public SaveConsequence: string = '/RCMAPI/SaveConsequence';
     public FMEAFileUpload: string = '/PrescriptiveAPI/UploadFile';
     public FMEADeleteFileUpload: string = '/PrescriptiveAPI/UpdateFileUpload';
     public FMEASaveConsequence: string = '/PrescriptiveAPI/CFPrescriptiveAdd';
