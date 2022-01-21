@@ -28,7 +28,26 @@ namespace Plant.Controllers.RCMController
         {
             try
             {
-                return await _context.RCMs.Where(a => a.OrganizationId == OrganizationId && (a.FCAAdded == ""  || a.FCAAdded == null) && a.EquipmentCriticalityType == "CA")
+                return await _context.RCMs.Where(a => a.OrganizationId == OrganizationId && (a.FCAAdded == null || a.FCAAdded == "") && a.EquipmentCriticalityType == "CA")
+                                                           .Include(a => a.failureModes)
+                                                           .OrderBy(a => a.RCMId)
+                                                           .ToListAsync();
+
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetPrescriptiveRecordsForMSS")]
+        public async Task<ActionResult<IEnumerable<RCM>>> GetPrescriptiveRecordsForMSS()
+        {
+            try
+            {
+                return await _context.RCMs.Where(a => a.FCAAdded == "1" && (a.MSSAdded == null || a.MSSAdded == ""))
                                                            .Include(a => a.failureModes)
                                                            .OrderBy(a => a.RCMId)
                                                            .ToListAsync();
@@ -359,6 +378,49 @@ namespace Plant.Controllers.RCMController
                 }
 
                 return Ok(prescriptiveModel);
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+
+        }
+
+        [HttpPut]
+        [Route("UpdatePrespectiveMSS")]
+        public async Task<IActionResult> PutUpdatePrespectiveMSS(RCM prescriptiveModel)
+        {
+
+            try
+            {
+                List<RCM> RCMModel = await _context.RCMs.Where(a => a.RCMId == prescriptiveModel.RCMId)
+                                                           .Include(a => a.failureModes)
+                                                           .ToListAsync();
+                RCMModel[0].FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
+                RCMModel[0].MSSAdded = "1";
+
+                _context.Entry(RCMModel[0]).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                int i = 0;
+                var collection = RCMModel[0].failureModes.ToList();
+                foreach (var item in collection)
+                {
+
+                    foreach (var item1 in prescriptiveModel.failureModes[i].MSS)
+                    {
+                        item1.FailureModeId = item.FailureModeId;
+                        _context.MSS.Add(item1);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    item.MSSStartergyList = prescriptiveModel.failureModes[i].MSSStartergyList;
+                    _context.Entry(item).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    i = i + 1;
+                }
+
+                return Ok();
             }
             catch (Exception exe)
             {

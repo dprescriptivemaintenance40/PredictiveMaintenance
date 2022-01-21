@@ -7,18 +7,17 @@ export class RCMContantAPI {
     //#region  FMEA - Add, configuration, consequence, display, list,  FCA, MSS API's
 
     public FMEATagCheck: string = '/PrescriptiveAPI';
-    public FMEADropdownData: string = '/PrescriptiveLookupMasterAPI/GetRecords';
     public FMEATreeSave: string = '/RCMAPI/SaveFMEA';
     public SaveConsequence: string = '/RCMAPI/SaveConsequence';
-    public FMEAFileUpload: string = '/PrescriptiveAPI/UploadFile';
-    public FMEADeleteFileUpload: string = '/PrescriptiveAPI/UpdateFileUpload';
+    public FMEAFileUpload: string = '/RCMAPI/UploadFile';
+    public FMEADeleteFileUpload: string = '/RCMAPI/UpdateFileUpload';
     public FMEASaveConsequence: string = '/PrescriptiveAPI/CFPrescriptiveAdd';
     public PrescriptiveRecordsForFCA: string = '/RCMAPI/GetPrescriptiveRecordsForFCA';
-    public PrescriptiveRecordsForMSS: string = '/PrescriptiveAPI/GetPrescriptiveRecordsForMSS';
+    public PrescriptiveRecordsForMSS: string = '/RCMAPI/GetPrescriptiveRecordsForMSS';
     public FCASave: string = '/RCMAPI/PrespectivePattern';
-    public FCAWebal: string = '/PrescriptiveAPI/WebalAlgo';
+    public FCAWebal: string = '/RCMAPI/WebalAlgo';
     public FCAWebalWithDetails: string = '/PrescriptiveAPI/WebalAlgoritmWithDetails';
-    public MSSSave: string = '/PrescriptiveAPI/UpdatePrespectiveMSS';
+    public MSSSave: string = '/RCMAPI/UpdatePrespectiveMSS';
     public FMEAConfiguration: string = '/PrescriptiveLookupMasterAPI';
     public FMEAListSingleDelete: string = '/PrescriptiveAPI/DeletePrespectiveModel';
     public FMEAParentAttachments: string = '/PrescriptiveAPI/CompontentAttachment';

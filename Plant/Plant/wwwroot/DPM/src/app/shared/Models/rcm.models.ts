@@ -52,7 +52,8 @@ export class RCM
         public FCAUpdateIntervals : string = "";
         public FCAUpdateConditions : string = "";
         public MSSStartergyList : string = "";
-        public MSS : Array<MSS>=new Array<MSS>();
+        public MSS : any = []
+        // public MSS : Array<MSS>=new Array<MSS>();
         public RCM:RCM=new RCM();
     }
 
@@ -66,8 +67,8 @@ export class RCM
         public MSSAvailability: string = "";
         public MSSMaintenanceTask: string = "";
         public MSSIntervalSelectionCriteria: string = "";
-        public MSSFinalAvaliability: string = "";
-     //   public FailureModes:FailureModes=null;
-       // public FailureModes:FailureModes=new FailureModes();
+        public MSSFinalAvaliability: number = 0;
+        //   public FailureModes:FailureModes=null;
+       public FailureModes:FailureModes=new FailureModes();
     }
    

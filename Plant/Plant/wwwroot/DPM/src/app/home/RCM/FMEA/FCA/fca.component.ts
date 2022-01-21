@@ -1683,15 +1683,22 @@ export class FCAComponent implements OnInit {
       this.daysList.forEach(element => {
         Data.push(element.Days)
       });
-      var url: string = this.RCMContantAPI.FCAWebal
-      this.RCMBLService.postWithHeaders(url, Data)
-        .subscribe(
-          (res: any) => {
-            this.alpha = res.alpha;
-            this.beta = res.beta;
-            this.changeDetectorRef.detectChanges();
-          }, err => { console.log(err.error) }
-        )
+      this.http.post('https://portal.dpmaianalytics.com/api/PrescriptiveAPI/WebalAlgo',Data).subscribe(
+        (res: any) => {
+          this.alpha = res.alpha;
+          this.beta = res.beta;
+          this.changeDetectorRef.detectChanges();
+        }, err => { console.log(err.error) }
+      )
+      // var url: string = this.RCMContantAPI.FCAWebal
+      // this.RCMBLService.postWithHeaders(url, Data)
+      //   .subscribe(
+      //     (res: any) => {
+      //       this.alpha = res.alpha;
+      //       this.beta = res.beta;
+      //       this.changeDetectorRef.detectChanges();
+      //     }, err => { console.log(err.error) }
+        // )
     }
 
   }

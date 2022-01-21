@@ -7,13 +7,15 @@ import { FCAComponent } from "./RCM/FMEA/FCA/fca.component";
 import { FMEAComponent } from "./RCM/FMEA/FMEA.component";
 import { ExcelFormatService } from "./Services/excel-format.service";
 import { VisComponent } from "./Vis/Vis.component";
+import { MSSComponent } from "./RCM/FMEA/MSS/mss.component";
 
 @NgModule({
     declarations: [
         HomeComponent,
         VisComponent,
         FMEAComponent,
-        FCAComponent
+        FCAComponent,
+        MSSComponent
     ],
     imports: [    
         HomeRoutingModule,       

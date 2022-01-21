@@ -28,6 +28,11 @@ export class HomeComponent implements OnInit {
       label: 'FCA',
       url: '#/Home/FCA',
       icon: 'pi pi-home',
+    },
+    {
+      label: 'MSS',
+      url: '#/Home/MSS',
+      icon: 'pi pi-home',
     }
   ];
   constructor(public builder: FormBuilder,
