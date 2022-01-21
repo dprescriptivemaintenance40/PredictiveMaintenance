@@ -229,4 +229,7 @@ export class VisComponent implements OnInit {
   public fmea(){
     this.router.navigateByUrl('/Home/FMEA', { state : { Machine : this.currentNodeObj, OrganizationId:this.OrganizationId} })
   }
+  // public fca(){
+  //   this.router.navigateByUrl('/Home/FCA');
+  // }
 }

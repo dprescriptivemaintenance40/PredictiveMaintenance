@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SafeUrl } from '@angular/platform-browser';
 import { FailureModes, RCM } from 'src/app/shared/Models/rcm.models';
-import { RCMContantAPI } from './Shared/rcmConstant';
+import { RCMContantAPI } from './Shared/RCMConstant';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 @Component({

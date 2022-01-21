@@ -22,6 +22,24 @@ namespace Plant.Controllers.RCMController
             _hostingEnvironment = hostingEnvironment;
         }
 
+        [HttpGet]
+        [Route("GetPrescriptiveRecordsForFCA")]
+        public async Task<ActionResult<IEnumerable<RCM>>> GetPrescriptiveRecordsForFCA(int OrganizationId)
+        {
+            try
+            {
+                return await _context.RCMs.Where(a => a.OrganizationId == OrganizationId && (a.FCAAdded == ""  || a.FCAAdded == null) && a.EquipmentCriticalityType == "CA")
+                                                           .Include(a => a.failureModes)
+                                                           .OrderBy(a => a.RCMId)
+                                                           .ToListAsync();
+
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
 
         // GET api/<RCMAPIController>/5
         [HttpGet("{id}")]
@@ -207,6 +225,147 @@ namespace Plant.Controllers.RCMController
 
                 return BadRequest(exe.Message);
             }
+        }
+
+        [HttpPost]
+        [Route("WebalAlgo")]
+        public async Task<IActionResult> WebalAlgoritm([FromBody] int[] Days)
+        {
+            try
+            {
+                List<int> WebalDays = new List<int>();
+                List<int> Rank = new List<int>();
+                List<double> MedianRank = new List<double>();  // Median rank, percentage
+                List<double> MedianRankDays = new List<double>(); // ln (x)
+                List<double> MedianRankInverse = new List<double>(); // 1/(1-p)
+                List<double> Last = new List<double>(); // ln(ln(1/(1-p)))
+                int r = 1;
+                foreach (var item in Days)
+                {
+                    WebalDays.Add(item);
+                    Rank.Add(r);
+                    r = r + 1;
+                }
+                WebalDays.Sort();
+                int RankCount = Rank.Count();
+                foreach (var item in Rank)
+                {
+                    double median = (item - 0.3) / (RankCount + 0.4);
+                    MedianRank.Add(median);
+
+                }
+                foreach (var item in WebalDays)
+                {
+                    double medianDays = Math.Log(item);
+                    MedianRankDays.Add(medianDays);
+
+                }
+                foreach (var item in MedianRank)
+                {
+                    double medianInverse = 1 / (1 - item);
+                    MedianRankInverse.Add(medianInverse);
+
+                }
+                foreach (var item in MedianRankInverse)
+                {
+                    double l = Math.Log(Math.Log(item));
+                    Last.Add(l);
+
+                }
+
+                List<double> xVals = new List<double>();
+                List<double> yVals = new List<double>();
+                xVals = Last;
+                yVals = MedianRankDays;
+
+                double sumOfX = 0;
+                double sumOfY = 0;
+                double sumOfXSq = 0;
+                double sumOfYSq = 0;
+                double sumCodeviates = 0;
+
+                for (var i = 0; i < xVals.Count(); i++)
+                {
+                    var x = xVals[i];
+                    var y = yVals[i];
+                    sumCodeviates += x * y;
+                    sumOfX += x;
+                    sumOfY += y;
+                    sumOfXSq += x * x;
+                    sumOfYSq += y * y;
+                }
+
+                var count = xVals.Count();
+                var ssX = sumOfXSq - ((sumOfX * sumOfX) / count);
+                var ssY = sumOfYSq - ((sumOfY * sumOfY) / count);
+
+                var rNumerator = (count * sumCodeviates) - (sumOfX * sumOfY);
+                var rDenom = (count * sumOfXSq - (sumOfX * sumOfX)) * (count * sumOfYSq - (sumOfY * sumOfY));
+                var sCo = sumCodeviates - ((sumOfX * sumOfY) / count);
+
+                var meanX = sumOfX / count;
+                var meanY = sumOfY / count;
+                var dblR = rNumerator / Math.Sqrt(rDenom);
+
+                var rSquared = dblR * dblR;
+                var yIntercept = meanY - ((sCo / ssX) * meanX);
+                var slope = sCo / ssX;
+                var alpha = Math.Exp(yIntercept);
+                var beta = 1 / slope;
+
+                return Ok(new { rSquared, alpha, beta });
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        [Route("PrespectivePattern")]
+        public async Task<IActionResult> PutPrespectivePattern(RCM prescriptiveModel)
+        {
+
+            try
+            {
+                //string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                List<RCM> RCMModel = await _context.RCMs.Where(a => a.RCMId == prescriptiveModel.RCMId)
+                                                        .Include(a => a.failureModes)
+                                                        .ToListAsync();
+                RCMModel[0].FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
+                RCMModel[0].FCAAdded = prescriptiveModel.FCAAdded;
+
+                _context.Entry(RCMModel[0]).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                var collection = RCMModel[0].failureModes.ToList();
+                var i = 0;
+                foreach (var item in collection)
+                {
+                    item.Pattern = prescriptiveModel.failureModes[i].Pattern;
+                    item.FCACondition = prescriptiveModel.failureModes[i].FCACondition;
+                    item.FCAInterval = prescriptiveModel.failureModes[i].FCAInterval;
+                    item.FCAFFI = prescriptiveModel.failureModes[i].FCAFFI;
+                    item.FCAComment = prescriptiveModel.failureModes[i].FCAComment;
+                    item.FCAAlpha = prescriptiveModel.failureModes[i].FCAAlpha;
+                    item.FCABeta = prescriptiveModel.failureModes[i].FCABeta;
+                    item.FCASafeLife = prescriptiveModel.failureModes[i].FCASafeLife;
+                    item.FCAUsefulLife = prescriptiveModel.failureModes[i].FCAUsefulLife;
+                    item.FCAUpdateIntervals = prescriptiveModel.failureModes[i].FCAUpdateIntervals;
+                    item.FCAUpdateConditions = prescriptiveModel.failureModes[i].FCAUpdateConditions;
+                    i = i + 1;
+                    _context.Entry(item).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                }
+
+                return Ok(prescriptiveModel);
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+
         }
 
         // DELETE api/<FMEAAPIController>/5

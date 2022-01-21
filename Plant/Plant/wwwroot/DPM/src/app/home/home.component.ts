@@ -24,6 +24,11 @@ export class HomeComponent implements OnInit {
       url: '#/Home/LandingPage',
       icon: 'pi pi-home',
     },
+    {
+      label: 'FCA',
+      url: '#/Home/FCA',
+      icon: 'pi pi-home',
+    }
   ];
   constructor(public builder: FormBuilder,
     public http: HttpClient,
