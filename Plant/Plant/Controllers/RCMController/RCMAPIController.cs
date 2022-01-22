@@ -409,8 +409,16 @@ namespace Plant.Controllers.RCMController
 
                     foreach (var item1 in prescriptiveModel.failureModes[i].MSS)
                     {
-                        item1.FailureModeId = item.FailureModeId;
-                        _context.MSS.Add(item1);
+                        MSS mss = new MSS();
+                        mss.RCMId = item1.RCMId;
+                        mss.FailureModeId = item1.FailureModeId;
+                        mss.MSSAvailability = item1.MSSAvailability;
+                        mss.MSSFinalAvaliability = item1.MSSFinalAvaliability;
+                        mss.MSSMaintenanceInterval = item1.MSSMaintenanceInterval;
+                        mss.MSSMaintenanceTask = item1.MSSMaintenanceTask;
+                        mss.MSSIntervalSelectionCriteria = item1.MSSIntervalSelectionCriteria;
+                        mss.MSSStartergy = item1.MSSStartergy;
+                        _context.MSS.Add(mss);
                         await _context.SaveChangesAsync();
                     }
 

@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import * as Chart from 'chart.js';
 import { MessageService, TreeNode } from 'primeng/api';
-import { FailureModes, RCM } from 'src/app/shared/Models/rcm.models';
+import { FailureModes, RCM,MSS } from 'src/app/shared/Models/rcm.models';
 import * as XLSX from 'xlsx';
 import { ExcelFormatService } from 'src/app/home/Services/excel-format.service';
 import { RCMContantAPI } from 'src/app/home/RCM/FMEA/Shared/RCMConstant';
@@ -1683,22 +1683,22 @@ export class FCAComponent implements OnInit {
       this.daysList.forEach(element => {
         Data.push(element.Days)
       });
-      this.http.post('https://portal.dpmaianalytics.com/api/PrescriptiveAPI/WebalAlgo',Data).subscribe(
-        (res: any) => {
-          this.alpha = res.alpha;
-          this.beta = res.beta;
-          this.changeDetectorRef.detectChanges();
-        }, err => { console.log(err.error) }
-      )
-      // var url: string = this.RCMContantAPI.FCAWebal
-      // this.RCMBLService.postWithHeaders(url, Data)
-      //   .subscribe(
-      //     (res: any) => {
-      //       this.alpha = res.alpha;
-      //       this.beta = res.beta;
-      //       this.changeDetectorRef.detectChanges();
-      //     }, err => { console.log(err.error) }
-        // )
+      // this.http.post('https://portal.dpmaianalytics.com/api/PrescriptiveAPI/WebalAlgo',Data).subscribe(
+      //   (res: any) => {
+      //     this.alpha = res.alpha;
+      //     this.beta = res.beta;
+      //     this.changeDetectorRef.detectChanges();
+      //   }, err => { console.log(err.error) }
+      // )
+      var url: string = this.RCMContantAPI.FCAWebal
+      this.RCMBLService.postWithHeaders(url, Data)
+        .subscribe(
+          (res: any) => {
+            this.alpha = res.alpha;
+            this.beta = res.beta;
+            this.changeDetectorRef.detectChanges();
+          }, err => { console.log(err.error) }
+        )
     }
 
   }

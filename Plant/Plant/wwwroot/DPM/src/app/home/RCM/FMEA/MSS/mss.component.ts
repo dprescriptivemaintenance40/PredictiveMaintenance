@@ -9,6 +9,7 @@ import { FailureModes, MSS, RCM } from 'src/app/shared/Models/rcm.models';
 import * as XLSX from 'xlsx';
 import { RCMContantAPI } from 'src/app/home/RCM/FMEA/Shared/RCMConstant';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { Equipment } from 'src/app/home/Vis/Vis.model';
 
 @Component({
   selector: 'app-mss',
@@ -395,8 +396,8 @@ export class MSSComponent implements OnInit {
           if (this.MSSStratergy == 'A-OFM (On Failure Maintainenance)' || this.MSSStratergy == 'B-FFT (Failure Finding Task)') {
             let obj = new MSS();
             obj['MSSId'] = 0;
-            obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-            obj['FailureModeId'] = 0;
+            obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+            obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
             obj['MSSMaintenanceInterval'] = 'Not Applicable';
             obj['MSSMaintenanceTask'] = 'Not Applicable';
             obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
@@ -413,8 +414,8 @@ export class MSSComponent implements OnInit {
             let obj =  new MSS();
             if (this.MSSStratergy == 'A-FFT (Failure Finding Task)') {
               obj['MSSId'] = 0;
-              obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['FailureModeId'] = 0;
+              obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+              obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
               obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
               obj['MSSMaintenanceTask'] = 'Function Check';
               obj['MSSStartergy'] = this.MSSStratergy;
@@ -425,8 +426,8 @@ export class MSSComponent implements OnInit {
             } else {
               if (strategy == 'FFT (Failure Finding Task)') {
                 obj['MSSId'] = 0;
-                obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-                obj['FailureModeId'] = 0;
+                obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+                obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;;
                 obj['MSSMaintenanceInterval'] = 'Not Applicable';
                 obj['MSSMaintenanceTask'] = 'Not Applicable';
                 obj['MSSStartergy'] = this.MSSStratergy;
@@ -437,8 +438,8 @@ export class MSSComponent implements OnInit {
 
               } else if (strategy == 'OCM (On Condition Maintainenance Task)') {
                 obj['MSSId'] = 0;
-                obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-                obj['FailureModeId'] = 0;
+                obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+                obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
                 obj['MSSMaintenanceInterval'] = `${ocmWeek.toFixed(2)}${" "}${"Week"}`;
                 obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation';
                 obj['MSSStartergy'] = this.MSSStratergy;
@@ -452,8 +453,8 @@ export class MSSComponent implements OnInit {
                 safeL = this.SelectedPrescriptiveTree[0].failureModes[this.MSSADDCounter - 1].FCASafeLife;
                 safeL = ((safeL * 365) / 7)
                 obj['MSSId'] = 0;
-                obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-                obj['FailureModeId'] = 0;
+                obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+                obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
                 obj['MSSMaintenanceInterval'] = `${safeL.toFixed(2)}${" "}${"Week"}`;
                 obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify';
                 obj['MSSStartergy'] = this.MSSStratergy;
@@ -467,8 +468,8 @@ export class MSSComponent implements OnInit {
                 safeL1 = this.SelectedPrescriptiveTree[0].failureModes[this.MSSADDCounter - 1].FCASafeLife;
                 safeL1 = ((safeL1 * 365) / 7)
                 obj['MSSId'] = 0;
-                obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-                obj['FailureModeId'] = 0;
+                obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+                obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
                 obj['MSSMaintenanceInterval'] = `${safeL1.toFixed(2)}${" "}${"Week"}`;
                 obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission';
                 obj['MSSStartergy'] = this.MSSStratergy;
@@ -479,8 +480,8 @@ export class MSSComponent implements OnInit {
 
               } else if (strategy == 'RED (Redsigned Mandatory)') {
                 obj['MSSId'] = 0;
-                obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-                obj['FailureModeId'] = 0;
+                obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+                obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
                 obj['MSSMaintenanceInterval'] = 'NA';
                 obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective';
                 obj['MSSStartergy'] = this.MSSStratergy;
@@ -502,8 +503,8 @@ export class MSSComponent implements OnInit {
           if (this.MSSStratergy == 'C-FFT (Failure Finding Task)' || this.MSSStratergy == 'D-FFT (Failure Finding Task)') {
             let obj = new MSS();
             obj['MSSId'] = 0;
-            obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-            obj['FailureModeId'] = 0;
+            obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+            obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
             obj['MSSMaintenanceInterval'] = 'Not Applicable';
             obj['MSSMaintenanceTask'] = 'Not Applicable';
             obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
@@ -521,8 +522,8 @@ export class MSSComponent implements OnInit {
             let obj  = new MSS();
             if (strategy == 'FFT (Failure Finding Task)') {
               obj['MSSId'] = 0;
-              obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['FailureModeId'] = 0;
+              obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+              obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
               obj['MSSMaintenanceInterval'] = 'NA';
               obj['MSSMaintenanceTask'] = 'Function check';
               obj['MSSStartergy'] = this.MSSStratergy;
@@ -532,8 +533,8 @@ export class MSSComponent implements OnInit {
               this.FMObj.MSS.push(obj);
             } else if (strategy == 'OCM (On Condition Maintainenance Task)') {
               obj['MSSId'] = 0;
-              obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['FailureModeId'] = 0;
+              obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+              obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
               obj['MSSMaintenanceInterval'] = `${ocmWeek.toFixed(2)}${" "}${"Week"}`;
               obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation';
               obj['MSSStartergy'] = this.MSSStratergy;
@@ -544,8 +545,8 @@ export class MSSComponent implements OnInit {
 
             } else if (strategy == 'SO (Scheduled Overhaul Task)') {
               obj['MSSId'] = 0;
-              obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['FailureModeId'] = 0;
+              obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+              obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
               obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].failureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`;
               obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify';
               obj['MSSStartergy'] = this.MSSStratergy;
@@ -556,8 +557,8 @@ export class MSSComponent implements OnInit {
 
             } else if (strategy == 'SR (Scheduled Replacement Task)') {
               obj['MSSId'] = 0;
-              obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['FailureModeId'] = 0;
+              obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+              obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
               obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].failureModes[this.MSSADDCounter - 1].FCAUsefulLife.toFixed(2)}${" "}${"Week"}`;
               obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission';
               obj['MSSStartergy'] = this.MSSStratergy;
@@ -568,8 +569,8 @@ export class MSSComponent implements OnInit {
 
             } else if (strategy == 'RED (Redsigned Mandatory)') {
               obj['MSSId'] = 0;
-              obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['FailureModeId'] = 0;
+              obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+              obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
               obj['MSSMaintenanceInterval'] = 'NA';
               obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective';
               obj['MSSStartergy'] = this.MSSStratergy;
@@ -581,8 +582,8 @@ export class MSSComponent implements OnInit {
             }
             else if (strategy == 'OFM (On Failure Maintainenance)') {
               obj['MSSId'] = 0;
-              obj['RCMId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['FailureModeId'] = 0;
+              obj['RCMId'] = this.SelectedPrescriptiveTree[0].RCMId;
+              obj['FailureModeId'] = this.SelectedPrescriptiveTree[0].failureModes[0].FailureModeId;
               obj['MSSMaintenanceInterval'] = 'NA'
               obj['MSSMaintenanceTask'] = 'No Task';
               obj['MSSStartergy'] = this.MSSStratergy;
@@ -634,6 +635,7 @@ export class MSSComponent implements OnInit {
       res.MSS = temp2
     })
     this.RCM.RCMId = this.SelectedPrescriptiveTree[0].RCMId
+    this.RCM.EquipmentId = this.SelectedPrescriptiveTree[0].EquipmentId; 
     this.RCM.FMWithConsequenceTree = JSON.stringify(this.TreeUptoFCA)
     // for (let index = 0; index < this.MSSTaskObjList.length; index++) {
     // //  CPObj.centrifugalPumpPrescriptiveFailureModes[index]this.MSSTaskObjList[index]
