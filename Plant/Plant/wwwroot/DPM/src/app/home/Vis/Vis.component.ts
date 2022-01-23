@@ -35,14 +35,14 @@ export class VisComponent implements OnInit {
   public currentNodeObj:Equipment=new Equipment();
   public sifObj:SIF = new SIF();
   public TempcompressorModelObj:CompressorModel = new CompressorModel();
-
   private OrganizationId : number = 0;
+  public state: any;
 
   constructor(public http:HttpClient,
     private router : Router) { }
 
   ngOnInit() {
-     
+    
   }
 
   async ngAfterViewInit(){
@@ -51,6 +51,9 @@ export class VisComponent implements OnInit {
     let edges : any= []; 
   
     this.plant = plant;
+    this.state = window.history.state;    
+    var id=this.plant[0].PlantId
+    if( id=== this.state.PlantId){
     console.log(this.plant)
     this.OrganizationId = this.plant[0].OrganizationId;
     this.plant[0].networks[0].equipmentList.forEach(async element => {
@@ -91,6 +94,10 @@ export class VisComponent implements OnInit {
             } 
        nodes.push(obj);
     });
+   }
+   else{
+    console.log("error")
+   }
    
     this.plant[0].networks[0].edges.forEach(async element => {
     let obj = {
@@ -104,6 +111,7 @@ export class VisComponent implements OnInit {
       edges:edges
     }
      this.loadVisTree(treeData); 
+   
   }
 
   loadVisTree(treedata) {
@@ -169,7 +177,7 @@ export class VisComponent implements OnInit {
     this.popup= document.getElementById("FunctionUpdate")
     this.popup.style.display='none';
   }
-
+ 
   editequipmentList(node){
       this.editNode= this.plant[0].networks[0].equipmentList.filter(r => r.TagNumber === node.TagNumber )[0];
       console.log(this.plant);

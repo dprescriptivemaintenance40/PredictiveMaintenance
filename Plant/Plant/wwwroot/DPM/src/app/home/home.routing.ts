@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
+import { DashboardComponent } from "./dashboard/dashboard.component";
 import { HomeComponent } from "./home.component";
 import { FCAComponent } from "./RCM/FMEA/FCA/fca.component";
 import { FMEAComponent } from "./RCM/FMEA/FMEA.component";
@@ -11,7 +12,8 @@ import { VisComponent } from "./Vis/Vis.component";
             path: '', component: HomeComponent,
             children: [
                 { path: '', redirectTo: 'LandingPage', pathMatch: 'full' },
-                { path: 'LandingPage', component: VisComponent },
+                { path: 'LandingPage', component: DashboardComponent },
+                { path: 'VisNetwork', component: VisComponent},
                 { path: 'FMEA', component: FMEAComponent},
                 { path:'FCA', component:FCAComponent},
                 { path:'MSS' , component:MSSComponent}

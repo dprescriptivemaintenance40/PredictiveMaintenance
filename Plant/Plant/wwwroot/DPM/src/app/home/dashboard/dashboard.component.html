@@ -1,0 +1,21 @@
+
+<p-toast></p-toast>
+
+<p-table [value]="plant" styleClass="p-datatable-gridlines" styleClass="myTable" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+      <tr>
+          <th>Plant Id</th>
+          <th>Plant Name</th>
+          <th>Plant Location</th>
+          <th>Show Plant</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-plant>
+      <tr>
+          <td>{{plant.PlantId}}</td>
+          <td>{{plant.PlantName}}</td>
+          <td>{{plant.Location}}</td>
+          <td><button class="btn btn-info" (click)="plantShow(plant.PlantId)">Show Plant</button></td>
+      </tr>
+  </ng-template>
+</p-table>
