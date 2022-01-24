@@ -4,6 +4,7 @@
 <p-table [value]="plant" styleClass="p-datatable-gridlines" styleClass="myTable" responsiveLayout="scroll">
   <ng-template pTemplate="header">
       <tr>
+          <th>Organization Id</th>
           <th>Plant Id</th>
           <th>Plant Name</th>
           <th>Plant Location</th>
@@ -12,6 +13,7 @@
   </ng-template>
   <ng-template pTemplate="body" let-plant>
       <tr>
+        <td>{{plant.OrganizationId}}</td>
           <td>{{plant.PlantId}}</td>
           <td>{{plant.PlantName}}</td>
           <td>{{plant.Location}}</td>

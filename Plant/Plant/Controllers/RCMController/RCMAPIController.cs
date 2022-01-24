@@ -60,6 +60,23 @@ namespace Plant.Controllers.RCMController
             }
         }
 
+        [HttpGet("{id}")]
+        [Route("GetRCMList")]
+        public async Task<ActionResult<IEnumerable<RCM>>> GetRCMList(int EquipmentId)
+        {
+            try
+            {
+                return await _context.RCMs.Where(a => a.EquipmentId == EquipmentId)
+                                                .Include(a => a.failureModes)
+                                                .OrderBy(a => a.RCMId)
+                                                .ToListAsync();
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
+
         // GET api/<RCMAPIController>/5
         [HttpGet("{id}")]
         public string Get(int id)

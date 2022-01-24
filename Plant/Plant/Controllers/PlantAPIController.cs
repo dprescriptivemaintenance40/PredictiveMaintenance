@@ -27,9 +27,9 @@ namespace Plant.Controllers
         {
             try
             {
-                List<Equipment> equipment =  _Context.Equipments.ToList<Equipment>();
+                List<Equipment> equipment = _Context.Equipments.ToList<Equipment>();
                 return Ok(equipment);
-            } 
+            }
             catch (Exception exe)
             {
                 throw;
@@ -86,6 +86,10 @@ namespace Plant.Controllers
                 throw;
             }
         }
+
+      
+
+
 
         // GET api/<PlantAPIController>/5 
         [HttpGet("{id}")]

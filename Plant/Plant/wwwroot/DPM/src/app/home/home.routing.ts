@@ -2,9 +2,9 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { HomeComponent } from "./home.component";
-import { FCAComponent } from "./RCM/FMEA/FCA/fca.component";
+import { FCAComponent } from "./RCM/FCA/fca.component";
 import { FMEAComponent } from "./RCM/FMEA/FMEA.component";
-import { MSSComponent } from "./RCM/FMEA/MSS/mss.component";
+import { MSSComponent } from "./RCM/MSS/mss.component";
 import { VisComponent } from "./Vis/Vis.component";
 @NgModule({
     imports: [RouterModule.forChild([

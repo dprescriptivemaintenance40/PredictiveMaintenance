@@ -14,7 +14,7 @@ import { Equipment } from 'src/app/home/Vis/Vis.model';
 @Component({
   selector: 'app-mss',
   templateUrl: './mss.component.html',
-  styleUrls: ['./mss.component.scss', '../../../../../assets/orgchart.scss'],
+  styleUrls: ['./mss.component.scss', '../../../../assets/orgchart.scss'],
   providers: [MessageService]
 })
 export class MSSComponent implements OnInit {

@@ -1,5 +1,3 @@
-import { Equipment } from "src/app/home/Vis/Vis.model";
-
 export class RCM
     {
         public RCMId : number = 0 ;

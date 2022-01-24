@@ -14,7 +14,7 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 @Component({
   selector: 'app-fca',
   templateUrl: './fca.component.html',
-  styleUrls: ['./fca.component.scss', '../../../../../assets/orgchart.scss'],
+  styleUrls: ['./fca.component.scss','../../../../assets/orgchart.scss' ],
   providers: [MessageService],
 })
 export class FCAComponent implements OnInit {

@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient,HttpParams} from '@angular/common/http';
 import { Equipment, SIF,CompressorModel } from './Vis.model';
 // import * as XLSX from 'xlsx';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 declare var vis:any;
 
@@ -29,8 +30,10 @@ export class VisComponent implements OnInit {
   public file: File
   public filelist: any;
   public compressorList:any = [];
+  public rcmList:any =[];
   public arrayBuffer: any
   public HistoricalData:boolean =false;
+  public VIEW:boolean = false;
   public FunctionUpdate:boolean = false;
   public currentNodeObj:Equipment=new Equipment();
   public sifObj:SIF = new SIF();
@@ -39,7 +42,7 @@ export class VisComponent implements OnInit {
   public state: any;
 
   constructor(public http:HttpClient,
-    private router : Router) { }
+    private router : Router, private VISBLService: CommonBLService,) { }
 
   ngOnInit() {
     
@@ -53,7 +56,7 @@ export class VisComponent implements OnInit {
     this.plant = plant;
     this.state = window.history.state;    
     var id=this.plant[0].PlantId
-    if( id=== this.state.PlantId){
+    if( id === this.state.PlantId){
     console.log(this.plant)
     this.OrganizationId = this.plant[0].OrganizationId;
     this.plant[0].networks[0].equipmentList.forEach(async element => {
@@ -161,6 +164,7 @@ export class VisComponent implements OnInit {
         this.EquipmentId=clickProperties.nodes[0];
         this.currentNodeObj=new Equipment();
         this.currentNodeObj= ((this.plant[0].networks[0].equipmentList.filter(r => r.TagNumber ===this.EquipmentId)[0]) || (this.plant[0].networks[0].equipmentList.filter(r => r.EquipmentId === this.sif[0].EquipmentId ))[0]);
+        console.log(this.currentNodeObj);
       }
       else{
         console.log("error");
@@ -237,7 +241,16 @@ export class VisComponent implements OnInit {
   public fmea(){
     this.router.navigateByUrl('/Home/FMEA', { state : { Machine : this.currentNodeObj, OrganizationId:this.OrganizationId} })
   }
+  public rcm(){
+    this.VIEW = true;
+    const params = new HttpParams()
+    .set('EquipmentId',this.currentNodeObj.EquipmentId.toString())
+    this.VISBLService.getWithParameters("/RCMAPI/GetRCMList",params)
+    .subscribe((res:any) => {
+      this.rcmList = res;
+    }, err => console.log(err.error))
+  }}  
   // public fca(){
   //   this.router.navigateByUrl('/Home/FCA');
   // }
-}
+
