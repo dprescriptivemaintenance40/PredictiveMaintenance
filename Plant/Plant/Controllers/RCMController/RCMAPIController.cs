@@ -59,6 +59,24 @@ namespace Plant.Controllers.RCMController
                 return BadRequest(exe.Message);
             }
         }
+        [HttpGet]
+        [Route("GetRCMRecords")]
+        public async Task<ActionResult<IEnumerable<RCM>>> GetRCMRecords()
+        {
+            try
+            {
+                return await _context.RCMs.Where(a => a.FCAAdded == "1" && a.MSSAdded == "1")
+                                                           .Include(a => a.failureModes)
+                                                           .OrderBy(a => a.RCMId)
+                                                           .ToListAsync();
+
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
 
         [HttpGet("{id}")]
         [Route("GetRCMList")]

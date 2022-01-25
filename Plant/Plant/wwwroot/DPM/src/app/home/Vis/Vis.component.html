@@ -1,9 +1,11 @@
 <p-toast></p-toast>
-
+<br>
+<div *ngFor="let temp of plant">
+<h3> Plant Name : {{temp.PlantName}}</h3>
+<h3> Plant Location : {{temp.Location}}</h3>
+</div>
 <div id="mynetwork" #siteConfigNetwork>
 </div>
-
-
 <p-dialog header="Edit" [(visible)]="FunctionUpdate" [style]="{width: '40%',height:'150px'}">
   <p-button (click)="historicalData()" label="HistoricalData"></p-button>
   <p-button (click)="fmea()" label="RCM"></p-button>

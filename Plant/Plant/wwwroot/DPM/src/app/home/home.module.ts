@@ -9,6 +9,9 @@ import { ExcelFormatService } from "./Services/excel-format.service";
 import { VisComponent } from "./Vis/Vis.component";
 import { MSSComponent } from "./RCM/MSS/mss.component";
 import {DashboardComponent} from "./dashboard/dashboard.component"
+import { AboutComponent } from "./About-us/about.component";
+import { ReportComponent } from "./Report/report.component";
+import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
 @NgModule({
     declarations: [
         HomeComponent,
@@ -16,7 +19,11 @@ import {DashboardComponent} from "./dashboard/dashboard.component"
         VisComponent,
         FMEAComponent,
         FCAComponent,
-        MSSComponent
+        MSSComponent,
+        AboutComponent,
+        ReportComponent,
+        RCMListComponent
+
     ],
     imports: [    
         HomeRoutingModule,       

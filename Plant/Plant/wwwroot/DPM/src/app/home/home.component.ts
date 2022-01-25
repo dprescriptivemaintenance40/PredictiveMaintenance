@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { CommonLoadingDirective } from '../shared/Loading/common-loading.directive';
 import { Title } from '@angular/platform-browser';
 import * as moment from 'moment';
+import { useAnimation } from '@angular/animations';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,16 @@ export class HomeComponent implements OnInit {
 
   public MenuItems: any[] = [
     {
+      label: 'About-Us',
+      url: '#/Home/aboutus',
+      icon: 'pi pi-home',
+    },
+    {
+      label: 'Report',
+      url: '#/Home/report',
+      icon: 'pi pi-home',
+    },
+    {
       label: 'Dashboard',
       url: '#/Home/LandingPage',
       icon: 'pi pi-home',
@@ -32,6 +43,11 @@ export class HomeComponent implements OnInit {
     {
       label: 'MSS',
       url: '#/Home/MSS',
+      icon: 'pi pi-home',
+    },
+    {
+      label: 'RCM Maintenance',
+      url: '#/Home/RCMList',
       icon: 'pi pi-home',
     }
   ];
