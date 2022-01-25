@@ -1,27 +1,31 @@
 <p-toast></p-toast>
-<br>
-<div *ngFor="let temp of plant">
-<h3> Plant Name : {{temp.PlantName}}</h3>
-<h3> Plant Location : {{temp.Location}}</h3>
-</div>
 <div id="mynetwork" #siteConfigNetwork>
+<div *ngFor="let temp of plant"  style="overflow:auto">
+<h2  style="overflow:auto"> Plant Name : {{temp.PlantName}}</h2><br>
+<h4><p> Description : </p></h4>
 </div>
+</div>
+
 <p-dialog header="Edit" [(visible)]="FunctionUpdate" [style]="{width: '40%',height:'150px'}">
-  <p-button (click)="historicalData()" label="HistoricalData"></p-button>
+  <p-button (click)="forecastData()" label="Predictive Maintenance"></p-button>
   <p-button (click)="fmea()" label="RCM"></p-button>
   <p-button (click)="rcm()" label="VIEW"></p-button>
   <!-- <p-button (click)="fca()" label="FMEA"></p-button> -->
+ 
 
-
-  <p-dialog header="HistoricalData" [(visible)]="HistoricalData" [modal]="true" [style]="{width: '70%',height:'200px'}"
-    [draggable]="false" [resizable]="false">
+  <p-dialog header="Predictive Maintenance" [(visible)]="ForecastData" [modal]="true"  [style]="{'max-height':'900px','width':'1400px','overflow':'auto'}">
+    <!-- <h2>Predictive Maintenance</h2> -->
+    <br><br>
+    <div >
+      <canvas id="Chart1"></canvas>
+    </div>
     <!-- <p class="p-m-0"> -->
-    <div class="col-md-8 form-group">
+    <!-- <div class="col-md-8 form-group">
       <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file"
         accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-    </div>
+    </div> -->
     <ng-template pTemplate="footer">
-      <p-button icon="pi pi-check" (click)="HistoricalData=false" label="Ok" styleClass="p-button-text"></p-button>
+      <p-button icon="pi pi-check" (click)="ForecastData=false" label="Ok" styleClass="p-button-text"></p-button>
     </ng-template>
   </p-dialog>
 

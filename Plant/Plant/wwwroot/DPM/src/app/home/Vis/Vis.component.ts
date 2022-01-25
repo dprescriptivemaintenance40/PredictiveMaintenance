@@ -7,6 +7,9 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { Chart } from 'chart.js';
+import * as moment from 'moment';
+import * as xlsx from "xlsx";
 
 declare var vis:any;
 
@@ -34,13 +37,14 @@ export class VisComponent implements OnInit {
   public arrayBuffer: any
   public HistoricalData:boolean =false;
   public VIEW:boolean = false;
+  public ForecastData:boolean =false;
   public FunctionUpdate:boolean = false;
   public currentNodeObj:Equipment=new Equipment();
   public sifObj:SIF = new SIF();
   public TempcompressorModelObj:CompressorModel = new CompressorModel();
   private OrganizationId : number = 0;
   public state: any;
-
+  public Records: any;
   constructor(public http:HttpClient,
     private router : Router, private VISBLService: CommonBLService,) { }
 
@@ -235,8 +239,10 @@ export class VisComponent implements OnInit {
   //     );
   //   } 
   }
-  historicalData(){
-    this.HistoricalData = true;
+  public async forecastData(){
+    await this.dygraph();
+    this.ForecastData=true;
+  //  this.router.navigateByUrl('/Home/Forecast')
   }
   public fmea(){
     this.router.navigateByUrl('/Home/FMEA', { state : { Machine : this.currentNodeObj, OrganizationId:this.OrganizationId} })
@@ -249,8 +255,87 @@ export class VisComponent implements OnInit {
     .subscribe((res:any) => {
       this.rcmList = res;
     }, err => console.log(err.error))
-  }}  
+  }
+
   // public fca(){
   //   this.router.navigateByUrl('/Home/FCA');
   // }
 
+  dygraph() {
+    this.http.get('dist/DPM/assets/Seasonal.xlsx', { responseType: 'blob' }).subscribe(
+      (res: any) => {
+        this.Records = res;
+        console.log(this.Records);
+        let fileReader = new FileReader();
+        fileReader.readAsArrayBuffer(res);
+        fileReader.onload = async (e) => {
+          var arrayBuffer: any = fileReader.result;
+          var data = new Uint8Array(arrayBuffer);
+          var arr = new Array();
+          for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+          var bstr = arr.join("");
+          var workbook = xlsx.read(bstr, { type: "binary", cellDates: true });
+          var first_sheet_name = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[first_sheet_name];
+          this.Records = xlsx.utils.sheet_to_json(worksheet, { raw: true });
+          console.log(this.Records);
+          var h = this.Records.map(function (e: any) {
+            return e.historicalData;
+            console.log(e.Predicted)
+          })
+         
+          var p = this.Records.map(function (e: any) {
+            return e.predictedData;
+            console.log(e.Predicted)
+          })
+          
+
+          var d = this.Records.map(function (e: any) {
+            const date = moment(e.date).format("DD/MM/YYYY");
+            return date;
+            console.log(e.Predicted)
+          })
+          const stackedLine = new Chart("Chart1", {
+            type: 'line',
+
+            data: {
+              labels: d,
+              datasets: [{
+                label: 'Historical values from 01/06/2016 - 16/11/2018 ',
+                // data:[44,80,102,201],
+                data: h,
+                // backgroundColor: 'blue',
+                borderColor:'blue',
+              //  borderWidth:1.5
+              },
+              {
+                label: 'Predicted values from 17/11/2018 - 19/08/2021',
+                // data:[44,80,102,201],
+                data: p,
+                // backgroundColor: 'red',
+                borderColor:'red',
+                //borderWidth:1.5
+              }],
+
+
+            },
+
+            options: {
+              events: ["mousemove",],
+              scales: {
+                x: {
+                  stacked: true
+                },
+                y: {
+                  stacked: true
+                }
+              }
+
+            }
+
+          })
+
+        }
+      })
+  }
+}
