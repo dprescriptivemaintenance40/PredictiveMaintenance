@@ -49,6 +49,11 @@ export class HomeComponent implements OnInit {
       label: 'RCM Maintenance',
       url: '#/Home/RCMList',
       icon: 'pi pi-home',
+    },
+    {
+      label: 'SIL',
+      url: '#/Home/SIL',
+      icon: 'pi pi-home',
     }
   ];
   constructor(public builder: FormBuilder,

@@ -8,6 +8,7 @@ import { FMEAComponent } from "./RCM/FMEA/FMEA.component";
 import { MSSComponent } from "./RCM/MSS/mss.component";
 import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
 import { ReportComponent } from "./Report/report.component";
+import { SILComponent } from "./SIL/sil.component";
 import { VisComponent } from "./Vis/Vis.component";
 @NgModule({
     imports: [RouterModule.forChild([
@@ -22,7 +23,8 @@ import { VisComponent } from "./Vis/Vis.component";
                 { path: 'FMEA', component: FMEAComponent},
                 { path:'FCA', component:FCAComponent},
                 { path:'MSS' , component:MSSComponent},
-                { path: 'RCMList' , component:RCMListComponent }
+                { path: 'RCMList' , component:RCMListComponent},
+                { path:'SIL' , component:SILComponent}
             ]
         }
     ])],
