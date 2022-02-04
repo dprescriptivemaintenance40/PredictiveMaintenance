@@ -21,7 +21,7 @@ namespace Plant.Models
         public string Category { get; set; }
         public int Severity { get; set; }
         public float TRF { get; set; }   //Tolerable Risk Frequency or TMEL
-        public SILClassification silClassificationMaster { get; set; }
+        public SILClassificationMaster silClassificationMaster { get; set; }
     }
     public class InitiatingCausesMaster
     {
@@ -29,7 +29,7 @@ namespace Plant.Models
         public int SILCMasterId { get; set; }
         public string InitiatingCause { get; set; }
         public float IEF { get; set; }   //Initiating Event Frequency
-        public SILClassification silClassificationMaster { get; set; }
+        public SILClassificationMaster silClassificationMaster { get; set; }
     }
     public class ConditionalModifiersMaster
     {
@@ -38,7 +38,7 @@ namespace Plant.Models
         public float IP { get; set; }      //Ignition Probability
         public float PP { get; set; }     //People Present
         public float TR { get; set; }   //Times at Risk
-        public SILClassification silClassificationMaster { get; set; }
+        public SILClassificationMaster silClassificationMaster { get; set; }
     }
     public class IPLMaster  //Independent Protection Layer
     {
@@ -46,6 +46,6 @@ namespace Plant.Models
         public int SILCMasterId { get; set; }
         public string RRM { get; set; }    //Risk Reduction Measure
         public float PFD { get; set; }   //Probability of Failure on Demand
-        public SILClassification silClassificationMaster { get; set; }
+        public SILClassificationMaster silClassificationMaster { get; set; }
     }
 }

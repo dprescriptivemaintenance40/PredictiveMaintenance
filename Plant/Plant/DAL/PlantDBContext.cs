@@ -160,21 +160,22 @@ namespace Plant.DAL
             modelBuilder.Entity<InitiatingCausesMaster>()
                 .HasOne(p => p.silClassificationMaster)
                 .WithMany(p => p.initiatingCausesMaster)
-                .HasForeignKey(p => p.SILCId);
+                .HasForeignKey(p => p.SILCMasterId);
 
             modelBuilder.Entity<ConditionalModifiersMaster>().ToTable("tblConditionalModifiersMaster");
             modelBuilder.Entity<ConditionalModifiersMaster>().HasKey(c => c.CMMId);
             modelBuilder.Entity<ConditionalModifiersMaster>()
                 .HasOne(p => p.silClassificationMaster)
                 .WithMany(p => p.conditionalModifiersMaster)
-                .HasForeignKey(p => p.SILCId);
+                .HasForeignKey(p => p.SILCMasterId);
 
             modelBuilder.Entity<IPLMaster>().ToTable("tblIPLMaster");
             modelBuilder.Entity<IPLMaster>().HasKey(c => c.IPLMId);
             modelBuilder.Entity<IPLMaster>()
                 .HasOne(p => p.silClassificationMaster)
                 .WithMany(p => p.iplMaster)
-                .HasForeignKey(p => p.SILCId);
+                .HasForeignKey(p => p.SILCMasterId);
+
             //modelBuilder.Entity<SIS>().ToTable("tblSIS");
             //modelBuilder.Entity<SIS>().HasKey(c => c.SISId);
             //modelBuilder.Entity<SIS>()
