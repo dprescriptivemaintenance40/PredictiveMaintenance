@@ -2,6 +2,7 @@
     width: 1200px;
     height: 350px;
     border: 1px solid lightgray;
+    background-color: #fff;
   }
   p {
     margin: 0;
@@ -16,6 +17,9 @@
   height: 80%;
 }
 
+canvas{
+  background-color: #fff;
+}
 
   
         
