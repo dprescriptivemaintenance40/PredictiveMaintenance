@@ -13,6 +13,9 @@ import { AboutComponent } from "./About-us/about.component";
 import { ReportComponent } from "./Report/report.component";
 import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
 import { SILComponent } from "./SIL/sil.component";
+import {FieldsetModule} from 'primeng/fieldset';
+
+
 @NgModule({
     declarations: [
         HomeComponent,
@@ -29,7 +32,7 @@ import { SILComponent } from "./SIL/sil.component";
     ],
     imports: [    
         HomeRoutingModule,       
-        SharedModule
+        SharedModule,FieldsetModule,
     ],
     providers: [ExcelFormatService],
     bootstrap: [HomeComponent]
