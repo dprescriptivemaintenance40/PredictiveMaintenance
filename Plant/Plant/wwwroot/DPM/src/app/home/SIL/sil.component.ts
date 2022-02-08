@@ -1,12 +1,12 @@
 import { Component, ViewChild, ElementRef,OnInit } from "@angular/core";
 import * as jspreadsheet from "jspreadsheet-ce";
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-sil',
   templateUrl: './sil.component.html',
   styleUrls: ['./sil.component.scss'],
-
 })
 
 export class SILComponent implements OnInit {
@@ -19,13 +19,21 @@ public SeverityValueList:any = [];
 public CategoryList:any = [];
 public CategoryNameList:any = [];
 public InitiatingCauseValue:any = [];
+// public SheetValue:any = [];
 
 ngOnInit() {
+  this.primengConfig.ripple = true;
   this.getMasterData();
 } 
-constructor(private SILClassificationBLService: CommonBLService,){
 
-    }
+ngAfterViewChecked(){
+  // this.SheetValue = this.getData.content.innerText;
+  // console.log(JSON.stringify(this.SheetValue));
+}
+constructor(private SILClassificationBLService: CommonBLService,
+  private primengConfig: PrimeNGConfig){
+}
+
     ngAfterViewInit() {
       this.getData=jspreadsheet(this.spreadsheet.nativeElement, {
           data: [[]],
@@ -44,14 +52,14 @@ constructor(private SILClassificationBLService: CommonBLService,){
             { type:'text',title:'Time at Risk', width:"100"},
           ],
           mergeCells:{
-            A1:[,3]
+            // A1:[,3]
         },
         defaultColWidth: 100,
         tableOverflow: true,
-        tableWidth: "1200px",
-        minDimensions: [10, 3]
+        tableWidth: "1350px",
+        tableHeight: "600px",
+        minDimensions: [10, 50]
       });
-      console.log(this.getData);
     } 
 
     getMasterData(){

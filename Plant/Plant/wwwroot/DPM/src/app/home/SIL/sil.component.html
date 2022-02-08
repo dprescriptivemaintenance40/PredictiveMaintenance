@@ -1,4 +1,4 @@
-<h3>SIL Classification</h3>
+<p-fieldset  class="border p-2" legend="SIL Classification" [toggleable]="true" >
 <div class="card dpm-card w-100 p-3">
     <div class="row">
         <div class="col-md-3 d-flex flex-column">
@@ -27,13 +27,17 @@
             <label style=" margin-right: 12px;">Target SIL</label>
                 <input type="text" pInputText />
         </div>
-    </div><br>
+    </div>
+</div>
+</p-fieldset> 
+<br>
     <br>
+    <div class="card dpm-card w-100 p-3">
+        <div #spreadsheet>
 
-    <div #spreadsheet>
-
+        </div>
     </div><br>
-</div><br>
+<br>
 <div class="card dpm-card w-100 p-3">
     <fieldset class="border p-2">
         <legend  class="w-auto">Calculations</legend>
@@ -63,6 +67,6 @@
                     <input type="text" pInputText />
             </div>
         </div><br>
-    </fieldset>  
+    </fieldset> 
 </div>
 

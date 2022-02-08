@@ -31,7 +31,7 @@ namespace Plant.Controllers.SIL
                 return await _Context.SilClassificationMaster
                                       .Include(a => a.riskMatrixMaster)
                                       .ThenInclude(a =>a.Category)
-                                       .Include(a => a.riskMatrixMaster)
+                                      .Include(a => a.riskMatrixMaster)
                                       .ThenInclude(a => a.Severity)
                                       .Include(a => a.initiatingCausesMaster)
                                       .OrderBy(a => a.SILCMasterId)
