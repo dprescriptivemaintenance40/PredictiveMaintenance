@@ -1,6 +1,10 @@
-<p-fieldset  class="border p-2" legend="SIL Classification" [toggleable]="true" >
+<p-fieldset  legend="SIF Classification" [toggleable]="true" >
 <div class="card dpm-card w-100 p-3">
     <div class="row">
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Hazop Node Reference</label>
+            <input type="text"  pInputText />
+        </div>
         <div class="col-md-3 d-flex flex-column">
             <label style=" margin-right: 12px;">SIF ID</label>
             <input type="text"  pInputText />
@@ -18,14 +22,21 @@
             <input type="text" pInputText />
         </div>
         <div class="col-md-3 d-flex flex-column">
-            <label style=" margin-right: 12px;">SIF Description</label>
-            <span class="p-float-label">
-                <textarea inputId="textarea" rows="3" style="resize: none;" cols="40" pInputTextarea></textarea>
-            </span> 
+            <label style=" margin-right: 12px;">Risk Matrix</label>
+            <select name="" id="">
+                <option value="5*5 matrix">5*5 matrix</option>
+                <option value="6*6 matrix">6*6 matrix</option>
+            </select>
         </div>
         <div class="col-md-3 d-flex flex-column">
             <label style=" margin-right: 12px;">Target SIL</label>
                 <input type="text" pInputText />
+        </div>
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">SIF Description</label>
+            <span class="p-float-label">
+                <textarea inputId="textarea" rows="3" style="resize: none;" cols="40" pInputTextarea></textarea>
+            </span> 
         </div>
     </div>
 </div>
@@ -36,8 +47,10 @@
         <div #spreadsheet>
 
         </div>
-    </div><br>
+  
 <br>
+    <button type="submit" (click)="Save()">Save</button>
+</div><br>
 <div class="card dpm-card w-100 p-3">
     <fieldset class="border p-2">
         <legend  class="w-auto">Calculations</legend>

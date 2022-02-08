@@ -12,7 +12,7 @@ import {DashboardComponent} from "./dashboard/dashboard.component"
 import { AboutComponent } from "./About-us/about.component";
 import { ReportComponent } from "./Report/report.component";
 import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
-import { SILComponent } from "./SIL/sil.component";
+import { SILComponent } from "./SIL/Sil_Creation.component";
 import {FieldsetModule} from 'primeng/fieldset';
 
 
