@@ -7,12 +7,9 @@ namespace Plant.Models
     public class SILClassificationMaster
     {
         public int SILCMasterId { get; set; }
-        //public string MachineId { get; set; }
-        //public string ImpactEvent { get; set; }
         public List<RiskMatrixMaster> riskMatrixMaster { get; set; }
         public List<InitiatingCausesMaster> initiatingCausesMaster { get; set; }
-        //public List<ConditionalModifiersMaster> conditionalModifiersMaster { get; set; }
-        public List<IPLMaster> iplMaster { get; set; }
+    
     }
     public class RiskMatrixMaster
     {
@@ -52,14 +49,14 @@ namespace Plant.Models
         public float IEF { get; set; }   //Initiating Event Frequency
         public SILClassificationMaster silClassificationMaster { get; set; }
     }
-    public class IPLMaster  //Independent Protection Layer
-    {
-        public int IPLMId { get; set; }
-        public int SILCMasterId { get; set; }
-        public string RRM { get; set; }    //Risk Reduction Measure
-        public float PFD { get; set; }   //Probability of Failure on Demand
-        public SILClassificationMaster silClassificationMaster { get; set; }
-    }
+    //public class IPLMaster  //Independent Protection Layer
+    //{
+    //    public int IPLMId { get; set; }
+    //    public int SILCMasterId { get; set; }
+    //    public string RRM { get; set; }    //Risk Reduction Measure
+    //    public float PFD { get; set; }   //Probability of Failure on Demand
+    //    public SILClassificationMaster silClassificationMaster { get; set; }
+    //}
     //public class ConditionalModifiersMaster
     //{
     //    public int CMMId { get; set; }

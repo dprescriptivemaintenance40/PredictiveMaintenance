@@ -27,15 +27,14 @@ namespace Plant.DAL
         public DbSet<RiskMatrixMaster> RiskMatrixMaster { get; set; }
         public DbSet<InitiatingCausesMaster> InitiatingCausesMaster { get; set; }
         //  public DbSet<ConditionalModifiersMaster> ConditionalModifiersMaster { get; set; }
-        public DbSet<IPLMaster> IplMaster { get; set; }
+       
 
         //SILClassification
-        public DbSet<SILClassification> SilClassification { get; set; }
+        public DbSet<SIFDesign> SIFDesign { get; set; }
         public DbSet<RiskMatrix> RiskMatrix { get; set; }
-        public DbSet<InitiatingCauses> InitiatingCauses { get; set; }
-        public DbSet<ConditionalModifiers> ConditionalModifiers { get; set; }
-        public DbSet<IPL> Ipl { get; set; }
-        public DbSet<Calculation> Calculation { get; set; }
+        public DbSet<InitiatingCause> InitiatingCause { get; set; }
+        public DbSet<ProtectionLayer> ProtectionLayer { get; set; }
+        //public DbSet<Calculation> Calculation { get; set; }
 
         //SILVerification
         public DbSet<SIF> Sif { get; set; }
@@ -110,43 +109,39 @@ namespace Plant.DAL
 
             //SIL Classification
 
-            modelBuilder.Entity<SILClassification>().ToTable("tblSILClassification");
-            modelBuilder.Entity<SILClassification>().HasKey(c => c.SILCId);
+            modelBuilder.Entity<SIFDesign>().ToTable("tblSIFDesign");
+            modelBuilder.Entity<SIFDesign>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<ImpactEvent>().ToTable("tblImpactEvent");
+            modelBuilder.Entity<ImpactEvent>().HasKey(c => c.Id);
+            modelBuilder.Entity<ImpactEvent>()
+                .HasOne(p => p.SIFDesign)
+                .WithMany(p => p.ImpactEvent)
+                .HasForeignKey(p => p.SIFId);
 
             modelBuilder.Entity<RiskMatrix>().ToTable("tblRiskMatrix");
             modelBuilder.Entity<RiskMatrix>().HasKey(c => c.RMId);
-            modelBuilder.Entity<RiskMatrix>()
-                .HasOne(p => p.silClassification)
-                .WithMany(p => p.riskMatrix)
-                .HasForeignKey(p => p.SILCId);
+            
+            modelBuilder.Entity<InitiatingCause>().ToTable("tblInitiatingCause");
+            modelBuilder.Entity<InitiatingCause>().HasKey(c => c.Id);
+            modelBuilder.Entity<InitiatingCause>()
+                .HasOne(p => p.ImpactEvent)
+                .WithMany(p => p.InitiatingCauses)
+                .HasForeignKey(p => p.IEId);
 
-            modelBuilder.Entity<InitiatingCauses>().ToTable("tblInitiatingCauses");
-            modelBuilder.Entity<InitiatingCauses>().HasKey(c => c.ICId);
-            modelBuilder.Entity<InitiatingCauses>()
-                .HasOne(p => p.silClassification)
-                .WithMany(p => p.initiatingCauses)
-                .HasForeignKey(p => p.SILCId);
+            modelBuilder.Entity<ProtectionLayer>().ToTable("tblIPL");
+            modelBuilder.Entity<ProtectionLayer>().HasKey(c => c.Id);
+            modelBuilder.Entity<ProtectionLayer>()
+                .HasOne(p => p.InitiatingCause)
+                .WithMany(p => p.ProtectionLayer)
+                .HasForeignKey(p => p.ICId);
 
-            modelBuilder.Entity<ConditionalModifiers>().ToTable("tblConditionalModifiers");
-            modelBuilder.Entity<ConditionalModifiers>().HasKey(c => c.CMId);
-            modelBuilder.Entity<ConditionalModifiers>()
-                .HasOne(p => p.silClassification)
-                .WithMany(p => p.conditionalModifiers)
-                .HasForeignKey(p => p.SILCId);
-
-            modelBuilder.Entity<IPL>().ToTable("tblIPL");
-            modelBuilder.Entity<IPL>().HasKey(c => c.IPLId);
-            modelBuilder.Entity<IPL>()
-                .HasOne(p => p.silClassification)
-                .WithMany(p => p.ipl)
-                .HasForeignKey(p => p.SILCId);
-
-            modelBuilder.Entity<Calculation>().ToTable("tblCalculation");
-            modelBuilder.Entity<Calculation>().HasKey(c => c.CalculationId);
-            modelBuilder.Entity<Calculation>()
-                .HasOne(p => p.silClassification)
-                .WithMany(p => p.calculation)
-                .HasForeignKey(p => p.SILCId);
+            //modelBuilder.Entity<Calculation>().ToTable("tblCalculation");
+            //modelBuilder.Entity<Calculation>().HasKey(c => c.CalculationId);
+            //modelBuilder.Entity<Calculation>()
+            //    .HasOne(p => p.silClassification)
+            //    .WithMany(p => p.calculation)
+            //    .HasForeignKey(p => p.SILCId);
 
             //SIL Classification Master
 
@@ -186,13 +181,6 @@ namespace Plant.DAL
             modelBuilder.Entity<InitiatingCausesMaster>()
                 .HasOne(p => p.silClassificationMaster)
                 .WithMany(p => p.initiatingCausesMaster)
-                .HasForeignKey(p => p.SILCMasterId);
-
-            modelBuilder.Entity<IPLMaster>().ToTable("tblIPLMaster");
-            modelBuilder.Entity<IPLMaster>().HasKey(c => c.IPLMId);
-            modelBuilder.Entity<IPLMaster>()
-                .HasOne(p => p.silClassificationMaster)
-                .WithMany(p => p.iplMaster)
                 .HasForeignKey(p => p.SILCMasterId);
 
             //modelBuilder.Entity<ConditionalModifiersMaster>().ToTable("tblConditionalModifiersMaster");
@@ -623,12 +611,7 @@ namespace Plant.DAL
                    InitiatingCause = "Malfunction of Level Transmitter",
                    IEF = 1.00E-03F
                }
-             );
-
-
-            
-
-           
+             );  
         }
     }
 
