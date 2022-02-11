@@ -23,8 +23,9 @@ export class SILComponent implements OnInit {
   public InitiatingCauseValue: any = [];
   // public SheetValue:any = [];
   public val: any = [];
-  public SheetValue: any = [];
-
+  public SheetValue: Array<any>=[];
+  public cols:Array<any>=[];
+  public arr:any=[];
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
@@ -131,8 +132,12 @@ export class SILComponent implements OnInit {
       }, err => console.log(err.error))
   }
   Save() {
-    this.SheetValue = this.getData.content.textContent;
-    var v = this.getData.getData([true])
-    console.log(JSON.stringify(v));
+   // this.SheetValue = this.getData.content.textContent;
+   this.SheetValue= this.getData.getData()
+  this.arr=this.getData.getHeaders();
+  this.cols = this.arr.split(",");
+   console.log( this.cols );
+    console.log(JSON.stringify(this.SheetValue));
+   // console.log(this.cols);
   }
 }

@@ -53,6 +53,26 @@
 </div><br>
 <div class="card dpm-card w-100 p-3">
     <fieldset class="border p-2">
+        <p-table styleClass="p-datatable-gridlines" [columns]="cols" [value]="SheetValue" [autoLayout]="true">
+            <ng-template pTemplate="header" let-columns >
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-SheetValue let-rowIndex="columns">
+                <tr>
+                    <td *ngFor="let col of SheetValue">
+                        {{col}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </fieldset>
+</div>
+<div class="card dpm-card w-100 p-3">
+    <fieldset class="border p-2">
         <legend  class="w-auto">Calculations</legend>
         <div class="row">
             <div class="col-md-3 d-flex flex-column">
