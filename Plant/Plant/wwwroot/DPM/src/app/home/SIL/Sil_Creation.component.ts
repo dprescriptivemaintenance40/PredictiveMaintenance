@@ -2,13 +2,15 @@ import { Component, ViewChild, ElementRef, OnInit } from "@angular/core";
 import * as jspreadsheet from "jspreadsheet-ce";
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrimeNGConfig } from 'primeng/api';
-
+import { DialogService } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-sil',
   templateUrl: './Sil_Creation.component.html',
   styleUrls: ['./Sil_Creation.component.scss'],
-
+  providers:[DialogService,MessageService]
 })
 
 export class SILComponent implements OnInit {
@@ -26,6 +28,7 @@ export class SILComponent implements OnInit {
   public SheetValue: Array<any>=[];
   public cols:Array<any>=[];
   public arr:any=[];
+  public ForecastData:boolean=false;
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
@@ -44,7 +47,7 @@ export class SILComponent implements OnInit {
       columns: [
         { type: "text", title: 'Impact Event', width: "200", source: ["Fire from distilation column rupture"] },
         { type: 'dropdown', title: 'Category', width: "150", source: this.CategoryNameList },
-        { type: 'dropdown', title: 'Severity', width: "100", source: this.SeverityValueList },
+        { type: 'dropdown', title: 'Severity', width: "100",  },
         { type: 'text', title: 'TMEL', width: "100" },
         { type: 'dropdown', title: 'Initiating Causes', width: "200", autocomplete: true, source: this.InitiatingCauseValue },
         { type: 'text', title: 'IEF', width: "150" },
@@ -104,6 +107,7 @@ export class SILComponent implements OnInit {
       mergeCells: {
         // A1:[,3]
       },
+      onselection: this.selectionActive,
       defaultColWidth: 100,
       tableOverflow: true,
       tableWidth: "1350px",
@@ -111,7 +115,16 @@ export class SILComponent implements OnInit {
       minDimensions: [19, 50]
     });
   }
-
+ selectionActive =async(instance, x1, y1, x2, y2, origin)  =>{
+    var cellName1 = jspreadsheet.getColumnNameFromId([x1, y1]);
+    var cellName2 = jspreadsheet.getColumnNameFromId([x2, y2]);
+    if((x1==2) && (x2==2)){
+      this.ForecastData=true;
+      alert("Success")
+    }
+    else{   console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');}
+  
+  }
   getMasterData() {
     this.SILClassificationBLService.getWithoutParameters("/SILClassificationAPI/GetMasterData")
       .subscribe((res: any) => {
@@ -140,4 +153,6 @@ export class SILComponent implements OnInit {
     console.log(JSON.stringify(this.SheetValue));
    // console.log(this.cols);
   }
+
 }
+
