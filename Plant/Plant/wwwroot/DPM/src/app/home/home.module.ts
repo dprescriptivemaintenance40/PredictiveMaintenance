@@ -15,7 +15,6 @@ import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
 import { SILComponent } from "./SIL/Sil_Creation.component";
 import {FieldsetModule} from 'primeng/fieldset';
 
-
 @NgModule({
     declarations: [
         HomeComponent,
@@ -32,7 +31,7 @@ import {FieldsetModule} from 'primeng/fieldset';
     ],
     imports: [    
         HomeRoutingModule,       
-        SharedModule,FieldsetModule,
+        SharedModule,FieldsetModule
     ],
     providers: [ExcelFormatService],
     bootstrap: [HomeComponent]

@@ -31,6 +31,7 @@ namespace Plant.DAL
 
         //SILClassification
         public DbSet<SIFDesign> SIFDesign { get; set; }
+        public DbSet<ImpactEvent> ImpactEvent { get; set; }
         public DbSet<RiskMatrix> RiskMatrix { get; set; }
         public DbSet<InitiatingCause> InitiatingCause { get; set; }
         public DbSet<ProtectionLayer> ProtectionLayer { get; set; }
@@ -114,27 +115,27 @@ namespace Plant.DAL
 
             modelBuilder.Entity<ImpactEvent>().ToTable("tblImpactEvent");
             modelBuilder.Entity<ImpactEvent>().HasKey(c => c.Id);
-            modelBuilder.Entity<ImpactEvent>()
-                .HasOne(p => p.SIFDesign)
-                .WithMany(p => p.ImpactEvent)
-                .HasForeignKey(p => p.SIFId);
+            //modelBuilder.Entity<ImpactEvent>()
+            //    .HasOne(p => p.SIFDesign)
+            //    .WithMany(p => p.ImpactEvent)
+            //    .HasForeignKey(p => p.SIFId);
 
             modelBuilder.Entity<RiskMatrix>().ToTable("tblRiskMatrix");
             modelBuilder.Entity<RiskMatrix>().HasKey(c => c.RMId);
             
             modelBuilder.Entity<InitiatingCause>().ToTable("tblInitiatingCause");
             modelBuilder.Entity<InitiatingCause>().HasKey(c => c.Id);
-            modelBuilder.Entity<InitiatingCause>()
-                .HasOne(p => p.ImpactEvent)
-                .WithMany(p => p.InitiatingCauses)
-                .HasForeignKey(p => p.IEId);
+            //modelBuilder.Entity<InitiatingCause>()
+            //    .HasOne(p => p.ImpactEvent)
+            //    .WithMany(p => p.InitiatingCauses)
+            //    .HasForeignKey(p => p.IEId);
 
-            modelBuilder.Entity<ProtectionLayer>().ToTable("tblIPL");
-            modelBuilder.Entity<ProtectionLayer>().HasKey(c => c.Id);
-            modelBuilder.Entity<ProtectionLayer>()
-                .HasOne(p => p.InitiatingCause)
-                .WithMany(p => p.ProtectionLayer)
-                .HasForeignKey(p => p.ICId);
+            //modelBuilder.Entity<ProtectionLayer>().ToTable("tblIPL");
+            //modelBuilder.Entity<ProtectionLayer>().HasKey(c => c.Id);
+            //modelBuilder.Entity<ProtectionLayer>()
+            //    .HasOne(p => p.InitiatingCause)
+            //    .WithMany(p => p.ProtectionLayer)
+            //    .HasForeignKey(p => p.ICId);
 
             //modelBuilder.Entity<Calculation>().ToTable("tblCalculation");
             //modelBuilder.Entity<Calculation>().HasKey(c => c.CalculationId);

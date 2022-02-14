@@ -53,8 +53,50 @@ namespace Plant.Controllers.SIL
 
         // POST api/<SILClassificationAPI>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("SaveSheetData")]
+        public async Task<ActionResult<SIFDesign>> SaveSheetData([FromBody] SIFDesign sifDesign)
         {
+            try
+            {
+                //var impact = sifDesign.ImpactEvent;
+                //sifDesign.ImpactEvent = new List<ImpactEvent>();
+                //sifDesign.ImpactEvent = null;
+                _Context.SIFDesign.Add(sifDesign);
+                await _Context.SaveChangesAsync();
+                //foreach (var item in impact)
+                //{
+                //    var Initiating = item.InitiatingCauses;
+                //    foreach (var items in Initiating)
+                //    {   
+                //        var protection = items.ProtectionLayers;
+             
+                //        foreach (var protections in protection)
+                //        {
+                //            protections.ICId = 1;
+                //            _Context.ProtectionLayer.Add(protections);
+                //            await _Context.SaveChangesAsync();
+                //        }
+                //        items.ProtectionLayers = new List<ProtectionLayer>();
+                //        items.ProtectionLayers = null;
+                //        items.IEId = 1;
+                //        _Context.InitiatingCause.Add(items);
+                //        await _Context.SaveChangesAsync();
+                //    }
+                //    item.SIFId = sifDesign.Id;
+                //    item.InitiatingCauses = new List<InitiatingCause>();
+                //    item.InitiatingCauses =null;
+                //    _Context.ImpactEvent.Add(item);
+                //   await _Context.SaveChangesAsync();
+                //}
+
+                 return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+         
         }
 
         // PUT api/<SILClassificationAPI>/5
@@ -64,9 +106,26 @@ namespace Plant.Controllers.SIL
         }
 
         // DELETE api/<SILClassificationAPI>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("DeleteSheetData")]
+        public async Task<IActionResult> DeleteSheetData(int Id)
         {
+            try
+            {
+
+                var SifData = _Context.SIFDesign.Where(a => a.Id == Id)
+                                        .Include(a => a.ImpactEvent)
+                                        .ThenInclude(a => a.InitiatingCauses)
+                                        .ThenInclude(a => a.ProtectionLayers).First();
+                _Context.SIFDesign.Remove(SifData);
+                await _Context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
         }
     }
 }

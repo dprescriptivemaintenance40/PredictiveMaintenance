@@ -25,8 +25,8 @@ public class ImpactEvent
     public int SIFId { get; set; }
     public string ImpactEventDesciption { get; set; }
     public List<InitiatingCause> InitiatingCauses { get; set; }
-    public SIFDesign SIFDesign { get; set; }
-}
+    //public SIFDesign SIFDesign { get; set; }
+    }
 public class InitiatingCause
 {
     public int Id { get; set; }
@@ -39,15 +39,15 @@ public class InitiatingCause
     public float PP { get; set; }     //People Present
     public float TR { get; set; }   //Times at Risk
 
-    public List<ProtectionLayer> ProtectionLayer { get; set; }
-    public ImpactEvent ImpactEvent { get; set; }
+    public List<ProtectionLayer> ProtectionLayers { get; set; }
+    //public ImpactEvent ImpactEvent { get; set; }
 
-    public int? RMId { get; set; }
+        //public int? RMId { get; set; }
 
-    [ForeignKey("RMId")]
-    public RiskMatrix RiskMatrix { get; set; }
- }
-public class RiskMatrix
+        //[ForeignKey("RMId")]
+        //public RiskMatrix RiskMatrix { get; set; }
+    }
+    public class RiskMatrix
 {
     public int RMId { get; set; }
     public string Category { get; set; }
@@ -56,8 +56,8 @@ public class RiskMatrix
 
     public int? IEId { get; set; }
 
-    [ForeignKey("IEId")]
-    public ImpactEvent impactEvent { get; set; }
+    //[ForeignKey("IEId")]
+    //public ImpactEvent impactEvent { get; set; }
 }
 
 public class ProtectionLayer
@@ -67,6 +67,6 @@ public class ProtectionLayer
     public string NameOfIPL { get; set; }    //Independent Protection Layer
     public string Description { get; set; }
     public float PFD { get; set; }   //Probability of Failure on Demand
-    public InitiatingCause InitiatingCause { get; set; }
-}
+    //public InitiatingCause InitiatingCause { get; set; }
+    }
 }

@@ -4,7 +4,7 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
-import * as $ from 'jquery';
+import { SIFDesign } from 'src/app/shared/Models/Sil_Creation.model';
 
 @Component({
   selector: 'app-sil',
@@ -23,23 +23,27 @@ export class SILComponent implements OnInit {
   public CategoryList: any = [];
   public CategoryNameList: any = [];
   public InitiatingCauseValue: any = [];
-  // public SheetValue:any = [];
   public val: any = [];
   public SheetValue: Array<any>=[];
   public cols:Array<any>=[];
   public arr:any=[];
-  public ForecastData:boolean=false;
+  public RiskMatrix6:boolean=false;
+  public RiskMatrix5:boolean=false;
+  public sifDesignObj:SIFDesign = new SIFDesign();
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
     this.val = this.getData.data;
 
   }
-  ngAfterViewChecked() {
-    // this.SheetValue = this.getData.content.innerText;
-    // console.log(JSON.stringify(this.SheetValue));
+  // ngAfterViewChecked() {
+  //   // this.SheetValue = this.getData.content.innerText;
+  //   // console.log(JSON.stringify(this.SheetValue));
+  // }
+  constructor(private SILClassificationBLService: CommonBLService,
+              private primengConfig: PrimeNGConfig) { 
+              
   }
-  constructor(private SILClassificationBLService: CommonBLService, private primengConfig: PrimeNGConfig) { }
 
   ngAfterViewInit() {
     this.getData = jspreadsheet(this.spreadsheet.nativeElement, {
@@ -119,8 +123,14 @@ export class SILComponent implements OnInit {
     var cellName1 = jspreadsheet.getColumnNameFromId([x1, y1]);
     var cellName2 = jspreadsheet.getColumnNameFromId([x2, y2]);
     if((x1==2) && (x2==2)){
-      this.ForecastData=true;
-      alert("Success")
+      if(this.sifDesignObj.RiskMatrix == "6*6 matrix"){
+        this.RiskMatrix6=true;
+      }
+      else if(this.sifDesignObj.RiskMatrix == "5*5 matrix"){
+        this.RiskMatrix5=true;
+      }
+     
+      // alert("Success")
     }
     else{   console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');}
   
@@ -152,6 +162,14 @@ export class SILComponent implements OnInit {
    console.log( this.cols );
     console.log(JSON.stringify(this.SheetValue));
    // console.log(this.cols);
+   let sifDesignObj = [];
+   let obj= new SIFDesign();
+   obj.FinalElement = this.sifDesignObj.FinalElement;
+   obj.RiskMatrix = this.sifDesignObj.RiskMatrix;
+   obj.Sensor = this.sifDesignObj.Sensor;
+   obj.SIFDescription = this.sifDesignObj.SIFDescription;
+  sifDesignObj.push(obj);
+
   }
 
 }
