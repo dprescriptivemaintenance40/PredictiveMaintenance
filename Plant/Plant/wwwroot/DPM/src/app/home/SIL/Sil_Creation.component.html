@@ -1,73 +1,139 @@
 <p-toast></p-toast>
-<p-fieldset  legend="SIF Classification" [toggleable]="true" >
-<div class="card dpm-card w-100 p-3">
+<p-fieldset legend="" [toggleable]="true">
     <div class="row">
-        <div class="col-md-3 d-flex flex-column">
-            <label style=" margin-right: 12px;">Hazop Node Reference</label>
-            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.HazopNodeId" pInputText />
+        <div class="col-md-6">
+            <div class="stepsdemo-content dpm-card mt-2">
+                <p-card>
+                    <ng-template pTemplate="title" class="mb-0">
+                        SIF Classification<strong><span class="text-primary ml-1"></span></strong>
+                    </ng-template>
+                    <ng-template pTemplate="content">
+                        <div class="row">
+                            <div class="col-md-3 d-flex flex-column">
+                                <label style=" margin-right: 12px;">Hazop Node</label>
+                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.HazopNodeId"
+                                    pInputText />
+                            </div>
+                            <div class="col-md-3 d-flex flex-column">
+                                <label style=" margin-right: 12px;">SIF ID</label>
+                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Id" pInputText />
+                            </div>
+
+                            <!-- <div class="row"> -->
+                            <div class="col-md-4 d-flex flex-column">
+                                <label style=" margin-right: 12px;">InterLock (SIF) Tag</label>
+                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.InterLockTag"
+                                    pInputText />
+                            </div>
+                            <div class="col-md-3 d-flex flex-column">
+                                <label style=" margin-right: 12px;">Sensor</label>
+                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Sensor" pInputText />
+                                <!-- </div> -->
+                            </div><br>
+                            <!-- <div class="row"> -->
+                            <div class="col-md-3" d-flex flex-column>
+                                <label style=" margin-right: 6px;">Risk Matrix</label>
+                                <select name="" id="" class="form-select" class="form-control"
+                                    [(ngModel)]="sifDesignObj.RiskMatrix">
+                                    <option value="5*5 matrix">5*5 matrix</option>
+                                    <option value="6*6 matrix">6*6 matrix</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex flex-column">
+                                <label style="margin-right: 12px;">Final Elements(s)</label>
+                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.FinalElement"
+                                    pInputText />
+                            </div>
+                            <!-- <div class="row"> -->
+                            <div class="col-md-6" d-flex flex-column>
+                                <label style=" margin-right: 12px;">SIF Description</label>
+                                <span class="p-float-label">
+                                    <textarea inputId="textarea" rows="3" style="resize: none;" cols="40"
+                                        class="form-control" [(ngModel)]="sifDesignObj.SIFDescription"
+                                        pInputTextarea></textarea>
+                                </span>
+                            </div>
+                            <div class="col-md-4" d-flex flex-column>
+                                <label style=" margin-right: 12px;">Target SIL</label>
+                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.TargetSIL"
+                                    pInputText />
+
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-card>
+            </div>
         </div>
-        <div class="col-md-3 d-flex flex-column">
-            <label style=" margin-right: 12px;">SIF ID</label>
-            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Id" pInputText />
-        </div>
-        <div class="col-md-3 d-flex flex-column">
-            <label style=" margin-right: 12px;">InterLock (SIF) Tag</label>
-            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.InterLockTag" pInputText />
-        </div>
-        <div class="col-md-3 d-flex flex-column">
-            <label style=" margin-right: 12px;">Sensor</label>
-            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Sensor" pInputText />
-        </div>
-        <div class="col-md-3 d-flex flex-column">
-            <label style=" margin-right: 12px;">Primary Final Elements(s)</label>
-            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.FinalElement" pInputText />
-        </div>
-        <div class="col-md-3 d-flex flex-column">
-            <label style=" margin-right: 12px;">Risk Matrix</label>
-            <select name="" id="" class="form-select"  class="form-control" [(ngModel)]="sifDesignObj.RiskMatrix">
-                <option value="5*5 matrix">5*5 matrix</option>
-                <option value="6*6 matrix">6*6 matrix</option>
-            </select>
-        </div>
-        <div class="col-md-3 d-flex flex-column">
-            <label style=" margin-right: 12px;">Target SIL</label>
-                <input type="text"  class="form-control" [(ngModel)]="sifDesignObj.TargetSIL" pInputText />
-        </div>
-        <div class="col-md-3 d-flex flex-column">
-            <label style=" margin-right: 12px;">SIF Description</label>
-            <span class="p-float-label">
-                <textarea inputId="textarea" rows="3" style="resize: none;" cols="40"  class="form-control" [(ngModel)]="sifDesignObj.SIFDescription" pInputTextarea></textarea>
-            </span> 
+        <div class="col-md-6">
+            <div class="stepsdemo-content dpm-card mt-2">
+                <p-card>
+                    <ng-template pTemplate="title" class="mb-0">
+                        Calculations:<strong><span class="text-primary ml-1"></span></strong>
+                    </ng-template>
+                    <ng-template pTemplate="content">
+                        <div class="row">
+                            <div class="col-md-5 d-flex flex-column">
+                                <label style=" margin-right: 12px;">Intermediate Event Likelihood</label>
+                                <input type="text" class="form-control" pInputText />
+                            </div>
+                            <div class="col-md-5 d-flex flex-column">
+                                <label style=" margin-right: 12px;">TMEL</label>
+                                <input type="text" class="form-control" pInputText />
+                            </div><br><br><br>
+                            <!-- <div class="row"> -->
+                            <div class="col-md-5 d-flex flex-column">
+                                <label style=" margin-right: 12px;">Total Risk F(x)</label>
+                                <input type="text" class="form-control" pInputText />
+                            </div>
+                            <div class="col-md-5 d-flex flex-column">
+                                <label style=" margin-right: 12px;">PFDavg</label>
+                                <input type="text" class="form-control" pInputText />
+                            </div><br>
+                            <!-- <div class="row"> -->
+                            <div class="col-md-5 d-flex flex-column">
+                                <label style=" margin-right: 12px;">SIL</label>
+                                <input type="text" class="form-control" pInputText />
+                            </div>
+                            <div class="col-md-5 d-flex flex-column">
+                                <label style=" margin-right: 12px;">RRF</label>
+                                <input type="text" class="form-control" pInputText />
+                            </div>
+                            <!-- </div> -->
+                        </div><br>
+                    </ng-template>
+                </p-card>
+            </div>
         </div>
     </div>
-</div>
-</p-fieldset> 
+</p-fieldset>
 <br>
+<br>
+<div class="card dpm-card w-100 p-3">
+    <div #spreadsheet>
+    </div>
     <br>
-    <div class="card dpm-card w-100 p-3">
-        <div #spreadsheet>
-        </div>
-<br>
     <button type="submit" (click)="Save()">Save</button>
 </div><br>
 
-<p-dialog header="6 * 6 RiskMatrix" [(visible)]="RiskMatrix6"  [style]="{width: '100vw'}" >
-    
-    <div >
-        <app-Matrix6Component (updateSeverity)="RiskMatrix($event)"></app-Matrix6Component>
-   </div>
-  
-</p-dialog>
-<p-dialog header="5 * 5 RiskMatrix" [(visible)]="RiskMatrix5"  [style]="{width: '100vw'}" >
+<p-dialog header="6 * 6 RiskMatrix" [(visible)]="RiskMatrix6" [style]="{width: '100vw'}">
 
-        Header content here 555
-    
+    <div>
+        <app-Matrix6Component (updateSeverity)="RiskMatrix($event)"></app-Matrix6Component>
+    </div>
+
+</p-dialog>
+<p-dialog header="5 * 5 RiskMatrix" [(visible)]="RiskMatrix5" [style]="{width: '100vw'}">
+
+    <div>
+        <app-Matrix5Component (updateSeverity)="RiskMatrix($event)"></app-Matrix5Component>
+    </div>
+
 </p-dialog>
 
 <div class="card dpm-card w-100 p-3">
     <fieldset class="border p-2">
         <p-table styleClass="p-datatable-gridlines" [columns]="cols" [value]="SheetValue" [autoLayout]="true">
-            <ng-template pTemplate="header" let-columns >
+            <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns">
                         {{col}}
@@ -84,40 +150,3 @@
         </p-table>
     </fieldset>
 </div>
-<div class="card dpm-card w-100 p-3">
-    <fieldset class="border p-2">
-        <legend  class="w-auto">Calculations</legend>
-        <div class="row">
-            <div class="col-md-3 d-flex flex-column">
-                <label style=" margin-right: 12px;">Intermediate Event Likelihood</label>
-                <input type="text"  pInputText />
-            </div>
-            <div class="col-md-3 d-flex flex-column">
-                <label style=" margin-right: 12px;">TMEL</label>
-                <input type="text" pInputText />
-            </div>
-            <div class="col-md-3 d-flex flex-column">
-                <label style=" margin-right: 12px;">Total Risk F(x)</label>
-                <input type="text" pInputText />
-            </div>
-            <div class="col-md-3 d-flex flex-column">
-                <label style=" margin-right: 12px;">PFDavg</label>
-                <input type="text" pInputText />
-            </div><br>
-            <div class="col-md-3 d-flex flex-column">
-                <label style=" margin-right: 12px;">SIL</label>
-                <input type="text" pInputText />
-            </div>
-            <div class="col-md-3 d-flex flex-column">
-                <label style=" margin-right: 12px;">RRF</label>
-                    <input type="text" pInputText />
-            </div>
-        </div><br>
-    </fieldset> 
-</div>
-<!-- <p-dialog header="Godfather I" [(visible)]="RiskMatrix6" [modal]="true"  style="width:1170px; margin: 0px 15px; display:inline-block" [maximizable]="true" [baseZIndex]="10000"
-    [draggable]="false" [resizable]="false">     
-    <div>
-        <app-Matrix6Component></app-Matrix6Component>
-   </div>
-</p-dialog>   -->

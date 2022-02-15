@@ -4,13 +4,13 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
-import { SIFDesign } from 'src/app/shared/Models/Sil_Creation.model';
+import { ImpactEvent, SIFDesign } from 'src/app/shared/Models/Sil_Creation.model';
 
 @Component({
   selector: 'app-sil',
   templateUrl: './Sil_Creation.component.html',
   styleUrls: ['./Sil_Creation.component.scss'],
-  providers:[DialogService,MessageService]
+  providers: [DialogService, MessageService]
 })
 
 export class SILComponent implements OnInit {
@@ -24,13 +24,14 @@ export class SILComponent implements OnInit {
   public CategoryNameList: any = [];
   public InitiatingCauseValue: any = [];
   public val: any = [];
-  public SheetValue: Array<any>=[];
-  public cols:Array<any>=[];
-  public arr:any=[];
-  public RiskMatrix6:boolean=false;
-  public RiskMatrix5:boolean=false;
-  public risk:string = "";
-  public sifDesignObj:SIFDesign = new SIFDesign();
+  public SheetValue: Array<any> = [];
+  public cols: Array<any> = [];
+  public arr: any = [];
+  public RiskMatrix6: boolean = false;
+  public RiskMatrix5: boolean = false;
+  public risk: string = "";
+  public impact:ImpactEvent=new ImpactEvent();
+  public sifDesignObj: SIFDesign = new SIFDesign();
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
@@ -42,33 +43,33 @@ export class SILComponent implements OnInit {
   //   // console.log(JSON.stringify(this.SheetValue));
   // }
   constructor(private SILClassificationBLService: CommonBLService,
-              private primengConfig: PrimeNGConfig) { 
-              
+    private primengConfig: PrimeNGConfig) {
+
   }
 
   ngAfterViewInit() {
     this.getData = jspreadsheet(this.spreadsheet.nativeElement, {
       data: [[]],
       columns: [
-        { type: "text", title: 'Impact Event', width: "200", wordWrap:true,source: "Fire from distilation column rupture" },
-        { type: 'dropdown', title: 'Category', width: "150", source: this.CategoryNameList },
-        { type: 'text', title: 'Severity', width: "100"},
-        { type: 'text', title: 'TMEL', width: "100",source:this.risk },
-        { type: 'dropdown', title: 'Initiating Causes',wordWrap:true, width: "200", autocomplete: true, source: this.InitiatingCauseValue },
-        { type: 'text', title: 'IEF', width: "150" },
-        { type: 'text', title: 'IP', width: "100" },
-        { type: 'text', title: 'People Present', width: "100" },
-        { type: 'text', title: 'Time at Risk', width: "100" },
-        { type: 'text', title: 'Description', width: "200",wordWrap:true},
-        { type: 'text', title: 'PFD', width: "100" },
-        { type: 'text', title: 'Description', width: "200" ,wordWrap:true },
-        { type: 'text', title: 'PFD', width: "100" },
-        { type: 'text', title: 'Description', width: "200"  ,wordWrap:true},
-        { type: 'text', title: 'PFD', width: "100" },
-        { type: 'text', title: 'Description', width: "200"  ,wordWrap:true},
-        { type: 'text', title: 'PFD', width: "100" },
-        { type: 'text', title: 'Description', width: "200" ,wordWrap:true },
-        { type: 'text', title: 'PFD', width: "100" },
+        { type: "text", title: 'Impact Event', width: "100", wordWrap: true, source: this.impact.ImpactEventDesciption },
+        { type: 'dropdown', title: 'Category', width: "50", source: this.CategoryNameList },
+        { type: 'text', title: 'Severity', width: "50", options: { format: Text } },
+        { type: 'text', title: 'TMEL', width: "60", source: this.risk },
+        { type: 'dropdown', title: 'Initiating Causes', wordWrap: true, width: "100", autocomplete: true, source: this.InitiatingCauseValue },
+        { type: 'text', title: 'IEF', width: "60" },
+        { type: 'text', title: 'IP', width: "40" },
+        { type: 'text', title: 'PP', width: "40" },
+        { type: 'text', title: 'TR', width: "40" },
+        { type: 'text', title: 'Description', width: "90", wordWrap: true },
+        { type: 'text', title: 'PFD', width: "55" },
+        { type: 'text', title: 'Description', width: "90", wordWrap: true },
+        { type: 'text', title: 'PFD', width: "55" },
+        { type: 'text', title: 'Description', width: "90", wordWrap: true },
+        { type: 'text', title: 'PFD', width: "55" },
+        { type: 'text', title: 'Description', width: "90", wordWrap: true },
+        { type: 'text', title: 'PFD', width: "55" },
+        { type: 'text', title: 'Description', width: "90", wordWrap: true },
+        { type: 'text', title: 'PFD', width: "55" },
         //{ type: 'dropdown', title: 'IPLs', width: "200", source: ["General Process Design", "BPCS", "Alarm", "Restricted Access", "IPL-Dyke,PRV"], multiple: 'true' },
         // { type:'text',title:'Calculate Intermediate Event Likelihood ', width:"100"},
         // { type:'text',title:'IC Tag Number', width:"100"},
@@ -114,33 +115,33 @@ export class SILComponent implements OnInit {
       },
       onchange: this.changed,
       onselection: this.selectionActive,
-      defaultColWidth: 100,
+      // defaultColWidth: 100,
       tableOverflow: true,
       tableWidth: "1350px",
       tableHeight: "600px",
-      minDimensions: [19, 50]
+      minDimensions: [19, 20]
     });
   }
-   changed = async(instance, cell, x, y, value) =>{
-    var cellName = jspreadsheet.getColumnNameFromId([x,y]);
+  changed = async (instance, cell, x, y, value) => {
+    var cellName = jspreadsheet.getColumnNameFromId([x, y]);
     console.log('New change on cell ' + cellName + ' to: ' + value + '');
-}
+  }
 
- selectionActive =async(instance, x1, y1, x2, y2, origin)  =>{
+  selectionActive = async (instance, x1, y1, x2, y2, origin) => {
     var cellName1 = jspreadsheet.getColumnNameFromId([x1, y1]);
     var cellName2 = jspreadsheet.getColumnNameFromId([x2, y2]);
-    if((x1==2) && (x2==2)){
-      if(this.sifDesignObj.RiskMatrix == "6*6 matrix"){
-        this.RiskMatrix6=true;
+    if ((x1 == 2) && (x2 == 2)) {
+      if (this.sifDesignObj.RiskMatrix == "6*6 matrix") {
+        this.RiskMatrix6 = true;
       }
-      else if(this.sifDesignObj.RiskMatrix == "5*5 matrix"){
-        this.RiskMatrix5=true;
+      else if (this.sifDesignObj.RiskMatrix == "5*5 matrix") {
+        this.RiskMatrix5 = true;
       }
-     
+
       // alert("Success")
     }
-    else{   console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');}
-  
+    else { console.log('The selection from ' + cellName1 + ' to ' + cellName2 + ''); }
+
   }
   getMasterData() {
     this.SILClassificationBLService.getWithoutParameters("/SILClassificationAPI/GetMasterData")
@@ -162,25 +163,30 @@ export class SILComponent implements OnInit {
       }, err => console.log(err.error))
   }
   Save() {
-   // this.SheetValue = this.getData.content.textContent;
-   this.SheetValue= this.getData.getData()
-  this.arr=this.getData.getHeaders();
-  this.cols = this.arr.split(",");
-   console.log( this.cols );
+    // this.SheetValue = this.getData.content.textContent;
+    this.SheetValue = this.getData.getData()
+    this.arr = this.getData.getHeaders();
+    this.cols = this.arr.split(",");
+    console.log(this.cols);
     console.log(JSON.stringify(this.SheetValue));
-   // console.log(this.cols);
-   let sifDesignObj = [];
-   let obj= new SIFDesign();
-   obj.FinalElement = this.sifDesignObj.FinalElement;
-   obj.RiskMatrix = this.sifDesignObj.RiskMatrix;
-   obj.Sensor = this.sifDesignObj.Sensor;
-   obj.SIFDescription = this.sifDesignObj.SIFDescription;
-  sifDesignObj.push(obj);
-
+    // console.log(this.cols);
+    let sifDesignObj = [];
+    let obj = new SIFDesign();
+    obj.FinalElement = this.sifDesignObj.FinalElement;
+    obj.RiskMatrix = this.sifDesignObj.RiskMatrix;
+    obj.Sensor = this.sifDesignObj.Sensor;
+    obj.SIFDescription = this.sifDesignObj.SIFDescription;
+    let obj1=new ImpactEvent();
+    obj1.ImpactEventDesciption= this.SheetValue[0][0]
+    obj.ImpactEvents.push(obj1);
+    sifDesignObj.push(obj);
+    console.log(sifDesignObj)
   }
-  RiskMatrix(Matrix:any){
-    this.RiskMatrix6=false;
-     this.risk =  Matrix.value;
-    }
+  RiskMatrix(Matrix: any) {
+    this.RiskMatrix6 = false;
+    this.RiskMatrix5 = false;
+    this.risk = Matrix.value;
+  }
+ 
 }
 
