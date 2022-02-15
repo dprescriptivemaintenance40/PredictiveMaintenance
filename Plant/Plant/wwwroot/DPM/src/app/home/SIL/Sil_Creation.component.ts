@@ -29,6 +29,7 @@ export class SILComponent implements OnInit {
   public arr:any=[];
   public RiskMatrix6:boolean=false;
   public RiskMatrix5:boolean=false;
+  public risk:string = "";
   public sifDesignObj:SIFDesign = new SIFDesign();
   ngOnInit() {
     this.primengConfig.ripple = true;
@@ -49,24 +50,24 @@ export class SILComponent implements OnInit {
     this.getData = jspreadsheet(this.spreadsheet.nativeElement, {
       data: [[]],
       columns: [
-        { type: "text", title: 'Impact Event', width: "200", source: ["Fire from distilation column rupture"] },
+        { type: "text", title: 'Impact Event', width: "200", wordWrap:true,source: "Fire from distilation column rupture" },
         { type: 'dropdown', title: 'Category', width: "150", source: this.CategoryNameList },
-        { type: 'dropdown', title: 'Severity', width: "100",  },
-        { type: 'text', title: 'TMEL', width: "100" },
-        { type: 'dropdown', title: 'Initiating Causes', width: "200", autocomplete: true, source: this.InitiatingCauseValue },
+        { type: 'text', title: 'Severity', width: "100"},
+        { type: 'text', title: 'TMEL', width: "100",source:this.risk },
+        { type: 'dropdown', title: 'Initiating Causes',wordWrap:true, width: "200", autocomplete: true, source: this.InitiatingCauseValue },
         { type: 'text', title: 'IEF', width: "150" },
         { type: 'text', title: 'IP', width: "100" },
         { type: 'text', title: 'People Present', width: "100" },
         { type: 'text', title: 'Time at Risk', width: "100" },
-        { type: 'text', title: 'Description', width: "200" },
+        { type: 'text', title: 'Description', width: "200",wordWrap:true},
         { type: 'text', title: 'PFD', width: "100" },
-        { type: 'text', title: 'Description', width: "200" },
+        { type: 'text', title: 'Description', width: "200" ,wordWrap:true },
         { type: 'text', title: 'PFD', width: "100" },
-        { type: 'text', title: 'Description', width: "200" },
+        { type: 'text', title: 'Description', width: "200"  ,wordWrap:true},
         { type: 'text', title: 'PFD', width: "100" },
-        { type: 'text', title: 'Description', width: "200" },
+        { type: 'text', title: 'Description', width: "200"  ,wordWrap:true},
         { type: 'text', title: 'PFD', width: "100" },
-        { type: 'text', title: 'Description', width: "200" },
+        { type: 'text', title: 'Description', width: "200" ,wordWrap:true },
         { type: 'text', title: 'PFD', width: "100" },
         //{ type: 'dropdown', title: 'IPLs', width: "200", source: ["General Process Design", "BPCS", "Alarm", "Restricted Access", "IPL-Dyke,PRV"], multiple: 'true' },
         // { type:'text',title:'Calculate Intermediate Event Likelihood ', width:"100"},
@@ -111,6 +112,7 @@ export class SILComponent implements OnInit {
       mergeCells: {
         // A1:[,3]
       },
+      onchange: this.changed,
       onselection: this.selectionActive,
       defaultColWidth: 100,
       tableOverflow: true,
@@ -119,6 +121,11 @@ export class SILComponent implements OnInit {
       minDimensions: [19, 50]
     });
   }
+   changed = async(instance, cell, x, y, value) =>{
+    var cellName = jspreadsheet.getColumnNameFromId([x,y]);
+    console.log('New change on cell ' + cellName + ' to: ' + value + '');
+}
+
  selectionActive =async(instance, x1, y1, x2, y2, origin)  =>{
     var cellName1 = jspreadsheet.getColumnNameFromId([x1, y1]);
     var cellName2 = jspreadsheet.getColumnNameFromId([x2, y2]);
@@ -171,6 +178,9 @@ export class SILComponent implements OnInit {
   sifDesignObj.push(obj);
 
   }
-
+  RiskMatrix(Matrix:any){
+    this.RiskMatrix6=false;
+     this.risk =  Matrix.value;
+    }
 }
 

@@ -14,6 +14,8 @@ import { ReportComponent } from "./Report/report.component";
 import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
 import { SILComponent } from "./SIL/Sil_Creation.component";
 import {FieldsetModule} from 'primeng/fieldset';
+import { Matrix6Component } from "../shared/6x6Matrix/matrix-six.component";
+
 
 @NgModule({
     declarations: [
@@ -26,7 +28,7 @@ import {FieldsetModule} from 'primeng/fieldset';
         AboutComponent,
         ReportComponent,
         RCMListComponent,
-        SILComponent
+        SILComponent,Matrix6Component
 
     ],
     imports: [    

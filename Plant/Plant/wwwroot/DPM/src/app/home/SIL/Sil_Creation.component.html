@@ -51,12 +51,14 @@
     <button type="submit" (click)="Save()">Save</button>
 </div><br>
 
-<p-dialog header="6 * 6 RiskMatrix" [(visible)]="RiskMatrix6"  [style]="{width: '50vw'}" >
+<p-dialog header="6 * 6 RiskMatrix" [(visible)]="RiskMatrix6"  [style]="{width: '100vw'}" >
     
-        Header content here 6666
+    <div >
+        <app-Matrix6Component (updateSeverity)="RiskMatrix($event)"></app-Matrix6Component>
+   </div>
   
 </p-dialog>
-<p-dialog header="5 * 5 RiskMatrix" [(visible)]="RiskMatrix5"  [style]="{width: '50vw'}" >
+<p-dialog header="5 * 5 RiskMatrix" [(visible)]="RiskMatrix5"  [style]="{width: '100vw'}" >
 
         Header content here 555
     
@@ -113,3 +115,9 @@
         </div><br>
     </fieldset> 
 </div>
+<!-- <p-dialog header="Godfather I" [(visible)]="RiskMatrix6" [modal]="true"  style="width:1170px; margin: 0px 15px; display:inline-block" [maximizable]="true" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false">     
+    <div>
+        <app-Matrix6Component></app-Matrix6Component>
+   </div>
+</p-dialog>   -->
