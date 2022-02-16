@@ -4,7 +4,7 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
-import { ImpactEvent, SIFDesign } from 'src/app/shared/Models/Sil_Creation.model';
+import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, RiskMatrix, SIFDesign } from 'src/app/shared/Models/Sil_Creation.model';
 
 @Component({
   selector: 'app-sil',
@@ -30,8 +30,11 @@ export class SILComponent implements OnInit {
   public RiskMatrix6: boolean = false;
   public RiskMatrix5: boolean = false;
   public risk: string = "";
+  public cells:string='';
   public impact:ImpactEvent=new ImpactEvent();
+  public initcauses:InitiatingCause=new InitiatingCause();
   public sifDesignObj: SIFDesign = new SIFDesign();
+  public cal:Calculation=new Calculation(this.sifDesignObj);
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
@@ -53,7 +56,7 @@ export class SILComponent implements OnInit {
       columns: [
         { type: "text", title: 'Impact Event', width: "100", wordWrap: true, source: this.impact.ImpactEventDesciption },
         { type: 'dropdown', title: 'Category', width: "50", source: this.CategoryNameList },
-        { type: 'text', title: 'Severity', width: "50", options: { format: Text } },
+        { type: 'text', title: 'Severity', width: "50", source:this.cells },
         { type: 'text', title: 'TMEL', width: "60", source: this.risk },
         { type: 'dropdown', title: 'Initiating Causes', wordWrap: true, width: "100", autocomplete: true, source: this.InitiatingCauseValue },
         { type: 'text', title: 'IEF', width: "60" },
@@ -164,28 +167,124 @@ export class SILComponent implements OnInit {
   }
   Save() {
     // this.SheetValue = this.getData.content.textContent;
+    // this.SheetValue = this.getData.getData()
+    // this.arr = this.getData.getHeaders();
+    // this.cols = this.arr.split(",");
+    // console.log(this.cols);
+    // console.log(JSON.stringify(this.SheetValue));
+    // console.log(this.cols);
     this.SheetValue = this.getData.getData()
     this.arr = this.getData.getHeaders();
     this.cols = this.arr.split(",");
-    console.log(this.cols);
-    console.log(JSON.stringify(this.SheetValue));
-    // console.log(this.cols);
     let sifDesignObj = [];
-    let obj = new SIFDesign();
-    obj.FinalElement = this.sifDesignObj.FinalElement;
-    obj.RiskMatrix = this.sifDesignObj.RiskMatrix;
-    obj.Sensor = this.sifDesignObj.Sensor;
-    obj.SIFDescription = this.sifDesignObj.SIFDescription;
-    let obj1=new ImpactEvent();
-    obj1.ImpactEventDesciption= this.SheetValue[0][0]
-    obj.ImpactEvents.push(obj1);
-    sifDesignObj.push(obj);
+    let sif = new SIFDesign();
+    sif.Id = 1;
+    sif.FinalElement = this.sifDesignObj.FinalElement;
+    sif.RiskMatrix = this.sifDesignObj.RiskMatrix;
+    sif.Sensor = this.sifDesignObj.Sensor;
+    sif.SIFDescription = this.sifDesignObj.SIFDescription;
+
+    this.SheetValue.forEach(sheet => {
+      // var i = 0;
+      if (sheet[0] != "") {
+        let impacts = new ImpactEvent();
+        impacts.Id = 1;
+        impacts.SIFId = sif.Id;
+        impacts.ImpactEventDesciption = sheet[0];
+
+        let initcause = new InitiatingCause();
+          var j = 4;
+          var counter = 0;
+          if (sheet[j] != "") {
+            initcause.Id = counter++;
+            initcause.IEId = impacts.Id;
+            initcause.RMId=1;
+            initcause.IEF=sheet[j+1];
+            initcause.IP=sheet[j+2];
+            initcause.PP=sheet[j+3];
+            initcause.TR=sheet[j+4];
+            initcause.initiatingCause = sheet[j];
+
+            initcause.RiskMatrix.RMId=1;
+            initcause.RiskMatrix.IEId=impacts.Id;
+            initcause.RiskMatrix.Category=sheet[1];
+            initcause.RiskMatrix.Severity=sheet[2];
+            initcause.RiskMatrix.TRF=sheet[3];
+
+            this.initcauses=initcause;
+            impacts.InitiatingCauses.push(initcause);
+            // let risk = new RiskMatrix();
+            // risk.Severity =  sheet[10]
+            // risk.Category =
+            // impacts..push(risk);
+            
+             let protection = new ProtectionLayer();
+            protection.Description = sheet[9]
+            protection.PFD =sheet[10]
+            initcause.ProtectionLayers.push(protection);
+
+            let protections = new ProtectionLayer();
+            protections.Description = sheet[11]
+            protections.PFD =sheet[12]
+            initcause.ProtectionLayers.push(protections);
+
+            let protectionlayer = new ProtectionLayer();
+            protectionlayer.Description = sheet[13]
+            protectionlayer.PFD =sheet[14]
+            initcause.ProtectionLayers.push(protectionlayer);
+
+            let protectionlayers = new ProtectionLayer();
+            protectionlayers.Description = sheet[15]
+            protectionlayers.PFD =sheet[16]
+            initcause.ProtectionLayers.push(protectionlayers);
+           
+          }
+          sif.ImpactEvents.push(impacts)
+      }
+    });
+    let calc = new Calculation(sif);
+    this.cal=calc;
+    sifDesignObj.push(sif);
     console.log(sifDesignObj)
+    console.log(calc)
+
+    // let sifDesignObj = [];
+    // let obj = new SIFDesign();
+    // obj.FinalElement = this.sifDesignObj.FinalElement;
+    // obj.RiskMatrix = this.sifDesignObj.RiskMatrix;
+    // obj.Sensor = this.sifDesignObj.Sensor;
+    // obj.SIFDescription = this.sifDesignObj.SIFDescription;
+      // var obj1=new ImpactEvent();
+      // var j=0;
+      // for (let i = 0; i < this.SheetValue.length; i++) {
+      //   const element = this.SheetValue[i][j];
+      //   if (element!='') {
+      //     obj1.Id=i;
+      //     obj1.ImpactEventDesciption= element;
+      //     var list:Array<any>=new Array();
+      //     list.push(obj1);
+      //   }
+      // }
+      // obj.ImpactEvents=list;
+    //   this.SheetValue.forEach(sheet => {
+    //     var i =0;
+    //     if(sheet[i] !=""){
+    //     let impacts=new ImpactEvent();
+    //     impacts.ImpactEventDesciption = sheet[i];
+    //     obj.ImpactEvents.push(impacts)
+      
+    //     }
+    //    });
+    // sifDesignObj.push(obj);
+    // console.log(sifDesignObj)
   }
   RiskMatrix(Matrix: any) {
     this.RiskMatrix6 = false;
     this.RiskMatrix5 = false;
-    this.risk = Matrix.value;
+    this.risk='';
+    this.risk = Matrix.innerText;
+    this.cells = this.getData.setColumnData([2], [this.risk])
+    
   }
  
 }
