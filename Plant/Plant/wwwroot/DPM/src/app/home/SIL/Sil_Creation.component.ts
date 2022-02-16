@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit } from "@angular/core";
+import { Component, ViewChild, ElementRef, OnInit, ANALYZE_FOR_ENTRY_COMPONENTS } from "@angular/core";
 import * as jspreadsheet from "jspreadsheet-ce";
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrimeNGConfig } from 'primeng/api';
@@ -30,21 +30,20 @@ export class SILComponent implements OnInit {
   public RiskMatrix6: boolean = false;
   public RiskMatrix5: boolean = false;
   public risk: string = "";
-  public cells:string='';
-  public impact:ImpactEvent=new ImpactEvent();
-  public initcauses:InitiatingCause=new InitiatingCause();
+  public cells: string = '';
+  public cellName:number;
+  public impact: ImpactEvent = new ImpactEvent();
+  public initcauses: InitiatingCause = new InitiatingCause();
   public sifDesignObj: SIFDesign = new SIFDesign();
-  public cal:Calculation=new Calculation(this.sifDesignObj);
+  public cal: Calculation = new Calculation(this.sifDesignObj);
+  
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
     this.val = this.getData.data;
 
   }
-  // ngAfterViewChecked() {
-  //   // this.SheetValue = this.getData.content.innerText;
-  //   // console.log(JSON.stringify(this.SheetValue));
-  // }
+
   constructor(private SILClassificationBLService: CommonBLService,
     private primengConfig: PrimeNGConfig) {
 
@@ -56,7 +55,7 @@ export class SILComponent implements OnInit {
       columns: [
         { type: "text", title: 'Impact Event', width: "100", wordWrap: true, source: this.impact.ImpactEventDesciption },
         { type: 'dropdown', title: 'Category', width: "50", source: this.CategoryNameList },
-        { type: 'text', title: 'Severity', width: "50", source:this.cells },
+        { type: 'text', title: 'Severity', width: "50", source: this.cells },
         { type: 'text', title: 'TMEL', width: "60", source: this.risk },
         { type: 'dropdown', title: 'Initiating Causes', wordWrap: true, width: "100", autocomplete: true, source: this.InitiatingCauseValue },
         { type: 'text', title: 'IEF', width: "60" },
@@ -73,9 +72,6 @@ export class SILComponent implements OnInit {
         { type: 'text', title: 'PFD', width: "55" },
         { type: 'text', title: 'Description', width: "90", wordWrap: true },
         { type: 'text', title: 'PFD', width: "55" },
-        //{ type: 'dropdown', title: 'IPLs', width: "200", source: ["General Process Design", "BPCS", "Alarm", "Restricted Access", "IPL-Dyke,PRV"], multiple: 'true' },
-        // { type:'text',title:'Calculate Intermediate Event Likelihood ', width:"100"},
-        // { type:'text',title:'IC Tag Number', width:"100"},
       ],
       nestedHeaders: [
         [
@@ -127,12 +123,14 @@ export class SILComponent implements OnInit {
   }
   changed = async (instance, cell, x, y, value) => {
     var cellName = jspreadsheet.getColumnNameFromId([x, y]);
+    
     console.log('New change on cell ' + cellName + ' to: ' + value + '');
   }
 
-  selectionActive = async (instance, x1, y1, x2, y2, origin) => {
-    var cellName1 = jspreadsheet.getColumnNameFromId([x1, y1]);
+   selectionActive = async (instance, x1, y1, x2, y2, origin) => {
+    this.cellName = jspreadsheet.getColumnNameFromId([x1, y1]);
     var cellName2 = jspreadsheet.getColumnNameFromId([x2, y2]);
+    // var split = this.cellName.split("")[0];
     if ((x1 == 2) && (x2 == 2)) {
       if (this.sifDesignObj.RiskMatrix == "6*6 matrix") {
         this.RiskMatrix6 = true;
@@ -140,17 +138,15 @@ export class SILComponent implements OnInit {
       else if (this.sifDesignObj.RiskMatrix == "5*5 matrix") {
         this.RiskMatrix5 = true;
       }
-
-      // alert("Success")
     }
-    else { console.log('The selection from ' + cellName1 + ' to ' + cellName2 + ''); }
-
+    else { console.log('The selection from ' + this.cellName + ' to ' + cellName2 + ''); }
   }
+
   getMasterData() {
     this.SILClassificationBLService.getWithoutParameters("/SILClassificationAPI/GetMasterData")
       .subscribe((res: any) => {
         this.MasterData = res;
-        console.log(this.MasterData)
+        // console.log(this.MasterData)
         this.MasterData[0].initiatingCausesMaster.forEach(element => {
           this.initiatingCausesMasterList = element.InitiatingCause
           this.InitiatingCauseValue.push(this.initiatingCausesMasterList);
@@ -166,14 +162,8 @@ export class SILComponent implements OnInit {
       }, err => console.log(err.error))
   }
   Save() {
-    // this.SheetValue = this.getData.content.textContent;
-    // this.SheetValue = this.getData.getData()
-    // this.arr = this.getData.getHeaders();
-    // this.cols = this.arr.split(",");
-    // console.log(this.cols);
-    // console.log(JSON.stringify(this.SheetValue));
-    // console.log(this.cols);
     this.SheetValue = this.getData.getData()
+    console.log(this.SheetValue);
     this.arr = this.getData.getHeaders();
     this.cols = this.arr.split(",");
     let sifDesignObj = [];
@@ -185,7 +175,7 @@ export class SILComponent implements OnInit {
     sif.SIFDescription = this.sifDesignObj.SIFDescription;
 
     this.SheetValue.forEach(sheet => {
-      // var i = 0;
+
       if (sheet[0] != "") {
         let impacts = new ImpactEvent();
         impacts.Id = 1;
@@ -193,99 +183,73 @@ export class SILComponent implements OnInit {
         impacts.ImpactEventDesciption = sheet[0];
 
         let initcause = new InitiatingCause();
-          var j = 4;
-          var counter = 0;
-          if (sheet[j] != "") {
-            initcause.Id = counter++;
-            initcause.IEId = impacts.Id;
-            initcause.RMId=1;
-            initcause.IEF=sheet[j+1];
-            initcause.IP=sheet[j+2];
-            initcause.PP=sheet[j+3];
-            initcause.TR=sheet[j+4];
-            initcause.initiatingCause = sheet[j];
+        var j = 4;
+        var counter = 0;
+        if (sheet[j] != "") {
+          initcause.Id = counter++;
+          initcause.IEId = impacts.Id;
+          initcause.RMId = 1;
+          initcause.IEF = sheet[j + 1];
+          initcause.IP = sheet[j + 2];
+          initcause.PP = sheet[j + 3];
+          initcause.TR = sheet[j + 4];
+          initcause.initiatingCause = sheet[j];
 
-            initcause.RiskMatrix.RMId=1;
-            initcause.RiskMatrix.IEId=impacts.Id;
-            initcause.RiskMatrix.Category=sheet[1];
-            initcause.RiskMatrix.Severity=sheet[2];
-            initcause.RiskMatrix.TRF=sheet[3];
+          initcause.RiskMatrix.RMId = 1;
+          initcause.RiskMatrix.IEId = impacts.Id;
+          initcause.RiskMatrix.Category = sheet[1];
+          initcause.RiskMatrix.Severity = sheet[2];
+          initcause.RiskMatrix.TRF = sheet[3];
 
-            this.initcauses=initcause;
-            impacts.InitiatingCauses.push(initcause);
-            // let risk = new RiskMatrix();
-            // risk.Severity =  sheet[10]
-            // risk.Category =
-            // impacts..push(risk);
-            
-             let protection = new ProtectionLayer();
-            protection.Description = sheet[9]
-            protection.PFD =sheet[10]
-            initcause.ProtectionLayers.push(protection);
+          this.initcauses = initcause;
+          impacts.InitiatingCauses.push(initcause);
 
-            let protections = new ProtectionLayer();
-            protections.Description = sheet[11]
-            protections.PFD =sheet[12]
-            initcause.ProtectionLayers.push(protections);
+          let protection = new ProtectionLayer();
+          protection.Description = sheet[9]
+          protection.PFD = sheet[10]
+          initcause.ProtectionLayers.push(protection);
 
-            let protectionlayer = new ProtectionLayer();
-            protectionlayer.Description = sheet[13]
-            protectionlayer.PFD =sheet[14]
-            initcause.ProtectionLayers.push(protectionlayer);
+          let protections = new ProtectionLayer();
+          protections.Description = sheet[11]
+          protections.PFD = sheet[12]
+          initcause.ProtectionLayers.push(protections);
 
-            let protectionlayers = new ProtectionLayer();
-            protectionlayers.Description = sheet[15]
-            protectionlayers.PFD =sheet[16]
-            initcause.ProtectionLayers.push(protectionlayers);
-           
-          }
-          sif.ImpactEvents.push(impacts)
+          let protectionlayer = new ProtectionLayer();
+          protectionlayer.Description = sheet[13]
+          protectionlayer.PFD = sheet[14]
+          initcause.ProtectionLayers.push(protectionlayer);
+
+          let protectionlayers = new ProtectionLayer();
+          protectionlayers.Description = sheet[15]
+          protectionlayers.PFD = sheet[16]
+          initcause.ProtectionLayers.push(protectionlayers);
+
+        }
+        sif.ImpactEvents.push(impacts)
       }
     });
     let calc = new Calculation(sif);
-    this.cal=calc;
+    this.cal = calc;
     sifDesignObj.push(sif);
-    console.log(sifDesignObj)
-    console.log(calc)
-
-    // let sifDesignObj = [];
-    // let obj = new SIFDesign();
-    // obj.FinalElement = this.sifDesignObj.FinalElement;
-    // obj.RiskMatrix = this.sifDesignObj.RiskMatrix;
-    // obj.Sensor = this.sifDesignObj.Sensor;
-    // obj.SIFDescription = this.sifDesignObj.SIFDescription;
-      // var obj1=new ImpactEvent();
-      // var j=0;
-      // for (let i = 0; i < this.SheetValue.length; i++) {
-      //   const element = this.SheetValue[i][j];
-      //   if (element!='') {
-      //     obj1.Id=i;
-      //     obj1.ImpactEventDesciption= element;
-      //     var list:Array<any>=new Array();
-      //     list.push(obj1);
-      //   }
-      // }
-      // obj.ImpactEvents=list;
-    //   this.SheetValue.forEach(sheet => {
-    //     var i =0;
-    //     if(sheet[i] !=""){
-    //     let impacts=new ImpactEvent();
-    //     impacts.ImpactEventDesciption = sheet[i];
-    //     obj.ImpactEvents.push(impacts)
-      
-    //     }
-    //    });
-    // sifDesignObj.push(obj);
     // console.log(sifDesignObj)
+    // console.log(calc)
+
   }
   RiskMatrix(Matrix: any) {
     this.RiskMatrix6 = false;
     this.RiskMatrix5 = false;
-    this.risk='';
+    this.cells = '';
     this.risk = Matrix.innerText;
-    this.cells = this.getData.setColumnData([2], [this.risk])
-    
+    console.log(this.selectionActive);
+    // var cellName = this.getData.getCell();
+    // this.cells = this.getData.setValue([cellName],[this.risk],[true])
+    // this.getData.setColumnData([cellName1], [this.risk]);
+  //  this.selectionActives();
+  var x = this.cellName;
+  var y = this.cellName;
+    this.cells = this.getData.setValueFromCoords([x],[y] [this.risk],[true]);
+   
+
   }
- 
 }
 
