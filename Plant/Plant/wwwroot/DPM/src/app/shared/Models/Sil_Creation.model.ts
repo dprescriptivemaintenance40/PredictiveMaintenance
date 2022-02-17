@@ -93,6 +93,7 @@ export class Calculation
   }
   public CalculateIEL(){
       var ielTemp:number=0;
+      var ielTemp1:number =0;
       this.sif.ImpactEvents.forEach(impactevent=>{
           impactevent.InitiatingCauses.forEach(initiatingcause=>{
               initiatingcause.ProtectionLayers.forEach(protectionlayer=>{
@@ -100,10 +101,10 @@ export class Calculation
                       ielTemp=protectionlayer.PFD;
                   }
                   else{
-                      ielTemp=protectionlayer.PFD*ielTemp;
+                      ielTemp1=protectionlayer.PFD*ielTemp;
                   }
               });
-              initiatingcause.IEL=ielTemp*initiatingcause.IEF*initiatingcause.IP*initiatingcause.PP*initiatingcause.TR;
+              initiatingcause.IEL=ielTemp1*initiatingcause.IEF*initiatingcause.IP*initiatingcause.PP*initiatingcause.TR;
           });
       })
       

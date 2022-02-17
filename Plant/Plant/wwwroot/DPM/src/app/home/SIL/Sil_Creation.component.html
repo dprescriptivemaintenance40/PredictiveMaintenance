@@ -71,41 +71,120 @@
                         Calculations:<strong><span class="text-primary ml-1"></span></strong>
                     </ng-template>
                     <ng-template pTemplate="content">
-                        <div class="row">
-                            <div class="col-md-5 d-flex flex-column">
-                                <label style=" margin-right: 12px;">Intermediate Event Likelihood</label>
-                                <h4>{{ initcauses.IEL | number:'1.1-2'}}</h4>
-                                <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.IEL" pInputText /> -->
-                            </div>
-                            <div class="col-md-5 d-flex flex-column">
-                                <label style=" margin-right: 12px;">TMEL</label>
-                                <h4>{{ initcauses.RiskMatrix.TRF | number:'1.1-2'}}</h4>
-                                <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.RiskMatrix.TRF" pInputText /> -->
-                            </div><br><br><br>
-                            <!-- <div class="row"> -->
-                            <div class="col-md-5 d-flex flex-column">
-                                <label style=" margin-right: 12px;">Overall IEL</label>
-                                <h4>{{ cal.OverallIELP | number:'1.1-2'}}</h4>
-                                <!-- <input type="text" class="form-control" [(ngModel)]="cal.OverallIELP" pInputText /> -->
-                            </div>
-                            <div class="col-md-5 d-flex flex-column">
-                                <label style=" margin-right: 12px;">PFDavg</label>
-                                <h4>{{ cal.PFDP | number:'1.1-2'}}</h4>
-                                <!-- <input type="text" class="form-control" [(ngModel)]="cal.PFDP" pInputText /> -->
-                            </div><br>
-                            <div class="col-md-5 d-flex flex-column">
-                                <label style=" margin-right: 12px;">RRF</label>
-                                <h4>{{ cal.RRFP | number:'1.1-2'}}</h4>
-                                <!-- <input type="text" class="form-control" [(ngModel)]="cal.RRFP" pInputText /> -->
-                            </div>
-                            <!-- <div class="row"> -->
-                            <div class="col-md-5 d-flex flex-column">
-                                <label style=" margin-right: 12px;">SIL</label>
-                                <h4>{{cal.SILP | number}}</h4>
-                                <!-- <input type="text" class="form-control" [(ngModel)]="cal.SILP" pInputText /> -->
-                            </div>
+                        
+                            
                             <!-- </div> -->
-                        </div><br>
+                        <!-- </div><br> -->
+                        <p-tabView> 
+                            <p-tabPanel header="People">
+                            <div class="row">
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">Intermediate Event Likelihood</label>
+                                    <h4>{{ initcauses.IEL | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.IEL" pInputText /> -->
+                                </div>
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">TMEL</label>
+                                    <h4>{{ initcauses.RiskMatrix.TRF | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.RiskMatrix.TRF" pInputText /> -->
+                                </div><br><br><br>
+                                <!-- <div class="row"> -->
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">Overall IEL</label>
+                                    <h4>{{ cal.OverallIELP | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.OverallIELP" pInputText /> -->
+                                </div>
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">PFDavg</label>
+                                    <h4>{{ cal.PFDP | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.PFDP" pInputText /> -->
+                                </div><br>
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">RRF</label>
+                                    <h4>{{ cal.RRFP | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.RRFP" pInputText /> -->
+                                </div>
+                                <!-- <div class="row"> -->
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">SIL</label>
+                                    <h4>{{cal.SILP | number}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.SILP" pInputText /> -->
+                                </div>
+                            </div>
+                            </p-tabPanel>
+                            <p-tabPanel header="Environment">
+                                <div class="row">
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">Intermediate Event Likelihood</label>
+                                    <h4>{{ initcauses.IEL | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.IEL" pInputText /> -->
+                                </div>
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">TMEL</label>
+                                    <h4>{{ initcauses.RiskMatrix.TRF | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.RiskMatrix.TRF" pInputText /> -->
+                                </div><br><br><br>
+                                <!-- <div class="row"> -->
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">Overall IEL</label>
+                                    <h4>{{ cal.OverallIELE | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.OverallIELP" pInputText /> -->
+                                </div>
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">PFDavg</label>
+                                    <h4>{{ cal.PFDE | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.PFDP" pInputText /> -->
+                                </div><br>
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">RRF</label>
+                                    <h4>{{ cal.RRFE | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.RRFP" pInputText /> -->
+                                </div>
+                                <!-- <div class="row"> -->
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">SIL</label>
+                                    <h4>{{cal.SILE | number}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.SILP" pInputText /> -->
+                                </div>
+                            </div>
+                            </p-tabPanel>
+                            <p-tabPanel header="Asset">
+                                <div class="row">
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">Intermediate Event Likelihood</label>
+                                    <h4>{{ initcauses.IEL | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.IEL" pInputText /> -->
+                                </div>
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">TMEL</label>
+                                    <h4>{{ initcauses.RiskMatrix.TRF | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.RiskMatrix.TRF" pInputText /> -->
+                                </div><br><br><br>
+                                <!-- <div class="row"> -->
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">Overall IEL</label>
+                                    <h4>{{ cal.OverallIELA | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.OverallIELP" pInputText /> -->
+                                </div>
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">PFDavg</label>
+                                    <h4>{{ cal.PFDA | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.PFDP" pInputText /> -->
+                                </div><br>
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">RRF</label>
+                                    <h4>{{ cal.RRFA | number:'1.1-2'}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.RRFP" pInputText /> -->
+                                </div>
+                                <!-- <div class="row"> -->
+                                <div class="col-md-5 d-flex flex-column">
+                                    <label style=" margin-right: 12px;">SIL</label>
+                                    <h4>{{cal.SILA | number}}</h4>
+                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.SILP" pInputText /> -->
+                                </div>
+                            </div>
+                            </p-tabPanel>
+                        </p-tabView>
                     </ng-template>
                 </p-card>
             </div>
