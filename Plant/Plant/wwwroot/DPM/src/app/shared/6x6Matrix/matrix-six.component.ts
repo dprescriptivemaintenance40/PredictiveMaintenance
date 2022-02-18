@@ -18,5 +18,10 @@ export class Matrix6Component implements OnInit {
 constructor(){
 
 }
+public hidden = false;
+public url = "dist/DPM/assets/img/Matrix.png";
 
+imageSource(){
+    this.hidden = !this.hidden;
+}
 }

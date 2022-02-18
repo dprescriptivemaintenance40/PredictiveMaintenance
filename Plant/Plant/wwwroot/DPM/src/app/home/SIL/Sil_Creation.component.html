@@ -192,12 +192,12 @@
     </div>
 </p-fieldset>
 <br>
-<br>
+<button style="float: right;" label="Save" type="button" class="btn btn-dark" 
+    (click)="Save()" pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save">Save</i></button><br><br>
 <div class="card dpm-card w-100 p-3">
     <div #spreadsheet>
     </div>
     <br>
-    <button type="submit" (click)="Save()">Save</button>
 </div><br>
 
 <p-dialog header="6 * 6 RiskMatrix" [(visible)]="RiskMatrix6" [style]="{width: '100vw'}">

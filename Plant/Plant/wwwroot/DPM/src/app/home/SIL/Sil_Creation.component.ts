@@ -165,112 +165,150 @@ export class SILComponent implements OnInit {
       }, err => console.log(err.error))
   }
   Save() {
-    this.SheetValue = this.getData.getData()
-    console.log(this.SheetValue);
-    this.arr = this.getData.getHeaders();
-    this.cols = this.arr.split(",");
-    let sifDesignObj = [];
-    let sif = new SIFDesign();
-    sif.Id = 1;
-    sif.FinalElement = this.sifDesignObj.FinalElement;
-    sif.RiskMatrix = this.sifDesignObj.RiskMatrix;
-    sif.Sensor = this.sifDesignObj.Sensor;
-    sif.SIFDescription = this.sifDesignObj.SIFDescription;
+      this.SheetValue = this.getData.getData()
+      console.log(this.SheetValue);
+      this.arr = this.getData.getHeaders();
+      this.cols = this.arr.split(",");
+      let sifDesignObj = [];
+      let sif = new SIFDesign();
+      sif.Id = 1;
+      sif.FinalElement = this.sifDesignObj.FinalElement;
+      sif.RiskMatrix = this.sifDesignObj.RiskMatrix;
+      sif.Sensor = this.sifDesignObj.Sensor;
+      sif.SIFDescription = this.sifDesignObj.SIFDescription;
+  
+      this.SheetValue.forEach(sheet => {
+        if (sheet[0] != "") {
+          let impacts = new ImpactEvent();
+          impacts.Id = 1;
+          impacts.SIFId = sif.Id;
+          impacts.ImpactEventDesciption = sheet[0];
+          this.SheetValue.forEach(risk => {
+            var k = 0;
+            if (risk[1] != "" &&  risk[2] != "" && risk[3] != "") {
+              let riskMatrix = new RiskMatrix();
+              riskMatrix.RMId = k++;
+              riskMatrix.IEId = impacts.Id;
+              riskMatrix.Category = risk[1];
+              riskMatrix.Severity = risk[2];
+              riskMatrix.TRF = risk[3];
+              impacts.RiskMatrix.push(riskMatrix);
+              this.SheetValue.forEach(init => {
+                if (init[0] != "" && init[1] != "" && init[2] != "" && init[3] != "" && init[4] != "") {
+    
+                  let initcause = new InitiatingCause();
+                  var j = 4;
+                  var counter = 0;
+                  initcause.Id = counter++;
+                  initcause.RMId = riskMatrix.RMId;
+                  initcause.IEF = init[j + 1];
+                  initcause.IP = init[j + 2];
+                  initcause.PP = init[j + 3];
+                  initcause.TR = init[j + 4];
+                  initcause.initiatingCause = init[j];
+              
+                    this.initcauses = initcause;
+                    riskMatrix.InitiatingCauses.push(initcause);
+                    let protection = new ProtectionLayer();
+                    protection.Description = init[9]
+                    protection.PFD = init[10]
+                    initcause.ProtectionLayers.push(protection);
+  
+                    let protections = new ProtectionLayer();
+                    protections.Description = init[11]
+                    protections.PFD = init[12]
+                    initcause.ProtectionLayers.push(protections);
+  
+                    let protectionlayer = new ProtectionLayer();
+                    protectionlayer.Description = init[13]
+                    protectionlayer.PFD = init[14]
+                    initcause.ProtectionLayers.push(protectionlayer);
+  
+                    let protectionlayers = new ProtectionLayer();
+                    protectionlayers.Description = init[15]
+                    protectionlayers.PFD = init[16]
+                    initcause.ProtectionLayers.push(protectionlayers);
+                    
+                  
+                  
+                }
+                else if (init[0] == "" && init[1] == "" && init[2] == "" && init[3] == "" && init[4] != "") {
+                  if(sheet[1] == "P"){
+                  let initcause = new InitiatingCause();
+                  var j = 4;
+                  var counter = 0;
+                  initcause.Id = counter++;
+                  initcause.RMId = riskMatrix.RMId;
+                  initcause.IEF = init[j + 1];
+                  initcause.IP = init[j + 2];
+                  initcause.PP = init[j + 3];
+                  initcause.TR = init[j + 4];
+                  initcause.initiatingCause = init[j];
+                    this.initcauses = initcause;
+                    riskMatrix.InitiatingCauses.push(initcause);
+  
+                    let protection = new ProtectionLayer();
+                    protection.Description = risk[9]
+                    protection.PFD = risk[10]
+                    initcause.ProtectionLayers.push(protection);
+  
+                    let protections = new ProtectionLayer();
+                    protections.Description = init[11]
+                    protections.PFD = init[12]
+                    initcause.ProtectionLayers.push(protections);
 
-    this.SheetValue.forEach(sheet => {
-      if (sheet[0] != "") {
-        let impacts = new ImpactEvent();
-        impacts.Id = 1;
-        impacts.SIFId = sif.Id;
-        impacts.ImpactEventDesciption = sheet[0];
-        this.SheetValue.forEach(sheet => {
-          if (sheet[1] != '' && sheet[2] != "" && sheet[3] != "") {
-            let initcause = new InitiatingCause();
-            var j = 4;
-            var counter = 0;
-            initcause.RiskMatrix.RMId = 1;
-            initcause.RiskMatrix.IEId = impacts.Id;
-            initcause.RiskMatrix.Category = sheet[1];
-            initcause.RiskMatrix.Severity = sheet[2];
-            initcause.RiskMatrix.TRF = sheet[3];
-            if (sheet[j] != "") {
-              initcause.Id = counter++;
-              initcause.IEId = impacts.Id;
-              initcause.RMId = 1;
-              initcause.IEF = sheet[j + 1];
-              initcause.IP = sheet[j + 2];
-              initcause.PP = sheet[j + 3];
-              initcause.TR = sheet[j + 4];
-              initcause.initiatingCause = sheet[j];
-
-              this.initcauses = initcause;
-              impacts.InitiatingCauses.push(initcause);
-
-              let protection = new ProtectionLayer();
-              protection.Description = sheet[9]
-              protection.PFD = sheet[10]
-              initcause.ProtectionLayers.push(protection);
-
-              let protections = new ProtectionLayer();
-              protections.Description = sheet[11]
-              protections.PFD = sheet[12]
-              initcause.ProtectionLayers.push(protections);
-
-              let protectionlayer = new ProtectionLayer();
-              protectionlayer.Description = sheet[13]
-              protectionlayer.PFD = sheet[14]
-              initcause.ProtectionLayers.push(protectionlayer);
-
-              let protectionlayers = new ProtectionLayer();
-              protectionlayers.Description = sheet[15]
-              protectionlayers.PFD = sheet[16]
-              initcause.ProtectionLayers.push(protectionlayers);
+  let protectionlayer = new ProtectionLayer();
+                    protectionlayer.Description = init[13]
+                    protectionlayer.PFD = init[14]
+                    initcause.ProtectionLayers.push(protectionlayer);
+  
+                    let protectionlayers = new ProtectionLayer();
+                    protectionlayers.Description = init[15]
+                    protectionlayers.PFD = init[16]
+                    initcause.ProtectionLayers.push(protectionlayers);
+                   
+                
+                }
+                }
+              });
+              
             }
-          }
-        });
-        sif.ImpactEvents.push(impacts)
-      }
-    });
-    let calc = new Calculation(sif);
-    this.cal = calc;
-    sifDesignObj.push(sif);
-    console.log(sifDesignObj)
-    console.log(calc)
-
-  }
+  
+          });
+          sif.ImpactEvents.push(impacts)
+        }
+      });
+      let calc = new Calculation(sif);
+      this.cal = calc;
+      sifDesignObj.push(sif);
+      console.log(sifDesignObj)
+      console.log(calc)
+  
+    }
   RiskMatrix(Matrix: any) {
     this.RiskMatrix6 = false;
     this.RiskMatrix5 = false;
     this.cells = '';
     var r = Matrix.innerText;
     this.cells = this.getData.setValueFromCoords([this.x], [this.y], [r], [true]);
-    if (r == "1A" || r == "2A" || r == "3A" || r == "4A" || r == "5A" || r == "6A") {
+    if (r == "1A" || r == "1B" || r == "1C" || r == "1D" || r == "2A" ||r == "2B" || r == "3A") {
       var rm = 1.00E-01;
       this.risk = this.getData.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
       rm = 0;
     }
-    else if (r == "1B" || r == "2B" || r == "3B" || r == "4B" || r == "5B" || r == "6B") {
+    else if (r == "1E" || r == "1F" || r == "2C" || r == "2D" || r == "2E" || r == "3B"|| r == "3C"|| r == "4A"|| r == "4B"|| r == "5A") {
       var rm = 1.00E-02;
       this.risk = this.getData.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
       rm = 0;
     }
-    else if (r == "1C" || r == "2C" || r == "3C" || r == "4C" || r == "5C" || r == "6C") {
+    else if (r == "2F" || r == "3D" || r == "3E" || r == "4C" || r == "5B" || r == "6A") {
       var rm = 1.00E-03;
       this.risk = this.getData.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
       rm = 0;
     }
-    else if (r == "1D" || r == "2D" || r == "3D" || r == "4D" || r == "5D" || r == "6D") {
+    else if (r == "3F" || r == "4D" || r == "4E" || r == "4F" || r == "5C" || r == "5D"|| r == "5E"|| r == "5F"
+    ||r=="6B" || r == "6C" || r == "6D" || r == "6E" || r == "6F") {
       var rm = 1.00E-04;
-      this.risk = this.getData.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
-      rm = 0;
-    }
-    else if (r == "1E" || r == "2E" || r == "3E" || r == "4E" || r == "5E" || r == "6E") {
-      var rm = 1.00E-05;
-      this.risk = this.getData.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
-      rm = 0;
-    }
-    else if (r == "1F" || r == "2F" || r == "3F" || r == "4F" || r == "5F" || r == "6F") {
-      var rm = 1.00E-06;
       this.risk = this.getData.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
       rm = 0;
     }
