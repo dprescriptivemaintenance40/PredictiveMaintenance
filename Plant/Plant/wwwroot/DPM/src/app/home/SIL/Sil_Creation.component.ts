@@ -35,6 +35,7 @@ export class SILComponent implements OnInit {
   public y: number;
   public cells: string = "";
   public impact: ImpactEvent = new ImpactEvent();
+  public RiskMatrixVal:RiskMatrix=new RiskMatrix();
   public initcauses: InitiatingCause = new InitiatingCause();
   public sifDesignObj: SIFDesign = new SIFDesign();
   public cal: Calculation = new Calculation(this.sifDesignObj);
@@ -194,7 +195,9 @@ export class SILComponent implements OnInit {
             riskMatrix.Category = this.SheetValue[i][1];
             riskMatrix.Severity = this.SheetValue[i][2];
             riskMatrix.TRF = this.SheetValue[i][3];
+            var trf= riskMatrix.TRF;
             impacts.RiskMatrix.push(riskMatrix);
+            this.RiskMatrixVal=riskMatrix;
             for (let i = n; i < this.SheetValue[i].length; i++) {
               if (this.SheetValue[i][0] != "" && this.SheetValue[i][1] != "" && this.SheetValue[i][2] != "" && this.SheetValue[i][3] != "" && this.SheetValue[i][4] != "" ||
                 this.SheetValue[i][0] == "" && this.SheetValue[i][1] == "" && this.SheetValue[i][2] == "" && this.SheetValue[i][3] == "" && this.SheetValue[i][4] != "") {
@@ -211,6 +214,7 @@ export class SILComponent implements OnInit {
                 initcause.initiatingCause = this.SheetValue[i][j];
 
                 this.initcauses = initcause;
+                initcause.RiskMatrix.TRF=trf;
                 riskMatrix.InitiatingCauses.push(initcause);
                 let protection = new ProtectionLayer();
                 protection.Description = this.SheetValue[i][9]
@@ -245,6 +249,7 @@ export class SILComponent implements OnInit {
             riskMatrix.Category = this.SheetValue[i][1];
             riskMatrix.Severity = this.SheetValue[i][2];
             riskMatrix.TRF = this.SheetValue[i][3];
+            var trf= riskMatrix.TRF;
             impacts.RiskMatrix.push(riskMatrix);
             for (let j = i; j < this.SheetValue[i].length; j++) {
               if ((this.SheetValue[j][0] == "" && this.SheetValue[j][1] == "E" && this.SheetValue[j][2] != "" && this.SheetValue[j][3] != "" && this.SheetValue[j][4] != "") ||
@@ -262,6 +267,7 @@ export class SILComponent implements OnInit {
                 initcause.initiatingCause = this.SheetValue[j][k];
 
                 this.initcauses = initcause;
+                initcause.RiskMatrix.TRF=trf;
                 riskMatrix.InitiatingCauses.push(initcause);
                 let protection = new ProtectionLayer();
                 protection.Description = this.SheetValue[j][9]
@@ -296,12 +302,14 @@ export class SILComponent implements OnInit {
             riskMatrix.Category = this.SheetValue[i][1];
             riskMatrix.Severity = this.SheetValue[i][2];
             riskMatrix.TRF = this.SheetValue[i][3];
+            var trf= riskMatrix.TRF;
             impacts.RiskMatrix.push(riskMatrix);
             for (let m = i; m < this.SheetValue[i].length; m++) {
               if ((this.SheetValue[m][0] == "" && this.SheetValue[m][1] == "A" && this.SheetValue[m][2] != "" && this.SheetValue[m][3] != "" && this.SheetValue[m][4] != "") ||
                 (this.SheetValue[m][0] == "" && this.SheetValue[m][1] == "" && this.SheetValue[m][2] == "" && this.SheetValue[m][3] == "" && this.SheetValue[m][4] != "")) {
 
                 let initcause = new InitiatingCause();
+                var k = 4;
                 var counter = 0;
                 initcause.Id = counter++;
                 initcause.RMId = riskMatrix.RMId;
@@ -309,6 +317,7 @@ export class SILComponent implements OnInit {
                 initcause.IP = this.SheetValue[m][k + 2];
                 initcause.PP = this.SheetValue[m][k + 3];
                 initcause.TR = this.SheetValue[m][k + 4];
+                initcause.RiskMatrix.TRF=trf;
                 initcause.initiatingCause = this.SheetValue[m][k + 3];
 
                 this.initcauses = initcause;
@@ -350,7 +359,7 @@ export class SILComponent implements OnInit {
     this.cal = calc;
     sifDesignObj.push(sif);
     console.log(sifDesignObj)
-    console.log(calc)
+    console.log(this.cal)
   }
 
   RiskMatrix(Matrix: any) {

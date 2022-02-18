@@ -50,7 +50,9 @@ export class InitiatingCause {
 
     public RiskMatrix: RiskMatrix = new RiskMatrix();
 
-    public IEL: number = 0;  //Intermediate Event Likelihood for people
+    public IELP: number = 0;  //Intermediate Event Likelihood for people
+    public IELE: number = 0;  //Intermediate Event Likelihood for people
+    public IELA: number = 0;  //Intermediate Event Likelihood for people
 
 }
 export class ProtectionLayer  //Independent Protection Layer
@@ -93,7 +95,7 @@ export class Calculation {
         var ielTemp: number = 0;
         var ielTemp1: number = 0;
         this.sif.ImpactEvents.forEach(impactevent => {
-            impactevent.RiskMatrix.forEach(riskmatrix => {
+            impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
                 riskmatrix.InitiatingCauses.forEach(initiatingcause => {
                     initiatingcause.ProtectionLayers.forEach(protectionlayer => {
                         if (ielTemp == 0) {
@@ -103,7 +105,33 @@ export class Calculation {
                             ielTemp1 = protectionlayer.PFD * ielTemp;
                         }
                     });
-                    initiatingcause.IEL = ielTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    initiatingcause.IELP = ielTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                });
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "E").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(initiatingcause => {
+                    initiatingcause.ProtectionLayers.forEach(protectionlayer => {
+                        if (ielTemp == 0) {
+                            ielTemp = protectionlayer.PFD;
+                        }
+                        else {
+                            ielTemp1 = protectionlayer.PFD * ielTemp;
+                        }
+                    });
+                    initiatingcause.IELE = ielTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                });
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(initiatingcause => {
+                    initiatingcause.ProtectionLayers.forEach(protectionlayer => {
+                        if (ielTemp == 0) {
+                            ielTemp = protectionlayer.PFD;
+                        }
+                        else {
+                            ielTemp1 = protectionlayer.PFD * ielTemp;
+                        }
+                    });
+                    initiatingcause.IELA = ielTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
                 });
             });
         })
@@ -112,29 +140,33 @@ export class Calculation {
     public CalculateOverallIEL() {
 
         this.sif.ImpactEvents.forEach(impactevent => {
-            impactevent.RiskMatrix.forEach(riskmatrix => {
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category == "A").forEach(riska => {
-                    if (this.OverallIELA == 0) {
-                        this.OverallIELA = riska.IEL
-                    }
-                    else {
-                        this.OverallIELA = riska.IEL * this.OverallIELA;
-                    }
-                });
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category === "P").forEach(riskp => {
+                impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riskp => {
                     if (this.OverallIELP == 0) {
-                        this.OverallIELP = riskp.IEL
+                        this.OverallIELP = riskp.IELP
                     }
                     else {
-                        this.OverallIELP = riskp.IEL * this.OverallIELP;
+                        this.OverallIELP = riskp.IELP + this.OverallIELP;
                     }
                 });
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category == "E").forEach(riske => {
+            });
+                impactevent.RiskMatrix.filter(i => i.Category == "E").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riske => {
                     if (this.OverallIELE == 0) {
-                        this.OverallIELE = riske.IEL
+                        this.OverallIELE = riske.IELE
                     }
                     else {
-                        this.OverallIELE = riske.IEL * this.OverallIELE;
+                        this.OverallIELE = riske.IELE + this.OverallIELE;
+                    }
+                });
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riska => {
+                    if (this.OverallIELA == 0) {
+                        this.OverallIELA = riska.IELA
+                    }
+                    else {
+                        this.OverallIELA = riska.IELA + this.OverallIELA;
                     }
                 });
             });
@@ -143,18 +175,22 @@ export class Calculation {
     public CalculatePFD() {
 
         this.sif.ImpactEvents.forEach(impactevent => {
-            impactevent.RiskMatrix.forEach(riskmatrix => {
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category == "A").forEach(riska => {
+            impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riska => {
                     if (this.PFDA == 0) {
                         this.PFDA = riska.RiskMatrix.TRF / this.OverallIELA;
                     }
                 });
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category === "P").forEach(riskp => {
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riskp => {
                     if (this.PFDP == 0) {
                         this.PFDP = riskp.RiskMatrix.TRF / this.OverallIELP;
                     }
                 });
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category == "E").forEach(riske => {
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "E").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riske => {
                     if (this.PFDE == 0) {
                         this.PFDE = riske.RiskMatrix.TRF / this.OverallIELE;
                     }
@@ -164,18 +200,22 @@ export class Calculation {
     }
     public CalculateRRF() {
         this.sif.ImpactEvents.forEach(impactevent => {
-            impactevent.RiskMatrix.forEach(riskmatrix => {
+            impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
                 riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category == "A").forEach(riska => {
                     if (this.RRFA == 0) {
                         this.RRFA = 1 / this.PFDA;
                     }
                 });
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category === "P").forEach(riskp => {
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riskp => {
                     if (this.RRFP == 0) {
                         this.RRFP = 1 / this.PFDP;
                     }
                 });
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category == "E").forEach(riske => {
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "E").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riske => {
                     if (this.RRFE == 0) {
                         this.RRFE = 1 / this.PFDE;
                     }
@@ -185,8 +225,8 @@ export class Calculation {
     }
     public CalculateSIL() {
         this.sif.ImpactEvents.forEach(impactevent => {
-            impactevent.RiskMatrix.forEach(riskmatrix => {
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category == "A").forEach(riska => {
+            impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riska => {
                     if (this.SILA == 0) {
                         if (this.RRFA < 10) {
                             return 0
@@ -200,7 +240,9 @@ export class Calculation {
                         else { return 4 }
                     }
                 });
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category === "P").forEach(riskp => {
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riskp => {
                     if (this.SILP == 0) {
                         if (this.RRFP < 10) {
                             return 0
@@ -214,7 +256,9 @@ export class Calculation {
                         else { return 4 }
                     }
                 });
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category == "E").forEach(riske => {
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "E").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riske => {
                     if (this.SILE == 0) {
                         if (this.RRFE < 10) {
                             return 0
