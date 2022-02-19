@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { APP_INITIALIZER } from "@angular/core";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { ReportTemplateMaster } from "./Models/ReportTemplate.model";
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +21,13 @@ export class ConfigService {
                 });
         });
     }
+
+    postReport(report:ReportTemplateMaster):Observable<any>{
+        return this.http.post("http://localhost:5025/api/Report", report,{responseType:'json'});
+    }
+    getReportTmlpt():Observable<any>{
+        return this.http.get("http://localhost:5025/api/Report", {responseType:'json'});
+    }
     // Gets API route based on the provided key
     getApi(key: string): string {
         return this.config["API_ENDPOINTS"][key];
@@ -29,6 +37,7 @@ export class ConfigService {
         return this.config[key];
     }
 }
+
 
 export function ConfigFactory(config: ConfigService) {
     return () => config.load();

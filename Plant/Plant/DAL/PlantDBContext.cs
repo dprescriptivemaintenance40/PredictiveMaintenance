@@ -42,6 +42,11 @@ namespace Plant.DAL
         public DbSet<Sensor> Sensors { get; set; }
         public DbSet<LogicSolver> LogicSolvers { get; set; }
         public DbSet<FinalElement> FinalElements { get; set; }
+
+        //Report
+        public DbSet<ReportTemplateMaster> ReportTemplateMasters { get; set; }
+        public DbSet<ReportMaster> ReportMasters { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -239,6 +244,8 @@ namespace Plant.DAL
              .HasOne(p => p.sif)
              .WithMany(p => p.sensors)
             .HasForeignKey(p => p.SIFId);
+
+            modelBuilder.Entity<ReportTemplateMaster>().ToTable("tblReportTemplate");
 
             modelBuilder.Entity<LogicSolver>().ToTable("tblLogicSolver");
             modelBuilder.Entity<LogicSolver>().HasKey(c => c.LogicSolverId);

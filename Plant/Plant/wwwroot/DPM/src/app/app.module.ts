@@ -22,6 +22,7 @@ import { ConfigModule } from './shared/config.service';
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
+    
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

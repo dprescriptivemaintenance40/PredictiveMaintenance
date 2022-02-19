@@ -1,0 +1,238 @@
+<div>
+    <button (click)="print()">Print</button>
+</div>
+<div class="container" id="content" #content>
+    <div>
+        <h4 style="text-align:center;"><b>Integrity Level (SIL) Assessment and Verification Report</b></h4>
+    </div>
+    <div>
+        <h6>Company:</h6>
+    </div>
+    <div>
+        <h6>Plant:</h6>
+    </div>
+    <br>
+    <div>
+        <h6>PREFACE</h6>
+    </div>
+    <br>
+    <div>
+        <p style="text-align:left;">
+            With the adoption of IEC 61511 and ANSI/ISA-84.00.01-2004 standards,
+            Company has made a concerted effort to provide a standardized approach
+            to the design and implementation of Safety Instrumented Systems.
+            This report describes the methodology used during the
+            Safety Integrity Level (SIL) Assessment, Verification of existing Plant, and findings.
+            SIL Assessment was accomplished through the use of Hazard Identification;
+            Likelihood, Consequence and Risk Analysis.
+            Each of the Plant’s Safety Instrumented Function (SIF)
+            was identified during SIL Assessment, making use of both layer of
+            protection analysis (LOPA) and consequence analysis. A target SIL
+            was determined for each SIF through quantitative and qualitative analysis.
+            SIL Verification was accomplished using Fault Tree Analysis in order to
+            determine the average probability of failure on demand (PFDAVG) of each SIF.
+            This analysis was a jointly carried out along with the Company Safety,
+            Control & Instrument Maintenance, and Process teams.
+        </p>
+    </div>
+    <br>
+    <div>
+        <h6>COMPANY BACKGROUND</h6>
+    </div>
+    <br>
+    <div>
+        <h6>BACKGROUND</h6>
+    </div>
+    <div>
+        The following aids were used in SIL Assessment and SIL Verification:
+        <ol>
+            <li>Software tools</li>
+            <li>Global work processes</li>
+            <li>Global Engineering Standards and Procedures</li>
+            <li>Training materials</li>
+            <li>SIL application library</li>
+            <li>Standard templates for SIL documentation</li>
+        </ol>
+        <p>
+            DPM APM software have been deployed for Fault Tree Analysis and Layer of Protection Analysis
+            have been developed for quantifying risks, performing frequency analysis, and for
+            verification of safety instrumented system performance.
+            Failure rate data and frequency data for use by these programs was
+            obtained through industry generic failure rate data books, 3rd party consultants,
+            licensed databases, supplier safety manuals, supplier failure mode effects and
+            diagnostic analysis reports, and internal process plant operating experience.
+        </p>
+        <p>
+            Basic engineering policies (BEP) for use in the design and implementation of safety
+            instrumented systems were developed in order to establish and communicate the company’s
+            high level policy and strategy for the transition to the new industry standard.
+            The BEP provided guidance for more specific and detail oriented engineering procedures
+            and standards which were thendeveloped.
+        </p>
+        <p>
+            Training materials were prepared using both internal and external Process Safety,
+            Process Control, and Instrumentation subject matter experts.
+            These materials covered various aspects of process safety analysis
+            and were developed with specific Company terminology and work processes in mind.
+            This training was rolled out to the company in a systematic approach.
+        </p>
+        <p>
+            An applications library was developed that contains typical instrumented protection
+            systems designs, as well as fundamental information such as FMEA reports, manufacturer
+            safety manuals, etc.
+        </p>
+        <p>
+            After completion, SIL assessments were added to the library for future use to support
+            management of change or to serve as a starting point for similar applications.
+            This library has the benefit of helping to reduce engineering time and to facilitate
+            consistent implementations across multiple business units. Standard templates for SIL
+            assessment and verification reports were developed. These reports provide a consistent
+            format that aids the ease of use and understanding of thematerial.
+        </p>
+    </div>
+    <br>
+    <div>
+        <h6>REPORT SPECIFICS</h6>
+    </div>
+    <div>
+        <p>
+            This case study describes the work process followed in the SIL Assessment and
+            Verification of previously designed safety instrumented systems within the Company.
+            The detailed analysis is presented in this report.
+        </p>
+    </div>
+    <div>
+        <h6>Data Gathering</h6>
+    </div>
+    <div>
+        <p>
+            Hazard identification and consequence analysis had been recently performed by Company.
+            Existing instrumented protections were previously designed based on the original hazard
+            and consequence analysis. This informationwas collected and used in the SIL Assessment
+            and Verification.
+        </p>
+        A summary of process unit for evaluation is listed:
+        <ol>
+            <!-- <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li> -->
+        </ol>
+        <p>
+            The steps outlined in the Safety Lifecycle (Figure 1) were used as the basis for the evaluation.
+            For this case study, the existing Process Hazard Analysis (PHA) and risk assessment were
+            examined and updated using layer of protection analysis. A SIL target was defined for each
+            SIF by back-calculating the required risk reduction needed to be achieved for that SIF in
+            order to satisfy the Company’s Corporate risk target. Each existing SIF was then evaluated
+            to determine what performance could be achieved given its design, architecture, configuration
+            and mechanical integrity program. Calculated performance was then compared to the SIL target
+            (using maximum allowable PFDAVG) to confirm that the safety instrumented function was adequate,
+            coupled with the other layers of protection to meet our corporate risktarget.
+        </p>
+    </div>
+    <div>
+        <img src="dist/DPM/assets/img/Safety_LifeCycle.PNG" style="margin-left: 75px;" class="style">
+        <div style="text-align: center;">
+            Figure 1: ISA 84.01 Safety Lifecycle
+        </div>
+    </div>
+    <div>
+        <br>
+        <h6>SIL Assessment</h6>
+    </div>
+    <div>
+        <p>The goal of the SIL Assessment was to identify all Safety Instrumented Functions (SIF) and
+            to determine a required performance level for each SIF. Company classifiesrisks into
+            importance levels (L1 through L3). Only L3S safety instrumented functions were evaluated
+            during this case study. It is Company’s interpretation that the L3S classification
+            corresponds to a SIF as defined in IEC 61511. Table 1 describes the importance level
+            classifications used within Company.
+        </p>
+    </div>
+    <br>
+    <div>
+        <h6 style="text-align: center;">Table 1: Importance Level Classification</h6>
+    </div>
+    <div>
+        <img src="dist/DPM/assets/img/Capture.PNG" style="margin-left: 95px;width: 800px;">
+    </div>
+    <div>
+        <p>
+            At Company, the importance level helps classify the level of security,
+            administrative controls and mechanical integrity requirements.
+            The importance level also provides guidance and requirements for the level
+            of segregation and independence required between the safety instrumented system
+            (SIS) and basic process control system (BPCS).
+        </p>
+        <p>
+            Process hazard analysis information that was prepared was reviewed to identify
+            instrumented safeguards. Company typically employs the HAZOP methodology for
+            process hazard identification analysis. The nodes of the referred PHA HAZOP
+            worksheet that potentially can lead to safety consequences is listed in Table 2.
+            The PHA report details the possible hazards, the consequence of the hazard, and
+            any safeguards that may exist. Note the safeguards may include equipment and process
+            design, mechanical protection systems, instrumented protection systems and administrative
+            controls.
+        </p>
+    </div>
+    <br>
+    <div>
+        <h6 style="text-align: center;">Table 2: Safety Consequence Nodes of Process Hazards</h6>
+    </div>
+    <div>
+        <h6 style="text-align: center;">Analysis HAZOP Worksheet</h6>
+    </div>
+    <div>
+        <img src="dist/DPM/assets/img/Capture2.PNG" style="margin-left: 95px;width: 800px;">
+    </div>
+    <br>
+    <div>
+        <p>
+            DPM AI Analytics’ developed layer of protection analysis (DPMLoPA) and
+            fault tree analysis (DPMTree) software programs were used during the SIL
+            Assessment and Verification work process. DPMTree was used to determine
+            initiating cause frequencies for the layer of protection analysis when needed
+            and the PFDAVG for identified SIF’s. Layer of protection analysis accounts for
+            multiple layers of independent protection that are typically part of a processdesign.
+        </p>
+        <p>
+            Typical layers of protection considered are, and used as applicable:
+        </p>
+        <ol>
+            <li>Basic Process Control System (BPCS) – Regulatorycontrol
+            </li>
+            <li>Alarms that provide enough time for knowledgeable
+                operators to recover from initial upsets prior to the hazardousevent
+            </li>
+            <li>
+                Safety Instrumented Functions
+            </li>
+            <li>
+                Inherent pressure containingstrength
+            </li>
+            <li>
+                Pressure ReliefDevices
+            </li>
+            <li>
+                Secondarycontainment
+            </li>
+            <li>
+                Barricades
+            </li>
+            <li>
+                Administrative controls
+            </li>
+            <li>
+                Exposureprobability
+            </li>
+        </ol>
+        <p>
+            The LOPA results are reported in a table format from the DPMLoPA software.
+            Figures 2 and 3 illustrate an example (developed for training purposes) that
+            demonstrates the execution and methodology used during the SIL Assessment portion
+            of the case study.
+        </p>
+    </div>
+</div>
