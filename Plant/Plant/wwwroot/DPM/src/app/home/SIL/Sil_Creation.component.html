@@ -55,9 +55,9 @@
                             </div>
                             <div class="col-md-4" d-flex flex-column>
                                 <label style=" margin-right: 12px;">Target SIL</label>
-                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.TargetSIL"
-                                    pInputText />
-
+                                <!-- <input type="text" class="form-control" [(ngModel)]="sifDesignObj.TargetSIL"
+                                    pInputText /> -->
+                                    <h4>{{ sifDesignObj.TargetSIL | number}}</h4>
                             </div>
                         </div>
                     </ng-template>

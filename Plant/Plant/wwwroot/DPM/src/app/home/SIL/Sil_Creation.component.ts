@@ -35,7 +35,7 @@ export class SILComponent implements OnInit {
   public y: number;
   public cells: string = "";
   public impact: ImpactEvent = new ImpactEvent();
-  public RiskMatrixVal:RiskMatrix=new RiskMatrix();
+  public RiskMatrixVal: RiskMatrix = new RiskMatrix();
   public initcauses: InitiatingCause = new InitiatingCause();
   public sifDesignObj: SIFDesign = new SIFDesign();
   public cal: Calculation = new Calculation(this.sifDesignObj);
@@ -179,62 +179,86 @@ export class SILComponent implements OnInit {
     sif.RiskMatrix = this.sifDesignObj.RiskMatrix;
     sif.Sensor = this.sifDesignObj.Sensor;
     sif.SIFDescription = this.sifDesignObj.SIFDescription;
+    var impactId = 0;
     for (let n = 0; n < this.SheetValue.length; n++) {
-      console.log(this.SheetValue[n]);
       if (this.SheetValue[n][0] != "") {
         let impacts = new ImpactEvent();
-        impacts.Id = 1;
+        impactId++;
+        impacts.Id = impactId;
         impacts.SIFId = sif.Id;
         impacts.ImpactEventDesciption = this.SheetValue[n][0];
+        var riskMatrixId = 0;
         for (let i = n; i < this.SheetValue[i].length; i++) {
-          var k = 0;
+          // var k = 0;
           if ((this.SheetValue[i][0] == "" || this.SheetValue[i][0] == impacts.ImpactEventDesciption) && this.SheetValue[i][1] == "P" && this.SheetValue[i][2] != "" && this.SheetValue[i][3] != "") {
             let riskMatrix = new RiskMatrix();
-            riskMatrix.RMId = k++;
+            riskMatrixId++
+            riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
             riskMatrix.Severity = this.SheetValue[i][2];
             riskMatrix.TRF = this.SheetValue[i][3];
             // var trfp= riskMatrix.TRFP;
             impacts.RiskMatrix.push(riskMatrix);
-            this.RiskMatrixVal=riskMatrix;
+            this.RiskMatrixVal = riskMatrix;
+            var initcauseId = 0;
             for (let i = n; i < this.SheetValue[i].length; i++) {
               if (this.SheetValue[i][0] != "" && this.SheetValue[i][1] != "" && this.SheetValue[i][2] != "" && this.SheetValue[i][3] != "" && this.SheetValue[i][4] != "" ||
                 this.SheetValue[i][0] == "" && this.SheetValue[i][1] == "" && this.SheetValue[i][2] == "" && this.SheetValue[i][3] == "" && this.SheetValue[i][4] != "") {
 
                 let initcause = new InitiatingCause();
+                initcauseId++
                 var j = 4;
                 var counter = 0;
-                initcause.Id = counter++;
+                initcause.Id = initcauseId;
                 initcause.RMId = riskMatrix.RMId;
                 initcause.IEF = this.SheetValue[i][j + 1];
                 initcause.IP = this.SheetValue[i][j + 2];
                 initcause.PP = this.SheetValue[i][j + 3];
                 initcause.TR = this.SheetValue[i][j + 4];
                 initcause.initiatingCause = this.SheetValue[i][j];
-
                 this.initcauses = initcause;
-                // initcause.RiskMatrix.TRFP=trfp;
                 riskMatrix.InitiatingCauses.push(initcause);
+
                 let protection = new ProtectionLayer();
+                protection.Id = 1;
+                protection.ICId = initcause.Id;
+                protection.NameOfIPL = "General Process Design";
                 protection.Description = this.SheetValue[i][9]
                 protection.PFD = this.SheetValue[i][10]
                 initcause.ProtectionLayers.push(protection);
 
                 let protections = new ProtectionLayer();
+                protections.Id = 2;
+                protections.ICId = initcause.Id;
+                protections.NameOfIPL = "BPCS";
                 protections.Description = this.SheetValue[i][11]
                 protections.PFD = this.SheetValue[i][12]
                 initcause.ProtectionLayers.push(protections);
 
                 let protectionlayer = new ProtectionLayer();
+                protectionlayer.Id = 3;
+                protectionlayer.ICId = initcause.Id;
+                protectionlayer.NameOfIPL = "Alarm";
                 protectionlayer.Description = this.SheetValue[i][13]
                 protectionlayer.PFD = this.SheetValue[i][14]
                 initcause.ProtectionLayers.push(protectionlayer);
 
                 let protectionlayers = new ProtectionLayer();
+                protectionlayers.Id = 4;
+                protectionlayers.ICId = initcause.Id;
+                protectionlayers.NameOfIPL = "Restricted Acess";
                 protectionlayers.Description = this.SheetValue[i][15]
                 protectionlayers.PFD = this.SheetValue[i][16]
                 initcause.ProtectionLayers.push(protectionlayers);
+
+                let iplDyke = new ProtectionLayer();
+                iplDyke.Id = 5;
+                iplDyke.ICId = initcause.Id;
+                iplDyke.NameOfIPL = "IPL Dyke,PRV";
+                iplDyke.Description = this.SheetValue[i][17]
+                iplDyke.PFD = this.SheetValue[i][18]
+                initcause.ProtectionLayers.push(iplDyke);
 
               }
               else if (this.SheetValue[i][1] == "E" || this.SheetValue[i][1] == "A") {
@@ -244,53 +268,72 @@ export class SILComponent implements OnInit {
           }
           else if ((this.SheetValue[i][0] == "" || this.SheetValue[i][0] == impacts.ImpactEventDesciption) && this.SheetValue[i][1] == "E" && this.SheetValue[i][2] != "" && this.SheetValue[i][3] != "") {
             let riskMatrix = new RiskMatrix();
-            riskMatrix.RMId = k++;
+            riskMatrixId++
+            riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
             riskMatrix.Severity = this.SheetValue[i][2];
             riskMatrix.TRF = this.SheetValue[i][3];
             // var trfe= riskMatrix.TRFE;
             impacts.RiskMatrix.push(riskMatrix);
-            this.RiskMatrixVal=riskMatrix;
+            this.RiskMatrixVal = riskMatrix;
+            var initcauseId = 0;
             for (let j = i; j < this.SheetValue[i].length; j++) {
               if ((this.SheetValue[j][0] == "" && this.SheetValue[j][1] == "E" && this.SheetValue[j][2] != "" && this.SheetValue[j][3] != "" && this.SheetValue[j][4] != "") ||
-                (this.SheetValue[j][0] == "" && this.SheetValue[j][1] == "" && this.SheetValue[j][2] == "" && this.SheetValue[j][3] == "" && this.SheetValue[j][4] != "") || 
+                (this.SheetValue[j][0] == "" && this.SheetValue[j][1] == "" && this.SheetValue[j][2] == "" && this.SheetValue[j][3] == "" && this.SheetValue[j][4] != "") ||
                 (this.SheetValue[j][0] != "" && this.SheetValue[j][1] == "E" && this.SheetValue[j][2] != "" && this.SheetValue[j][3] != "" && this.SheetValue[j][4] != "")) {
-
                 let initcause = new InitiatingCause();
                 var k = 4;
-                var counter = 0;
-                initcause.Id = counter++;
+                initcauseId++;
+                initcause.Id = initcauseId;
                 initcause.RMId = riskMatrix.RMId;
                 initcause.IEF = this.SheetValue[j][k + 1];
                 initcause.IP = this.SheetValue[j][k + 2];
                 initcause.PP = this.SheetValue[j][k + 3];
                 initcause.TR = this.SheetValue[j][k + 4];
                 initcause.initiatingCause = this.SheetValue[j][k];
-
                 this.initcauses = initcause;
-                // initcause.RiskMatrix.TRFE=trfe;
                 riskMatrix.InitiatingCauses.push(initcause);
+
                 let protection = new ProtectionLayer();
+                protection.Id = 1;
+                protection.ICId = initcause.Id;
+                protection.NameOfIPL = "General Process Design";
                 protection.Description = this.SheetValue[j][9]
                 protection.PFD = this.SheetValue[j][10]
                 initcause.ProtectionLayers.push(protection);
 
                 let protections = new ProtectionLayer();
+                protections.Id = 2;
+                protections.ICId = initcause.Id;
+                protections.NameOfIPL = "BPCS";
                 protections.Description = this.SheetValue[j][11]
                 protections.PFD = this.SheetValue[j][12]
                 initcause.ProtectionLayers.push(protections);
 
                 let protectionlayer = new ProtectionLayer();
+                protectionlayer.Id = 3;
+                protectionlayer.ICId = initcause.Id;
+                protectionlayer.NameOfIPL = "Alarm";
                 protectionlayer.Description = this.SheetValue[j][13]
                 protectionlayer.PFD = this.SheetValue[j][14]
                 initcause.ProtectionLayers.push(protectionlayer);
 
                 let protectionlayers = new ProtectionLayer();
+                protectionlayers.Id = 4;
+                protectionlayers.ICId = initcause.Id;
+                protectionlayers.NameOfIPL = "Restricted Acess";
                 protectionlayers.Description = this.SheetValue[j][15]
                 protectionlayers.PFD = this.SheetValue[j][16]
                 initcause.ProtectionLayers.push(protectionlayers);
 
+                let iplDyke = new ProtectionLayer();
+                iplDyke.Id = 5;
+                iplDyke.ICId = initcause.Id;
+                iplDyke.NameOfIPL = "IPL Dyke,PRV";
+                iplDyke.Description = this.SheetValue[j][17]
+                iplDyke.PFD = this.SheetValue[j][18]
+                initcause.ProtectionLayers.push(iplDyke);
               }
               else if (this.SheetValue[j][1] == "A" || this.SheetValue[j][1] == "P") {
                 break;
@@ -299,52 +342,73 @@ export class SILComponent implements OnInit {
           }
           else if ((this.SheetValue[i][0] == "" || this.SheetValue[i][0] == impacts.ImpactEventDesciption) && this.SheetValue[i][1] == "A" && this.SheetValue[i][2] != "" && this.SheetValue[i][3] != "") {
             let riskMatrix = new RiskMatrix();
-            riskMatrix.RMId = k++;
+            riskMatrixId++;
+            riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
             riskMatrix.Severity = this.SheetValue[i][2];
             riskMatrix.TRF = this.SheetValue[i][3];
             // var trfa= riskMatrix.TRFA;
             impacts.RiskMatrix.push(riskMatrix);
-            this.RiskMatrixVal=riskMatrix;
+            this.RiskMatrixVal = riskMatrix;
+            var initcauseId = 0;
             for (let m = i; m < this.SheetValue[i].length; m++) {
               if ((this.SheetValue[m][0] == "" && this.SheetValue[m][1] == "A" && this.SheetValue[m][2] != "" && this.SheetValue[m][3] != "" && this.SheetValue[m][4] != "") ||
                 (this.SheetValue[m][0] == "" && this.SheetValue[m][1] == "" && this.SheetValue[m][2] == "" && this.SheetValue[m][3] == "" && this.SheetValue[m][4] != "") ||
                 (this.SheetValue[m][0] != "" && this.SheetValue[m][1] == "A" && this.SheetValue[m][2] != "" && this.SheetValue[m][3] != "" && this.SheetValue[m][4] != "")) {
-                
+
                 let initcause = new InitiatingCause();
                 var k = 4;
-                var counter = 0;
-                initcause.Id = counter++;
+                initcauseId++;
+                initcause.Id = initcauseId;
                 initcause.RMId = riskMatrix.RMId;
                 initcause.IEF = this.SheetValue[m][k + 1];
                 initcause.IP = this.SheetValue[m][k + 2];
                 initcause.PP = this.SheetValue[m][k + 3];
                 initcause.TR = this.SheetValue[m][k + 4];
                 initcause.initiatingCause = this.SheetValue[m][k];
-
                 this.initcauses = initcause;
-                // initcause.RiskMatrix.TRFA=trfa;
                 riskMatrix.InitiatingCauses.push(initcause);
+
                 let protection = new ProtectionLayer();
+                protection.Id = 1;
+                protection.ICId = initcause.Id;
+                protection.NameOfIPL = "General Process Design";
                 protection.Description = this.SheetValue[m][9]
                 protection.PFD = this.SheetValue[m][10]
                 initcause.ProtectionLayers.push(protection);
 
                 let protections = new ProtectionLayer();
+                protections.Id = 2;
+                protections.ICId = initcause.Id;
+                protections.NameOfIPL = "BPCS";
                 protections.Description = this.SheetValue[m][11]
                 protections.PFD = this.SheetValue[m][12]
                 initcause.ProtectionLayers.push(protections);
 
                 let protectionlayer = new ProtectionLayer();
+                protectionlayer.Id = 3;
+                protectionlayer.ICId = initcause.Id;
+                protectionlayer.NameOfIPL = "Alarm";
                 protectionlayer.Description = this.SheetValue[m][13]
                 protectionlayer.PFD = this.SheetValue[m][14]
                 initcause.ProtectionLayers.push(protectionlayer);
 
                 let protectionlayers = new ProtectionLayer();
+                protectionlayers.Id = 4;
+                protectionlayers.ICId = initcause.Id;
+                protectionlayers.NameOfIPL = "Restricted Acess";
                 protectionlayers.Description = this.SheetValue[m][15]
                 protectionlayers.PFD = this.SheetValue[m][16]
                 initcause.ProtectionLayers.push(protectionlayers);
+
+                let iplDyke = new ProtectionLayer();
+                iplDyke.Id = 5;
+                iplDyke.ICId = initcause.Id;
+                iplDyke.NameOfIPL = "IPL Dyke,PRV";
+                iplDyke.Description = this.SheetValue[m][17]
+                iplDyke.PFD = this.SheetValue[m][18]
+                initcause.ProtectionLayers.push(iplDyke);
 
               }
               else if (this.SheetValue[m][1] == "P" || this.SheetValue[m][1] == "E") {
@@ -357,6 +421,7 @@ export class SILComponent implements OnInit {
           }
         }
         sif.ImpactEvents.push(impacts)
+
       }
     }
     let calc = new Calculation(sif);
