@@ -69,6 +69,9 @@ export class ProtectionLayer  //Independent Protection Layer
 export class Calculation {
     private sif: SIFDesign = null;
     public calculationId: number = 0;
+    public TRFP: number = 0;   //Tolerable Risk Frequency or TMEL
+    public TRFE: number = 0;   //Tolerable Risk Frequency or TMEL
+    public TRFA: number = 0;   //Tolerable Risk Frequency or TMEL
     public OverallIELP: number = 0;
     public OverallIELE: number = 0;
     public OverallIELA: number = 0;
@@ -178,21 +181,24 @@ export class Calculation {
             impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
                 riskmatrix.InitiatingCauses.forEach(riska => {
                     if (this.PFDA == 0) {
-                        this.PFDA = riska.RiskMatrix.TRF / this.OverallIELA;
+                        this.PFDA = riskmatrix.TRF / this.OverallIELA;
+                        this.TRFA=riskmatrix.TRF;
                     }
                 });
             });
             impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
                 riskmatrix.InitiatingCauses.forEach(riskp => {
                     if (this.PFDP == 0) {
-                        this.PFDP = riskp.RiskMatrix.TRF / this.OverallIELP;
+                        this.PFDP = riskmatrix.TRF / this.OverallIELP;
+                        this.TRFP=riskmatrix.TRF;
                     }
                 });
             });
             impactevent.RiskMatrix.filter(i => i.Category == "E").forEach(riskmatrix => {
                 riskmatrix.InitiatingCauses.forEach(riske => {
                     if (this.PFDE == 0) {
-                        this.PFDE = riske.RiskMatrix.TRF / this.OverallIELE;
+                        this.PFDE = riskmatrix.TRF / this.OverallIELE;
+                        this.TRFE=riskmatrix.TRF;
                     }
                 });
             });
@@ -277,14 +283,14 @@ export class Calculation {
 
     }
     public CalculateTargetSIL(){
-        if (this.PFDP>= this.PFDA && this.PFDP >= this.PFDE){
-            this.sif.TargetSIL=this.PFDP;
+        if (this.SILP>= this.SILA && this.SILP >= this.SILE){
+            this.sif.TargetSIL=this.SILP;
         }
-        else if (this.PFDA>= this.PFDP && this.PFDA >= this.PFDE){
-            this.sif.TargetSIL=this.PFDA;
+        else if (this.SILA>= this.SILP && this.SILA >= this.SILE){
+            this.sif.TargetSIL=this.SILA;
         }
         else{
-            this.sif.TargetSIL=this.PFDE;
+            this.sif.TargetSIL=this.SILE;
         }
     }
 }
