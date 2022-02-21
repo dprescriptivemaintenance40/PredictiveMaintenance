@@ -35,7 +35,7 @@ namespace Plant.DAL
         public DbSet<RiskMatrix> RiskMatrix { get; set; }
         public DbSet<InitiatingCause> InitiatingCause { get; set; }
         public DbSet<ProtectionLayer> ProtectionLayer { get; set; }
-        //public DbSet<Calculation> Calculation { get; set; }
+        public DbSet<Calculation> Calculation { get; set; }
 
         //SILVerification
         public DbSet<SIF> Sif { get; set; }
@@ -120,30 +120,34 @@ namespace Plant.DAL
 
             modelBuilder.Entity<ImpactEvent>().ToTable("tblImpactEvent");
             modelBuilder.Entity<ImpactEvent>().HasKey(c => c.Id);
-            //modelBuilder.Entity<ImpactEvent>()
-            //    .HasOne(p => p.SIFDesign)
-            //    .WithMany(p => p.ImpactEvent)
-            //    .HasForeignKey(p => p.SIFId);
+            modelBuilder.Entity<ImpactEvent>()
+                .HasOne(p => p.SIFDesign)
+                .WithMany(p => p.ImpactEvents)
+                .HasForeignKey(p => p.SIFId);
 
             modelBuilder.Entity<RiskMatrix>().ToTable("tblRiskMatrix");
             modelBuilder.Entity<RiskMatrix>().HasKey(c => c.RMId);
-            
+            modelBuilder.Entity<RiskMatrix>()
+               .HasOne(p => p.ImpactEvent)
+               .WithMany(p => p.RiskMatrix)
+               .HasForeignKey(p => p.IEId);
+
             modelBuilder.Entity<InitiatingCause>().ToTable("tblInitiatingCause");
             modelBuilder.Entity<InitiatingCause>().HasKey(c => c.Id);
-            //modelBuilder.Entity<InitiatingCause>()
-            //    .HasOne(p => p.ImpactEvent)
-            //    .WithMany(p => p.InitiatingCauses)
-            //    .HasForeignKey(p => p.IEId);
+            modelBuilder.Entity<InitiatingCause>()
+                .HasOne(p => p.RiskMatrix)
+                .WithMany(p => p.InitiatingCauses)
+                .HasForeignKey(p => p.RMId);
 
-            //modelBuilder.Entity<ProtectionLayer>().ToTable("tblIPL");
-            //modelBuilder.Entity<ProtectionLayer>().HasKey(c => c.Id);
-            //modelBuilder.Entity<ProtectionLayer>()
-            //    .HasOne(p => p.InitiatingCause)
-            //    .WithMany(p => p.ProtectionLayer)
-            //    .HasForeignKey(p => p.ICId);
+            modelBuilder.Entity<ProtectionLayer>().ToTable("tblIPL");
+            modelBuilder.Entity<ProtectionLayer>().HasKey(c => c.Id);
+            modelBuilder.Entity<ProtectionLayer>()
+                .HasOne(p => p.InitiatingCause)
+                .WithMany(p => p.ProtectionLayers)
+                .HasForeignKey(p => p.ICId);
 
-            //modelBuilder.Entity<Calculation>().ToTable("tblCalculation");
-            //modelBuilder.Entity<Calculation>().HasKey(c => c.CalculationId);
+            modelBuilder.Entity<Calculation>().ToTable("tblCalculation");
+            modelBuilder.Entity<Calculation>().HasKey(c => c.calculationId);
             //modelBuilder.Entity<Calculation>()
             //    .HasOne(p => p.silClassification)
             //    .WithMany(p => p.calculation)
@@ -287,19 +291,19 @@ namespace Plant.DAL
               {
                   RMMId = 1,
                   CategoryId=1,
-                  CategoryName="People"
+                  CategoryName="P"
               },
               new Category
               {
                   RMMId = 1,
                   CategoryId = 2,
-                  CategoryName = "Environment"
+                  CategoryName = "E"
               },
               new Category
               {
                   RMMId = 1,
                   CategoryId = 3,
-                  CategoryName = "Asset"
+                  CategoryName = "A"
               }
              );
             modelBuilder.Entity<Severity>()

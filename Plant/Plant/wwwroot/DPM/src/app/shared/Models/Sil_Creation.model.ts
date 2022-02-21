@@ -57,7 +57,7 @@ export class InitiatingCause {
 }
 export class ProtectionLayer  //Independent Protection Layer
 {
-    public IPLId: number = 0;
+    public Id: number = 0;
     public ICId: number = 0;
     public NameOfIPL: string = "";    //Risk Reduction Measure
     public Description: string = "";
@@ -69,6 +69,7 @@ export class ProtectionLayer  //Independent Protection Layer
 export class Calculation {
     private sif: SIFDesign = null;
     public calculationId: number = 0;
+    public SIFId:number;
     public TRFP: number = 0;   //Tolerable Risk Frequency or TMEL
     public TRFE: number = 0;   //Tolerable Risk Frequency or TMEL
     public TRFA: number = 0;   //Tolerable Risk Frequency or TMEL
@@ -84,7 +85,8 @@ export class Calculation {
     public SILP: number = 0;
     public SILA: number = 0;
     public SILE: number = 0;
-
+    public SIFDesign: SIFDesign = new SIFDesign();
+    
     constructor(_sif: SIFDesign) {
         this.sif = _sif;
         this.CalculateIEL();

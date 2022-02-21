@@ -114,7 +114,8 @@ namespace Plant.Controllers.SIL
             {
 
                 var SifData = _Context.SIFDesign.Where(a => a.Id == Id)
-                                        .Include(a => a.ImpactEvent)
+                                        .Include(a => a.ImpactEvents)
+                                        .ThenInclude(a => a.RiskMatrix)
                                         .ThenInclude(a => a.InitiatingCauses)
                                         .ThenInclude(a => a.ProtectionLayers).First();
                 _Context.SIFDesign.Remove(SifData);

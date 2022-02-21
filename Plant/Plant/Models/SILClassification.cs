@@ -17,20 +17,33 @@ namespace Plant.Models
         public string SIFDescription { get; set; }
         public string RiskMatrix { get; set; }
         public int TargetSIL { get; set; }
-        public List<ImpactEvent> ImpactEvent { get; set; }
+        public List<ImpactEvent> ImpactEvents { get; set; }
 }
-public class ImpactEvent
-{
-    public int Id { get; set; }
-    public int SIFId { get; set; }
-    public string ImpactEventDesciption { get; set; }
-    public List<InitiatingCause> InitiatingCauses { get; set; }
-    //public SIFDesign SIFDesign { get; set; }
+    public class ImpactEvent
+    {
+        public int Id { get; set; }
+        public int SIFId { get; set; }
+        public string ImpactEventDesciption { get; set; }
+        public List<RiskMatrix> RiskMatrix { get; set; }
+        public SIFDesign SIFDesign { get; set; }
     }
-public class InitiatingCause
+    public class RiskMatrix
+    {
+        public int RMId { get; set; }
+        public int IEId { get; set; }
+        public string Category { get; set; }
+        public int Severity { get; set; }
+        public float TRF { get; set; }   //Tolerable Risk Frequency or TMEL
+        public List<InitiatingCause> InitiatingCauses { get; set; }
+
+        //[ForeignKey("IEId")]
+        public ImpactEvent ImpactEvent { get; set; }
+    }
+
+    public class InitiatingCause
 {
     public int Id { get; set; }
-    public int IEId { get; set; }
+    public int RMId { get; set; }
     public string initiatingCause { get; set; }
     public float IEF { get; set; }   //Initiating Event Frequency
 
@@ -40,33 +53,44 @@ public class InitiatingCause
     public float TR { get; set; }   //Times at Risk
 
     public List<ProtectionLayer> ProtectionLayers { get; set; }
-    //public ImpactEvent ImpactEvent { get; set; }
 
-        //public int? RMId { get; set; }
+    public float IELP { get; set; }
+    public float IELE { get; set; }
+    public float IELA { get; set; }
 
-        //[ForeignKey("RMId")]
-        //public RiskMatrix RiskMatrix { get; set; }
+    //[ForeignKey("RMId")]
+    public RiskMatrix RiskMatrix { get; set; }
     }
-    public class RiskMatrix
-{
-    public int RMId { get; set; }
-    public string Category { get; set; }
-    public int Severity { get; set; }
-    public float TRF { get; set; }   //Tolerable Risk Frequency or TMEL
+    public class ProtectionLayer
+    {
+        public int Id { get; set; }
+        public int ICId { get; set; }
+        public string NameOfIPL { get; set; }    //Independent Protection Layer
+        public string Description { get; set; }
+        public float PFD { get; set; }   //Probability of Failure on Demand
+        public InitiatingCause InitiatingCause { get; set; }
+    }
+    public class Calculation
+    {
+        public int calculationId { get; set; }
+        public int? SIFId { get; set; }
+        public float TRFP { get; set; }    
+        public float TRFE { get; set; } 
+        public float TRFA { get; set; }
+        public float OverallIELP { get; set; }
+        public float OverallIELE { get; set; }
+        public float OverallIELA { get; set; }
+        public float PFDP { get; set; }
+        public float PFDA { get; set; }
+        public float PFDE { get; set; }
+        public float RRFP { get; set; }
+        public float RRFA { get; set; }
+        public float RRFE { get; set; }
+        public float SILP { get; set; }
+        public float SILA { get; set; }
+        public float SILE { get; set; }
 
-    public int? IEId { get; set; }
-
-    //[ForeignKey("IEId")]
-    //public ImpactEvent impactEvent { get; set; }
-}
-
-public class ProtectionLayer
-{
-    public int Id { get; set; }
-    public int ICId { get; set; }
-    public string NameOfIPL { get; set; }    //Independent Protection Layer
-    public string Description { get; set; }
-    public float PFD { get; set; }   //Probability of Failure on Demand
-    //public InitiatingCause InitiatingCause { get; set; }
+        [ForeignKey("SIFId")]
+        public SIFDesign SIFDesign { get; set; }
     }
 }
