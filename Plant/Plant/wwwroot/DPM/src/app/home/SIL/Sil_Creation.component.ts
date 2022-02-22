@@ -5,8 +5,8 @@ import { PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, RiskMatrix, SIFDesign } from 'src/app/shared/Models/Sil_Creation.model';
-import { SIF } from "../Vis/Vis.model";
 
+import {values} from './value'
 @Component({
   selector: 'app-sil',
   templateUrl: './Sil_Creation.component.html',
@@ -16,6 +16,7 @@ import { SIF } from "../Vis/Vis.model";
 
 export class SILComponent implements OnInit {
   @ViewChild("spreadsheet") spreadsheet: ElementRef;
+
   public getData: any = [];
   public MasterData: any = [];
   public initiatingCausesMasterList: any = [];
@@ -30,6 +31,7 @@ export class SILComponent implements OnInit {
   public arr: any = [];
   public RiskMatrix6: boolean = false;
   public RiskMatrix5: boolean = false;
+  public display:boolean=false;
   public visibleSidebar5: boolean = false;
   public risk: string = "";
   public x: number;
@@ -40,7 +42,14 @@ export class SILComponent implements OnInit {
   public initcauses: InitiatingCause = new InitiatingCause();
   public sifDesignObj: SIFDesign = new SIFDesign();
   public cal: Calculation = new Calculation(this.sifDesignObj);
-
+  public value=values;
+  public company:string="";
+  public facility:string="";
+  public session:string="";
+  public sifid:number=0;
+  public node:number=0;
+  public description:string="";
+  public parameter:string="";
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
@@ -478,6 +487,15 @@ export class SILComponent implements OnInit {
       alert("Something wrong")
     }
   }
-
+  Node(){
+    this.display = true;  
+    this.company="Any town gas producers";
+    this.facility="Amine absorber section";
+    this.sifid=1;
+    this.session="1  25-07-96";
+    this.node=1;
+    this.description="Line from amine tank via pump to absorber tower";
+    this.parameter="Flow";
+  }
 }
 

@@ -11,12 +11,12 @@
                         <div class="row">
                             <div class="col-md-3 d-flex flex-column">
                                 <label style=" margin-right: 12px;">Hazop Node</label>
-                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.HazopNodeId"
-                                    pInputText />
+                                <input type="text" class="form-control" [value]="node" [readonly]="true" [(ngModel)]="sifDesignObj.HazopNodeId" 
+                                (click)="Node()"    pInputText />
                             </div>
                             <div class="col-md-3 d-flex flex-column">
                                 <label style=" margin-right: 12px;">SIF ID</label>
-                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Id" pInputText />
+                                <input type="text" class="form-control" [value]="sifid" [(ngModel)]="sifDesignObj.Id" pInputText />
                             </div>
 
                             <!-- <div class="row"> -->
@@ -25,20 +25,20 @@
                                 <input type="text" class="form-control" [(ngModel)]="sifDesignObj.InterLockTag"
                                     pInputText />
                             </div>
+                            <!-- <div class="row"> -->
+                                <div class="col-md-3" d-flex flex-column>
+                                    <label style=" margin-right: 6px;">Risk Matrix</label>
+                                    <select name="" id="" class="form-select" class="form-control"
+                                        [(ngModel)]="sifDesignObj.RiskMatrix">
+                                        <option value="5*5 matrix">5*5 matrix</option>
+                                        <option value="6*6 matrix">6*6 matrix</option>
+                                    </select>
+                                </div>
                             <div class="col-md-3 d-flex flex-column">
                                 <label style=" margin-right: 12px;">Sensor</label>
                                 <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Sensor" pInputText />
                                 <!-- </div> -->
                             </div><br>
-                            <!-- <div class="row"> -->
-                            <div class="col-md-3" d-flex flex-column>
-                                <label style=" margin-right: 6px;">Risk Matrix</label>
-                                <select name="" id="" class="form-select" class="form-control"
-                                    [(ngModel)]="sifDesignObj.RiskMatrix">
-                                    <option value="5*5 matrix">5*5 matrix</option>
-                                    <option value="6*6 matrix">6*6 matrix</option>
-                                </select>
-                            </div>
                             <div class="col-md-4 d-flex flex-column">
                                 <label style="margin-right: 12px;">Final Elements(s)</label>
                                 <input type="text" class="form-control" [(ngModel)]="sifDesignObj.FinalElement"
@@ -48,7 +48,7 @@
                             <div class="col-md-6" d-flex flex-column>
                                 <label style=" margin-right: 12px;">SIF Description</label>
                                 <span class="p-float-label">
-                                    <textarea inputId="textarea" rows="3" style="resize: none;" cols="40"
+                                    <textarea inputId="textarea" [value]="description" style="height: 100px;" cols="40"
                                         class="form-control" [(ngModel)]="sifDesignObj.SIFDescription"
                                         pInputTextarea></textarea>
                                 </span>
@@ -214,7 +214,44 @@
     </div>
 
 </p-dialog>
-
+<p-dialog [(visible)]="display" [style]="{'max-height':'900px','width':'1300px','overflow':'auto'}">
+    <ng-template pTemplate="header">
+        <div class="row">
+            <div class="col-md-3 d-flex flex-column">Company: <input type="text" [value]="company" [readonly]="true"  name="" id=""></div>
+            <div class="col-md-3 d-flex flex-column">Facility: <input type="text" [value]="facility" [readonly]="true"  name="" id=""></div>
+            <div class="col-md-3 d-flex flex-column"> Session: <input type="text" [value]="session" [readonly]="true"  name="" id=""></div>
+            <div class="col-md-3 d-flex flex-column">Node: <input type="text" [value]="node" [readonly]="true"  name="" id=""></div>
+            <div class="col-md-3 d-flex flex-column">Description: <textarea  type="text" [value]="description" [readonly]="true"  name="" id=""></textarea></div>
+            <div class="col-md-3 d-flex flex-column"> Parameter: <input type="text" [value]="parameter" [readonly]="true"  name="" id=""></div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="body">
+        <p-table  [value]="value" [style]="{'max-height':'400px','width':'1200px'}" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Deviation</th>
+                    <th>Causes</th>
+                    <th>Consequences</th>
+                    <th>Safeguards</th>
+                    <th>Recommendations</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-value>
+                <tr>
+                    <td>{{value.Deviation}}</td>
+                    <td>{{value.Causes}}</td>
+                    <td>{{value.Consequences}}</td>
+                    <td>{{value.Safeguards}}</td>
+                    <td>{{value.Recommendations}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="display=false" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
 <div class="card dpm-card w-100 p-3">
     <fieldset class="border p-2">
         <p-table styleClass="p-datatable-gridlines" [columns]="cols" [value]="SheetValue" [autoLayout]="true">
