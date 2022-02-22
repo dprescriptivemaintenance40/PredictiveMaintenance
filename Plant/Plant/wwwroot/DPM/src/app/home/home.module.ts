@@ -10,9 +10,9 @@ import { VisComponent } from "./Vis/Vis.component";
 import { MSSComponent } from "./RCM/MSS/mss.component";
 import {DashboardComponent} from "./dashboard/dashboard.component"
 import { AboutComponent } from "./About-us/about.component";
-import { ReportComponent } from "./Report/report.component";
+import { SILreportComponent } from "./SIL/SILReport/SILreport.component";
 import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
-import { SILComponent } from "./SIL/Sil_Creation.component";
+import { SILComponent } from "../home/SIL/SILCreation/Sil_Creation.component";
 import {FieldsetModule} from 'primeng/fieldset';
 import { Matrix6Component } from "./SIL/Shared/6x6Matrix/matrix-six.component";
 import { Matrix5Component } from "./SIL/Shared/5x5Matrix/matrix-five.component";
@@ -26,7 +26,7 @@ import {TabViewModule} from 'primeng/tabview';
         FCAComponent,
         MSSComponent,
         AboutComponent,
-        ReportComponent,
+        SILreportComponent,
         RCMListComponent,
         SILComponent,Matrix6Component,
         Matrix5Component,

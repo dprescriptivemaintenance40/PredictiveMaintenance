@@ -142,32 +142,6 @@ namespace Plant.Controllers.SIL
                        
                     }
                 }
-                //foreach (var item in impact)
-                //{
-                //    var Initiating = item.RiskMatrix;
-                //    foreach (var items in Initiating)
-                //    {
-                //        var protection = items.ProtectionLayers;
-
-                //        foreach (var protections in protection)
-                //        {
-                //            protections.ICId = 1;
-                //            _Context.ProtectionLayer.Add(protections);
-                //            await _Context.SaveChangesAsync();
-                //        }
-                //        items.ProtectionLayers = new List<ProtectionLayer>();
-                //        items.ProtectionLayers = null;
-                //        items.IEId = 1;
-                //        _Context.InitiatingCause.Add(items);
-                //        await _Context.SaveChangesAsync();
-                //    }
-                //    item.SIFId = sifDesign.Id;
-                //    item.InitiatingCauses = new List<InitiatingCause>();
-                //    item.InitiatingCauses = null;
-                //    _Context.ImpactEvent.Add(item);
-                //    await _Context.SaveChangesAsync();
-
-
                 return Ok();
             }
             catch (Exception exe)
@@ -178,7 +152,23 @@ namespace Plant.Controllers.SIL
          
         }
 
-        // PUT api/<SILClassificationAPI>/5
+        [HttpPost]
+        [Route("SaveCalculations")]
+        public async Task<IActionResult> SaveCalculation([FromBody] Calculation calculation)
+        {
+            try
+            {
+                _Context.Calculation.Add(calculation);
+                 await _Context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+            // PUT api/<SILClassificationAPI>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {

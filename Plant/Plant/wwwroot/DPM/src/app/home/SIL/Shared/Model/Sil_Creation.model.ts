@@ -67,7 +67,7 @@ export class ProtectionLayer  //Independent Protection Layer
 }
 
 export class Calculation {
-    private sif: SIFDesign = null;
+    public sif: SIFDesign  = new SIFDesign();
     public calculationId: number = 0;
     public SIFId:number;
     public TRFP: number = 0;   //Tolerable Risk Frequency or TMEL
@@ -98,6 +98,7 @@ export class Calculation {
     public CalculateIEL() {
         var ielTemp: number = 0;
         var ielTemp1: number = 0;
+        this.SIFId=this.sif.Id;
         this.sif.ImpactEvents.forEach(impactevent => {
             impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
                 riskmatrix.InitiatingCauses.forEach(initiatingcause => {

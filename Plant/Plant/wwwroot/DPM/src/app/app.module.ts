@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { LoginRegistrationComponent } from './login-registration/login-registration.component';
 import { SharedModule } from './shared/shared.module';
 import { ConfigModule } from './shared/config.service';
-import { SilReportComponent } from './home/SIL/SilReport/SilReport.component';
+import { SilReportComponent } from './home/SIL/SilTemplate/SilReport.component';
 
 
 

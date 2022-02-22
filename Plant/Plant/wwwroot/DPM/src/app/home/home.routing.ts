@@ -7,8 +7,8 @@ import { FCAComponent } from "./RCM/FCA/fca.component";
 import { FMEAComponent } from "./RCM/FMEA/FMEA.component";
 import { MSSComponent } from "./RCM/MSS/mss.component";
 import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
-import { ReportComponent } from "./Report/report.component";
-import { SILComponent } from "./SIL/Sil_Creation.component";
+import { SILreportComponent } from "./SIL/SILReport/SILreport.component";
+import { SILComponent } from "../home/SIL/SILCreation/Sil_Creation.component";
 import { VisComponent } from "./Vis/Vis.component";
 @NgModule({
     imports: [RouterModule.forChild([
@@ -17,7 +17,7 @@ import { VisComponent } from "./Vis/Vis.component";
             children: [
                 { path: '', redirectTo: 'aboutus', pathMatch: 'full' },
                 { path: 'aboutus' , component: AboutComponent},
-                { path: 'report' , component: ReportComponent},
+                { path: 'report' , component: SILreportComponent},
                 { path: 'LandingPage', component: DashboardComponent },
                 { path: 'VisNetwork', component: VisComponent},
                 { path: 'FMEA', component: FMEAComponent},

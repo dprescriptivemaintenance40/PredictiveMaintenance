@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { APP_INITIALIZER } from "@angular/core";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { ReportTemplateMaster } from "./Models/ReportTemplate.model";
+import { ReportTemplateMaster } from "../home/SIL/Shared/Model/ReportTemplate.model";
 
 @Injectable({
     providedIn: 'root'

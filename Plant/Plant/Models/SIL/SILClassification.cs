@@ -74,8 +74,8 @@ namespace Plant.Models
     {
         public int calculationId { get; set; }
         public int? SIFId { get; set; }
-        public float TRFP { get; set; }    
-        public float TRFE { get; set; } 
+        public float TRFP { get; set; }
+        public float TRFE { get; set; }
         public float TRFA { get; set; }
         public float OverallIELP { get; set; }
         public float OverallIELE { get; set; }
@@ -91,6 +91,6 @@ namespace Plant.Models
         public float SILE { get; set; }
 
         [ForeignKey("SIFId")]
-        public SIFDesign SIFDesign { get; set; }
+        public SIFDesign SIFDesign;
     }
 }

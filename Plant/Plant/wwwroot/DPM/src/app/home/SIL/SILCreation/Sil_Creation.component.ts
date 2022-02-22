@@ -4,8 +4,8 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
-import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, RiskMatrix, SIFDesign } from 'src/app/shared/Models/Sil_Creation.model';
-
+import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, RiskMatrix, SIFDesign } from 'src/app/home/SIL/Shared/Model/Sil_Creation.model';
+import {SILConstantAPI} from '../Shared/Model/SILConstant';
 import {values} from './value'
 @Component({
   selector: 'app-sil',
@@ -59,7 +59,8 @@ export class SILComponent implements OnInit {
 
   constructor(private SILClassificationBLService: CommonBLService,
     private primengConfig: PrimeNGConfig,
-    private messageService: MessageService) {
+    private messageService: MessageService,
+    private SILConstantAPI:SILConstantAPI) {
 
   }
 
@@ -184,7 +185,7 @@ export class SILComponent implements OnInit {
     this.cols = this.arr.split(",");
     let sifDesignObj = [];
     let sif = new SIFDesign();
-    sif.Id = this.sifDesignObj.Id;
+    sif.Id = this.sifid;
     sif.FinalElement = this.sifDesignObj.FinalElement;
     sif.RiskMatrix = this.sifDesignObj.RiskMatrix;
     sif.Sensor = this.sifDesignObj.Sensor;
@@ -441,16 +442,19 @@ export class SILComponent implements OnInit {
     this.cal = calc;
     sifDesignObj.push(sif);
     console.log(sifDesignObj)
-    this.SaveSheetData(sifDesignObj);
-    // console.log(this.cal)
+    this.SaveSheetData(sifDesignObj,this.cal);
+     console.log(this.cal)
 
   }
 
-  public SaveSheetData(sifDesignObj: any) {
-    var url = '/SILClassificationAPI/SaveSheetData';
-    this.SILClassificationBLService.postWithoutHeaders(url, sifDesignObj).subscribe((res: any) => {
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
-    },
+  public SaveSheetData(sifDesignObj: any,cal:any) {
+    this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.SIFSave, sifDesignObj).subscribe((res: any) => {
+      this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.CalculationSave, cal).subscribe((res: any) => {
+       this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
+        } ,(err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
+       });
+      },
       (err) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
       });
