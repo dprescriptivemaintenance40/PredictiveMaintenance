@@ -14,11 +14,9 @@ import { ReportComponent } from "./Report/report.component";
 import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
 import { SILComponent } from "./SIL/Sil_Creation.component";
 import {FieldsetModule} from 'primeng/fieldset';
-import { Matrix6Component } from "../shared/6x6Matrix/matrix-six.component";
-import { Matrix5Component } from "../shared/5x5Matrix/matrix-five.component";
+import { Matrix6Component } from "./SIL/Shared/6x6Matrix/matrix-six.component";
+import { Matrix5Component } from "./SIL/Shared/5x5Matrix/matrix-five.component";
 import {TabViewModule} from 'primeng/tabview';
-import { SilReportComponent } from './SilReport/SilReport.component';
-
 @NgModule({
     declarations: [
         HomeComponent,
@@ -32,7 +30,7 @@ import { SilReportComponent } from './SilReport/SilReport.component';
         RCMListComponent,
         SILComponent,Matrix6Component,
         Matrix5Component,
-        SilReportComponent
+        
     ],
     imports: [    
         HomeRoutingModule,       

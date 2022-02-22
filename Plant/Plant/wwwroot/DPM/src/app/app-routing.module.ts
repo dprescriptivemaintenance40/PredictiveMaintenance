@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './shared/Auth.guard'; 
 import { LoginRegistrationComponent } from './login-registration/login-registration.component';
-import { SilReportComponent } from './home/SilReport/SilReport.component';
+import { SilReportComponent } from './home/SIL/SilReport/SilReport.component';
+
 
 @NgModule({
   imports: [RouterModule.forRoot([

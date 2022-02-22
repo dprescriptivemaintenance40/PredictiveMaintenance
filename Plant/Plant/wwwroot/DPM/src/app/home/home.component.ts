@@ -26,11 +26,6 @@ export class HomeComponent implements OnInit {
       icon: 'pi pi-home',
     },
     {
-      label: 'Report',
-      url: '#/Home/report',
-      icon: 'pi pi-home',
-    },
-    {
       label: 'Dashboard',
       url: '#/Home/LandingPage',
       icon: 'pi pi-home',
@@ -52,8 +47,19 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'SIL',
-      url: '#/Home/SIL',
       icon: 'pi pi-home',
+      items: [
+        {
+        label: 'SIL Design',
+        url: '#/Home/SIL',
+
+        },{
+          label: 'SIL Search',
+          url: '#/Home/report'
+        }
+
+      ]
+      
     }
   ];
   constructor(public builder: FormBuilder,

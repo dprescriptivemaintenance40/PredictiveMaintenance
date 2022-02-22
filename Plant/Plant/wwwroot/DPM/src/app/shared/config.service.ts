@@ -25,12 +25,12 @@ export class ConfigService {
     postReport(report:ReportTemplateMaster):Observable<any>{
         return this.http.post("http://localhost:5025/api/Report", report,{responseType:'json'});
     }
-    getReportTmlpt():Observable<any>{
-        return this.http.get("http://localhost:5025/api/Report", {responseType:'json'});
-    }
     // Gets API route based on the provided key
     getApi(key: string): string {
         return this.config["API_ENDPOINTS"][key];
+    }
+    getSilDesign():Observable<any>{
+        return this.http.get("http://localhost:5025/api/SILClassificationAPI/GetMasterData", {responseType:'json'});
     }
     // Gets a value of specified property in the configuration file
     get(key: any) {

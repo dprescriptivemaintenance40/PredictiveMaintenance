@@ -7,11 +7,12 @@ declare var vis: any;
 @Component({
     selector: 'app-SilReport',
     templateUrl: './SilReport.component.html',
-    //   styleUrls: ['./app-report-template.css'],
+    styleUrls: ['./SilReport.component.css'],
 
 })
 
 export class SilReportComponent {
+
     constructor() { }
 
     ngOnInit(): void {
