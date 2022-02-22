@@ -1,8 +1,8 @@
 export class SIFDesign {
-    private calculation: Calculation = null;
-    constructor() {
-        this.calculation = new Calculation(this);
-    }
+    // private calculation: Calculation = null;
+    // constructor() {
+    //     this.calculation = new Calculation(this);
+    // }
     public Id: number = 0;
     public HazopNodeId: number = 0;
     public InterLockTag: string = "";
@@ -25,7 +25,7 @@ export class RiskMatrix {
     public RMId: number = 0;
     public IEId: number;
     public Category: string = "";
-    public Severity: number = 1;
+    public Severity: string = "";
     public TRF: number = 0;   //Tolerable Risk Frequency or TMEL
     public InitiatingCauses: Array<InitiatingCause> = new Array<InitiatingCause>();
 
@@ -85,7 +85,6 @@ export class Calculation {
     public SILP: number = 0;
     public SILA: number = 0;
     public SILE: number = 0;
-    public SIFDesign: SIFDesign = new SIFDesign();
     
     constructor(_sif: SIFDesign) {
         this.sif = _sif;

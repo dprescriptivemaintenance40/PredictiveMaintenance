@@ -54,22 +54,81 @@ namespace Plant.Controllers.SIL
         // POST api/<SILClassificationAPI>
         [HttpPost]
         [Route("SaveSheetData")]
-        public async Task<ActionResult<SIFDesign>> SaveSheetData([FromBody] SIFDesign sifDesign)
+        public async Task<ActionResult<List<SIFDesign>>> SaveSheetData([FromBody] List<SIFDesign> sifDesigns)
         {
             try
             {
-                //var impact = sifDesign.ImpactEvent;
-                //sifDesign.ImpactEvent = new List<ImpactEvent>();
-                //sifDesign.ImpactEvent = null;
-                _Context.SIFDesign.Add(sifDesign);
-                await _Context.SaveChangesAsync();
+                foreach (var sifDesign in sifDesigns)
+                {
+                    SIFDesign sifDesignObj = new SIFDesign();
+                    sifDesignObj.HazopNodeId = sifDesign.HazopNodeId;
+                    sifDesignObj.InterLockTag = sifDesign.InterLockTag;
+                    sifDesignObj.Sensor = sifDesign.Sensor;
+                    sifDesignObj.FinalElement = sifDesign.FinalElement;
+                    sifDesignObj.SIFDescription = sifDesign.SIFDescription;
+                    sifDesignObj.RiskMatrix = sifDesign.RiskMatrix;
+                    sifDesignObj.TargetSIL = sifDesign.TargetSIL;
+                    var impacts = sifDesign.ImpactEvents;
+                    sifDesign.ImpactEvents = new List<ImpactEvent>();
+                    sifDesign.ImpactEvents = null;
+                    _Context.SIFDesign.Add(sifDesignObj);
+                    await _Context.SaveChangesAsync();
+                    foreach (var impact in impacts)
+                    {
+                        ImpactEvent impactEvents = new ImpactEvent();
+                        impactEvents.SIFId = sifDesignObj.Id;
+                        impactEvents.ImpactEventDesciption = impact.ImpactEventDesciption;
+                        _Context.ImpactEvent.Add(impactEvents);
+                        await _Context.SaveChangesAsync();
+                        var riskmatrixs = impact.RiskMatrix;
+                        foreach (var riskmatrix in riskmatrixs)
+                        {
+                            RiskMatrix risk = new RiskMatrix();
+                            risk.IEId = impactEvents.Id;
+                            risk.Category = riskmatrix.Category;
+                            risk.Severity = riskmatrix.Severity;
+                            risk.TRF = riskmatrix.TRF;
+                            _Context.RiskMatrix.Add(risk);
+                            await _Context.SaveChangesAsync();
+                            var initcauses = riskmatrix.InitiatingCauses;
+                            foreach (var initcause in initcauses)
+                            {
+                                InitiatingCause init = new InitiatingCause();
+                                init.RMId = risk.RMId;
+                                init.initiatingCause = initcause.initiatingCause;
+                                init.PP = initcause.PP;
+                                init.IP = initcause.IP;
+                                init.IELE = initcause.IELE;
+                                init.IELP = initcause.IELP;
+                                init.IELA = initcause.IELA;
+                                init.IEF = initcause.IEF;
+                                init.TR = initcause.TR;
+                                _Context.InitiatingCause.Add(init);
+                                await _Context.SaveChangesAsync();
+                                var protections = initcause.ProtectionLayers;
+                              
+                                foreach (var protection in protections)
+                                {
+                                    ProtectionLayer protectionLayers = new ProtectionLayer();
+                                    protectionLayers.ICId = init.Id;
+                                    protectionLayers.NameOfIPL = protection.NameOfIPL;
+                                    protectionLayers.Description = protection.Description;
+                                    protectionLayers.PFD = protection.PFD;
+                                    _Context.ProtectionLayer.Add(protectionLayers);
+                                    await _Context.SaveChangesAsync();
+                                }
+                            }
+                        }
+                       
+                    }
+                }
                 //foreach (var item in impact)
                 //{
-                //    var Initiating = item.InitiatingCauses;
+                //    var Initiating = item.RiskMatrix;
                 //    foreach (var items in Initiating)
-                //    {   
+                //    {
                 //        var protection = items.ProtectionLayers;
-             
+
                 //        foreach (var protections in protection)
                 //        {
                 //            protections.ICId = 1;
@@ -84,12 +143,12 @@ namespace Plant.Controllers.SIL
                 //    }
                 //    item.SIFId = sifDesign.Id;
                 //    item.InitiatingCauses = new List<InitiatingCause>();
-                //    item.InitiatingCauses =null;
+                //    item.InitiatingCauses = null;
                 //    _Context.ImpactEvent.Add(item);
-                //   await _Context.SaveChangesAsync();
-                //}
+                //    await _Context.SaveChangesAsync();
 
-                 return Ok();
+
+                return Ok();
             }
             catch (Exception exe)
             {

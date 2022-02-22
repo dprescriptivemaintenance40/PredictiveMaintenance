@@ -1,10 +1,11 @@
-import { Component, ViewChild, ElementRef, OnInit, ANALYZE_FOR_ENTRY_COMPONENTS } from "@angular/core";
+import { Component, ViewChild, ElementRef, OnInit } from "@angular/core";
 import * as jspreadsheet from "jspreadsheet-ce";
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, RiskMatrix, SIFDesign } from 'src/app/shared/Models/Sil_Creation.model';
+import { SIF } from "../Vis/Vis.model";
 
 @Component({
   selector: 'app-sil',
@@ -48,7 +49,8 @@ export class SILComponent implements OnInit {
   }
 
   constructor(private SILClassificationBLService: CommonBLService,
-    private primengConfig: PrimeNGConfig) {
+    private primengConfig: PrimeNGConfig,
+    private messageService: MessageService) {
 
   }
 
@@ -127,7 +129,7 @@ export class SILComponent implements OnInit {
   changed = async (instance, cell, x, y, value) => {
     var cellName = jspreadsheet.getColumnNameFromId([x, y]);
 
-    console.log('New change on cell ' + cellName + ' to: ' + value + '');
+    // console.log('New change on cell ' + cellName + ' to: ' + value + '');
   }
 
   selectionActive = async (instance, x1, y1, x2, y2, origin) => {
@@ -144,10 +146,10 @@ export class SILComponent implements OnInit {
         this.RiskMatrix5 = true;
       }
     }
-    else { console.log('The selection from ' + cellName1 + ' to ' + cellName2 + ''); }
+    // else { console.log('The selection from ' + cellName1 + ' to ' + cellName2 + ''); }
   }
 
-  getMasterData() {
+  public getMasterData() {
     this.SILClassificationBLService.getWithoutParameters("/SILClassificationAPI/GetMasterData")
       .subscribe((res: any) => {
         this.MasterData = res;
@@ -167,18 +169,19 @@ export class SILComponent implements OnInit {
       }, err => console.log(err.error))
   }
 
-  Save() {
+  public Save() {
     this.SheetValue = this.getData.getData()
-    console.log(this.SheetValue);
     this.arr = this.getData.getHeaders();
     this.cols = this.arr.split(",");
     let sifDesignObj = [];
     let sif = new SIFDesign();
-    sif.Id = 1;
+    sif.Id = this.sifDesignObj.Id;
     sif.FinalElement = this.sifDesignObj.FinalElement;
     sif.RiskMatrix = this.sifDesignObj.RiskMatrix;
     sif.Sensor = this.sifDesignObj.Sensor;
     sif.SIFDescription = this.sifDesignObj.SIFDescription;
+    sif.InterLockTag = this.sifDesignObj.InterLockTag;
+    sif.TargetSIL = this.sifDesignObj.TargetSIL;
     var impactId = 0;
     for (let n = 0; n < this.SheetValue.length; n++) {
       if (this.SheetValue[n][0] != "") {
@@ -196,15 +199,16 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2];
+            riskMatrix.Severity = this.SheetValue[i][2].toString();
             riskMatrix.TRF = this.SheetValue[i][3];
             // var trfp= riskMatrix.TRFP;
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
             var initcauseId = 0;
-            for (let i = n; i < this.SheetValue[i].length; i++) {
-              if (this.SheetValue[i][0] != "" && this.SheetValue[i][1] != "" && this.SheetValue[i][2] != "" && this.SheetValue[i][3] != "" && this.SheetValue[i][4] != "" ||
-                this.SheetValue[i][0] == "" && this.SheetValue[i][1] == "" && this.SheetValue[i][2] == "" && this.SheetValue[i][3] == "" && this.SheetValue[i][4] != "") {
+            for (let l = i; l < this.SheetValue[i].length; l++) {
+              if (this.SheetValue[l][0] != "" && this.SheetValue[l][1] == "P" && this.SheetValue[l][2] != "" && this.SheetValue[l][3] != "" && this.SheetValue[l][4] != "" ||
+                this.SheetValue[l][0] == "" && this.SheetValue[l][1] == "" && this.SheetValue[l][2] == "" && this.SheetValue[l][3] == "" && this.SheetValue[l][4] != "" ||
+                this.SheetValue[l][0] == "" && this.SheetValue[l][1] == "P" && this.SheetValue[l][2] != "" && this.SheetValue[l][3] != "" && this.SheetValue[l][4] != "") {
 
                 let initcause = new InitiatingCause();
                 initcauseId++
@@ -212,11 +216,11 @@ export class SILComponent implements OnInit {
                 var counter = 0;
                 initcause.Id = initcauseId;
                 initcause.RMId = riskMatrix.RMId;
-                initcause.IEF = this.SheetValue[i][j + 1];
-                initcause.IP = this.SheetValue[i][j + 2];
-                initcause.PP = this.SheetValue[i][j + 3];
-                initcause.TR = this.SheetValue[i][j + 4];
-                initcause.initiatingCause = this.SheetValue[i][j];
+                initcause.IEF = this.SheetValue[l][j + 1];
+                initcause.IP = this.SheetValue[l][j + 2];
+                initcause.PP = this.SheetValue[l][j + 3];
+                initcause.TR = this.SheetValue[l][j + 4];
+                initcause.initiatingCause = this.SheetValue[l][j];
                 this.initcauses = initcause;
                 riskMatrix.InitiatingCauses.push(initcause);
 
@@ -224,44 +228,44 @@ export class SILComponent implements OnInit {
                 protection.Id = 1;
                 protection.ICId = initcause.Id;
                 protection.NameOfIPL = "General Process Design";
-                protection.Description = this.SheetValue[i][9]
-                protection.PFD = this.SheetValue[i][10]
+                protection.Description = this.SheetValue[l][9]
+                protection.PFD = this.SheetValue[l][10]
                 initcause.ProtectionLayers.push(protection);
 
                 let protections = new ProtectionLayer();
                 protections.Id = 2;
                 protections.ICId = initcause.Id;
                 protections.NameOfIPL = "BPCS";
-                protections.Description = this.SheetValue[i][11]
-                protections.PFD = this.SheetValue[i][12]
+                protections.Description = this.SheetValue[l][11]
+                protections.PFD = this.SheetValue[l][12]
                 initcause.ProtectionLayers.push(protections);
 
                 let protectionlayer = new ProtectionLayer();
                 protectionlayer.Id = 3;
                 protectionlayer.ICId = initcause.Id;
                 protectionlayer.NameOfIPL = "Alarm";
-                protectionlayer.Description = this.SheetValue[i][13]
-                protectionlayer.PFD = this.SheetValue[i][14]
+                protectionlayer.Description = this.SheetValue[l][13]
+                protectionlayer.PFD = this.SheetValue[l][14]
                 initcause.ProtectionLayers.push(protectionlayer);
 
                 let protectionlayers = new ProtectionLayer();
                 protectionlayers.Id = 4;
                 protectionlayers.ICId = initcause.Id;
                 protectionlayers.NameOfIPL = "Restricted Acess";
-                protectionlayers.Description = this.SheetValue[i][15]
-                protectionlayers.PFD = this.SheetValue[i][16]
+                protectionlayers.Description = this.SheetValue[l][15]
+                protectionlayers.PFD = this.SheetValue[l][16]
                 initcause.ProtectionLayers.push(protectionlayers);
 
                 let iplDyke = new ProtectionLayer();
                 iplDyke.Id = 5;
                 iplDyke.ICId = initcause.Id;
                 iplDyke.NameOfIPL = "IPL Dyke,PRV";
-                iplDyke.Description = this.SheetValue[i][17]
-                iplDyke.PFD = this.SheetValue[i][18]
+                iplDyke.Description = this.SheetValue[l][17]
+                iplDyke.PFD = this.SheetValue[l][18]
                 initcause.ProtectionLayers.push(iplDyke);
 
               }
-              else if (this.SheetValue[i][1] == "E" || this.SheetValue[i][1] == "A") {
+              else if (this.SheetValue[l][1] == "E" || this.SheetValue[l][1] == "A") {
                 break;
               }
             }
@@ -272,7 +276,7 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2];
+            riskMatrix.Severity = this.SheetValue[i][2].toString();
             riskMatrix.TRF = this.SheetValue[i][3];
             // var trfe= riskMatrix.TRFE;
             impacts.RiskMatrix.push(riskMatrix);
@@ -346,7 +350,7 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2];
+            riskMatrix.Severity = this.SheetValue[i][2].toString();
             riskMatrix.TRF = this.SheetValue[i][3];
             // var trfa= riskMatrix.TRFA;
             impacts.RiskMatrix.push(riskMatrix);
@@ -428,10 +432,22 @@ export class SILComponent implements OnInit {
     this.cal = calc;
     sifDesignObj.push(sif);
     console.log(sifDesignObj)
-    console.log(this.cal)
+    this.SaveSheetData(sifDesignObj);
+    // console.log(this.cal)
+
   }
 
-  RiskMatrix(Matrix: any) {
+  public SaveSheetData(sifDesignObj: any) {
+    var url = '/SILClassificationAPI/SaveSheetData';
+    this.SILClassificationBLService.postWithoutHeaders(url, sifDesignObj).subscribe((res: any) => {
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
+    },
+      (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
+      });
+  }
+
+  public RiskMatrix(Matrix: any) {
     this.RiskMatrix6 = false;
     this.RiskMatrix5 = false;
     this.cells = '';
@@ -462,5 +478,6 @@ export class SILComponent implements OnInit {
       alert("Something wrong")
     }
   }
+
 }
 

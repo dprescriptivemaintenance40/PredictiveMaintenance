@@ -32,7 +32,7 @@ namespace Plant.Models
         public int RMId { get; set; }
         public int IEId { get; set; }
         public string Category { get; set; }
-        public int Severity { get; set; }
+        public string Severity { get; set; }
         public float TRF { get; set; }   //Tolerable Risk Frequency or TMEL
         public List<InitiatingCause> InitiatingCauses { get; set; }
 
