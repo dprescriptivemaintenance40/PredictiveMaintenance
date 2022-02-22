@@ -16,7 +16,7 @@
                             </div>
                             <div class="col-md-3 d-flex flex-column">
                                 <label style=" margin-right: 12px;">SIF ID</label>
-                                <input type="text" class="form-control" [value]="sifid" [(ngModel)]="sifDesignObj.Id" pInputText />
+                                <input type="text" class="form-control"  [readonly]="true" [value]="sifid" [(ngModel)]="sifDesignObj.Id" pInputText />
                             </div>
 
                             <!-- <div class="row"> -->
@@ -48,7 +48,7 @@
                             <div class="col-md-6" d-flex flex-column>
                                 <label style=" margin-right: 12px;">SIF Description</label>
                                 <span class="p-float-label">
-                                    <textarea inputId="textarea" [value]="description" style="height: 100px;" cols="40"
+                                    <textarea inputId="textarea" [readonly]="true" [value]="description" style="height: 100px;" cols="40"
                                         class="form-control" [(ngModel)]="sifDesignObj.SIFDescription"
                                         pInputTextarea></textarea>
                                 </span>

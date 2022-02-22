@@ -44,6 +44,26 @@ namespace Plant.Controllers.SIL
             }
         }
 
+        [HttpGet]
+        [Route("GetSILClassificationData")]
+        public async Task<ActionResult<IEnumerable<SIFDesign>>> GetSILClassificationData()
+        {
+            try
+            {
+                return await _Context.SIFDesign.Include(a => a.ImpactEvents)
+                                                .ThenInclude(a => a.RiskMatrix)
+                                                .ThenInclude(a => a.InitiatingCauses)
+                                                .ThenInclude(a => a.ProtectionLayers)
+                                                .OrderBy(a => a.Id)
+                                                .ToListAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         // GET api/<SILClassificationAPI>/5
         [HttpGet("{id}")]
         public string Get(int id)
@@ -165,14 +185,13 @@ namespace Plant.Controllers.SIL
         }
 
         // DELETE api/<SILClassificationAPI>/5
-        [HttpDelete]
-        [Route("DeleteSheetData")]
-        public async Task<IActionResult> DeleteSheetData(int Id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSheetData(int id)
         {
             try
             {
 
-                var SifData = _Context.SIFDesign.Where(a => a.Id == Id)
+                var SifData = _Context.SIFDesign.Where(a => a.Id == id)
                                         .Include(a => a.ImpactEvents)
                                         .ThenInclude(a => a.RiskMatrix)
                                         .ThenInclude(a => a.InitiatingCauses)
