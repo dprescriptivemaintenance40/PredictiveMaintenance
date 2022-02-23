@@ -209,8 +209,8 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2].toString();
-            riskMatrix.TRF = this.SheetValue[i][3];
+            riskMatrix.Severity = this.SheetValue[i][2][0];
+            riskMatrix.TRF = this.SheetValue[i][3][0];
             // var trfp= riskMatrix.TRFP;
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
@@ -286,8 +286,8 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2].toString();
-            riskMatrix.TRF = this.SheetValue[i][3];
+            riskMatrix.Severity = this.SheetValue[i][2][0];
+            riskMatrix.TRF = this.SheetValue[i][3][0];
             // var trfe= riskMatrix.TRFE;
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
@@ -360,8 +360,8 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2].toString();
-            riskMatrix.TRF = this.SheetValue[i][3];
+            riskMatrix.Severity = this.SheetValue[i][2][0];
+            riskMatrix.TRF = this.SheetValue[i][3][0];
             // var trfa= riskMatrix.TRFA;
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
@@ -447,9 +447,19 @@ export class SILComponent implements OnInit {
 
   }
 
-  public SaveSheetData(sifDesignObj: any,cal:any) {
+  public SaveSheetData(sifDesignObj: any,calculate:any) {
     this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.SIFSave, sifDesignObj).subscribe((res: any) => {
-      this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.CalculationSave, cal).subscribe((res: any) => {
+      this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.CalculationSave, calculate).subscribe((res: any) => {
+        this.getData.setData([[]]);
+        this.sifDesignObj = new SIFDesign();
+        this.cal.TRFP=0; this.cal.TRFE=0; this.cal.TRFA=0;
+        this.cal.OverallIELA=0; this.cal.OverallIELE=0; this.cal.OverallIELP=0;
+        this.cal.PFDP=0; this.cal.PFDA=0;  this.cal.PFDE=0; 
+        this.cal.RRFA=0; this.cal.RRFP=0;  this.cal.RRFE=0;
+        this.cal.SILP=0; this.cal.SILA=0; this.cal.SILE=0;
+        this.sifid = 0;
+        this.node = 0;
+        this.description = "";
        this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
         } ,(err) => {
         this.getData.setData([[]]);

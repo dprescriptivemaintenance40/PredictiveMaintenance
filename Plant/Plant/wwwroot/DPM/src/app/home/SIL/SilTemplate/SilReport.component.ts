@@ -17,6 +17,8 @@ export class SilReportComponent implements OnInit {
         private ReportTemplateBLService: CommonBLService) { }
 
     ngOnInit() {
+        var val=window.value;
+        console.log(val)
         this.getReportData();
     }
 

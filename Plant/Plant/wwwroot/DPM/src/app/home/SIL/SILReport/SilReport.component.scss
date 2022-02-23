@@ -1,0 +1,7 @@
+.style{
+    display: block;
+    width: 50%;
+}
+:host ::ng-deep button {
+    margin-right: .5em;
+}

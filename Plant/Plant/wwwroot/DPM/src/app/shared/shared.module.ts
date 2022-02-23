@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ButtonModule } from "primeng/button";
+import { RippleModule } from "primeng/ripple";
 import { CardModule } from "primeng/card";
 import { ChartModule } from "primeng/chart";
 import { DragDropModule } from "primeng/dragdrop";
@@ -40,6 +41,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
         ToastModule,
         ChartModule,
         ButtonModule,
+        RippleModule,
         InputTextModule,
         PasswordModule,
         MessagesModule,

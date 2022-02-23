@@ -38,10 +38,13 @@
 							</h1>
 							<span class="">
 								<button pButton pRipple type="button" label="Delete" icon="pi pi-trash"
-									class="p-button-rounded p-button-danger" (click)="DeleteSILClassificationRecord(p)"
+									 class="p-button-danger" (click)="DeleteSILClassificationRecord(p)"
 									data-toggle="modal" data-target="#DeleteSIL"></button>
-								<button pButton pRipple type="button" label="Report" (click)="showReport()"
-									icon="pi pi-file" class="p-button-rounded p-button-danger"></button>
+								<button pButton pRipple type="button" label="Edit Report" (click)="showReport(p.Id)"
+									icon="pi pi-file" class="p-button-info"></button>
+								<button *ngIf="save" pButton pRipple type="button" label="View Report"  
+								    icon="pi pi-eye" (click)="newTab('http://localhost:5025/#/reportTemplate')"
+								   class="p-button-secondary"></button>
 							</span>
 						</div>
 
@@ -69,14 +72,10 @@
 				[(ngModel)]="reportTemplateObj.CompanyBackground" pInputTextarea></textarea>
 		</span>
 	</div>
-	<div>
-		<button icon="pi pi-check" (click)="SaveReportData()">Save</button>
-	</div>
 	<ng-template pTemplate="footer">
-		<p-button icon="pi pi-times" label="Cancel" (click)="displayReportField=false" styleClass="p-button-text">
+		<p-button icon="pi pi-times" label="Cancel" (click)="displayReportField=false" styleClass="p-button-danger">
 		</p-button>
-		<p-button icon="pi pi-eye" label="Report" (click)="newTab('http://localhost:5025/#/reportTemplate')"
-			styleClass="p-button-text" icon="pi pi-eye"></p-button>
+		<p-button icon="pi pi-check" (click)="SaveReportData()">Save</p-button>
 	</ng-template>
 </p-dialog>
 
