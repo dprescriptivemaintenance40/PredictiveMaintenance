@@ -2,10 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Plant.DAL;
 using Plant.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,7 +16,7 @@ namespace Plant.Controllers.SIL
         {
             _Context = plantDBContext;
         }
-        
+
         // GET: api/<SILClassificationAPI>
         [HttpGet]
         [Route("GetMasterData")]
@@ -30,7 +26,7 @@ namespace Plant.Controllers.SIL
             {
                 return await _Context.SilClassificationMaster
                                       .Include(a => a.riskMatrixMaster)
-                                      .ThenInclude(a =>a.Category)
+                                      .ThenInclude(a => a.Category)
                                       .Include(a => a.riskMatrixMaster)
                                       .ThenInclude(a => a.Severity)
                                       .Include(a => a.initiatingCausesMaster)
@@ -55,6 +51,23 @@ namespace Plant.Controllers.SIL
                                                 .ThenInclude(a => a.InitiatingCauses)
                                                 .ThenInclude(a => a.ProtectionLayers)
                                                 .OrderBy(a => a.Id)
+                                                .ToListAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetReport")]
+        public async Task<ActionResult<IEnumerable<ReportMaster>>> GetReport()
+        {
+            try
+            {
+                return await _Context.ReportMasters
+                                                .OrderByDescending(a => a.Id)
                                                 .ToListAsync();
             }
             catch (Exception)
@@ -126,7 +139,7 @@ namespace Plant.Controllers.SIL
                                 _Context.InitiatingCause.Add(init);
                                 await _Context.SaveChangesAsync();
                                 var protections = initcause.ProtectionLayers;
-                              
+
                                 foreach (var protection in protections)
                                 {
                                     ProtectionLayer protectionLayers = new ProtectionLayer();
@@ -139,7 +152,7 @@ namespace Plant.Controllers.SIL
                                 }
                             }
                         }
-                       
+
                     }
                 }
                 return Ok();
@@ -149,7 +162,7 @@ namespace Plant.Controllers.SIL
 
                 return BadRequest(exe.Message);
             }
-         
+
         }
 
         [HttpPost]
@@ -159,7 +172,7 @@ namespace Plant.Controllers.SIL
             try
             {
                 _Context.Calculation.Add(calculation);
-                 await _Context.SaveChangesAsync();
+                await _Context.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception exe)
@@ -168,7 +181,27 @@ namespace Plant.Controllers.SIL
                 return BadRequest(exe.Message);
             }
         }
-            // PUT api/<SILClassificationAPI>/5
+
+        [HttpPost]
+        [Route("SaveReport")]
+        //public  IActionResult SaveReport([FromBody] ReportMaster report)
+        public async Task<ActionResult<ReportMaster>> SaveReport([FromBody] ReportMaster report)
+        {
+            try
+            { 
+                _Context.ReportMasters.Add(report);
+                 _Context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+
+        // PUT api/<SILClassificationAPI>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {

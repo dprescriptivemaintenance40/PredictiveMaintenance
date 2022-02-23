@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Plant.Models
+﻿namespace Plant.Models
 {
     public class ReportMaster
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string CompanyName { get; set; }
+        public string PlantName { get; set; }
+        public string CompanyBackground { get; set; }
     }
 }

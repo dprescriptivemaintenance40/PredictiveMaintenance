@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-
-
-declare var vis: any;
+import { Component, OnInit } from '@angular/core';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { SILConstantAPI } from '../Shared/Model/SILConstant';
 
 
 @Component({
@@ -11,10 +10,22 @@ declare var vis: any;
 
 })
 
-export class SilReportComponent {
+export class SilReportComponent implements OnInit {
 
-    constructor() { }
+    public reportDataList: any = [];
+    constructor(private ReportTemplateConstantAPI: SILConstantAPI,
+        private ReportTemplateBLService: CommonBLService) { }
 
-    ngOnInit(): void {
+    ngOnInit() {
+        this.getReportData();
+    }
+
+    getReportData() {
+        this.ReportTemplateBLService.getWithoutParameters(this.ReportTemplateConstantAPI.GetReportData)
+            .subscribe((res: any) => {
+                this.reportDataList = res;
+                console.log(this.reportDataList)
+            })
+
     }
 }

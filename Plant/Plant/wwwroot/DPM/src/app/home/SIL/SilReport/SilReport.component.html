@@ -1,168 +1,102 @@
-<!-- <h5>SIL Reports</h5>
-<p>SIL Reports are displayed as:</p>
-<p-table #dt1 [value]="rprtTemplateList" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
-	[rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
-	currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
-	[globalFilterFields]="[
-  
-  'representative.name',
-  'status'
-]">
-	<ng-template pTemplate="caption">
-		<div class="p-d-flex">
-			<span class="p-input-icon-left p-ml-auto">
-				<i class="pi pi-search"></i>
-				<input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
-					placeholder="Search keyword" />
-			</span>
-		</div>
-	</ng-template>
-	<ng-template pTemplate="header">
-		<tr>
-			<th>
-				<div class="p-d-flex p-jc-between p-ai-center">
-					SIF Id
-				</div>
-			</th>
-			<th>
-				<div class="p-d-flex p-jc-between p-ai-center">
-					Node Id
-				</div>
-			</th>
-			<th>
-				<div class="p-d-flex p-jc-between p-ai-center">
-					SID Description
-				</div>
-			</th>
-			<th>
-				<div class="p-d-flex p-jc-between p-ai-center">
-					Target SIL
-				</div>
-			</th>
-			<th>
-				<div class="p-d-flex p-jc-between p-ai-center">
-					Actions
-				</div>
-			</th>
-		</tr>
-	</ng-template>
-	<ng-template pTemplate="body" let-sifDesign>
-		<tr>
-			<td>
-				1
-			</td>
-			<td>
-				1
-			</td>
-			<td>
-				Hello
-			</td>
-			<td>
-				Security
-			</td>
-			<td>
-				<button pButton type="button" icon="pi pi-pencil" iconPos="left" iconPos="left" pTooltip="Edit"
-					tooltipPosition="top"></button>
-				<button pButton type="button" icon="pi pi-eye" iconPos="left" iconPos="left" pTooltip="View"
-					tooltipPosition="top"></button>
-				<button pButton type="button" icon="pi pi-file" iconPos="left" pTooltip="Report File"
-					tooltipPosition="top" (click)="newTab('http://localhost:5025/#/reportTemplate')"></button>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				2
-			</td>
-			<td>
-				2
-			</td>
-			<td>
-				Bye
-			</td>
-			<td>
-				Holiday
-			</td>
-			<td>
-				<button pButton type="button" icon="pi pi-pencil" iconPos="left" iconPos="left" pTooltip="Edit"
-					tooltipPosition="top"></button>
-				<button pButton type="button" icon="pi pi-eye" iconPos="left" iconPos="left" pTooltip="View"
-					tooltipPosition="top"></button>
-				<button pButton type="button" icon="pi pi-file" iconPos="left" pTooltip="Report File"
-					tooltipPosition="top" (click)="newTab('http://localhost:5025/#/reportTemplate')"></button>
-			</td>
-		</tr>
-	</ng-template>
-	<ng-template pTemplate="emptymessage">
-		<tr>
-			<td colspan="7">No Reports found.</td>
-		</tr>
-	</ng-template>
-</p-table> -->
-
-
 <p-toast position="top-right"></p-toast>
 
 <style>
-    .disabled {
-        pointer-events: none;
-        cursor: default;
-        text-decoration: none;
-        color: grey !important;
-    }
+	.disabled {
+		pointer-events: none;
+		cursor: default;
+		text-decoration: none;
+		color: grey !important;
+	}
 </style>
 
 <div class="row">
-    <div class="col-xl-12 col-lg-11">
-        <div class="dpm-card prescriptive  mb-4 con">
-            <div class="card-header">
-                <h5 class="card-title mb-0 mt-2"><i class="fa fa-tasks"></i>&nbsp;SILClassification List</h5>
-             
-            </div>
-            <div class="card-body">
-                <p-table
-                  [scrollable]="true" [style]="{width:'100%'}" [value]="sheetData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                    [rowsPerPageOptions]="[10,25,50]" >
-                    <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
-                        <div class="prescriptive-card p-3">
-                            <h1 class="font-weight-normal h6"><small>{{p.InterLockTag}}
-                            </small><span class="d-block font-weight-normal h5 mt-2">{{p.InterLockTag}}
-                                <span  class="badge badge-info ml-2"><small><i
-                                        class="pi pi-tag mr-1"></i></small>Final Element: {{p.FinalElement}}</span>
-                                <span class="badge-danger badge ml-2 mr-2"><small><i class="pi pi-chart-line"></i>
-                                </small> Tag No: {{p.Sensor}}</span>
-                                <span class="badge badge-warning"><i
-                                    class="pi pi-star-o small mr-1"></i>SIF Description: {{p.SIFDescription}}</span>
-                                <span class="badge badge-dark ml-2"><i class="pi pi-star-o small mr-1">
+	<div class="col-xl-12 col-lg-11">
+		<div class="dpm-card prescriptive  mb-4 con">
+			<div class="card-header">
+				<h5 class="card-title mb-0 mt-2"><i class="fa fa-tasks"></i>&nbsp;SILClassification List</h5>
 
-                                </i>Target SIL: {{p.TargetSIL}}</span></span>
-                            </h1>
-                            <span class="">
-                                <a style="color: red;"  (click)="DeleteSILClassificationRecord(p)" data-toggle="modal" data-target="#DeleteSIL"><small><i class="pi pi-trash"></i></small></a>
-                            </span>
-                         </div>
-                      
-                    </ng-template>
-                </p-table>
-            </div>
-        </div>
-    </div>
+			</div>
+			<div class="card-body">
+				<p-table [scrollable]="true" [style]="{width:'100%'}" [value]="sheetData" [paginator]="true"
+					[rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+					currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+					[rowsPerPageOptions]="[10,25,50]">
+					<ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
+						<div class="prescriptive-card p-3">
+							<h1 class="font-weight-normal h6"><small>{{p.SIFDescription}}
+								</small><span class="d-block font-weight-normal h5 mt-2">{{p.InterLockTag}}
+									<span class="badge badge-info ml-2"><small><i
+												class="pi pi-tag mr-1"></i></small>Final Element:
+										{{p.FinalElement}}</span>
+									<span class="badge-danger badge ml-2 mr-2"><small><i class="pi pi-chart-line"></i>
+										</small> Tag No: {{p.Sensor}}</span>
+									<span class="badge badge-warning"><i class="pi pi-star-o small mr-1"></i>SIF
+										Description: {{p.SIFDescription}}</span>
+									<span class="badge badge-dark ml-2"><i class="pi pi-star-o small mr-1">
+
+										</i>Target SIL: {{p.TargetSIL}}</span></span>
+							</h1>
+							<span class="">
+								<button pButton pRipple type="button" label="Delete" icon="pi pi-trash"
+									class="p-button-rounded p-button-danger" (click)="DeleteSILClassificationRecord(p)"
+									data-toggle="modal" data-target="#DeleteSIL"></button>
+								<button pButton pRipple type="button" label="Report" (click)="showReport()"
+									icon="pi pi-file" class="p-button-rounded p-button-danger"></button>
+							</span>
+						</div>
+
+					</ng-template>
+				</p-table>
+			</div>
+		</div>
+	</div>
 </div>
+
+<p-dialog header="Edit Report" [(visible)]="displayReportField" [modal]="true"
+	[style]="{'max-height':'900px','width':'600px','overflow':'auto'}">
+	<div>
+		<label style=" margin-right: 12px;">Company Name</label>
+		<input type="text" class="form-control" [(ngModel)]="reportTemplateObj.CompanyName" pInputText />
+	</div>
+	<div>
+		<label style=" margin-right: 12px;">Plant Name</label>
+		<input type="text" class="form-control" [(ngModel)]="reportTemplateObj.PlantName" pInputText />
+	</div>
+	<div>
+		<label>Company BackGround</label>
+		<span class="p-float-label">
+			<textarea inputId="textarea" style="height: 100px;" cols="40" class="form-control"
+				[(ngModel)]="reportTemplateObj.CompanyBackground" pInputTextarea></textarea>
+		</span>
+	</div>
+	<div>
+		<button icon="pi pi-check" (click)="SaveReportData()">Save</button>
+	</div>
+	<ng-template pTemplate="footer">
+		<p-button icon="pi pi-times" label="Cancel" (click)="displayReportField=false" styleClass="p-button-text">
+		</p-button>
+		<p-button icon="pi pi-eye" label="Report" (click)="newTab('http://localhost:5025/#/reportTemplate')"
+			styleClass="p-button-text" icon="pi pi-eye"></p-button>
+	</ng-template>
+</p-dialog>
+
 <div class="modal fade" id="DeleteSIL" tabindex="-1" role="dialog" aria-labelledby="DeleteTreeTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete SIL Classification?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SoftDeleteSILClassificationRecords()">Delete</button>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Are you sure you want to delete SIL Classification?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					(click)="SoftDeleteSILClassificationRecords()">Delete</button>
+			</div>
+		</div>
+	</div>
 </div>

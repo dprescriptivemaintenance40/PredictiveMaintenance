@@ -1,6 +1,7 @@
-export class ReportTemplateMaster {
-public Id: number;
-public Name: string="SIL Report Template";
-public Value: string="HAHA";
+export class ReportMaster {
+public Id: number = 0;
+public CompanyName: string = "";
+public PlantName: string = "";
+public CompanyBackground:string = "";
 }
 

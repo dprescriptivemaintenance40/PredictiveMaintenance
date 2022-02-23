@@ -180,7 +180,7 @@ export class SILComponent implements OnInit {
   }
 
   public Save() {
-    this.SheetValue = this.getData.getData()
+    this.SheetValue = this.getData.getData();
     this.arr = this.getData.getHeaders();
     this.cols = this.arr.split(",");
     let sifDesignObj = [];
@@ -452,6 +452,7 @@ export class SILComponent implements OnInit {
       this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.CalculationSave, cal).subscribe((res: any) => {
        this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
         } ,(err) => {
+        this.getData.setData([[]]);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
        });
       },
