@@ -7,14 +7,14 @@ import { PrimeNGConfig } from 'primeng/api';
 
 declare global {
   interface Window {
-      value:any;
+    value: any;
   }
 }
 
 @Component({
   selector: 'app-report',
   templateUrl: './SILreport.component.html',
-  styleUrls:['./SILreport.component.scss']
+  styleUrls: ['./SILreport.component.scss']
 })
 
 
@@ -24,11 +24,11 @@ export class SILreportComponent {
   public SILDeleteId: number = 0;
   public displayReportField: boolean = false;
   public reportData: any = [];
-  public SIFId:number=0;
-  public save:boolean=false;
-  public value:any;
+  public SIFId: number = 0;
+  public save: boolean = false;
+  public value: any;
 
-  constructor( private primengConfig: PrimeNGConfig,
+  constructor(private primengConfig: PrimeNGConfig,
     private SILClassificationReportBLService: CommonBLService,
     public messageService: MessageService,
     private ReportConstantAPI: SILConstantAPI) { }
@@ -40,13 +40,13 @@ export class SILreportComponent {
 
   public showReport(id) {
     this.displayReportField = true;
-    this.SIFId=id;
-    this.save=true;
+    this.SIFId = id;
+    this.save = true;
   }
 
   public SaveReportData() {
     let report = new ReportMaster();
-    report.SIFId=this.SIFId;
+    report.SIFId = this.SIFId;
     report.CompanyName = this.reportTemplateObj.CompanyName;
     report.PlantName = this.reportTemplateObj.PlantName;
     report.CompanyBackground = this.reportTemplateObj.CompanyBackground;
@@ -58,7 +58,7 @@ export class SILreportComponent {
   }
 
   newTab(url: string) {
-    var newWindow =window.open(url, "_blank");
+    var newWindow = window.open(url, "_blank");
     // let value = window.value; // ok now
     newWindow.window.value = this.SIFId;
     this.displayReportField = false;

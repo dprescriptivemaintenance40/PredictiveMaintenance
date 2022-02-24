@@ -17,6 +17,7 @@ export class SilReportComponent implements OnInit {
     public silDataList: any = [];
     public id: any;
     public reportDataList: any = [];
+    public getAllList: any = [];
 
     constructor(private ReportTemplateConstantAPI: SILConstantAPI,
         private ReportTemplateBLService: CommonBLService,
@@ -24,8 +25,6 @@ export class SilReportComponent implements OnInit {
 
     ngOnInit() {
         this.id = (this.route.snapshot.params['id']);
-        //  var val=window.value;
-        //     this.getId = val;
         this.getReportData();
         this.getSILData();
     }
@@ -40,13 +39,27 @@ export class SilReportComponent implements OnInit {
     }
     getSILData() {
         const params = new HttpParams()
-        .set('Id',this.id);
-        var url:string = this.ReportTemplateConstantAPI.GetSIL ;
-        this.ReportTemplateBLService.getWithParameters(url,params)
+            .set('Id', this.id);
+        var url: string = this.ReportTemplateConstantAPI.GetSIL;
+        this.ReportTemplateBLService.getWithParameters(url, params)
             .subscribe((res: any) => {
                 this.silDataList = res;
-
-                console.log(this.silDataList)
+                this.silDataList[0].ImpactEvents.forEach(impact => {
+                    impact.RiskMatrix.forEach(risk => {
+                        risk.InitiatingCauses.forEach(init => {
+                            let obj = {};
+                            obj['getinitiatingcauses'] = init.initiatingCause
+                            obj['getIELP'] = init.IELP
+                            obj['getIEF'] = init.IEF
+                            init.ProtectionLayers.forEach(protlayer => {
+                                if (protlayer.NameOfIPL == 'Alarm') {
+                                    obj['PFD'] = protlayer.PFD;
+                                    this.getAllList.push(obj)
+                                }
+                            });
+                        });
+                    });
+                });
             })
     }
 }
