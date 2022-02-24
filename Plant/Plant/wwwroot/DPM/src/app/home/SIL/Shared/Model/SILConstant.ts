@@ -11,5 +11,6 @@ export class SILConstantAPI {
 
     //SILClassification Report
     public SILReportSave = '/SILClassificationAPI/SaveReport';
-    public GetReportData = '/SILClassificationAPI/GetReport'
+    public GetReportData = '/SILClassificationAPI/GetReport';
+    public GetSIL = '/SILClassificationAPI/GetSILData';
 }

@@ -10,6 +10,7 @@ import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
 import { SILreportComponent } from "./SIL/SILReport/SILreport.component";
 import { SILComponent } from "../home/SIL/SILCreation/Sil_Creation.component";
 import { VisComponent } from "./Vis/Vis.component";
+import { SilReportComponent } from "./SIL/SilTemplate/SilReport.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -18,6 +19,7 @@ import { VisComponent } from "./Vis/Vis.component";
                 { path: '', redirectTo: 'aboutus', pathMatch: 'full' },
                 { path: 'aboutus' , component: AboutComponent},
                 { path: 'report' , component: SILreportComponent},
+               
                 { path: 'LandingPage', component: DashboardComponent },
                 { path: 'VisNetwork', component: VisComponent},
                 { path: 'FMEA', component: FMEAComponent},

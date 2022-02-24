@@ -43,7 +43,7 @@
 								<button pButton pRipple type="button" label="Edit Report" (click)="showReport(p.Id)"
 									icon="pi pi-file" class="p-button-info"></button>
 								<button *ngIf="save" pButton pRipple type="button" label="View Report"  
-								    icon="pi pi-eye" (click)="newTab('http://localhost:5025/#/reportTemplate')"
+								    icon="pi pi-eye" routerLink="/reportTemplate/{{p.Id}}"
 								   class="p-button-secondary"></button>
 							</span>
 						</div>

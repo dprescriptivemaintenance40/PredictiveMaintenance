@@ -67,8 +67,8 @@ namespace Plant.Controllers.SIL
             try
             {
                 return await _Context.ReportMasters
-                                                .OrderByDescending(a => a.Id)
-                                                .ToListAsync();
+                                     .OrderByDescending(a => a.Id)
+                                     .ToListAsync();
             }
             catch (Exception)
             {
@@ -79,9 +79,24 @@ namespace Plant.Controllers.SIL
 
         // GET api/<SILClassificationAPI>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        [Route("GetSILData")]
+        public async Task<ActionResult<IEnumerable<SIFDesign>>> GetSILData(int id)
         {
-            return "value";
+            try
+            {
+                var ids = 1;
+                return await _Context.SIFDesign.Where(a => a.Id == ids)
+                                               .Include(a => a.ImpactEvents)
+                                                .ThenInclude(a => a.RiskMatrix)
+                                                .ThenInclude(a => a.InitiatingCauses)
+                                                .ThenInclude(a => a.ProtectionLayers)
+                                                .OrderBy(a => a.Id)
+                                                .ToListAsync();
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
         }
 
         // POST api/<SILClassificationAPI>

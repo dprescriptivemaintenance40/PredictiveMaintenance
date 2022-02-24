@@ -9,7 +9,7 @@ import { SilReportComponent } from './home/SIL/SilTemplate/SilReport.component';
   imports: [RouterModule.forRoot([
     { path: '', redirectTo: 'Login', pathMatch: 'full' },
     { path: 'Login', component: LoginRegistrationComponent },
-    { path: 'reportTemplate', component: SilReportComponent},
+    { path: 'reportTemplate/:id', component: SilReportComponent},
     { path: 'Home', loadChildren: () => import('./home/home.module').then(a => a.HomeModule) },
    
   ])],
