@@ -237,15 +237,15 @@ export class Calculation {
                 riskmatrix.InitiatingCauses.forEach(riska => {
                     if (this.SILA == 0) {
                         if (this.RRFA < 10) {
-                            return 0
+                            this.SILA= 0
                         }
-                        else if (this.RRFA < 100) {
-                            return 1
+                        else if (this.RRFA > 10 && this.RRFA < 100) {
+                            this.SILA= 1
                         }
-                        else if (this.RRFA < 1000) {
-                            return 3
+                        else if (this.RRFA > 100 && this.RRFA < 1000) {
+                            this.SILA= 3
                         }
-                        else { return 4 }
+                        else { this.SILA= 4 }
                     }
                 });
             });
@@ -253,15 +253,15 @@ export class Calculation {
                 riskmatrix.InitiatingCauses.forEach(riskp => {
                     if (this.SILP == 0) {
                         if (this.RRFP < 10) {
-                            return 0
+                            this.SILP= 0
                         }
-                        else if (this.RRFP < 100) {
-                            return 1
+                        else if (this.RRFP > 10 && this.RRFP < 100) {
+                            this.SILP= 1
                         }
-                        else if (this.RRFP < 1000) {
-                            return 3
+                        else if (this.RRFP > 100 && this.RRFP < 1000) {
+                            this.SILP= 3
                         }
-                        else { return 4 }
+                        else { this.SILP= 4 }
                     }
                 });
             });
@@ -269,15 +269,15 @@ export class Calculation {
                 riskmatrix.InitiatingCauses.forEach(riske => {
                     if (this.SILE == 0) {
                         if (this.RRFE < 10) {
-                            return 0
+                            this.SILE= 0
                         }
-                        else if (this.RRFE < 100) {
-                            return 1
+                        else if (this.RRFE > 10 && this.RRFE < 100) {
+                            this.SILE= 1
                         }
-                        else if (this.RRFE < 1000) {
-                            return 3
+                        else if (this.RRFE > 100 && this.RRFE < 1000) {
+                            this.SILE= 3
                         }
-                        else { return 4 }
+                        else { this.SILE= 4 }
                     }
                 });
             });

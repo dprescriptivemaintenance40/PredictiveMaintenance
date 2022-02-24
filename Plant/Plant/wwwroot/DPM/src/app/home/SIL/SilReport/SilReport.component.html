@@ -29,7 +29,7 @@
 												class="pi pi-tag mr-1"></i></small>Final Element:
 										{{p.FinalElement}}</span>
 									<span class="badge-danger badge ml-2 mr-2"><small><i class="pi pi-chart-line"></i>
-										</small> Tag No: {{p.Sensor}}</span>
+										</small> Sensor: {{p.Sensor}}</span>
 									<span class="badge badge-warning"><i class="pi pi-star-o small mr-1"></i>SIF
 										Description: {{p.SIFDescription}}</span>
 									<span class="badge badge-dark ml-2"><i class="pi pi-star-o small mr-1">
@@ -37,15 +37,26 @@
 										</i>Target SIL: {{p.TargetSIL}}</span></span>
 							</h1>
 							<span class="">
+                              
+                                <a style="color: skyblue;" title="Edit"  (click)="showReport(p.Id)" data-toggle="modal" class="link-primary mr-1"><i class="pi pi-pencil mr-2"></i>Edit Attachment</a>
+                            </span>
+                            <span class="">
+                                <a style="color: black;" title="" routerLink="/reportTemplate/{{p.Id}}"  class="link-primary mr-1"><i class="fa fa-eye mr-2"></i>View Report</a>
+                            </span>
+                          
+                            <span class="">
+                                <a style="color: red;" title="Delete" (click)="DeleteSILClassificationRecord(p)" data-toggle="modal" data-target="#DeleteSIL" class="link-primary mr-1"><small><i class="pi pi-trash"></i></small>Delete</a>
+                            </span>
+							<!-- <span class="">
 								<button pButton pRipple type="button" label="Delete" icon="pi pi-trash"
 									 class="p-button-danger" (click)="DeleteSILClassificationRecord(p)"
 									data-toggle="modal" data-target="#DeleteSIL"></button>
 								<button pButton pRipple type="button" label="Edit Report" (click)="showReport(p.Id)"
 									icon="pi pi-file" class="p-button-info"></button>
 								<button *ngIf="save" pButton pRipple type="button" label="View Report"  
-								    icon="pi pi-eye" routerLink="/reportTemplate/{{p.Id}}"
+								    icon="pi pi-eye" (click)="newTab('http://localhost:5025/#/reportTemplate')" routerLink="/reportTemplate/{{p.Id}}"
 								   class="p-button-secondary"></button>
-							</span>
+							</span> -->
 						</div>
 
 					</ng-template>

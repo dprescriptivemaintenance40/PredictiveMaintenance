@@ -41,6 +41,7 @@ export class SILComponent implements OnInit {
   public RiskMatrixVal: RiskMatrix = new RiskMatrix();
   public initcauses: InitiatingCause = new InitiatingCause();
   public sifDesignObj: SIFDesign = new SIFDesign();
+  public TargetSil:number=0;
   public cal: Calculation = new Calculation(this.sifDesignObj);
   public value=values;
   public company:string="";
@@ -186,10 +187,11 @@ export class SILComponent implements OnInit {
     let sifDesignObj = [];
     let sif = new SIFDesign();
     sif.Id = this.sifid;
+    sif.HazopNodeId=this.node;
     sif.FinalElement = this.sifDesignObj.FinalElement;
     sif.RiskMatrix = this.sifDesignObj.RiskMatrix;
     sif.Sensor = this.sifDesignObj.Sensor;
-    sif.SIFDescription = this.sifDesignObj.SIFDescription;
+    sif.SIFDescription = this.description;
     sif.InterLockTag = this.sifDesignObj.InterLockTag;
     sif.TargetSIL = this.sifDesignObj.TargetSIL;
     var impactId = 0;
@@ -441,7 +443,8 @@ export class SILComponent implements OnInit {
     let calc = new Calculation(sif);
     this.cal = calc;
     sifDesignObj.push(sif);
-    console.log(sifDesignObj)
+    this.TargetSil=sif.TargetSIL;
+    console.log(sifDesignObj);
     this.SaveSheetData(sifDesignObj,this.cal);
      console.log(this.cal)
 
@@ -450,16 +453,19 @@ export class SILComponent implements OnInit {
   public SaveSheetData(sifDesignObj: any,calculate:any) {
     this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.SIFSave, sifDesignObj).subscribe((res: any) => {
       this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.CalculationSave, calculate).subscribe((res: any) => {
-        this.getData.setData([[]]);
-        this.sifDesignObj = new SIFDesign();
-        this.cal.TRFP=0; this.cal.TRFE=0; this.cal.TRFA=0;
-        this.cal.OverallIELA=0; this.cal.OverallIELE=0; this.cal.OverallIELP=0;
-        this.cal.PFDP=0; this.cal.PFDA=0;  this.cal.PFDE=0; 
-        this.cal.RRFA=0; this.cal.RRFP=0;  this.cal.RRFE=0;
-        this.cal.SILP=0; this.cal.SILA=0; this.cal.SILE=0;
-        this.sifid = 0;
-        this.node = 0;
-        this.description = "";
+        // this.getData.setData([[]]);
+        // this.sifDesignObj = new SIFDesign();
+        // this.node=0;
+        // this.sifid=0;
+        // this.description="";
+        // this.cal.TRFP=0; this.cal.TRFE=0; this.cal.TRFA=0;
+        // this.cal.OverallIELA=0; this.cal.OverallIELE=0; this.cal.OverallIELP=0;
+        // this.cal.PFDP=0; this.cal.PFDA=0;  this.cal.PFDE=0; 
+        // this.cal.RRFA=0; this.cal.RRFP=0;  this.cal.RRFE=0;
+        // this.cal.SILP=0; this.cal.SILA=0; this.cal.SILE=0;
+        // this.sifid = 0;
+        // this.node = 0;
+        // this.description = "";
        this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
         } ,(err) => {
         this.getData.setData([[]]);
@@ -509,8 +515,23 @@ export class SILComponent implements OnInit {
     this.sifid=1;
     this.session="1  25-07-96";
     this.node=1;
-    this.description="Line from amine tank via pump to absorber tower";
+    this.description="Pump trips reverse flow back flow of 20 bar gas to amine tank";
     this.parameter="Flow";
+  }
+  Add(){
+    this.getData.setData([[]]);
+    this.sifDesignObj = new SIFDesign();
+    this.node=0;
+    this.sifid=0;
+    this.description="";
+    this.cal.TRFP=0; this.cal.TRFE=0; this.cal.TRFA=0;
+    this.cal.OverallIELA=0; this.cal.OverallIELE=0; this.cal.OverallIELP=0;
+    this.cal.PFDP=0; this.cal.PFDA=0;  this.cal.PFDE=0; 
+    this.cal.RRFA=0; this.cal.RRFP=0;  this.cal.RRFE=0;
+    this.cal.SILP=0; this.cal.SILA=0; this.cal.SILE=0;
+    this.sifid = 0;
+    this.node = 0;
+    this.description = "";
   }
 }
 

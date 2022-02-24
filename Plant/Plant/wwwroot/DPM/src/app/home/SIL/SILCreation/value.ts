@@ -8,13 +8,13 @@
     },
     {
       Consequences:"Loss of fresh amine to absorber lower giving H2S in the sweet gas line",
-      Safeguards:"Ditto",
-      Recommendations:"Ditto"
+      Safeguards:"Level indication",
+      Recommendations:"Consider a low level alarm"
     },
     {
       Causes:"Line frozen",
-      Consequences:"Ditto",
-      Safeguards:"Ditto",
+      Consequences:"Loss of fresh amine to absorber lower giving H2S in the sweet gas line",
+      Safeguards:"Level indication",
       Recommendations:"Check freezing point of water / amine mixture"
     },
     {
@@ -44,12 +44,12 @@
     {
       Consequences:"Possible rupture of tank",
       Safeguards:"Tank weak seam",
-      Recommendations:"Ditto"
+      Recommendations:"In view of the potential consequence of the release and its likelihood undertake a full study of hazards involved, and safeguards appropriate to these hazards proposed (posssibly installing a chopper valve to cut in and prevent back flow)"
     },
     {
       Consequences:"Major H2S release to plant causing potential toxic cloud and possible vapour cloud explosion if cloud reaches congested part of the plant",
       Safeguards:"None",
-      Recommendations:"Ditto"
+      Recommendations:"In view of the potential consequence of the release and its likelihood undertake a full study of hazards involved, and safeguards appropriate to these hazards proposed (posssibly installing a chopper valve to cut in and prevent back flow)"
     },
     {
       Deviation:"High Temperature",
@@ -71,7 +71,7 @@
     },
     {
       Causes:"Reverse flow from absorber lower",
-      Consequences:"Ditto",
+      Consequences:"Possibility of overpressure of pipe",
       Safeguards:"None",
       Recommendations:"In previous action to check pipe spec against pump dead head pressure also include checking spec against operating pressure in absorber tower"
     },

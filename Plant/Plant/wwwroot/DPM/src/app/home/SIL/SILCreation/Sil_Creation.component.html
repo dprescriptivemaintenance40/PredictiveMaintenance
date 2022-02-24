@@ -57,7 +57,7 @@
                                 <label style=" margin-right: 12px;">Target SIL</label>
                                 <!-- <input type="text" class="form-control" [(ngModel)]="sifDesignObj.TargetSIL"
                                     pInputText /> -->
-                                    <h4>{{ sifDesignObj.TargetSIL | number}}</h4>
+                                    <h4>{{ TargetSil | number}}</h4>
                             </div>
                         </div>
                     </ng-template>
@@ -193,7 +193,9 @@
 </p-fieldset>
 <br>
 <button style="float: right;" label="Save" type="button" class="btn btn-dark" 
-    (click)="Save()" pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save">Save</i></button><br><br>
+    (click)="Save()" pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save">Save</i></button>
+<button style="float: right;margin-right: 10px;" label="Add" type="button" class="btn btn-dark" 
+    (click)="Add()" pTooltip="Add New Record" tooltipPosition="top"><i class="pi pi-plus">Add</i></button><br><br>
 <div class="card dpm-card w-100 p-3">
     <div #spreadsheet>
     </div>
