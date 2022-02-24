@@ -52,7 +52,7 @@ export class SILreportComponent {
     report.CompanyBackground = this.reportTemplateObj.CompanyBackground;
     this.SILClassificationReportBLService.postWithoutHeaders(this.ReportConstantAPI.SILReportSave, report)
       .subscribe((res: any) => {
-        alert("done");
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Successfully Added' });
         this.displayReportField = false;
       })
   }

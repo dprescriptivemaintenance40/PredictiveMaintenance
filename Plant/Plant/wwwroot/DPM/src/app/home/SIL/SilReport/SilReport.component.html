@@ -38,14 +38,14 @@
 							</h1>
 							<span class="">
                               
-                                <a style="color: skyblue;" title="Edit"  (click)="showReport(p.Id)" data-toggle="modal" class="link-primary mr-1"><i class="pi pi-pencil mr-2"></i>Edit Attachment</a>
+                                <a style="color: skyblue;" title="Edit"  (click)="showReport(p.Id)" data-toggle="modal" class="link-primary mr-1"><i class="pi pi-pencil mr-2"></i>Add Company Data</a>
                             </span>
                             <span class="">
                                 <a style="color: black;" title="" routerLink="/reportTemplate/{{p.Id}}"  class="link-primary mr-1"><i class="fa fa-eye mr-2"></i>View Report</a>
                             </span>
                           
                             <span class="">
-                                <a style="color: red;" title="Delete" (click)="DeleteSILClassificationRecord(p)" data-toggle="modal" data-target="#DeleteSIL" class="link-primary mr-1"><small><i class="pi pi-trash"></i></small>Delete</a>
+                                <a style="color: red;" title="Delete" (click)="DeleteSILClassificationRecord(p)" data-toggle="modal" data-target="#DeleteSIL" class="link-primary mr-2"><small><i class="pi pi-trash mr-1"></i></small> Delete</a>
                             </span>
 							<!-- <span class="">
 								<button pButton pRipple type="button" label="Delete" icon="pi pi-trash"
@@ -66,7 +66,7 @@
 	</div>
 </div>
 
-<p-dialog header="Edit Report" [(visible)]="displayReportField" [modal]="true"
+<p-dialog header="Add Company Data" [(visible)]="displayReportField" [modal]="true"
 	[style]="{'max-height':'900px','width':'600px','overflow':'auto'}">
 	<div>
 		<label style=" margin-right: 12px;">Company Name</label>
@@ -84,9 +84,19 @@
 		</span>
 	</div>
 	<ng-template pTemplate="footer">
-		<p-button icon="pi pi-times" label="Cancel" (click)="displayReportField=false" styleClass="p-button-danger">
+		<div class="prescriptive-card p-3">
+		<span class="">
+                              
+			<a style="color: skyblue;" title="Cancel"  (click)="displayReportField=false" data-toggle="modal" class="link-primary mr-1"><i class="pi pi-times mr-2"></i>Cancel </a>
+		</span>
+		<span class="">
+                              
+			<a style="color: skyblue;" title="Save"  (click)="SaveReportData()" data-toggle="modal" class="link-primary mr-1"><i class="pi pi-check mr-2"></i>Save</a>
+		</span>
+	</div>
+		<!-- <p-button icon="pi pi-times" label="Cancel" (click)="displayReportField=false" styleClass="p-button-danger">
 		</p-button>
-		<p-button icon="pi pi-check" (click)="SaveReportData()">Save</p-button>
+		<p-button icon="pi pi-check" (click)="SaveReportData()">Save</p-button> -->
 	</ng-template>
 </p-dialog>
 

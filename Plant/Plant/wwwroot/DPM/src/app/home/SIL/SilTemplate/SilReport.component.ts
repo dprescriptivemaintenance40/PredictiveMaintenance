@@ -49,7 +49,15 @@ export class SilReportComponent implements OnInit {
                         risk.InitiatingCauses.forEach(init => {
                             let obj = {};
                             obj['getinitiatingcauses'] = init.initiatingCause
-                            obj['getIELP'] = init.IELP
+                            if(risk.Category == 'P'){
+                                obj['getIEL'] = init.IELP
+                            }
+                            else if(risk.Category == 'E'){
+                                obj['getIEL'] = init.IELE
+                            }
+                            else if(risk.Category == 'A'){
+                                obj['getIEL'] = init.IELA
+                            }
                             obj['getIEF'] = init.IEF
                             init.ProtectionLayers.forEach(protlayer => {
                                 if (protlayer.NameOfIPL == 'Alarm') {
