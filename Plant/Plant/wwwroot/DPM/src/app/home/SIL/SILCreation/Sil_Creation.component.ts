@@ -11,7 +11,7 @@ import {values} from './value'
   selector: 'app-sil',
   templateUrl: './Sil_Creation.component.html',
   styleUrls: ['./Sil_Creation.component.scss'],
-  providers: [DialogService, MessageService]
+  providers: [DialogService, MessageService],
 })
 
 export class SILComponent implements OnInit {

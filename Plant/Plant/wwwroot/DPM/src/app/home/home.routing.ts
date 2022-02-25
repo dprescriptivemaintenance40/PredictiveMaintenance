@@ -19,7 +19,6 @@ import { SilReportComponent } from "./SIL/SilTemplate/SilReport.component";
                 { path: '', redirectTo: 'aboutus', pathMatch: 'full' },
                 { path: 'aboutus' , component: AboutComponent},
                 { path: 'report' , component: SILreportComponent},
-               
                 { path: 'LandingPage', component: DashboardComponent },
                 { path: 'VisNetwork', component: VisComponent},
                 { path: 'FMEA', component: FMEAComponent},

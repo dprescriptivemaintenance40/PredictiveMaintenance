@@ -14,10 +14,16 @@ import { useAnimation } from '@angular/animations';
   styleUrls: ['./home.component.scss'],
   providers: [MessageService]
 })
+
 export class HomeComponent implements OnInit {
   menuOpened: boolean = true;
   FormData: FormGroup;
 
+  public CloseSideBar(){
+    if(this.router.url === "/Home/SIL" ){
+     this.menuOpened = false;
+    }
+  }
 
   public MenuItems: any[] = [
     {
@@ -67,17 +73,19 @@ export class HomeComponent implements OnInit {
     public router: Router,
     public messageService: MessageService,
     public commonLoadingDirective: CommonLoadingDirective,
-    private title: Title) {
+    private title: Title,) {
     this.title.setTitle('Login | Dynamic Prescriptive Maintenence');
   }
 
 
   ngOnInit() {
+    this.CloseSideBar();
     this.FormData = this.builder.group({
       Subject: new FormControl('', [Validators.required]),
       Email: new FormControl('', [Validators.compose([Validators.required, Validators.email])]),
       Comment: new FormControl('', [Validators.required]),
     });
+    
   }
 
 

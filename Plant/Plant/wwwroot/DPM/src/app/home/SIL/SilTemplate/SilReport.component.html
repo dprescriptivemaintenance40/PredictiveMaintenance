@@ -1,4 +1,4 @@
-<div class="container" style="background-color: white; padding-top: 20px; width: 1600px;">
+<div class="container" style="background-color: white; padding-top: 20px; width: 4000px;">
     <div style="margin-left: 10px;">
         <div>
             <h2 style="text-align:center;font-family: serif;"><b>Integrity Level (SIL) Assessment and Verification
@@ -39,12 +39,13 @@
             <br>
             <div>
                 <h3 style="font-family: serif;"><b>COMPANY BACKGROUND</b></h3>
+                <p style="text-align:left; font-size: x-large; font-family: serif;">
+                    {{reportDataList[0].CompanyBackground}}</p>
             </div>
             <br>
             <div>
-                <h3><b>BACKGROUND</b></h3>
-                <p style="text-align:left; font-size: x-large; font-family: serif;">
-                    {{reportDataList[0].CompanyBackground}}</p>
+                <h3 style="font-family: serif;"><b>BACKGROUND</b></h3>
+                <p style="text-align:left; font-size: x-large; font-family: serif;"></p>
             </div>
             <div>
                 <p style="text-align:left; font-size: x-large; font-family: serif;">
@@ -111,7 +112,7 @@
             </div>
             <br>
             <div>
-                <h3 style="font-family: serif;"><b>Data Gathering</b></h3>
+                <h3 style="font-family: serif;"><b>DATA GATHERING</b></h3>
             </div>
             <div>
                 <p style="text-align:left; font-size: x-large; font-family: serif;">
@@ -147,15 +148,16 @@
             <br>
             <div>
                 <img src="dist/DPM/assets/img/Safety_LifeCycle.PNG" style="margin-left: 75px;" class="style">
-                <div style="text-align: center;">
-                    Figure 1: ISA 84.01 Safety Lifecycle
+                <br>
+                <div>
+                    <p style="text-align: center;font-size: x-large; font-family: serif">Figure 1: ISA 84.01 Safety Lifecycle</p>
                 </div>
             </div>
             <div>
                 <br>
                 <br>
                 <br>
-                <h3 style="font-family: serif;"><b>SIL Assessment</b></h3>
+                <h3 style="font-family: serif;"><b>SIL ASSESSMENT</b></h3>
             </div>
             <div>
                 <p style="text-align:left; font-size: x-large; font-family: serif;">The goal of the SIL Assessment was
@@ -266,53 +268,91 @@
         </div>
         <br>
         <div>
-            <table>
+            <br>
+            <div>
+                <h3 style="text-align:left; font-family: serif"><b>REPORT</b></h3>
+                <!-- <h3 style="text-align: center; font-family: serif">Report</h3> -->
+                <p style="text-align:left; font-size: x-large; font-family: serif;">Layer of Protection Analysis
+                    Report:<b>{{todayDate | date:'medium'}}</b></p>
+                <p style="text-align:left; font-size: x-large; font-family: serif;">Scenario:Pressure vessel rupture due
+                    to overpressure (No SIF Credit)</p>
+                <p style="text-align:left; font-size: x-large; font-family: serif;">Target Frequency: 5.0E-06 Calculated
+                    Frequency: 1.8077E-04 Required Performance:
+                    2.766E-02</p>
+            </div>
 
-                <thead>
+
+
+
+
+            <!-- <td colspan="2">Layer of Protection Analysis Report:</td>
+            <td colspan="2">Generated 09-Feb-2007 15:04:58</td>
+
+
+            <td>Scenario:</td>
+            <td colspan="3">pressure vessel rupture due to overpressure (No SIF Credit)</td>
+            </tr>
+            <tr>
+                <td>Calculation Complete</td>
+                <td>References Complete</td>
+            </tr>
+            <tr>
+                <td colspan="6">Target Frequency: 5.0E-06 Calculated Frequency: 1.8077E-04 Required Performance:
+                    2.766E-02</td>
+            </tr> -->
+
+            <br>
+            <p-table class="center" [value]="getAllList" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
                     <tr>
-                        <caption>
-                            <h5 style="font-weight: bold;">Report</h5>
-                        </caption>
+                        <th>Impact</th>
+                        <th>Cat</th>
+                        <th>Sev</th>
+                        <th>TMEL</th>
+                        <th>IC</th>
+                        <th>IEF</th>
+                        <th>IP</th>
+                        <th>PP</th>
+                        <th>TR</th>
+                        <th>Desc</th>
+                        <th>PFD</th>
+                        <th>Desc</th>
+                        <th>PFD</th>
+                        <th>Desc</th>
+                        <th>PFD</th>
+                        <th>Desc</th>
+                        <th>PFD</th>
+                        <th>Desc</th>
+                        <th>PFD</th>
                     </tr>
-                </thead>
-                <tbody>
+                </ng-template>
+                <ng-template pTemplate="body" let-p>
                     <tr>
-                        <td colspan="2">Layer of Protection Analysis Report:</td>
-                        <td colspan="2">Generated 09-Feb-2007 15:04:58</td>
+                        <td>{{p.getImpactEvent}}</td>
+                        <td>{{p.getCategory}}</td>
+                        <td>{{p.getSeverity}}</td>
+                        <td>{{p.getTRF}}</td>
+                        <td>{{p.getinitiatingcauses}}</td>
+                        <!-- <td>{{p.getIEL}}</td> -->
+                        <td>{{p.getIEF}}</td>
+                        <td>{{p.getIP}}</td>
+                        <td>{{p.getPP}}</td>
+                        <td>{{p.getTR}}</td>
+                        <td>{{p.getDescription1}}</td>
+                        <td>{{p.getPFD1}}</td>
+                        <td>{{p.getDescription2}}</td>
+                        <td>{{p.getPFD2}}</td>
+                        <td>{{p.getDescription3}}</td>
+                        <td>{{p.getPFD3}}</td>
+                        <td>{{p.getDescription4}}</td>
+                        <td>{{p.getPFD4}}</td>
+                        <td>{{p.getDescription5}}</td>
+                        <td>{{p.getPFD5}}</td>
+
                     </tr>
-                    <tr>
-                        <td>Scenario:</td>
-                        <td colspan="3">pressure vessel rupture due to overpressure (No SIF Credit)</td>
-                    </tr>
-                    <tr>
-                        <td>Calculation Complete</td>
-                        <td>References Complete</td>
-                    </tr>
-                    <tr>
-                        <td colspan="6">Target Frequency: 5.0E-06 Calculated Frequency: 1.8077E-04 Required Performance:
-                            2.766E-02</td>
-                    </tr>
-                    <tr>
-                        <td>Intermediate Event Frequency</td>
-                        <td>Initiating Cause</td>
-                        <td>Initiation Frequency (1/yr)</td>
-                        <td>Alarm Protection Layer Fails to Protect</td>
-                        <td>PIC vent control fail to vent</td>
-                        <td>1oo2 HP SIF fail to function</td>
-                        <td>1oo1 HP SIF fail to function</td>
-                        <td>Spring Operated ReliefValve Fails toOpen</td>
-                        <td>Probability Vessel Ruptures</td>
-                        <td>Prob Person Present</td>
-                        <td>Prob of Fatality if Person Present</td>
-                    </tr>
-                    <tr *ngFor="let item of getAllList">
-                        <td>{{item.getIEL}}</td>
-                        <td>{{item.getinitiatingcauses}}</td>
-                        <td>{{item.getIEF}}</td>
-                        <td>{{item.PFD}}</td>
-                    </tr>
-                </tbody>
-            </table>
+                </ng-template>
+            </p-table>
+            <br>
             <br>
             <p style="text-align: center;font-size: x-large; font-family: serif">Figure 3: LOPA Report Worksheet
                 (Partial shown)</p>
@@ -379,6 +419,7 @@
             </ol>
 
         </div>
+        <br>
         <div>
             <h3 style="font-family: serif;"><b>CONCLUSION</b></h3>
             <p style="text-align:left; font-size: x-large; font-family: serif;">
@@ -390,7 +431,7 @@
                 design of safety instrumented protections for business.
             </p>
         </div>
-
+        <br>
         <div>
             <h3 style="font-family: serif;"><b>REFERENCES</b></h3>
             <ol style="text-align:left; font-size: x-large; font-family: serif;">
@@ -407,5 +448,6 @@
                 </li>
             </ol>
         </div>
+        <br>
     </div>
 </div>
