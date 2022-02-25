@@ -18,7 +18,10 @@ export class SilReportComponent implements OnInit {
     public id: any;
     public reportDataList: any = [];
     public getAllList: any = [];
-
+    public OverallIEL:any=[];
+    public OIEL:number=0;
+    public IEF:number=0;
+    public PFDAVG:number=0;
     constructor(private ReportTemplateConstantAPI: SILConstantAPI,
         private ReportTemplateBLService: CommonBLService,
         private route: ActivatedRoute) { }
@@ -50,7 +53,9 @@ export class SilReportComponent implements OnInit {
                             let obj = {};
                             obj['getinitiatingcauses'] = init.initiatingCause
                             if(risk.Category == 'P'){
-                                obj['getIEL'] = init.IELP
+                                obj['getIEL'] = init.IELP;
+                                this.OverallIEL.push(obj['getIEL']);
+                                this.OIEL+=obj['getIEL'];
                             }
                             else if(risk.Category == 'E'){
                                 obj['getIEL'] = init.IELE
@@ -59,6 +64,8 @@ export class SilReportComponent implements OnInit {
                                 obj['getIEL'] = init.IELA
                             }
                             obj['getIEF'] = init.IEF
+                            this.IEF=obj['getIEF'];
+                            this.PFDAVG=this.IEF/this.OIEL;
                             init.ProtectionLayers.forEach(protlayer => {
                                 if (protlayer.NameOfIPL == 'Alarm') {
                                     obj['PFD'] = protlayer.PFD;

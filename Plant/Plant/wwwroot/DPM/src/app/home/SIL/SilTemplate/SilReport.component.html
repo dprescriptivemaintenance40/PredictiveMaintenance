@@ -340,17 +340,17 @@
                 will happen is the sum of the individual intermediate event likelihoods.
                 This can be calculated as follows:
             </p>
-            <p>From Server Side</p>
+            <p style="text-align:left; font-size: x-large; font-family: serif;">
+                Overall Event Likelihood (People): {{OverallIEL[0]}}+{{OverallIEL[1]}}={{OIEL | number:'1.1-5'}}</p>
             <p style="text-align:left; font-size: x-large; font-family: serif;">
                 The performance level or maximum allowable PFDAVG required for the SIS is determined by
                 dividing the Target Frequency by the Overall Event Likelihood.
             </p>
             <p style="text-align:left; font-size: x-large; font-family: serif;">
-                In this present case, an additional From Server Side, but we perform our SIL verification to
-
-
-                ensure that the actual “as designed and maintained SIF” does not exceed this value,
-                i.e. the SIF PFDAVG must be less than or equal to the required maximum allowable PFDAVG.
+                In this present case, an additional {{PFDAVG | number:'1.1-5'}} PFDAVG risk reduction is required from the SIS to 
+                meet a target frequency of {{IEF}}. The required SIS performance falls within the SIL 1 range, 
+                but we perform our SIL verification to ensure that the actual “as designed and maintained SIF” 
+                does not exceed this value, i.e. the SIF PFDAVG must be less than or equal to the required maximum allowable PFDAVG.
             </p>
             <p style="text-align:left; font-size: x-large; font-family: serif;">
                 The assessment results are summarized in a SIL Assessment Report.
