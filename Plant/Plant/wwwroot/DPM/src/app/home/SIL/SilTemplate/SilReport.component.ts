@@ -21,11 +21,23 @@ export class SilReportComponent implements OnInit {
     public id: any;
     public reportDataList: any = [];
     public getAllList: any = [];
-    public OverallIEL: any = [];
-    public OIEL: number = 0;
-    public IEF: number = 0;
-    public PFDAVG: number = 0;
+    public IELP: number = 0;
+    public IELA: number = 0;
+    public IELE: number = 0;
+    public TRFP: number = 0;
+    public TRFE: number = 0;
+    public TRFA: number = 0;
+    public PFDAVGP: number = 0;
+    public PFDAVGE: number = 0;
+    public PFDAVGA: number = 0;
+    public SILP: number = 0;
+    public SILE: number = 0;
+    public SILA: number = 0;
+    public TSIL: number = 0;
+    public SifDesc:string="";
+
     todayDate: Date = new Date();
+
     constructor(private ReportTemplateConstantAPI: SILConstantAPI,
         private ReportTemplateBLService: CommonBLService,
         private route: ActivatedRoute) { }
@@ -50,6 +62,8 @@ export class SilReportComponent implements OnInit {
         this.ReportTemplateBLService.getWithParameters(url, params)
             .subscribe((res: any) => {
                 this.silDataList = res;
+                this.TSIL=this.silDataList[0].TargetSIL;
+                this.SifDesc=this.silDataList[0].SIFDescription;
                 this.silDataList[0].ImpactEvents.forEach(impact => {
                     let obj = {};
                     obj['getImpactEvent'] = impact.ImpactEventDesciption;
@@ -60,10 +74,13 @@ export class SilReportComponent implements OnInit {
                             obj['getCategory'] = impact.RiskMatrix[i].Category;
                             obj['getSeverity'] = impact.RiskMatrix[i].Severity;
                             obj['getTRF'] = impact.RiskMatrix[i].TRF;
+                            this.TRFP=obj['getTRF']
                             for (let j = i; j < impact.RiskMatrix[i].InitiatingCauses.length; j++) {
                                 if (j == i) {
                                     obj['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
                                     obj['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
+                                    this.IELP+=obj['getIEL'];
+                                    this.PFDAVGP=this.TRFP/this.IELP;
                                     obj['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
                                     obj['getIP'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
                                     obj['getPP'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
@@ -96,6 +113,8 @@ export class SilReportComponent implements OnInit {
                                     let obj0 = {}
                                     obj0['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
                                     obj0['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
+                                    this.IELP+=obj0['getIEL'];
+                                    this.PFDAVGP=this.TRFP/this.IELP;
                                     obj0['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
                                     obj0['getIP'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
                                     obj0['getPP'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
@@ -139,10 +158,13 @@ export class SilReportComponent implements OnInit {
                             obj1['getCategory'] = impact.RiskMatrix[m].Category;
                             obj1['getSeverity'] = impact.RiskMatrix[m].Severity;
                             obj1['getTRF'] = impact.RiskMatrix[m].TRF;
+                            this.TRFE=obj1['getTRF'];
                             for (let n = 0; n < impact.RiskMatrix[m].InitiatingCauses.length; n++) {
                                 if (n == 0) {
                                     obj1['getinitiatingcauses'] = impact.RiskMatrix[m].InitiatingCauses[n].initiatingCause
-                                    obj1['getIEL'] = impact.RiskMatrix[m].InitiatingCauses[n].IELP;
+                                    obj1['getIEL'] = impact.RiskMatrix[m].InitiatingCauses[n].IELE;
+                                    this.IELE+=obj1['getIEL'];
+                                    this.PFDAVGE=this.TRFE/this.IELE;
                                     obj1['getIEF'] = impact.RiskMatrix[m].InitiatingCauses[n].IEF;
                                     obj1['getIP'] = impact.RiskMatrix[m].InitiatingCauses[n].IP;
                                     obj1['getPP'] = impact.RiskMatrix[m].InitiatingCauses[n].PP;
@@ -174,7 +196,9 @@ export class SilReportComponent implements OnInit {
                                 else {
                                     let obj2 = {}
                                     obj2['getinitiatingcauses'] = impact.RiskMatrix[m].InitiatingCauses[n].initiatingCause
-                                    obj2['getIEL'] = impact.RiskMatrix[m].InitiatingCauses[n].IELP;
+                                    obj2['getIEL'] = impact.RiskMatrix[m].InitiatingCauses[n].IELE;
+                                    this.IELE+=obj2['getIEL'];
+                                    this.PFDAVGE=this.TRFE/this.IELE;
                                     obj2['getIEF'] = impact.RiskMatrix[m].InitiatingCauses[n].IEF;
                                     obj2['getIP'] = impact.RiskMatrix[m].InitiatingCauses[n].IP;
                                     obj2['getPP'] = impact.RiskMatrix[m].InitiatingCauses[n].PP;
@@ -215,10 +239,13 @@ export class SilReportComponent implements OnInit {
                             obj3['getCategory'] = impact.RiskMatrix[a].Category;
                             obj3['getSeverity'] = impact.RiskMatrix[a].Severity;
                             obj3['getTRF'] = impact.RiskMatrix[a].TRF;
+                            this.TRFA=obj3['getTRF']
                             for (let b = 0; b < impact.RiskMatrix[a].InitiatingCauses.length; b++) {
                                 if (b == 0) {
                                     obj3['getinitiatingcauses'] = impact.RiskMatrix[a].InitiatingCauses[b].initiatingCause
-                                    obj3['getIEL'] = impact.RiskMatrix[a].InitiatingCauses[b].IELP;
+                                    obj3['getIEL'] = impact.RiskMatrix[a].InitiatingCauses[b].IELA;
+                                    this.IELA+=obj3['getIEL'];
+                                    this.PFDAVGA=this.TRFA/this.IELA;
                                     obj3['getIEF'] = impact.RiskMatrix[a].InitiatingCauses[b].IEF;
                                     obj3['getIP'] = impact.RiskMatrix[a].InitiatingCauses[b].IP;
                                     obj3['getPP'] = impact.RiskMatrix[a].InitiatingCauses[b].PP;
@@ -251,7 +278,9 @@ export class SilReportComponent implements OnInit {
                                 else {
                                     let obj4 =  {}
                                     obj4['getinitiatingcauses'] = impact.RiskMatrix[a].InitiatingCauses[b].initiatingCause
-                                    obj4['getIEL'] = impact.RiskMatrix[a].InitiatingCauses[b].IELP;
+                                    obj4['getIEL'] = impact.RiskMatrix[a].InitiatingCauses[b].IELA;
+                                    this.IELA+=obj4['getIEL'];
+                                    this.PFDAVGA=this.TRFA/this.IELA;
                                     obj4['getIEF'] = impact.RiskMatrix[a].InitiatingCauses[b].IEF;
                                     obj4['getIP'] = impact.RiskMatrix[a].InitiatingCauses[b].IP;
                                     obj4['getPP'] = impact.RiskMatrix[a].InitiatingCauses[b].PP;

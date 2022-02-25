@@ -243,9 +243,17 @@ export class Calculation {
                             this.SILA= 1
                         }
                         else if (this.RRFA > 100 && this.RRFA < 1000) {
-                            this.SILA= 3
+                            this.SILA= 2
                         }
-                        else { this.SILA= 4 }
+                        else if (this.RRFA > 1000 && this.RRFA < 10000){
+                             this.SILA= 3 
+                        }
+                        else if (this.RRFA > 10000 && this.RRFA < 100000){
+                            this.SILA= 4 
+                        }
+                        else{
+                            alert("Need another SIF")
+                        }
                     }
                 });
             });
@@ -259,9 +267,17 @@ export class Calculation {
                             this.SILP= 1
                         }
                         else if (this.RRFP > 100 && this.RRFP < 1000) {
-                            this.SILP= 3
+                            this.SILA= 2
                         }
-                        else { this.SILP= 4 }
+                        else if (this.RRFP > 1000 && this.RRFP < 10000){
+                             this.SILA= 3 
+                        }
+                        else if (this.RRFP > 10000 && this.RRFP < 100000){
+                            this.SILA= 4 
+                        }
+                        else{
+                            alert("Need another SIF")
+                        }
                     }
                 });
             });
@@ -275,9 +291,17 @@ export class Calculation {
                             this.SILE= 1
                         }
                         else if (this.RRFE > 100 && this.RRFE < 1000) {
-                            this.SILE= 3
+                            this.SILE= 2
                         }
-                        else { this.SILE= 4 }
+                        else if (this.RRFE > 1000 && this.RRFE < 10000){
+                             this.SILE= 3 
+                        }
+                        else if (this.RRFE > 10000 && this.RRFE < 100000){
+                            this.SILE= 4 
+                        }
+                        else{
+                            alert("Need another SIF")
+                        }
                     }
                 });
             });

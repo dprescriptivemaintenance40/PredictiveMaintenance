@@ -512,7 +512,7 @@ export class SILComponent implements OnInit {
     this.display = true;  
     this.company="Any town gas producers";
     this.facility="Amine absorber section";
-    this.sifid=1;
+    // this.sifid=1;
     this.session="1  25-07-96";
     this.node=1;
     this.description="Pump trips reverse flow back flow of 20 bar gas to amine tank";

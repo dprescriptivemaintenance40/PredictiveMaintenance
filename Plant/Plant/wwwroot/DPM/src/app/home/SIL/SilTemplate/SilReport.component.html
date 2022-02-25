@@ -5,11 +5,10 @@
                     Report</b></h2>
         </div>
         <div>
-            <h3 style="text-align: center; font-family: serif"><b>Company
-                    Name:&nbsp;{{reportDataList[0].CompanyName}}</b></h3>
+            <h3 style="text-align: center; font-family: serif"><b>Company Name : {{reportDataList[0].CompanyName}}</b></h3>
         </div>
         <div>
-            <h3 style="text-align: center; font-family: serif"><b>Plant:&nbsp;{{reportDataList[0].PlantName}}</b></h3>
+            <h3 style="text-align: center; font-family: serif"><b>Plant : {{reportDataList[0].PlantName}}</b></h3>
         </div>
         <br>
         <br>
@@ -273,12 +272,8 @@
                 <h3 style="text-align:left; font-family: serif"><b>REPORT</b></h3>
                 <!-- <h3 style="text-align: center; font-family: serif">Report</h3> -->
                 <p style="text-align:left; font-size: x-large; font-family: serif;">Layer of Protection Analysis
-                    Report:<b>{{todayDate | date:'medium'}}</b></p>
-                <p style="text-align:left; font-size: x-large; font-family: serif;">Scenario:Pressure vessel rupture due
-                    to overpressure (No SIF Credit)</p>
-                <p style="text-align:left; font-size: x-large; font-family: serif;">Target Frequency: 5.0E-06 Calculated
-                    Frequency: 1.8077E-04 Required Performance:
-                    2.766E-02</p>
+                    Report : <b>{{todayDate | date:'medium'}}</b></p>
+                <p style="text-align:left; font-size: x-large; font-family: serif;">Scenario : {{SifDesc}}</p>
             </div>
 
 
@@ -378,17 +373,22 @@
                 was evaluated. All layers of protection receiving credit are listed with its
                 respective probability of failure. The overall event likelihood that the consequence
                 will happen is the sum of the individual intermediate event likelihoods.
-                This can be calculated as follows:
+                This can be calculated as addition of all initiating causes for repspective category :
             </p>
-            <p style="text-align:left; font-size: x-large; font-family: serif;">
-                Overall Event Likelihood (People): {{OverallIEL[0]}}+{{OverallIEL[1]}}={{OIEL | number:'1.1-5'}}</p>
+            <p style="text-align:left; font-size: x-large; font-family: serif;"><b>OverallIEL for People : {{IELP | number:'1.1-5'}}</b> </p>
+                <p style="text-align:left; font-size: x-large; font-family: serif;"><b>OverallIEL for Environment : {{IELE | number:'1.1-5'}}</b> </p>
+                <p style="text-align:left; font-size: x-large; font-family: serif;"><b>OverallIEL for Asset : {{IELA | number:'1.1-5'}}</b> </p>
+            <!-- <p style="text-align:left; font-size: x-large; font-family: serif;">
+                Overall Event Likelihood (People): {{OverallIEL[0]}}+{{OverallIEL[1]}}={{OIEL | number:'1.1-5'}}</p> 
+            an additional {{PFDAVG | number:'1.1-5'}} PFDAVG risk reduction is required from the SIS to meet a target frequency of TRF.
+            Pressure vessel rupture due to overpressure (No SIF Credit)-->
             <p style="text-align:left; font-size: x-large; font-family: serif;">
                 The performance level or maximum allowable PFDAVG required for the SIS is determined by
                 dividing the Target Frequency by the Overall Event Likelihood.
             </p>
             <p style="text-align:left; font-size: x-large; font-family: serif;">
-                In this present case, an additional {{PFDAVG | number:'1.1-5'}} PFDAVG risk reduction is required from the SIS to 
-                meet a target frequency of {{IEF}}. The required SIS performance falls within the SIL 1 range, 
+                In this present case,  an additional <b> {{PFDAVGP | number:'1.1-5'}}, {{PFDAVGE | number:'1.1-5'}}, {{PFDAVGA | number:'1.1-5'}} </b>PFDAVG risk reduction is required from the SIS to 
+                meet a target frequency of <b>{{TRFP}}, {{TRFE}}, {{TRFA}}</b>. the required SIS performance falls within the <b>Target SIL {{TSIL}}</b> range, 
                 but we perform our SIL verification to ensure that the actual “as designed and maintained SIF” 
                 does not exceed this value, i.e. the SIF PFDAVG must be less than or equal to the required maximum allowable PFDAVG.
             </p>
