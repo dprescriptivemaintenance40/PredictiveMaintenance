@@ -5,8 +5,10 @@ import { PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, RiskMatrix, SIFDesign } from 'src/app/home/SIL/Shared/Model/Sil_Creation.model';
-import {SILConstantAPI} from '../Shared/Model/SILConstant';
-import {values} from './value'
+import { SILConstantAPI } from '../Shared/Model/SILConstant';
+import { values } from './value';
+import { HomeComponent } from "../../home.component";
+
 @Component({
   selector: 'app-sil',
   templateUrl: './Sil_Creation.component.html',
@@ -31,7 +33,7 @@ export class SILComponent implements OnInit {
   public arr: any = [];
   public RiskMatrix6: boolean = false;
   public RiskMatrix5: boolean = false;
-  public display:boolean=false;
+  public display: boolean = false;
   public visibleSidebar5: boolean = false;
   public risk: string = "";
   public x: number;
@@ -41,27 +43,27 @@ export class SILComponent implements OnInit {
   public RiskMatrixVal: RiskMatrix = new RiskMatrix();
   public initcauses: InitiatingCause = new InitiatingCause();
   public sifDesignObj: SIFDesign = new SIFDesign();
-  public TargetSil:number=0;
+  public TargetSil: number = 0;
   public cal: Calculation = new Calculation(this.sifDesignObj);
-  public value=values;
-  public company:string="";
-  public facility:string="";
-  public session:string="";
-  public sifid:number=0;
-  public node:number=0;
-  public description:string="";
-  public parameter:string="";
+  public value = values;
+  public company: string = "";
+  public facility: string = "";
+  public session: string = "";
+  public sifid: number = 0;
+  public node: number = 0;
+  public description: string = "";
+  public parameter: string = "";
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
     this.val = this.getData.data;
-
+    this.home.CloseSideBar();
   }
 
   constructor(private SILClassificationBLService: CommonBLService,
     private primengConfig: PrimeNGConfig,
     private messageService: MessageService,
-    private SILConstantAPI:SILConstantAPI) {
+    private SILConstantAPI: SILConstantAPI,private home:HomeComponent) {
 
   }
 
@@ -187,7 +189,7 @@ export class SILComponent implements OnInit {
     let sifDesignObj = [];
     let sif = new SIFDesign();
     sif.Id = this.sifid;
-    sif.HazopNodeId=this.node;
+    sif.HazopNodeId = this.node;
     sif.FinalElement = this.sifDesignObj.FinalElement;
     sif.RiskMatrix = this.sifDesignObj.RiskMatrix;
     sif.Sensor = this.sifDesignObj.Sensor;
@@ -443,35 +445,22 @@ export class SILComponent implements OnInit {
     let calc = new Calculation(sif);
     this.cal = calc;
     sifDesignObj.push(sif);
-    this.TargetSil=sif.TargetSIL;
+    this.TargetSil = sif.TargetSIL;
     console.log(sifDesignObj);
-    this.SaveSheetData(sifDesignObj,this.cal);
-     console.log(this.cal)
+    this.SaveSheetData(sifDesignObj, this.cal);
+    console.log(this.cal)
 
   }
 
-  public SaveSheetData(sifDesignObj: any,calculate:any) {
+  public SaveSheetData(sifDesignObj: any, calculate: any) {
     this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.SIFSave, sifDesignObj).subscribe((res: any) => {
       this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.CalculationSave, calculate).subscribe((res: any) => {
-        // this.getData.setData([[]]);
-        // this.sifDesignObj = new SIFDesign();
-        // this.node=0;
-        // this.sifid=0;
-        // this.description="";
-        // this.cal.TRFP=0; this.cal.TRFE=0; this.cal.TRFA=0;
-        // this.cal.OverallIELA=0; this.cal.OverallIELE=0; this.cal.OverallIELP=0;
-        // this.cal.PFDP=0; this.cal.PFDA=0;  this.cal.PFDE=0; 
-        // this.cal.RRFA=0; this.cal.RRFP=0;  this.cal.RRFE=0;
-        // this.cal.SILP=0; this.cal.SILA=0; this.cal.SILE=0;
-        // this.sifid = 0;
-        // this.node = 0;
-        // this.description = "";
-       this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
-        } ,(err) => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
+      }, (err) => {
         this.getData.setData([[]]);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
-       });
-      },
+      });
+    },
       (err) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
       });
@@ -508,27 +497,39 @@ export class SILComponent implements OnInit {
       alert("Something wrong")
     }
   }
-  Node(){
-    this.display = true;  
-    this.company="Any town gas producers";
-    this.facility="Amine absorber section";
+
+  Node() {
+    this.display = true;
+    this.company = "Any town gas producers";
+    this.facility = "Amine absorber section";
     // this.sifid=1;
-    this.session="1  25-07-96";
-    this.node=1;
-    this.description="Pump trips reverse flow back flow of 20 bar gas to amine tank";
-    this.parameter="Flow";
+    this.session = "1  25-07-96";
+    this.node = 1;
+    this.description = "Pump trips reverse flow back flow of 20 bar gas to amine tank";
+    this.parameter = "Flow";
   }
-  Add(){
+
+  Add() {
     this.getData.setData([[]]);
     this.sifDesignObj = new SIFDesign();
-    this.node=0;
-    this.sifid=0;
-    this.description="";
-    this.cal.TRFP=0; this.cal.TRFE=0; this.cal.TRFA=0;
-    this.cal.OverallIELA=0; this.cal.OverallIELE=0; this.cal.OverallIELP=0;
-    this.cal.PFDP=0; this.cal.PFDA=0;  this.cal.PFDE=0; 
-    this.cal.RRFA=0; this.cal.RRFP=0;  this.cal.RRFE=0;
-    this.cal.SILP=0; this.cal.SILA=0; this.cal.SILE=0;
+    this.node = 0;
+    this.sifid = 0;
+    this.description = "";
+    this.cal.TRFP = 0;
+    this.cal.TRFE = 0;
+    this.cal.TRFA = 0;
+    this.cal.OverallIELA = 0;
+    this.cal.OverallIELE = 0;
+    this.cal.OverallIELP = 0;
+    this.cal.PFDP = 0;
+    this.cal.PFDA = 0;
+    this.cal.PFDE = 0;
+    this.cal.RRFA = 0;
+    this.cal.RRFP = 0;
+    this.cal.RRFE = 0;
+    this.cal.SILP = 0;
+    this.cal.SILA = 0;
+    this.cal.SILE = 0;
     this.sifid = 0;
     this.node = 0;
     this.description = "";

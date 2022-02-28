@@ -37,7 +37,9 @@ import {TabViewModule} from 'primeng/tabview';
         SharedModule,FieldsetModule,TabViewModule
     ],
     providers: [ExcelFormatService],
-    bootstrap: [HomeComponent]
+    bootstrap: [HomeComponent],exports:[HomeComponent]
+
+
 })
 export class HomeModule {
 

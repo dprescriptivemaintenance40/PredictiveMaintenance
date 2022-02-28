@@ -55,6 +55,7 @@ export class SilReportComponent implements OnInit {
             })
 
     }
+    
     getSILData() {
         const params = new HttpParams()
             .set('Id', this.id);
