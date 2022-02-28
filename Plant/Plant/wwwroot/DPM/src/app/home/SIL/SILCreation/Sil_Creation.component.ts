@@ -4,7 +4,7 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
-import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, RiskMatrix, SIFDesign } from 'src/app/home/SIL/Shared/Model/Sil_Creation.model';
+import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, RiskMatrix, SIFDesign, DynamicGroupName, DynamicValue } from 'src/app/home/SIL/Shared/Model/Sil_Creation.model';
 import { SILConstantAPI } from '../Shared/Model/SILConstant';
 import { values } from './value';
 import { HomeComponent } from "../../home.component";
@@ -53,6 +53,7 @@ export class SILComponent implements OnInit {
   public node: number = 0;
   public description: string = "";
   public parameter: string = "";
+
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
@@ -63,7 +64,7 @@ export class SILComponent implements OnInit {
   constructor(private SILClassificationBLService: CommonBLService,
     private primengConfig: PrimeNGConfig,
     private messageService: MessageService,
-    private SILConstantAPI: SILConstantAPI,private home:HomeComponent) {
+    private SILConstantAPI: SILConstantAPI, private home: HomeComponent) {
 
   }
 
@@ -124,7 +125,31 @@ export class SILComponent implements OnInit {
           {
             title: 'IPL Dyke, PRV',
             colspan: '2'
-          }
+          },
+          {
+            title: 'New Protection Layer1',
+            colspan: '2',
+          },
+          {
+            title: 'New Protection Layer2',
+            colspan: '2',
+          },
+          {
+            title: 'New Protection Layer3',
+            colspan: '2',
+          },
+          {
+            title: 'New Protection Layer4',
+            colspan: '2',
+          },
+          {
+            title: 'New Protection Layer5',
+            colspan: '2',
+          },
+          {
+            title: 'New Protection Layer6',
+            colspan: '2',
+          },
         ],
       ],
       mergeCells: {
@@ -206,7 +231,6 @@ export class SILComponent implements OnInit {
         impacts.ImpactEventDesciption = this.SheetValue[n][0];
         var riskMatrixId = 0;
         for (let i = n; i < this.SheetValue[i].length; i++) {
-          // var k = 0;
           if ((this.SheetValue[i][0] == "" || this.SheetValue[i][0] == impacts.ImpactEventDesciption) && this.SheetValue[i][1] == "P" && this.SheetValue[i][2] != "" && this.SheetValue[i][3] != "") {
             let riskMatrix = new RiskMatrix();
             riskMatrixId++
@@ -215,7 +239,6 @@ export class SILComponent implements OnInit {
             riskMatrix.Category = this.SheetValue[i][1];
             riskMatrix.Severity = this.SheetValue[i][2][0];
             riskMatrix.TRF = this.SheetValue[i][3][0];
-            // var trfp= riskMatrix.TRFP;
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
             var initcauseId = 0;
@@ -278,6 +301,17 @@ export class SILComponent implements OnInit {
                 iplDyke.PFD = this.SheetValue[l][18]
                 initcause.ProtectionLayers.push(iplDyke);
 
+                let dynamic = new DynamicGroupName();
+                dynamic.Id = 1;
+                dynamic.InitiantingId = initcause.Id;
+                dynamic.GroupName = "";
+                initcause.DynamicGroupNames.push(dynamic);
+
+                let dynamicValues = new DynamicValue();
+                dynamicValues.Id = dynamic.Id
+                dynamicValues.pfdDescription = "";
+                dynamicValues.pfdValue = 0;
+                dynamic.DynamicValues.push(dynamicValues);
               }
               else if (this.SheetValue[l][1] == "E" || this.SheetValue[l][1] == "A") {
                 break;
@@ -352,6 +386,18 @@ export class SILComponent implements OnInit {
                 iplDyke.Description = this.SheetValue[j][17]
                 iplDyke.PFD = this.SheetValue[j][18]
                 initcause.ProtectionLayers.push(iplDyke);
+
+                let dynamic = new DynamicGroupName();
+                dynamic.Id = 1;
+                dynamic.InitiantingId = initcause.Id;
+                dynamic.GroupName = "";
+                initcause.DynamicGroupNames.push(dynamic);
+
+                let dynamicValues = new DynamicValue();
+                dynamicValues.Id = dynamic.Id
+                dynamicValues.pfdDescription = "";
+                dynamicValues.pfdValue = 0;
+                dynamic.DynamicValues.push(dynamicValues);
               }
               else if (this.SheetValue[j][1] == "A" || this.SheetValue[j][1] == "P") {
                 break;
@@ -427,6 +473,18 @@ export class SILComponent implements OnInit {
                 iplDyke.Description = this.SheetValue[m][17]
                 iplDyke.PFD = this.SheetValue[m][18]
                 initcause.ProtectionLayers.push(iplDyke);
+
+                let dynamic = new DynamicGroupName();
+                dynamic.Id = 1;
+                dynamic.InitiantingId = initcause.Id;
+                dynamic.GroupName = "";
+                initcause.DynamicGroupNames.push(dynamic);
+
+                let dynamicValues = new DynamicValue();
+                dynamicValues.Id = dynamic.Id
+                dynamicValues.pfdDescription = "";
+                dynamicValues.pfdValue = 0;
+                dynamic.DynamicValues.push(dynamicValues);
 
               }
               else if (this.SheetValue[m][1] == "P" || this.SheetValue[m][1] == "E") {
