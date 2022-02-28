@@ -1,196 +1,60 @@
 <p-toast></p-toast>
-<p-fieldset legend=""  [toggleable]="true">
+<!-- <p-fieldset legend=""  [toggleable]="true"> -->
+    <div class="card dpm-card w-100 p-3">
     <div class="row">
-        <div class="col-md-6">
-            <div class="stepsdemo-content dpm-card mt-2">
-                <p-card>
-                    <ng-template pTemplate="title" class="mb-0">
-                        SIF Classification<strong><span class="text-primary ml-1"></span></strong>
-                    </ng-template>
-                    <ng-template pTemplate="content">
-                        <div class="row">
-                            <div class="col-md-3 d-flex flex-column">
-                                <label style=" margin-right: 12px;">Hazop Node</label>
-                                <input type="text" class="form-control" [value]="node" [readonly]="true" [(ngModel)]="sifDesignObj.HazopNodeId" 
-                                (click)="Node()"    pInputText />
-                            </div>
-                            <div class="col-md-3 d-flex flex-column">
-                                <label style=" margin-right: 12px;">SIF ID</label>
-                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Id" pInputText />
-                            </div>
-
-                            <!-- <div class="row"> -->
-                            <div class="col-md-4 d-flex flex-column">
-                                <label style=" margin-right: 12px;">InterLock (SIF) Tag</label>
-                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.InterLockTag"
-                                    pInputText />
-                            </div>
-                            <!-- <div class="row"> -->
-                                <div class="col-md-3" d-flex flex-column>
-                                    <label style=" margin-right: 6px;">Risk Matrix</label>
-                                    <select name="" id="" class="form-select" class="form-control"
-                                        [(ngModel)]="sifDesignObj.RiskMatrix">
-                                        <option value="5*5 matrix">5*5 matrix</option>
-                                        <option value="6*6 matrix">6*6 matrix</option>
-                                    </select>
-                                </div>
-                            <div class="col-md-3 d-flex flex-column">
-                                <label style=" margin-right: 12px;">Sensor</label>
-                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Sensor" pInputText />
-                                <!-- </div> -->
-                            </div><br>
-                            <div class="col-md-4 d-flex flex-column">
-                                <label style="margin-right: 12px;">Final Elements(s)</label>
-                                <input type="text" class="form-control" [(ngModel)]="sifDesignObj.FinalElement"
-                                    pInputText />
-                            </div>
-                            <!-- <div class="row"> -->
-                            <div class="col-md-6" d-flex flex-column>
-                                <label style=" margin-right: 12px;">SIF Description</label>
-                                <span class="p-float-label">
-                                    <textarea inputId="textarea" [readonly]="true" [value]="description" style="height: 100px;" cols="40"
-                                        class="form-control" [(ngModel)]="sifDesignObj.SIFDescription"
-                                        pInputTextarea></textarea>
-                                </span>
-                            </div>
-                            <div class="col-md-4" d-flex flex-column>
-                                <label style=" margin-right: 12px;">Target SIL</label>
-                                <!-- <input type="text" class="form-control" [(ngModel)]="sifDesignObj.TargetSIL"
-                                    pInputText /> -->
-                                    <h4>{{ TargetSil | number}}</h4>
-                            </div>
-                        </div>
-                    </ng-template>
-                </p-card>
-            </div>
+        <div class="col-md-2 d-flex flex-column">
+            <label style=" margin-right: 12px;">Node</label>
+            <input type="text" class="form-control" [value]="node" [readonly]="true" [(ngModel)]="sifDesignObj.HazopNodeId" 
+            (click)="Node()"    pInputText />
         </div>
-        <div class="col-md-6">
-            <div class="stepsdemo-content dpm-card mt-2">
-                <p-card>
-                    <ng-template pTemplate="title" class="mb-0">
-                        Calculations:<strong><span class="text-primary ml-1"></span></strong>
-                    </ng-template>
-                    <ng-template pTemplate="content">
-                        
-                            
-                            <!-- </div> -->
-                        <!-- </div><br> -->
-                        <p-tabView> 
-                            <p-tabPanel header="People">
-                            <div class="row">
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">Intermediate Event Likelihood</label>
-                                    <h4>{{ initcauses.IELP | number:'1.1-5'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.IEL" pInputText /> -->
-                                </div>
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">TMEL</label>
-                                    <h4>{{ cal.TRFP }}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.RiskMatrix.TRF" pInputText /> -->
-                                </div><br><br><br>
-                                <!-- <div class="row"> -->
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">Overall IEL</label>
-                                    <h4>{{ cal.OverallIELP | number:'1.1-5'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.OverallIELP" pInputText /> -->
-                                </div>
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">PFDavg</label>
-                                    <h4>{{ cal.PFDP | number:'1.1-2'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.PFDP" pInputText /> -->
-                                </div><br>
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">RRF</label>
-                                    <h4>{{ cal.RRFP| number:'1.1-2' }}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.RRFP" pInputText /> -->
-                                </div>
-                                <!-- <div class="row"> -->
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">SIL</label>
-                                    <h4>{{cal.SILP | number}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.SILP" pInputText /> -->
-                                </div>
-                            </div>
-                            </p-tabPanel>
-                            <p-tabPanel header="Environment">
-                                <div class="row">
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">Intermediate Event Likelihood</label>
-                                    <h4>{{ initcauses.IELE | number:'1.1-5'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.IEL" pInputText /> -->
-                                </div>
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">TMEL</label>
-                                    <h4>{{ cal.TRFE}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.RiskMatrix.TRF" pInputText /> -->
-                                </div><br><br><br>
-                                <!-- <div class="row"> -->
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">Overall IEL</label>
-                                    <h4>{{ cal.OverallIELE | number:'1.1-5'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.OverallIELP" pInputText /> -->
-                                </div>
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">PFDavg</label>
-                                    <h4>{{ cal.PFDE | number:'1.1-2'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.PFDP" pInputText /> -->
-                                </div><br>
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">RRF</label>
-                                    <h4>{{ cal.RRFE | number:'1.1-2'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.RRFP" pInputText /> -->
-                                </div>
-                                <!-- <div class="row"> -->
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">SIL</label>
-                                    <h4>{{cal.SILE | number}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.SILP" pInputText /> -->
-                                </div>
-                            </div>
-                            </p-tabPanel>
-                            <p-tabPanel header="Asset">
-                                <div class="row">
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">Intermediate Event Likelihood</label>
-                                    <h4>{{ initcauses.IELA | number:'1.1-5'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.IEL" pInputText /> -->
-                                </div>
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">TMEL</label>
-                                    <h4>{{ cal.TRFA}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="initcauses.RiskMatrix.TRF" pInputText /> -->
-                                </div><br><br><br>
-                                <!-- <div class="row"> -->
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">Overall IEL</label>
-                                    <h4>{{ cal.OverallIELA | number:'1.1-5'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.OverallIELP" pInputText /> -->
-                                </div>
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">PFDavg</label>
-                                    <h4>{{ cal.PFDA | number:'1.1-2'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.PFDP" pInputText /> -->
-                                </div><br>
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">RRF</label>
-                                    <h4>{{ cal.RRFA | number:'1.1-2'}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.RRFP" pInputText /> -->
-                                </div>
-                                <!-- <div class="row"> -->
-                                <div class="col-md-5 d-flex flex-column">
-                                    <label style=" margin-right: 12px;">SIL</label>
-                                    <h4>{{cal.SILA | number}}</h4>
-                                    <!-- <input type="text" class="form-control" [(ngModel)]="cal.SILP" pInputText /> -->
-                                </div>
-                            </div>
-                            </p-tabPanel>
-                        </p-tabView>
-                    </ng-template>
-                </p-card>
+        <div class="col-md-2 d-flex flex-column">
+            <label style=" margin-right: 12px;">SIF ID</label>
+            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Id" pInputText />
+        </div>
+
+        <!-- <div class="row"> -->
+        <div class="col-md-2 d-flex flex-column">
+            <label style=" margin-right: 12px;">InterLock (SIF) Tag</label>
+            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.InterLockTag"
+                pInputText />
+        </div>
+        <!-- <div class="row"> -->
+            <div class="col-md-2" d-flex flex-column>
+                <label style=" margin-right: 6px;">Risk Matrix</label>
+                <select name="" id="" class="form-select" class="form-control"
+                    [(ngModel)]="sifDesignObj.RiskMatrix">
+                    <option value="5*5 matrix">5*5 matrix</option>
+                    <option value="6*6 matrix">6*6 matrix</option>
+                </select>
             </div>
+        <div class="col-md-2 d-flex flex-column">
+            <label style=" margin-right: 12px;">Sensor</label>
+            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Sensor" pInputText />
+            <!-- </div> -->
+        </div><br>
+        <div class="col-md-2 d-flex flex-column">
+            <label style="margin-right: 12px;">Final Elements(s)</label>
+            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.FinalElement"
+                pInputText />
+        </div>
+        <!-- <div class="row"> -->
+        <div class="col-md-3" d-flex flex-column>
+            <label style=" margin-right: 12px;">SIF Description</label>
+            <span class="p-float-label">
+                <textarea inputId="textarea" [readonly]="true" [value]="description" style="height: 50px;" cols="40"
+                    class="form-control" [(ngModel)]="sifDesignObj.SIFDescription"
+                    pInputTextarea></textarea>
+            </span>
+        </div>
+        <div class="col-md-1" d-flex flex-column>
+            <label style=" margin-right: 12px;">Target SIL</label>
+            <!-- <input type="text" class="form-control" [(ngModel)]="sifDesignObj.TargetSIL"
+                pInputText /> -->
+                <h4>{{ TargetSil | number}}</h4>
         </div>
     </div>
-</p-fieldset>
+</div>
+<!-- </p-fieldset> -->
 <br>
 <button style="float: right;" label="Save" type="button" class="btn btn-dark" 
     (click)="Save()" pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save">  Save</i></button>
@@ -254,7 +118,7 @@
         <p-button icon="pi pi-check" (click)="display=false" label="Ok" styleClass="p-button-text"></p-button>
     </ng-template>
 </p-dialog>
-<div class="card dpm-card w-100 p-3">
+<!-- <div class="card dpm-card w-100 p-3">
     <fieldset class="border p-2">
         <p-table styleClass="p-datatable-gridlines" [columns]="cols" [value]="SheetValue" [autoLayout]="true">
             <ng-template pTemplate="header" let-columns>
@@ -274,4 +138,4 @@
         </p-table>
     </fieldset>
     <p-toast position="top-right"></p-toast>
-</div>
+</div> -->
