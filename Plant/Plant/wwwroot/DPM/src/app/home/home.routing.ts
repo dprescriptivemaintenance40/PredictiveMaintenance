@@ -10,7 +10,7 @@ import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
 import { SILreportComponent } from "./SIL/SILReport/SILreport.component";
 import { SILComponent } from "../home/SIL/SILCreation/Sil_Creation.component";
 import { VisComponent } from "./Vis/Vis.component";
-import { SilWorksheetComponent } from "../home/SIL/Shared/SILWorksheet/SilWorksheet.component";
+import { SilWorksheetComponent } from "./SIL/SILWorksheet/SilWorksheet.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {

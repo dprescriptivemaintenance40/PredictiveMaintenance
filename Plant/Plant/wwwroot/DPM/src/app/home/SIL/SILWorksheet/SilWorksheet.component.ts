@@ -2,7 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
-import { SILConstantAPI } from '../Model/SILConstant';
+import { SILConstantAPI } from '../Shared/Model/SILConstant';
 
 @Component({
     selector: 'app-SilWorksheet',
@@ -320,4 +320,5 @@ export class SilWorksheetComponent implements OnInit {
               });
           });
   }
+  
 }

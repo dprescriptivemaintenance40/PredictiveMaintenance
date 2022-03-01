@@ -1,24 +1,25 @@
+<h2 style="text-align: center;">LOPA Worksheet</h2>
 
-
-<div style="float: right;;" #container>
-    <button (click)="cp.copy()">Copy</button>
+<div style="float: right;" >
+    <button (click)="cp.copy()" class="btn btn-dark" pTooltip="Copy All" tooltipPosition="top">Copy</button>
 </div>
 <br>
-<br><br>
+<br>
 <div  ngxCopyPaste #cp="copy">
     
-
+<div class="card dpm-card w-100 p-3">
 <div class="row">
-    <div class="col-md-2" d-flex flex-column><h5>HazopNode Id: {{Hazop}}</h5></div>
-    <div class="col-md-2" d-flex flex-column><h5>SIF Id: {{sifId}}</h5></div>
-    <div class="col-md-2" d-flex flex-column><h5>InterLockTag Id: {{interlockTag}}</h5></div>
-    <div class="col-md-2" d-flex flex-column><h5>Sensor: {{sensor}}</h5></div>
-    <div class="col-md-2" d-flex flex-column><h5>Final Element Id: {{finalElement}}</h5></div>
-    <div class="col-md-2" d-flex flex-column><h5>Target SIL: {{targetSil}}</h5></div>
-    <div class="col-md-2" d-flex flex-column><h5>SIF Description: {{sifDesc}}</h5></div>
+    <div class="col-md-4" d-flex flex-column><h5>HazopNode Id : {{Hazop}}</h5></div>
+    <div class="col-md-4" d-flex flex-column><h5>SIF Id : {{sifId}}</h5></div>
+    <div class="col-md-4" d-flex flex-column><h5>Sensor : {{sensor}}</h5></div><br><br>
+    <div class="col-md-4" d-flex flex-column><h5>Final Element Id : {{finalElement}}</h5></div>
+    <div class="col-md-4" d-flex flex-column><h5>Target SIL : {{targetSil}}</h5></div>
+    <div class="col-md-4" d-flex flex-column><h5>InterLock(SIF) Tag : {{interlockTag}}</h5></div><br><br>
+    <div class="col-md-9" d-flex flex-column><h5>SIF Description : {{sifDesc}}</h5></div>
     
 </div>
-
+</div>
+<br>
 
     
 <p-table class="table" [value]="getAllList" responsiveLayout="scroll">

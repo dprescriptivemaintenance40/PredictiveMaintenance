@@ -17,7 +17,7 @@ import {FieldsetModule} from 'primeng/fieldset';
 import { Matrix6Component } from "./SIL/Shared/6x6Matrix/matrix-six.component";
 import { Matrix5Component } from "./SIL/Shared/5x5Matrix/matrix-five.component";
 import {TabViewModule} from 'primeng/tabview';
-import { SilWorksheetComponent } from "../home/SIL/Shared/SILWorksheet/SilWorksheet.component";
+import { SilWorksheetComponent } from "./SIL/SILWorksheet/SilWorksheet.component";
 import { NgxCopyPasteModule } from "ngx-copypaste";
 @NgModule({
     declarations: [
