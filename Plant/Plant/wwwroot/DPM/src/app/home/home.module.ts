@@ -17,6 +17,8 @@ import {FieldsetModule} from 'primeng/fieldset';
 import { Matrix6Component } from "./SIL/Shared/6x6Matrix/matrix-six.component";
 import { Matrix5Component } from "./SIL/Shared/5x5Matrix/matrix-five.component";
 import {TabViewModule} from 'primeng/tabview';
+import { SilWorksheetComponent } from "../home/SIL/Shared/SILWorksheet/SilWorksheet.component";
+import { NgxCopyPasteModule } from "ngx-copypaste";
 @NgModule({
     declarations: [
         HomeComponent,
@@ -30,11 +32,12 @@ import {TabViewModule} from 'primeng/tabview';
         RCMListComponent,
         SILComponent,Matrix6Component,
         Matrix5Component,
+        SilWorksheetComponent
         
     ],
     imports: [    
         HomeRoutingModule,       
-        SharedModule,FieldsetModule,TabViewModule
+        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule
     ],
     providers: [ExcelFormatService],
     bootstrap: [HomeComponent],exports:[HomeComponent]

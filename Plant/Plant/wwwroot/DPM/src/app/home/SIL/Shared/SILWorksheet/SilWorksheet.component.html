@@ -1,0 +1,85 @@
+
+
+<div style="float: right;;" #container>
+    <button (click)="cp.copy()">Copy</button>
+</div>
+<br>
+<br><br>
+<div  ngxCopyPaste #cp="copy">
+    
+
+<div class="row">
+    <div class="col-md-2" d-flex flex-column><h5>HazopNode Id: {{Hazop}}</h5></div>
+    <div class="col-md-2" d-flex flex-column><h5>SIF Id: {{sifId}}</h5></div>
+    <div class="col-md-2" d-flex flex-column><h5>InterLockTag Id: {{interlockTag}}</h5></div>
+    <div class="col-md-2" d-flex flex-column><h5>Sensor: {{sensor}}</h5></div>
+    <div class="col-md-2" d-flex flex-column><h5>Final Element Id: {{finalElement}}</h5></div>
+    <div class="col-md-2" d-flex flex-column><h5>Target SIL: {{targetSil}}</h5></div>
+    <div class="col-md-2" d-flex flex-column><h5>SIF Description: {{sifDesc}}</h5></div>
+    
+</div>
+
+
+    
+<p-table class="table" [value]="getAllList" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+        
+        <tr>
+            <th colspan="4">Consequence Screening</th>
+            <th colspan="2">Initial Event</th>
+            <th colspan="3">Conditional Modifiers</th>
+            <th colspan="2">General Process Design</th>
+            <th colspan="2">BPCS</th>
+            <th colspan="2">Alarm</th>
+            <th colspan="2">Restricted Access</th>
+            <th colspan="2">IPL Dyke, PRV</th>
+        </tr>
+        <tr>
+            <th>Impact</th>
+            <th>Cat</th>
+            <th>Sev</th>
+            <th>TMEL</th>
+            <th style="margin-right: 20px;">IC</th>
+            <th>IEF</th>
+            <th>IP</th>
+            <th>PP</th>
+            <th>TR</th>
+            <th>Desc</th>
+            <th>PFD</th>
+            <th>Desc</th>
+            <th>PFD</th>
+            <th>Desc</th>
+            <th>PFD</th>
+            <th>Desc</th>
+            <th>PFD</th>
+            <th>Desc</th>
+            <th>PFD</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-p>
+        <tr>
+            <td>{{p.getImpactEvent}}</td>
+            <td>{{p.getCategory}}</td>
+            <td>{{p.getSeverity}}</td>
+            <td>{{p.getTRF}}</td>
+            <td>{{p.getinitiatingcauses}}</td>
+            <!-- <td>{{p.getIEL}}</td> -->
+            <td>{{p.getIEF}}</td>
+            <td>{{p.getIP}}</td>
+            <td>{{p.getPP}}</td>
+            <td>{{p.getTR}}</td>
+            <td>{{p.getDescription1}}</td>
+            <td>{{p.getPFD1}}</td>
+            <td>{{p.getDescription2}}</td>
+            <td>{{p.getPFD2}}</td>
+            <td>{{p.getDescription3}}</td>
+            <td>{{p.getPFD3}}</td>
+            <td>{{p.getDescription4}}</td>
+            <td>{{p.getPFD4}}</td>
+            <td>{{p.getDescription5}}</td>
+            <td>{{p.getPFD5}}</td>
+
+        </tr>
+    </ng-template>
+</p-table>
+</div>

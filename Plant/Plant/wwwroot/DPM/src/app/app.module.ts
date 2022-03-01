@@ -23,7 +23,8 @@ import { SilReportComponent } from './home/SIL/SilTemplate/SilReport.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    
    
     
   ],

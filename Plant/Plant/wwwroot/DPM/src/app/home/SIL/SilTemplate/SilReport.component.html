@@ -297,14 +297,27 @@
             </tr> -->
 
             <br>
-            <p-table class="center" [value]="getAllList" responsiveLayout="scroll">
+           
+            <div>
+            <p-table class="table" [value]="getAllList" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
+                    
+                    <tr>
+                        <th colspan="4">Consequence Screening</th>
+                        <th colspan="2">Initial Event</th>
+                        <th colspan="3">Conditional Modifiers</th>
+                        <th colspan="2">General Process Design</th>
+                        <th colspan="2">BPCS</th>
+                        <th colspan="2">Alarm</th>
+                        <th colspan="2">Restricted Access</th>
+                        <th colspan="2">IPL Dyke, PRV</th>
+                    </tr>
                     <tr>
                         <th>Impact</th>
                         <th>Cat</th>
                         <th>Sev</th>
                         <th>TMEL</th>
-                        <th>IC</th>
+                        <th style="margin-right: 20px;">IC</th>
                         <th>IEF</th>
                         <th>IP</th>
                         <th>PP</th>
@@ -347,6 +360,7 @@
                     </tr>
                 </ng-template>
             </p-table>
+        </div>
             <br>
             <br>
             <p style="text-align: center;font-size: x-large; font-family: serif">Figure 3: LOPA Report Worksheet

@@ -25,6 +25,7 @@
         "chart.js": "^2.9.4",
         "jspreadsheet-ce": "^4.10.1",
         "moment": "^2.29.1",
+        "ngx-copypaste": "^10.0.0",
         "primeicons": "^4.1.0",
         "primeng": "^11.0.0",
         "rxjs": "~6.6.0",
