@@ -53,6 +53,7 @@ export class SILComponent implements OnInit {
   public node: number = 0;
   public description: string = "";
   public parameter: string = "";
+  public iel:number = 0;
 
   ngOnInit() {
     this.primengConfig.ripple = true;
@@ -91,6 +92,11 @@ export class SILComponent implements OnInit {
         { type: 'text', title: 'PFD', width: "55" },
         { type: 'text', title: 'Description', width: "90", wordWrap: true },
         { type: 'text', title: 'PFD', width: "55" },
+        { type: 'number', title: 'IEL', width: "55" ,source: this.iel },
+        { type: 'number', title: 'Overall IEL', width: "55" },
+        { type: 'number', title: 'PFDavg', width: "55" },
+        { type: 'number', title: 'RRF', width: "55" },
+        { type: 'number', title: 'SIL', width: "55" },
       ],
       nestedHeaders: [
         [
@@ -127,29 +133,29 @@ export class SILComponent implements OnInit {
             colspan: '2'
           },
           {
-            title: 'New Protection Layer1',
-            colspan: '2',
+            title: 'Calculations',
+            colspan: '5',
           },
-          {
-            title: 'New Protection Layer2',
-            colspan: '2',
-          },
-          {
-            title: 'New Protection Layer3',
-            colspan: '2',
-          },
-          {
-            title: 'New Protection Layer4',
-            colspan: '2',
-          },
-          {
-            title: 'New Protection Layer5',
-            colspan: '2',
-          },
-          {
-            title: 'New Protection Layer6',
-            colspan: '2',
-          },
+          // {
+          //   title: 'New Protection Layer2',
+          //   colspan: '2',
+          // },
+          // {
+          //   title: 'New Protection Layer3',
+          //   colspan: '2',
+          // },
+          // {
+          //   title: 'New Protection Layer4',
+          //   colspan: '2',
+          // },
+          // {
+          //   title: 'New Protection Layer5',
+          //   colspan: '2',
+          // },
+          // {
+          //   title: 'New Protection Layer6',
+          //   colspan: '2',
+          // },
         ],
       ],
       mergeCells: {
@@ -157,7 +163,6 @@ export class SILComponent implements OnInit {
       },
       onchange: this.changed,
       onselection: this.selectionActive,
-      // defaultColWidth: 100,
       tableOverflow: true,
       tableWidth: "1350px",
       tableHeight: "600px",
@@ -301,17 +306,17 @@ export class SILComponent implements OnInit {
                 iplDyke.PFD = this.SheetValue[l][18]
                 initcause.ProtectionLayers.push(iplDyke);
 
-                let dynamic = new DynamicGroupName();
-                dynamic.Id = 1;
-                dynamic.InitiantingId = initcause.Id;
-                dynamic.GroupName = "";
-                initcause.DynamicGroupNames.push(dynamic);
+                // let dynamic = new DynamicGroupName();
+                // dynamic.Id = 1;
+                // dynamic.InitiantingId = initcause.Id;
+                // dynamic.GroupName = "";
+                // initcause.DynamicGroupNames.push(dynamic);
 
-                let dynamicValues = new DynamicValue();
-                dynamicValues.Id = dynamic.Id
-                dynamicValues.pfdDescription = "";
-                dynamicValues.pfdValue = 0;
-                dynamic.DynamicValues.push(dynamicValues);
+                // let dynamicValues = new DynamicValue();
+                // dynamicValues.Id = dynamic.Id
+                // dynamicValues.pfdDescription = "";
+                // dynamicValues.pfdValue = 0;
+                // dynamic.DynamicValues.push(dynamicValues);
               }
               else if (this.SheetValue[l][1] == "E" || this.SheetValue[l][1] == "A") {
                 break;
@@ -379,25 +384,25 @@ export class SILComponent implements OnInit {
                 protectionlayers.PFD = this.SheetValue[j][16]
                 initcause.ProtectionLayers.push(protectionlayers);
 
-                let iplDyke = new ProtectionLayer();
-                iplDyke.Id = 5;
-                iplDyke.ICId = initcause.Id;
-                iplDyke.NameOfIPL = "IPL Dyke,PRV";
-                iplDyke.Description = this.SheetValue[j][17]
-                iplDyke.PFD = this.SheetValue[j][18]
-                initcause.ProtectionLayers.push(iplDyke);
+                // let iplDyke = new ProtectionLayer();
+                // iplDyke.Id = 5;
+                // iplDyke.ICId = initcause.Id;
+                // iplDyke.NameOfIPL = "IPL Dyke,PRV";
+                // iplDyke.Description = this.SheetValue[j][17]
+                // iplDyke.PFD = this.SheetValue[j][18]
+                // initcause.ProtectionLayers.push(iplDyke);
 
-                let dynamic = new DynamicGroupName();
-                dynamic.Id = 1;
-                dynamic.InitiantingId = initcause.Id;
-                dynamic.GroupName = "";
-                initcause.DynamicGroupNames.push(dynamic);
+                // let dynamic = new DynamicGroupName();
+                // dynamic.Id = 1;
+                // dynamic.InitiantingId = initcause.Id;
+                // dynamic.GroupName = "";
+                // initcause.DynamicGroupNames.push(dynamic);
 
-                let dynamicValues = new DynamicValue();
-                dynamicValues.Id = dynamic.Id
-                dynamicValues.pfdDescription = "";
-                dynamicValues.pfdValue = 0;
-                dynamic.DynamicValues.push(dynamicValues);
+                // let dynamicValues = new DynamicValue();
+                // dynamicValues.Id = dynamic.Id
+                // dynamicValues.pfdDescription = "";
+                // dynamicValues.pfdValue = 0;
+                // dynamic.DynamicValues.push(dynamicValues);
               }
               else if (this.SheetValue[j][1] == "A" || this.SheetValue[j][1] == "P") {
                 break;
@@ -474,25 +479,27 @@ export class SILComponent implements OnInit {
                 iplDyke.PFD = this.SheetValue[m][18]
                 initcause.ProtectionLayers.push(iplDyke);
 
-                let dynamic = new DynamicGroupName();
-                dynamic.Id = 1;
-                dynamic.InitiantingId = initcause.Id;
-                dynamic.GroupName = "";
-                initcause.DynamicGroupNames.push(dynamic);
+                // let dynamic = new DynamicGroupName();
+                // dynamic.Id = 1;
+                // dynamic.InitiantingId = initcause.Id;
+                // dynamic.GroupName = "";
+                // initcause.DynamicGroupNames.push(dynamic);
 
-                let dynamicValues = new DynamicValue();
-                dynamicValues.Id = dynamic.Id
-                dynamicValues.pfdDescription = "";
-                dynamicValues.pfdValue = 0;
-                dynamic.DynamicValues.push(dynamicValues);
+                // let dynamicValues = new DynamicValue();
+                // dynamicValues.Id = dynamic.Id
+                // dynamicValues.pfdDescription = "";
+                // dynamicValues.pfdValue = 0;
+                // dynamic.DynamicValues.push(dynamicValues);
 
               }
-              else if (this.SheetValue[m][1] == "P" || this.SheetValue[m][1] == "E") {
+              else if ((this.SheetValue[m][1] == "P" || this.SheetValue[m][1] == "E") || (this.SheetValue[m][0] == "" && this.SheetValue[m][1] == "" && this.SheetValue[m][2] == "" && this.SheetValue[m][3] == ""
+              && this.SheetValue[m][4] == "" && this.SheetValue[m][5] == "" && this.SheetValue[m][6] == "" && this.SheetValue[m][7] == "")) {
                 break;
               }
             }
           }
-          else if (this.SheetValue[i][0] != "") {
+          else if ((this.SheetValue[i][0] != "") || (this.SheetValue[i][0] == "" && this.SheetValue[i][1] == "" && this.SheetValue[i][2] == "" && this.SheetValue[i][3] == ""
+          && this.SheetValue[i][4] == "" && this.SheetValue[i][5] == "" && this.SheetValue[i][6] == "" && this.SheetValue[i][7] == "")) {
             break;
           }
         }
@@ -502,6 +509,9 @@ export class SILComponent implements OnInit {
     }
     let calc = new Calculation(sif);
     this.cal = calc;
+    console.log(this.cal);
+    var OverallIELP = this.cal.OverallIELP;
+    this.iel =this.getData.setRowData([20], [OverallIELP]);
     sifDesignObj.push(sif);
     this.TargetSil = sif.TargetSIL;
     console.log(sifDesignObj);
