@@ -54,6 +54,7 @@ export class SILComponent implements OnInit {
   public description: string = "";
   public parameter: string = "";
   public iel:number = 0;
+  public hidden:boolean=false;
 
   ngOnInit() {
     this.primengConfig.ripple = true;
@@ -74,14 +75,18 @@ export class SILComponent implements OnInit {
       data: [[]],
       columns: [
         { type: "text", title: 'Impact Event', width: "100", wordWrap: true, source: this.impact.ImpactEventDesciption },
-        { type: 'dropdown', title: 'Category', width: "50", source: this.CategoryNameList },
-        { type: 'text', title: 'Severity', width: "50", source: this.cells },
-        { type: 'text', title: 'TMEL', width: "60", source: this.risk },
+        { type: 'dropdown', title: 'Category',width: "50", wordWrap: true,source: this.CategoryNameList },
+        { type: 'text', title: 'Severity', width: "50", wordWrap: true,source: this.cells },
+        { type: 'text', title: 'TMEL',tooltip:'Column is readonly',wordWrap: true, width: "60", source: this.risk },
         { type: 'dropdown', title: 'Initiating Causes', wordWrap: true, width: "100", autocomplete: true, source: this.InitiatingCauseValue },
         { type: 'text', title: 'IEF', width: "60" },
         { type: 'text', title: 'IP', width: "40" },
         { type: 'text', title: 'PP', width: "40" },
         { type: 'text', title: 'TR', width: "40" },
+        { type: 'text', title: 'Description', width: "90", wordWrap: true },
+        { type: 'text', title: 'PFD', width: "55" },
+        { type: 'text', title: 'Description', width: "90", wordWrap: true },
+        { type: 'text', title: 'PFD', width: "55" },
         { type: 'text', title: 'Description', width: "90", wordWrap: true },
         { type: 'text', title: 'PFD', width: "55" },
         { type: 'text', title: 'Description', width: "90", wordWrap: true },
@@ -133,42 +138,39 @@ export class SILComponent implements OnInit {
             colspan: '2'
           },
           {
+            title: 'Additional IPL',
+            colspan: '2',
+          },
+          {
+            hideTitle:true,
+            title: 'Additional IPL',
+            colspan: '2',
+          },
+          {
             title: 'Calculations',
             colspan: '5',
           },
-          // {
-          //   title: 'New Protection Layer2',
-          //   colspan: '2',
-          // },
-          // {
-          //   title: 'New Protection Layer3',
-          //   colspan: '2',
-          // },
-          // {
-          //   title: 'New Protection Layer4',
-          //   colspan: '2',
-          // },
-          // {
-          //   title: 'New Protection Layer5',
-          //   colspan: '2',
-          // },
-          // {
-          //   title: 'New Protection Layer6',
-          //   colspan: '2',
-          // },
         ],
       ],
       mergeCells: {
-        // A1:[,3]
+         A1:[,9],
+         B1:[,3],B4:[,3],B7:[,3],
+         C1:[,3],C4:[,3],C7:[,3],
+         D1:[,3],D4:[,3],D7:[,3],
       },
       onchange: this.changed,
       onselection: this.selectionActive,
       tableOverflow: true,
       tableWidth: "1350px",
       tableHeight: "600px",
-      minDimensions: [19, 20]
+      minDimensions: [24, 20]
     });
+    this.getData.hideColumn(19);
+    this.getData.hideColumn(20);
+    this.getData.hideColumn(21);
+    this.getData.hideColumn(22);
   }
+
   changed = async (instance, cell, x, y, value) => {
     var cellName = jspreadsheet.getColumnNameFromId([x, y]);
 
@@ -604,6 +606,12 @@ export class SILComponent implements OnInit {
     this.sifid = 0;
     this.node = 0;
     this.description = "";
+  }
+  column(){
+    this.getData.showColumn(19);
+    this.getData.showColumn(20);
+    this.getData.showColumn(21);
+    this.getData.showColumn(22);
   }
 }
 

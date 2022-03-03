@@ -35,7 +35,7 @@ export class SilWorksheetComponent implements OnInit {
     todayDate: Date = new Date();
     Hazop: any;
     finalElement: any;
-    impactEvent:any;
+    impactEvent: any;
     interlockTag: any;
     sifDesc: any;
     sensor: any;
@@ -72,10 +72,10 @@ export class SilWorksheetComponent implements OnInit {
                 this.SifDesc = this.silDataList[0].SIFDescription;
                 this.silDataList[0].ImpactEvents.forEach(impact => {
                     let obj = {};
-                    let obj1= {};
-                    let obj3= {};
-                    
-                   
+                    let obj1 = {};
+                    let obj3 = {};
+
+
 
                     // Category P
                     for (let i = 0; i < impact.RiskMatrix.length; i++) {
@@ -83,7 +83,7 @@ export class SilWorksheetComponent implements OnInit {
                             obj['getCategory'] = impact.RiskMatrix[i].Category;
                             obj['getSeverity'] = impact.RiskMatrix[i].Severity;
                             obj['getTRF'] = impact.RiskMatrix[i].TRF;
-                            if(impact.RiskMatrix[0].Category == 'P'){
+                            if (impact.RiskMatrix[0].Category == 'P') {
                                 obj['getImpactEvent'] = impact.ImpactEventDesciption;
                             }
                             this.TRFP = obj['getTRF']
@@ -161,7 +161,7 @@ export class SilWorksheetComponent implements OnInit {
                             obj1['getCategory'] = impact.RiskMatrix[i].Category;
                             obj1['getSeverity'] = impact.RiskMatrix[i].Severity;
                             obj1['getTRF'] = impact.RiskMatrix[i].TRF;
-                            if(impact.RiskMatrix[0].Category == 'E'){
+                            if (impact.RiskMatrix[0].Category == 'E') {
                                 obj1['getImpactEvent'] = impact.ImpactEventDesciption;
                             }
                             this.TRFP = obj1['getTRF']
@@ -239,7 +239,7 @@ export class SilWorksheetComponent implements OnInit {
                             obj3['getCategory'] = impact.RiskMatrix[i].Category;
                             obj3['getSeverity'] = impact.RiskMatrix[i].Severity;
                             obj3['getTRF'] = impact.RiskMatrix[i].TRF;
-                            if(impact.RiskMatrix[0].Category == 'A'){
+                            if (impact.RiskMatrix[0].Category == 'A') {
                                 obj3['getImpactEvent'] = impact.ImpactEventDesciption;
                             }
                             this.TRFA = obj3['getTRF']
@@ -315,174 +315,8 @@ export class SilWorksheetComponent implements OnInit {
 
                             }
                         }
-                        // else if (impact.RiskMatrix[i].Category == 'A' || impact.RiskMatrix[i].Category == 'E'
-                        //     || impact.RiskMatrix[i].Category == '') {
-                        //     break;
-                        // }
+
                     }
-
-                    //Categpry E
-                    // let obj1 = {};
-                    // for (let i = 0; i < impact.RiskMatrix.length; i++) {
-                    //     if (impact.RiskMatrix[i].Category == 'E') {
-                    //         obj1['getCategory'] = impact.RiskMatrix[i].Category;
-                    //         obj1['getSeverity'] = impact.RiskMatrix[i].Severity;
-                    //         obj1['getTRF'] = impact.RiskMatrix[i].TRF;
-                    //         this.TRFP = obj1['getTRF']
-                    //         for (let j = 0; j < impact.RiskMatrix[i].InitiatingCauses.length; j++) {
-                    //             if (j == 0) {
-                    //                 obj1['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
-                    //                 obj1['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
-                    //                 this.IELP += obj1['getIEL'];
-                    //                 this.PFDAVGP = this.TRFP / this.IELP;
-                    //                 obj1['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
-                    //                 obj1['getIP'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
-                    //                 obj1['getPP'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
-                    //                 obj1['getTR'] = impact.RiskMatrix[i].InitiatingCauses[j].TR;
-                    //                 for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers.length; x++) {
-                    //                     if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'General Process Design') {
-                    //                         obj1['getDescription1'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
-                    //                         obj1['getPFD1'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'BPCS') {
-                    //                         obj1['getDescription2'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
-                    //                         obj1['getPFD2'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Alarm') {
-                    //                         obj1['getDescription3'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
-                    //                         obj1['getPFD3'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Restricted Acess') {
-                    //                         obj1['getDescription4'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
-                    //                         obj1['getPFD4'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'IPL Dyke,PRV') {
-                    //                         obj1['getDescription5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
-                    //                         obj1['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
-                    //                     }
-                    //                 }
-                    //                 this.getAllList.push(obj1);
-                    //             }
-                    //             else {
-                    //                 let obj2 = {}
-                    //                 obj2['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
-                    //                 obj2['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
-                    //                 this.IELP += obj2['getIEL'];
-                    //                 this.PFDAVGP = this.TRFP / this.IELP;
-                    //                 obj2['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
-                    //                 obj2['getIP'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
-                    //                 obj2['getPP'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
-                    //                 obj2['getTR'] = impact.RiskMatrix[i].InitiatingCauses[j].TR;
-                    //                 for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers.length; x++) {
-                    //                     if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'General Process Design') {
-                    //                         obj2['getDescription1'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
-                    //                         obj2['getPFD1'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'BPCS') {
-                    //                         obj2['getDescription2'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
-                    //                         obj2['getPFD2'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Alarm') {
-                    //                         obj2['getDescription3'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
-                    //                         obj2['getPFD3'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Restricted Acess') {
-                    //                         obj2['getDescription4'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
-                    //                         obj2['getPFD4'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'IPL Dyke,PRV') {
-                    //                         obj2['getDescription5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
-                    //                         obj2['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
-                    //                     }
-                    //                 }
-                    //                 this.getAllList.push(obj2);
-                    //             }
-                    //         }
-                    //     }
-                    // }
-
-                    //Categpry A
-                    // let obj3 = {};
-                    // for (let a = 0; a < impact.RiskMatrix.length; a++) {
-                    //     if (impact.RiskMatrix[i].Category == 'A') {
-                    //         obj3['getCategory'] = impact.RiskMatrix[i].Category;
-                    //         obj3['getSeverity'] = impact.RiskMatrix[i].Severity;
-                    //         obj3['getTRF'] = impact.RiskMatrix[i].TRF;
-                    //         this.TRFA = obj3['getTRF']
-                    //         for (let b = 0; b < impact.RiskMatrix[i].InitiatingCauses.length; b++) {
-                    //             if (b == 0) {
-                    //                 obj3['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[b].initiatingCause
-                    //                 obj3['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[b].IELA;
-                    //                 this.IELA += obj3['getIEL'];
-                    //                 this.PFDAVGA = this.TRFA / this.IELA;
-                    //                 obj3['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[b].IEF;
-                    //                 obj3['getIP'] = impact.RiskMatrix[i].InitiatingCauses[b].IP;
-                    //                 obj3['getPP'] = impact.RiskMatrix[i].InitiatingCauses[b].PP;
-                    //                 obj3['getTR'] = impact.RiskMatrix[i].InitiatingCauses[b].TR;
-                    //                 for (let z = 0; z < impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers.length; z++) {
-                    //                     if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'General Process Design') {
-                    //                         obj3['getDescription1'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
-                    //                         obj3['getPFD1'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'BPCS') {
-                    //                         obj3['getDescription2'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
-                    //                         obj3['getPFD2'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'Alarm') {
-                    //                         obj3['getDescription3'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
-                    //                         obj3['getPFD3'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'Restricted Acess') {
-                    //                         obj3['getDescription4'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
-                    //                         obj3['getPFD4'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'IPL Dyke,PRV') {
-                    //                         obj3['getDescription5'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
-                    //                         obj3['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
-                    //                     }
-                    //                 }
-                    //                 this.getAllList.push(obj3);
-
-                    //             }
-                    //             else {
-                    //                 let obj4 = {}
-                    //                 obj4['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[b].initiatingCause
-                    //                 obj4['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[b].IELA;
-                    //                 this.IELA += obj4['getIEL'];
-                    //                 this.PFDAVGA = this.TRFA / this.IELA;
-                    //                 obj4['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[b].IEF;
-                    //                 obj4['getIP'] = impact.RiskMatrix[i].InitiatingCauses[b].IP;
-                    //                 obj4['getPP'] = impact.RiskMatrix[i].InitiatingCauses[b].PP;
-                    //                 obj4['getTR'] = impact.RiskMatrix[i].InitiatingCauses[b].TR;
-                    //                 for (let z = 0; z < impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers.length; z++) {
-                    //                     if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'General Process Design') {
-                    //                         obj4['getDescription1'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
-                    //                         obj4['getPFD1'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'BPCS') {
-                    //                         obj4['getDescription2'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
-                    //                         obj4['getPFD2'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'Alarm') {
-                    //                         obj4['getDescription3'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
-                    //                         obj4['getPFD3'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'Restricted Acess') {
-                    //                         obj4['getDescription4'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
-                    //                         obj4['getPFD4'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
-                    //                     }
-                    //                     else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'IPL Dyke,PRV') {
-                    //                         obj4['getDescription5'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
-                    //                         obj4['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
-                    //                     }
-                    //                 }
-                    //                 this.getAllList.push(obj4);
-                    //             }
-
-                    //         }
-                    //     }
-                    // }
-                    
                 });
             });
     }

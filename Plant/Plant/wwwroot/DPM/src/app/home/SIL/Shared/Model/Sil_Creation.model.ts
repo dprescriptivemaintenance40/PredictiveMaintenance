@@ -167,6 +167,7 @@ export class Calculation {
                     }
                 });
             });
+            
             impactevent.RiskMatrix.filter(i => i.Category == "E").forEach(riskmatrix => {
                 riskmatrix.InitiatingCauses.forEach(riske => {
                     if (this.OverallIELE == 0) {
