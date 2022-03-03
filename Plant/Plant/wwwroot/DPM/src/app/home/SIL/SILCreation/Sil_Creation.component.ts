@@ -318,7 +318,8 @@ export class SILComponent implements OnInit {
                 // dynamicValues.pfdValue = 0;
                 // dynamic.DynamicValues.push(dynamicValues);
               }
-              else if (this.SheetValue[l][1] == "E" || this.SheetValue[l][1] == "A") {
+              else if ((this.SheetValue[l][1] == "E" || this.SheetValue[l][1] == "A") || (this.SheetValue[l][0] == "" && this.SheetValue[l][1] == "" && this.SheetValue[l][2] == "" && this.SheetValue[l][3] == ""
+              && this.SheetValue[l][4] == "" && this.SheetValue[l][5] == "" && this.SheetValue[l][6] == "" && this.SheetValue[l][7] == "")) {
                 break;
               }
             }
@@ -404,9 +405,11 @@ export class SILComponent implements OnInit {
                 // dynamicValues.pfdValue = 0;
                 // dynamic.DynamicValues.push(dynamicValues);
               }
-              else if (this.SheetValue[j][1] == "A" || this.SheetValue[j][1] == "P") {
+              else if ((this.SheetValue[j][1] == "P" || this.SheetValue[j][1] == "A") || (this.SheetValue[j][0] == "" && this.SheetValue[j][1] == "" && this.SheetValue[j][2] == "" && this.SheetValue[j][3] == ""
+              && this.SheetValue[j][4] == "" && this.SheetValue[j][5] == "" && this.SheetValue[j][6] == "" && this.SheetValue[j][7] == "")) {
                 break;
               }
+
             }
           }
           else if ((this.SheetValue[i][0] == "" || this.SheetValue[i][0] == impacts.ImpactEventDesciption) && this.SheetValue[i][1] == "A" && this.SheetValue[i][2] != "" && this.SheetValue[i][3] != "") {
