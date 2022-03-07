@@ -8,6 +8,7 @@ import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, RiskMatrix,
 import { SILConstantAPI } from '../Shared/Model/SILConstant';
 import { values } from './value';
 import { HomeComponent } from "../../home.component";
+import { DynamicTitle } from "../Shared/Model/Sil_dynamic.model";
 
 @Component({
   selector: 'app-sil',
@@ -19,6 +20,9 @@ import { HomeComponent } from "../../home.component";
 export class SILComponent implements OnInit {
   @ViewChild("spreadsheet") spreadsheet: ElementRef;
 
+  public data: any = [];
+  public columns: any = [];
+  public nestedHeaders: any = [];
   public getData: any = [];
   public MasterData: any = [];
   public initiatingCausesMasterList: any = [];
@@ -43,6 +47,7 @@ export class SILComponent implements OnInit {
   public RiskMatrixVal: RiskMatrix = new RiskMatrix();
   public initcauses: InitiatingCause = new InitiatingCause();
   public sifDesignObj: SIFDesign = new SIFDesign();
+  public dynamicColumn: DynamicGroupName = new DynamicGroupName();
   public TargetSil: number = 0;
   public cal: Calculation = new Calculation(this.sifDesignObj);
   public value = values;
@@ -53,8 +58,11 @@ export class SILComponent implements OnInit {
   public node: number = 0;
   public description: string = "";
   public parameter: string = "";
-  public iel:number = 0;
-  public hidden:boolean=false;
+  public iel: number = 0;
+  public hidden: boolean = false;
+  public editTitle: boolean = false;
+  public IPLTitle: string = "";
+  public dynamicIPLObj: DynamicTitle = new DynamicTitle();
 
   ngOnInit() {
     this.primengConfig.ripple = true;
@@ -70,93 +78,56 @@ export class SILComponent implements OnInit {
 
   }
 
+  CreateColumns() {
+    this.columns.push({ type: "text", title: 'Impact Event', width: "100", wordWrap: true, source: this.impact.ImpactEventDesciption }),
+      this.columns.push({ type: 'dropdown', title: 'Category', width: "50", wordWrap: true, source: this.CategoryNameList }),
+      this.columns.push({ type: 'text', title: 'Severity', width: "50", wordWrap: true, source: this.cells }),
+      this.columns.push({ type: 'text', title: 'TMEL', tooltip: 'Column is readonly', wordWrap: true, width: "60", source: this.risk }),
+      this.columns.push({ type: 'dropdown', title: 'Initiating Causes', wordWrap: true, width: "100", autocomplete: true, source: this.InitiatingCauseValue }),
+      this.columns.push({ type: 'text', title: 'IEF', width: "60" }),
+      this.columns.push({ type: 'text', title: 'IP', width: "40" }),
+      this.columns.push({ type: 'text', title: 'PP', width: "40" }),
+      this.columns.push({ type: 'text', title: 'TR', width: "40" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.iel }),
+      this.columns.push({ type: 'number', title: 'Overall IEL', width: "55" }),
+      this.columns.push({ type: 'number', title: 'PFDavg', width: "55" }),
+      this.columns.push({ type: 'number', title: 'RRF', width: "55" }),
+      this.columns.push({ type: 'number', title: 'SIL', width: "55" })
+  }
+  CreateHeaders() {
+    this.nestedHeaders = [];
+    this.nestedHeaders.push({ title: 'Consequence Screening', colspan: '4' }),
+      this.nestedHeaders.push({ title: 'Initiating Event', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'Conditional Modifiers', colspan: '3' }),
+      this.nestedHeaders.push({ title: 'General Process Design', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'BPCS', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'Alarm', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'Restricted Access', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'IPL Dyke, PRV', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'Calculations', colspan: '5' })
+  }
   ngAfterViewInit() {
+    this.CreateColumns();
+    this.CreateHeaders();
     this.getData = jspreadsheet(this.spreadsheet.nativeElement, {
-      data: [[]],
-      columns: [
-        { type: "text", title: 'Impact Event', width: "100", wordWrap: true, source: this.impact.ImpactEventDesciption },
-        { type: 'dropdown', title: 'Category',width: "50", wordWrap: true,source: this.CategoryNameList },
-        { type: 'text', title: 'Severity', width: "50", wordWrap: true,source: this.cells },
-        { type: 'text', title: 'TMEL',tooltip:'Column is readonly',wordWrap: true, width: "60", source: this.risk },
-        { type: 'dropdown', title: 'Initiating Causes', wordWrap: true, width: "100", autocomplete: true, source: this.InitiatingCauseValue },
-        { type: 'text', title: 'IEF', width: "60" },
-        { type: 'text', title: 'IP', width: "40" },
-        { type: 'text', title: 'PP', width: "40" },
-        { type: 'text', title: 'TR', width: "40" },
-        { type: 'text', title: 'Description', width: "90", wordWrap: true },
-        { type: 'text', title: 'PFD', width: "55" },
-        { type: 'text', title: 'Description', width: "90", wordWrap: true },
-        { type: 'text', title: 'PFD', width: "55" },
-        { type: 'text', title: 'Description', width: "90", wordWrap: true },
-        { type: 'text', title: 'PFD', width: "55" },
-        { type: 'text', title: 'Description', width: "90", wordWrap: true },
-        { type: 'text', title: 'PFD', width: "55" },
-        { type: 'text', title: 'Description', width: "90", wordWrap: true },
-        { type: 'text', title: 'PFD', width: "55" },
-        { type: 'text', title: 'Description', width: "90", wordWrap: true },
-        { type: 'text', title: 'PFD', width: "55" },
-        { type: 'text', title: 'Description', width: "90", wordWrap: true },
-        { type: 'text', title: 'PFD', width: "55" },
-        { type: 'number', title: 'IEL', width: "55" ,source: this.iel },
-        { type: 'number', title: 'Overall IEL', width: "55" },
-        { type: 'number', title: 'PFDavg', width: "55" },
-        { type: 'number', title: 'RRF', width: "55" },
-        { type: 'number', title: 'SIL', width: "55" },
-      ],
-      nestedHeaders: [
-        [
-          {
-            title: 'Consequence Screening',
-            colspan: '4',
-          },
-          {
-            title: 'Initiating Event',
-            colspan: '2',
-          },
-          {
-            title: 'Conditional Modifiers',
-            colspan: '3'
-          },
-          {
-            title: 'General Process Design',
-            colspan: '2'
-          },
-          {
-            title: 'BPCS',
-            colspan: '2'
-          },
-          {
-            title: 'Alarm',
-            colspan: '2'
-          },
-          {
-            title: 'Restricted Access',
-            colspan: '2'
-          },
-          {
-            title: 'IPL Dyke, PRV',
-            colspan: '2'
-          },
-          {
-            title: 'Additional IPL',
-            colspan: '2',
-          },
-          {
-            hideTitle:true,
-            title: 'Additional IPL',
-            colspan: '2',
-          },
-          {
-            title: 'Calculations',
-            colspan: '5',
-          },
-        ],
-      ],
+      data: this.data,
+      columns: this.columns,
+      nestedHeaders: this.nestedHeaders,
       mergeCells: {
-         A1:[,9],
-         B1:[,3],B4:[,3],B7:[,3],
-         C1:[,3],C4:[,3],C7:[,3],
-         D1:[,3],D4:[,3],D7:[,3],
+        A1: [, 9],
+        B1: [, 3], B4: [, 3], B7: [, 3],
+        C1: [, 3], C4: [, 3], C7: [, 3],
+        D1: [, 3], D4: [, 3], D7: [, 3],
       },
       onchange: this.changed,
       onselection: this.selectionActive,
@@ -165,10 +136,10 @@ export class SILComponent implements OnInit {
       tableHeight: "600px",
       minDimensions: [24, 20]
     });
-    this.getData.hideColumn(19);
-    this.getData.hideColumn(20);
-    this.getData.hideColumn(21);
-    this.getData.hideColumn(22);
+    // this.getData.hideColumn(19);
+    // this.getData.hideColumn(20);
+    // this.getData.hideColumn(21);
+    // this.getData.hideColumn(22);
   }
 
   changed = async (instance, cell, x, y, value) => {
@@ -182,6 +153,7 @@ export class SILComponent implements OnInit {
     var cellName2 = jspreadsheet.getColumnNameFromId([x2, y2]);
     this.x = x1;
     this.y = y1;
+    // this.getData.setMerge(x1,0,y2)
     // var split = this.cellName.split("")[0];
     if ((x1 == 2) && (x2 == 2)) {
       if (this.sifDesignObj.RiskMatrix == "6*6 matrix") {
@@ -321,7 +293,7 @@ export class SILComponent implements OnInit {
                 // dynamic.DynamicValues.push(dynamicValues);
               }
               else if ((this.SheetValue[l][1] == "E" || this.SheetValue[l][1] == "A") || (this.SheetValue[l][0] == "" && this.SheetValue[l][1] == "" && this.SheetValue[l][2] == "" && this.SheetValue[l][3] == ""
-              && this.SheetValue[l][4] == "" && this.SheetValue[l][5] == "" && this.SheetValue[l][6] == "" && this.SheetValue[l][7] == "")) {
+                && this.SheetValue[l][4] == "" && this.SheetValue[l][5] == "" && this.SheetValue[l][6] == "" && this.SheetValue[l][7] == "")) {
                 break;
               }
             }
@@ -408,7 +380,7 @@ export class SILComponent implements OnInit {
                 // dynamic.DynamicValues.push(dynamicValues);
               }
               else if ((this.SheetValue[j][1] == "P" || this.SheetValue[j][1] == "A") || (this.SheetValue[j][0] == "" && this.SheetValue[j][1] == "" && this.SheetValue[j][2] == "" && this.SheetValue[j][3] == ""
-              && this.SheetValue[j][4] == "" && this.SheetValue[j][5] == "" && this.SheetValue[j][6] == "" && this.SheetValue[j][7] == "")) {
+                && this.SheetValue[j][4] == "" && this.SheetValue[j][5] == "" && this.SheetValue[j][6] == "" && this.SheetValue[j][7] == "")) {
                 break;
               }
 
@@ -498,13 +470,13 @@ export class SILComponent implements OnInit {
 
               }
               else if ((this.SheetValue[m][1] == "P" || this.SheetValue[m][1] == "E") || (this.SheetValue[m][0] == "" && this.SheetValue[m][1] == "" && this.SheetValue[m][2] == "" && this.SheetValue[m][3] == ""
-              && this.SheetValue[m][4] == "" && this.SheetValue[m][5] == "" && this.SheetValue[m][6] == "" && this.SheetValue[m][7] == "")) {
+                && this.SheetValue[m][4] == "" && this.SheetValue[m][5] == "" && this.SheetValue[m][6] == "" && this.SheetValue[m][7] == "")) {
                 break;
               }
             }
           }
           else if ((this.SheetValue[i][0] != "") || (this.SheetValue[i][0] == "" && this.SheetValue[i][1] == "" && this.SheetValue[i][2] == "" && this.SheetValue[i][3] == ""
-          && this.SheetValue[i][4] == "" && this.SheetValue[i][5] == "" && this.SheetValue[i][6] == "" && this.SheetValue[i][7] == "")) {
+            && this.SheetValue[i][4] == "" && this.SheetValue[i][5] == "" && this.SheetValue[i][6] == "" && this.SheetValue[i][7] == "")) {
             break;
           }
         }
@@ -516,7 +488,7 @@ export class SILComponent implements OnInit {
     this.cal = calc;
     console.log(this.cal);
     var OverallIELP = this.cal.OverallIELP;
-    this.iel =this.getData.setRowData([20], [OverallIELP]);
+    this.iel = this.getData.setRowData([20], [OverallIELP]);
     sifDesignObj.push(sif);
     this.TargetSil = sif.TargetSIL;
     console.log(sifDesignObj);
@@ -607,11 +579,84 @@ export class SILComponent implements OnInit {
     this.node = 0;
     this.description = "";
   }
-  column(){
-    this.getData.showColumn(19);
-    this.getData.showColumn(20);
-    this.getData.showColumn(21);
-    this.getData.showColumn(22);
+
+  AddNewCol() {
+    this.AddColumn();
+    this.AddHeaders();
+    this.SheetValue = this.getData.getData();
+    this.getData.destroy();
+    this.getData = jspreadsheet(this.spreadsheet.nativeElement, {
+      data: this.SheetValue,
+      columns: this.columns,
+      nestedHeaders: this.nestedHeaders,
+      mergeCells: {
+        A1: [, 9],
+        B1: [, 3], B4: [, 3], B7: [, 3],
+        C1: [, 3], C4: [, 3], C7: [, 3],
+        D1: [, 3], D4: [, 3], D7: [, 3],
+      },
+      onchange: this.changed,
+      onselection: this.selectionActive,
+      tableOverflow: true,
+      tableWidth: "1350px",
+      tableHeight: "600px",
+      minDimensions: [24, 20]
+    });
+  }
+
+  AddTitle() {
+    this.editTitle = true;
+  }
+
+  SaveIPLTitle() {
+    this.IPLTitle = this.dynamicIPLObj.title;
+    this.editTitle = false;
+    this.AddNewCol();
+  }
+
+  AddColumn() {
+    this.columns = [];
+    this.columns.push({ type: "text", title: 'Impact Event', width: "100", wordWrap: true, source: this.impact.ImpactEventDesciption }),
+      this.columns.push({ type: 'dropdown', title: 'Category', width: "50", wordWrap: true, source: this.CategoryNameList }),
+      this.columns.push({ type: 'text', title: 'Severity', width: "50", wordWrap: true, source: this.cells }),
+      this.columns.push({ type: 'text', title: 'TMEL', tooltip: 'Column is readonly', wordWrap: true, width: "60", source: this.risk }),
+      this.columns.push({ type: 'dropdown', title: 'Initiating Causes', wordWrap: true, width: "100", autocomplete: true, source: this.InitiatingCauseValue }),
+      this.columns.push({ type: 'text', title: 'IEF', width: "60" }),
+      this.columns.push({ type: 'text', title: 'IP', width: "40" }),
+      this.columns.push({ type: 'text', title: 'PP', width: "40" }),
+      this.columns.push({ type: 'text', title: 'TR', width: "40" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.iel }),
+      this.columns.push({ type: 'number', title: 'Overall IEL', width: "55" }),
+      this.columns.push({ type: 'number', title: 'PFDavg', width: "55" }),
+      this.columns.push({ type: 'number', title: 'RRF', width: "55" }),
+      this.columns.push({ type: 'number', title: 'SIL', width: "55" })
+  }
+
+  AddHeaders() {
+    this.nestedHeaders = [];
+    var dynamicCol;
+    this.nestedHeaders.push({ title: 'Consequence Screening', colspan: '4' }),
+      this.nestedHeaders.push({ title: 'Initiating Event', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'Conditional Modifiers', colspan: '3' }),
+      this.nestedHeaders.push({ title: 'General Process Design', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'BPCS', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'Alarm', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'Restricted Access', colspan: '2' }),
+      this.nestedHeaders.push({ title: 'IPL Dyke, PRV', colspan: '2' }),
+      this.nestedHeaders.push({ title: this.IPLTitle, colspan: '2' }),
+      this.nestedHeaders.push({ title: 'Calculations', colspan: '5' })
   }
 }
 
