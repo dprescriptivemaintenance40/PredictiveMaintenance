@@ -47,7 +47,7 @@ export class SILComponent implements OnInit {
   public RiskMatrixVal: RiskMatrix = new RiskMatrix();
   public initcauses: InitiatingCause = new InitiatingCause();
   public sifDesignObj: SIFDesign = new SIFDesign();
-  public dynamicColumn: DynamicGroupName = new DynamicGroupName();
+  public dynamicColumn: Array<DynamicGroupName> = new Array<DynamicGroupName>();
   public TargetSil: number = 0;
   public cal: Calculation = new Calculation(this.sifDesignObj);
   public value = values;
@@ -63,7 +63,7 @@ export class SILComponent implements OnInit {
   public editTitle: boolean = false;
   public IPLTitle: string = "";
   public dynamicIPLObj: DynamicTitle = new DynamicTitle();
-
+  public counter=0;
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
@@ -607,11 +607,17 @@ export class SILComponent implements OnInit {
   AddTitle() {
     this.editTitle = true;
   }
-
+ 
   SaveIPLTitle() {
     this.IPLTitle = this.dynamicIPLObj.title;
+    let obj=new DynamicGroupName();
+    obj.Id+= this.counter;
+    obj.GroupName=this.IPLTitle;
+    this.dynamicColumn.push(obj)
     this.editTitle = false;
     this.AddNewCol();
+    this.counter++;
+    this.dynamicIPLObj.title="";
   }
 
   AddColumn() {
@@ -635,8 +641,10 @@ export class SILComponent implements OnInit {
       this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
       this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
       this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
-      this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
-      this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
+      this.dynamicColumn.forEach(element => {
+        this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
+        this.columns.push({ type: 'text', title: 'PFD', width: "55" })
+      });
       this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.iel }),
       this.columns.push({ type: 'number', title: 'Overall IEL', width: "55" }),
       this.columns.push({ type: 'number', title: 'PFDavg', width: "55" }),
@@ -655,7 +663,9 @@ export class SILComponent implements OnInit {
       this.nestedHeaders.push({ title: 'Alarm', colspan: '2' }),
       this.nestedHeaders.push({ title: 'Restricted Access', colspan: '2' }),
       this.nestedHeaders.push({ title: 'IPL Dyke, PRV', colspan: '2' }),
-      this.nestedHeaders.push({ title: this.IPLTitle, colspan: '2' }),
+      this.dynamicColumn.forEach(element => {
+        this.nestedHeaders.push({ title: element.GroupName, colspan: '2' })
+      });
       this.nestedHeaders.push({ title: 'Calculations', colspan: '5' })
   }
 }
