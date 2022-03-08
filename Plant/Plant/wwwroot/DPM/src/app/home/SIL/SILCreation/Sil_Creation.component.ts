@@ -4,7 +4,7 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
-import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, RiskMatrix, SIFDesign, DynamicGroupName, DynamicValue } from 'src/app/home/SIL/Shared/Model/Sil_Creation.model';
+import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer,DynamicGroupName,RiskMatrix, SIFDesign } from 'src/app/home/SIL/Shared/Model/Sil_Creation.model';
 import { SILConstantAPI } from '../Shared/Model/SILConstant';
 import { values } from './value';
 import { HomeComponent } from "../../home.component";
@@ -63,7 +63,7 @@ export class SILComponent implements OnInit {
   public editTitle: boolean = false;
   public IPLTitle: string = "";
   public dynamicIPLObj: DynamicTitle = new DynamicTitle();
-  public counter=0;
+  public counter = 0;
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
@@ -123,12 +123,12 @@ export class SILComponent implements OnInit {
       data: this.data,
       columns: this.columns,
       nestedHeaders: this.nestedHeaders,
-      mergeCells: {
-        A1: [, 9],
-        B1: [, 3], B4: [, 3], B7: [, 3],
-        C1: [, 3], C4: [, 3], C7: [, 3],
-        D1: [, 3], D4: [, 3], D7: [, 3],
-      },
+      // mergeCells: {
+      //   A1: [, 9],
+      //   B1: [, 3], B4: [, 3], B7: [, 3],
+      //   C1: [, 3], C4: [, 3], C7: [, 3],
+      //   D1: [, 3], D4: [, 3], D7: [, 3],
+      // },
       onchange: this.changed,
       onselection: this.selectionActive,
       tableOverflow: true,
@@ -280,17 +280,19 @@ export class SILComponent implements OnInit {
                 iplDyke.PFD = this.SheetValue[l][18]
                 initcause.ProtectionLayers.push(iplDyke);
 
-                // let dynamic = new DynamicGroupName();
-                // dynamic.Id = 1;
-                // dynamic.InitiantingId = initcause.Id;
-                // dynamic.GroupName = "";
-                // initcause.DynamicGroupNames.push(dynamic);
-
-                // let dynamicValues = new DynamicValue();
-                // dynamicValues.Id = dynamic.Id
-                // dynamicValues.pfdDescription = "";
-                // dynamicValues.pfdValue = 0;
-                // dynamic.DynamicValues.push(dynamicValues);
+                let pfdDescIndex = 19;
+                let pfdValueIndex = 20;
+                this.dynamicColumn.forEach(dynamicolumns => {
+                  let dynamic = new DynamicGroupName();
+                  dynamic.DynamicId = 1;
+                  dynamic.ICId = initcause.Id;
+                  dynamic.GroupName = dynamicolumns.GroupName;
+                  dynamic.pfdDescription = this.SheetValue[l][pfdDescIndex];
+                  dynamic.pfdValue = Number(this.SheetValue[l][pfdValueIndex]);
+                  initcause.DynamicGroupNames.push(dynamic);
+                  pfdDescIndex += 2;
+                  pfdValueIndex += 2;
+                });
               }
               else if ((this.SheetValue[l][1] == "E" || this.SheetValue[l][1] == "A") || (this.SheetValue[l][0] == "" && this.SheetValue[l][1] == "" && this.SheetValue[l][2] == "" && this.SheetValue[l][3] == ""
                 && this.SheetValue[l][4] == "" && this.SheetValue[l][5] == "" && this.SheetValue[l][6] == "" && this.SheetValue[l][7] == "")) {
@@ -359,25 +361,19 @@ export class SILComponent implements OnInit {
                 protectionlayers.PFD = this.SheetValue[j][16]
                 initcause.ProtectionLayers.push(protectionlayers);
 
-                // let iplDyke = new ProtectionLayer();
-                // iplDyke.Id = 5;
-                // iplDyke.ICId = initcause.Id;
-                // iplDyke.NameOfIPL = "IPL Dyke,PRV";
-                // iplDyke.Description = this.SheetValue[j][17]
-                // iplDyke.PFD = this.SheetValue[j][18]
-                // initcause.ProtectionLayers.push(iplDyke);
-
-                // let dynamic = new DynamicGroupName();
-                // dynamic.Id = 1;
-                // dynamic.InitiantingId = initcause.Id;
-                // dynamic.GroupName = "";
-                // initcause.DynamicGroupNames.push(dynamic);
-
-                // let dynamicValues = new DynamicValue();
-                // dynamicValues.Id = dynamic.Id
-                // dynamicValues.pfdDescription = "";
-                // dynamicValues.pfdValue = 0;
-                // dynamic.DynamicValues.push(dynamicValues);
+                let pfdDescIndex = 19;
+                let pfdValueIndex = 20;
+                this.dynamicColumn.forEach(dynamicolumns => {
+                  let dynamic = new DynamicGroupName();
+                  dynamic.DynamicId = 1;
+                  dynamic.ICId = initcause.Id;
+                  dynamic.GroupName = dynamicolumns.GroupName;
+                  dynamic.pfdDescription = this.SheetValue[j][pfdDescIndex];
+                  dynamic.pfdValue = Number(this.SheetValue[j][pfdValueIndex]);
+                  initcause.DynamicGroupNames.push(dynamic);
+                  pfdDescIndex += 2;
+                  pfdValueIndex += 2;
+                });
               }
               else if ((this.SheetValue[j][1] == "P" || this.SheetValue[j][1] == "A") || (this.SheetValue[j][0] == "" && this.SheetValue[j][1] == "" && this.SheetValue[j][2] == "" && this.SheetValue[j][3] == ""
                 && this.SheetValue[j][4] == "" && this.SheetValue[j][5] == "" && this.SheetValue[j][6] == "" && this.SheetValue[j][7] == "")) {
@@ -456,17 +452,19 @@ export class SILComponent implements OnInit {
                 iplDyke.PFD = this.SheetValue[m][18]
                 initcause.ProtectionLayers.push(iplDyke);
 
-                // let dynamic = new DynamicGroupName();
-                // dynamic.Id = 1;
-                // dynamic.InitiantingId = initcause.Id;
-                // dynamic.GroupName = "";
-                // initcause.DynamicGroupNames.push(dynamic);
-
-                // let dynamicValues = new DynamicValue();
-                // dynamicValues.Id = dynamic.Id
-                // dynamicValues.pfdDescription = "";
-                // dynamicValues.pfdValue = 0;
-                // dynamic.DynamicValues.push(dynamicValues);
+                let pfdDescIndex = 19;
+                let pfdValueIndex = 20;
+                this.dynamicColumn.forEach(dynamicolumns => {
+                  let dynamic = new DynamicGroupName();
+                  dynamic.DynamicId = 1;
+                  dynamic.ICId = initcause.Id;
+                  dynamic.GroupName = dynamicolumns.GroupName;
+                  dynamic.pfdDescription = this.SheetValue[m][pfdDescIndex];
+                  dynamic.pfdValue = Number(this.SheetValue[m][pfdValueIndex]);
+                  initcause.DynamicGroupNames.push(dynamic);
+                  pfdDescIndex += 2;
+                  pfdValueIndex += 2;
+                });
 
               }
               else if ((this.SheetValue[m][1] == "P" || this.SheetValue[m][1] == "E") || (this.SheetValue[m][0] == "" && this.SheetValue[m][1] == "" && this.SheetValue[m][2] == "" && this.SheetValue[m][3] == ""
@@ -487,8 +485,8 @@ export class SILComponent implements OnInit {
     let calc = new Calculation(sif);
     this.cal = calc;
     console.log(this.cal);
-    var OverallIELP = this.cal.OverallIELP;
-    this.iel = this.getData.setRowData([20], [OverallIELP]);
+    // var OverallIELP = this.cal.OverallIELP;
+    // this.iel = this.getData.setRowData([20], [OverallIELP]);
     sifDesignObj.push(sif);
     this.TargetSil = sif.TargetSIL;
     console.log(sifDesignObj);
@@ -589,12 +587,12 @@ export class SILComponent implements OnInit {
       data: this.SheetValue,
       columns: this.columns,
       nestedHeaders: this.nestedHeaders,
-      mergeCells: {
-        A1: [, 9],
-        B1: [, 3], B4: [, 3], B7: [, 3],
-        C1: [, 3], C4: [, 3], C7: [, 3],
-        D1: [, 3], D4: [, 3], D7: [, 3],
-      },
+      // mergeCells: {
+      //   A1: [, 9],
+      //   B1: [, 3], B4: [, 3], B7: [, 3],
+      //   C1: [, 3], C4: [, 3], C7: [, 3],
+      //   D1: [, 3], D4: [, 3], D7: [, 3],
+      // },
       onchange: this.changed,
       onselection: this.selectionActive,
       tableOverflow: true,
@@ -607,17 +605,17 @@ export class SILComponent implements OnInit {
   AddTitle() {
     this.editTitle = true;
   }
- 
+
   SaveIPLTitle() {
     this.IPLTitle = this.dynamicIPLObj.title;
-    let obj=new DynamicGroupName();
-    obj.Id+= this.counter;
-    obj.GroupName=this.IPLTitle;
+    let obj = new DynamicGroupName();
+    obj.DynamicId += this.counter;
+    obj.GroupName = this.IPLTitle;
     this.dynamicColumn.push(obj)
     this.editTitle = false;
     this.AddNewCol();
     this.counter++;
-    this.dynamicIPLObj.title="";
+    this.dynamicIPLObj.title = "";
   }
 
   AddColumn() {
@@ -643,9 +641,9 @@ export class SILComponent implements OnInit {
       this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
       this.dynamicColumn.forEach(element => {
         this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
-        this.columns.push({ type: 'text', title: 'PFD', width: "55" })
+          this.columns.push({ type: 'text', title: 'PFD', width: "55" })
       });
-      this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.iel }),
+    this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.iel }),
       this.columns.push({ type: 'number', title: 'Overall IEL', width: "55" }),
       this.columns.push({ type: 'number', title: 'PFDavg', width: "55" }),
       this.columns.push({ type: 'number', title: 'RRF', width: "55" }),
@@ -666,7 +664,7 @@ export class SILComponent implements OnInit {
       this.dynamicColumn.forEach(element => {
         this.nestedHeaders.push({ title: element.GroupName, colspan: '2' })
       });
-      this.nestedHeaders.push({ title: 'Calculations', colspan: '5' })
+    this.nestedHeaders.push({ title: 'Calculations', colspan: '5' })
   }
 }
 

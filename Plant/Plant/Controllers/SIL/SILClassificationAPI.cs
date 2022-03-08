@@ -153,7 +153,7 @@ namespace Plant.Controllers.SIL
                                 _Context.InitiatingCause.Add(init);
                                 await _Context.SaveChangesAsync();
                                 var protections = initcause.ProtectionLayers;
-
+                                var dynamicColumns = initcause.DynamicGroupNames;
                                 foreach (var protection in protections)
                                 {
                                     ProtectionLayer protectionLayers = new ProtectionLayer();
@@ -164,7 +164,18 @@ namespace Plant.Controllers.SIL
                                     _Context.ProtectionLayer.Add(protectionLayers);
                                     await _Context.SaveChangesAsync();
                                 }
+                                foreach (var dynamicColumn in dynamicColumns)
+                                {
+                                    DynamicGroupName dynamic = new DynamicGroupName();
+                                    dynamic.ICId = init.Id;
+                                    dynamic.GroupName = dynamicColumn.GroupName;
+                                    dynamic.pfdDescription = dynamicColumn.pfdDescription;
+                                    dynamic.pfdValue = dynamicColumn.pfdValue;
+                                    _Context.DynamicGroupName.Add(dynamic);
+                                    await _Context.SaveChangesAsync();
+                                }
                             }
+                            
                         }
 
                     }

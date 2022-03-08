@@ -49,6 +49,7 @@ namespace Plant.Models
     public float TR { get; set; }   //Times at Risk
 
     public List<ProtectionLayer> ProtectionLayers { get; set; }
+    public List<DynamicGroupName> DynamicGroupNames { get; set; }
 
     public float IELP { get; set; }
     public float IELE { get; set; }
@@ -64,6 +65,15 @@ namespace Plant.Models
         public string NameOfIPL { get; set; }    //Independent Protection Layer
         public string Description { get; set; }
         public float PFD { get; set; }   //Probability of Failure on Demand
+        public InitiatingCause InitiatingCause { get; set; }
+    }
+    public class DynamicGroupName
+    {
+        public int DynamicId { get; set; }
+        public int ICId { get; set; }
+        public string GroupName { get; set; }
+        public string pfdDescription { get; set; }
+        public float pfdValue { get; set; }
         public InitiatingCause InitiatingCause { get; set; }
     }
     public class Calculation

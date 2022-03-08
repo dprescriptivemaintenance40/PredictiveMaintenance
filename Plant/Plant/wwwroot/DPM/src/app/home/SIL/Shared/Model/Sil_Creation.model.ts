@@ -62,21 +62,30 @@ export class ProtectionLayer  //Independent Protection Layer
     public Description: string = "";
     public PFD: number = 0; //Probability of Failure on Demand
     public InitiatingCause: InitiatingCause = new InitiatingCause();
+}
+export class DynamicGroupName
+{
+    public DynamicId :number=0;
+    public ICId:number=0;
+    public GroupName :string ="";
+    public pfdDescription :string ="";
+    public pfdValue :number=0;
+    public InitiatingCause: InitiatingCause = new InitiatingCause();
 
 }
 
-export class DynamicGroupName {
-    public Id: number = 0;
-    public InitiantingId: number = 0;
-    public GroupName: string = "";
-    public DynamicValues: Array<DynamicValue> = new Array<DynamicValue>();
-}
+// export class DynamicGroupName {
+//     public Id: number = 0;
+//     public InitiantingId: number = 0;
+//     public GroupName: string = "";
+//     public DynamicValues: Array<DynamicValue> = new Array<DynamicValue>();
+// }
 
-export class DynamicValue {
-    public Id: number = 0;
-    public pfdDescription: string = "";
-    public pfdValue: number = 0;
-}
+// export class DynamicValue {
+//     public Id: number = 0;
+//     public pfdDescription: string = "";
+//     public pfdValue: number = 0;
+// }
 
 export class Calculation {
     public sif: SIFDesign = new SIFDesign();

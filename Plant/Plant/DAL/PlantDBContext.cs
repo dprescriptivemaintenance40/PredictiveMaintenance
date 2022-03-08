@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Plant.Models;
 using Plant.Models.Historical;
-
 namespace Plant.DAL
 {
     public class PlantDBContext : DbContext
@@ -35,6 +34,8 @@ namespace Plant.DAL
         public DbSet<RiskMatrix> RiskMatrix { get; set; }
         public DbSet<InitiatingCause> InitiatingCause { get; set; }
         public DbSet<ProtectionLayer> ProtectionLayer { get; set; }
+
+        public DbSet<DynamicGroupName> DynamicGroupName { get; set; }
         public DbSet<Calculation> Calculation { get; set; }
 
         //SILVerification
@@ -145,6 +146,14 @@ namespace Plant.DAL
                 .HasOne(p => p.InitiatingCause)
                 .WithMany(p => p.ProtectionLayers)
                 .HasForeignKey(p => p.ICId);
+
+            modelBuilder.Entity<DynamicGroupName>().ToTable("tbldynamicColumns");
+            modelBuilder.Entity<DynamicGroupName>().HasKey(c => c.DynamicId);
+            modelBuilder.Entity<DynamicGroupName>()
+               .HasOne(p => p.InitiatingCause)
+               .WithMany(p => p.DynamicGroupNames)
+               .HasForeignKey(p => p.ICId);
+
 
             modelBuilder.Entity<Calculation>().ToTable("tblCalculation");
             modelBuilder.Entity<Calculation>().HasKey(c => c.calculationId);
