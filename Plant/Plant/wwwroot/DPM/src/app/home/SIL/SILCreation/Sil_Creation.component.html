@@ -61,7 +61,7 @@
 <button style="float: right;margin-right: 10px;" label="Add" type="button" class="btn btn-dark" 
     (click)="Add()" pTooltip="Add New Record" tooltipPosition="top"><i class="pi pi-plus ">  Add</i></button>
     <button style="float: right;margin-right: 10px;" label="Add Column" type="button" class="btn btn-dark" 
-    (click)="AddTitle()"  pTooltip="Add New Column" tooltipPosition="top"><i class="pi pi-plus ">Add Column</i></button><br><br>
+    (click)="AddDynamicTitle()"  pTooltip="Add New Column" tooltipPosition="top"><i class="pi pi-plus ">Add Column</i></button><br><br>
 <div class="card dpm-card w-100 p-3">
     <div #spreadsheet>
     </div>
@@ -75,7 +75,7 @@
     </ng-template>
     <ng-template pTemplate="footer">
      <p-button icon="pi pi-times" (click)="editTitle=false" label="Cancel" styleClass="p-button-text"></p-button>
-     <p-button icon="pi pi-check" (click)="SaveIPLTitle()" label="Save" styleClass="p-button-text"></p-button>
+     <p-button icon="pi pi-check" (click)="SaveDynamicTitle()" label="Save" styleClass="p-button-text"></p-button>
     </ng-template>
  </p-dialog>
 <p-dialog header="6 * 6 RiskMatrix" [(visible)]="RiskMatrix6" [style]="{width: '100vw'}">

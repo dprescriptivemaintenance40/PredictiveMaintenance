@@ -18,12 +18,12 @@ import { DynamicTitle } from "../Shared/Model/Sil_dynamic.model";
 })
 
 export class SILComponent implements OnInit {
-  @ViewChild("spreadsheet") spreadsheet: ElementRef;
+  @ViewChild("spreadsheet") spreadsheetDiv: ElementRef;
 
   public data: any = [];
   public columns: any = [];
   public nestedHeaders: any = [];
-  public getData: any = [];
+  public jspreadsheet: any = [];
   public MasterData: any = [];
   public initiatingCausesMasterList: any = [];
   public SeverityList: any = [];
@@ -50,7 +50,6 @@ export class SILComponent implements OnInit {
   public dynamicColumn: Array<DynamicGroupName> = new Array<DynamicGroupName>();
   public TargetSil: number = 0;
   public cal: Calculation = new Calculation(this.sifDesignObj);
-  public value = values;
   public company: string = "";
   public facility: string = "";
   public session: string = "";
@@ -63,11 +62,13 @@ export class SILComponent implements OnInit {
   public editTitle: boolean = false;
   public IPLTitle: string = "";
   public dynamicIPLObj: DynamicTitle = new DynamicTitle();
-  public counter = 0;
+  public counter=0;
+  public IEL:number=0;
+
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
-    this.val = this.getData.data;
+    this.val = this.jspreadsheet.data;
     this.home.CloseSideBar();
   }
 
@@ -98,7 +99,7 @@ export class SILComponent implements OnInit {
       this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
       this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
       this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
-      this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.iel }),
+      this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.IEL }),
       this.columns.push({ type: 'number', title: 'Overall IEL', width: "55" }),
       this.columns.push({ type: 'number', title: 'PFDavg', width: "55" }),
       this.columns.push({ type: 'number', title: 'RRF', width: "55" }),
@@ -119,7 +120,7 @@ export class SILComponent implements OnInit {
   ngAfterViewInit() {
     this.CreateColumns();
     this.CreateHeaders();
-    this.getData = jspreadsheet(this.spreadsheet.nativeElement, {
+    this.jspreadsheet = jspreadsheet(this.spreadsheetDiv.nativeElement, {
       data: this.data,
       columns: this.columns,
       nestedHeaders: this.nestedHeaders,
@@ -163,6 +164,38 @@ export class SILComponent implements OnInit {
         this.RiskMatrix5 = true;
       }
     }
+    if ((x1 == 5) || (x1 == 6) || (x1 == 7) || (x1 == 8)) {
+      this.SheetValue = this.jspreadsheet.getData();
+      for (let n = 0; n < this.SheetValue.length; n++) {
+        if(this.dynamicColumn.length==0){
+        if(this.SheetValue[n][5]!=0 && this.SheetValue[n][6]!=0 && this.SheetValue[n][7]!=0 && this.SheetValue[n][8]!=0 && this.SheetValue[n][10]!=0 && this.SheetValue[n][12]!=0 && this.SheetValue[n][14]!=0 && this.SheetValue[n][16]!=0 && this.SheetValue[n][18]!=0){
+          var val=this.SheetValue[n][5]*this.SheetValue[n][6]*this.SheetValue[n][7]*this.SheetValue[n][8]*this.SheetValue[n][10]*this.SheetValue[n][12]*this.SheetValue[n][14]*this.SheetValue[n][16]*this.SheetValue[n][18];
+          var val1=val.toPrecision(3)
+          this.IEL=this.jspreadsheet.setValueFromCoords([19], [y1], [val1], [true]);
+        }
+        }
+        else{
+          var dLen;
+          var counter=1;
+          var number;
+          var num1=1;
+          this.dynamicColumn.forEach(element => {
+              element.pfdDescription==this.SheetValue[n][counter+18];
+              element.pfdValue=Number(this.SheetValue[n][counter+19]);
+              num1*=element.pfdValue;
+              counter++;
+              counter++;
+          });
+          dLen= this.dynamicColumn.length*2;
+          number=num1.toPrecision(5)
+          if(this.SheetValue[n][5]!=0 && this.SheetValue[n][6]!=0 && this.SheetValue[n][7]!=0 && this.SheetValue[n][8]!=0 && this.SheetValue[n][10]!=0 && this.SheetValue[n][12]!=0 && this.SheetValue[n][14]!=0 && this.SheetValue[n][16]!=0 && this.SheetValue[n][18]!=0){
+            var val2=this.SheetValue[n][5]*this.SheetValue[n][6]*this.SheetValue[n][7]*this.SheetValue[n][8]*this.SheetValue[n][10]*this.SheetValue[n][12]*this.SheetValue[n][14]*this.SheetValue[n][16]*this.SheetValue[n][18]*number;
+            var val3=val2.toPrecision(3)
+            this.IEL=this.jspreadsheet.setValueFromCoords([dLen+19], [y1], [val3], [true]);
+          }
+        }
+      }   
+    }
     // else { console.log('The selection from ' + cellName1 + ' to ' + cellName2 + ''); }
   }
 
@@ -187,8 +220,8 @@ export class SILComponent implements OnInit {
   }
 
   public Save() {
-    this.SheetValue = this.getData.getData();
-    this.arr = this.getData.getHeaders();
+    this.SheetValue = this.jspreadsheet.getData();
+    this.arr = this.jspreadsheet.getHeaders();
     this.cols = this.arr.split(",");
     let sifDesignObj = [];
     let sif = new SIFDesign();
@@ -500,7 +533,7 @@ export class SILComponent implements OnInit {
       this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.CalculationSave, calculate).subscribe((res: any) => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
       }, (err) => {
-        this.getData.setData([[]]);
+        this.jspreadsheet.setData([[]]);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
       });
     },
@@ -514,26 +547,26 @@ export class SILComponent implements OnInit {
     this.RiskMatrix5 = false;
     this.cells = '';
     var r = Matrix.innerText;
-    this.cells = this.getData.setValueFromCoords([this.x], [this.y], [r], [true]);
+    this.cells = this.jspreadsheet.setValueFromCoords([this.x], [this.y], [r], [true]);
     if (r == "1A" || r == "1B" || r == "1C" || r == "1D" || r == "2A" || r == "2B" || r == "3A") {
       var rm = 1.00E-01;
-      this.risk = this.getData.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
+      this.risk = this.jspreadsheet.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
       rm = 0;
     }
     else if (r == "1E" || r == "1F" || r == "2C" || r == "2D" || r == "2E" || r == "3B" || r == "3C" || r == "4A" || r == "4B" || r == "5A") {
       var rm = 1.00E-02;
-      this.risk = this.getData.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
+      this.risk = this.jspreadsheet.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
       rm = 0;
     }
     else if (r == "2F" || r == "3D" || r == "3E" || r == "4C" || r == "5B" || r == "6A") {
       var rm = 1.00E-03;
-      this.risk = this.getData.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
+      this.risk = this.jspreadsheet.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
       rm = 0;
     }
     else if (r == "3F" || r == "4D" || r == "4E" || r == "4F" || r == "5C" || r == "5D" || r == "5E" || r == "5F"
       || r == "6B" || r == "6C" || r == "6D" || r == "6E" || r == "6F") {
       var rm = 1.00E-04;
-      this.risk = this.getData.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
+      this.risk = this.jspreadsheet.setValueFromCoords([this.x + 1], [this.y], [rm], [true]);
       rm = 0;
     }
     else {
@@ -553,7 +586,7 @@ export class SILComponent implements OnInit {
   }
 
   Add() {
-    this.getData.setData([[]]);
+    this.jspreadsheet.setData([[]]);
     this.sifDesignObj = new SIFDesign();
     this.node = 0;
     this.sifid = 0;
@@ -581,9 +614,9 @@ export class SILComponent implements OnInit {
   AddNewCol() {
     this.AddColumn();
     this.AddHeaders();
-    this.SheetValue = this.getData.getData();
-    this.getData.destroy();
-    this.getData = jspreadsheet(this.spreadsheet.nativeElement, {
+    this.SheetValue = this.jspreadsheet.getData();
+    this.jspreadsheet.destroy();
+    this.jspreadsheet = jspreadsheet(this.spreadsheetDiv.nativeElement, {
       data: this.SheetValue,
       columns: this.columns,
       nestedHeaders: this.nestedHeaders,
@@ -602,15 +635,17 @@ export class SILComponent implements OnInit {
     });
   }
 
-  AddTitle() {
+  AddDynamicTitle() {
     this.editTitle = true;
   }
-
-  SaveIPLTitle() {
+ 
+  SaveDynamicTitle() {
     this.IPLTitle = this.dynamicIPLObj.title;
-    let obj = new DynamicGroupName();
-    obj.DynamicId += this.counter;
-    obj.GroupName = this.IPLTitle;
+    let obj=new DynamicGroupName();
+    obj.DynamicId+= this.counter;
+    obj.GroupName=this.IPLTitle;
+    obj.pfdDescription="";
+    obj.pfdValue=0;
     this.dynamicColumn.push(obj)
     this.editTitle = false;
     this.AddNewCol();
@@ -643,7 +678,7 @@ export class SILComponent implements OnInit {
         this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
           this.columns.push({ type: 'text', title: 'PFD', width: "55" })
       });
-    this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.iel }),
+      this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.IEL }),
       this.columns.push({ type: 'number', title: 'Overall IEL', width: "55" }),
       this.columns.push({ type: 'number', title: 'PFDavg', width: "55" }),
       this.columns.push({ type: 'number', title: 'RRF', width: "55" }),
@@ -667,4 +702,5 @@ export class SILComponent implements OnInit {
     this.nestedHeaders.push({ title: 'Calculations', colspan: '5' })
   }
 }
+
 
