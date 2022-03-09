@@ -61,6 +61,7 @@ export class SILComponent implements OnInit {
   public iel: number = 0;
   public hidden: boolean = false;
   public editTitle: boolean = false;
+  public removeTitle:boolean=false;
   public IPLTitle: string = "";
   public dynamicIPLObj: DynamicTitle = new DynamicTitle();
   public counter = 0;
@@ -796,7 +797,7 @@ export class SILComponent implements OnInit {
         this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
           this.columns.push({ type: 'text', title: 'PFD', width: "55" })
       });
-    this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.IEL }),
+      this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.IEL }),
       this.columns.push({ type: 'number', title: 'Overall IEL', width: "55" }),
       this.columns.push({ type: 'number', title: 'PFDavg', width: "55" }),
       this.columns.push({ type: 'number', title: 'RRF', width: "55" }),
@@ -818,6 +819,18 @@ export class SILComponent implements OnInit {
         this.nestedHeaders.push({ title: element.GroupName, colspan: '2' })
       });
     this.nestedHeaders.push({ title: 'Calculations', colspan: '5' })
+  }
+
+  RemoveCol(){
+    this.removeTitle = true;
+  }
+  DeleteCol(title){
+  if(this.dynamicColumn.find(i=>i.GroupName==title)){
+    this.dynamicColumn.splice(title,1);
+    this.AddNewCol();
+  }
+    this.dynamicIPLObj.title = "";
+    this.removeTitle = false;
   }
 }
 

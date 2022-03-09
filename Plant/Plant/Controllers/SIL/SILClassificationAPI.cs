@@ -243,6 +243,10 @@ namespace Plant.Controllers.SIL
                                         .Include(a => a.ImpactEvents)
                                         .ThenInclude(a => a.RiskMatrix)
                                         .ThenInclude(a => a.InitiatingCauses)
+                                        .ThenInclude(a=>a.DynamicGroupNames)
+                                        .Include(a => a.ImpactEvents)
+                                        .ThenInclude(a => a.RiskMatrix)
+                                        .ThenInclude(a => a.InitiatingCauses)
                                         .ThenInclude(a => a.ProtectionLayers).First();
                 _Context.SIFDesign.Remove(SifData);
                 await _Context.SaveChangesAsync();
