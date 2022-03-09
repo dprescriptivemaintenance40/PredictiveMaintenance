@@ -9,6 +9,7 @@ import { SILConstantAPI } from '../Shared/Model/SILConstant';
 import { values } from './value';
 import { HomeComponent } from "../../home.component";
 import { DynamicTitle } from "../Shared/Model/Sil_dynamic.model";
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 @Component({
   selector: 'app-sil',
@@ -64,8 +65,9 @@ export class SILComponent implements OnInit {
   public dynamicIPLObj: DynamicTitle = new DynamicTitle();
   public counter = 0;
   public IEL: number = 0;
-  public IELValues: number = 0;
-  public dynamicPFD: number = 20;
+  public IELValues: number;
+  public dynamicPFD: number = 19;
+  public IELPosition: number = 0;
 
   ngOnInit() {
     this.primengConfig.ripple = true;
@@ -126,13 +128,6 @@ export class SILComponent implements OnInit {
       data: this.data,
       columns: this.columns,
       nestedHeaders: this.nestedHeaders,
-      // mergeCells: {
-      //   A1: [, 9],
-      //   B1: [, 3], B4: [, 3], B7: [, 3],
-      //   C1: [, 3], C4: [, 3], C7: [, 3],
-      //   D1: [, 3], D4: [, 3], D7: [, 3],
-      // },
-      load: this.loaded,
       onchange: this.changed,
       onselection: this.selectionActive,
       tableOverflow: true,
@@ -149,50 +144,165 @@ export class SILComponent implements OnInit {
 
   changed = async (instance, cell, x, y, value) => {
     var cellName = jspreadsheet.getColumnNameFromId([x, y]);
-
-    if (x == 5) {
-      // if (this.dynamicColumn != []) {
-      //   var IELPosition = this.dynamicPFD + 2;
+    this.SheetValue = this.jspreadsheet.getData();
+    if (this.dynamicColumn.length == 0) {
+      if (x == 5) {
         this.IELValues = value;
         this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
       }
-    //   else {
-    //     this.IELValues = value;
-    //     this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
-    //   }
-    // }
-    if (x == 6 || x == 7 || x == 8 || x == 10 || x == 12 || x == 14 || x == 16 || x == 18) {
-      // if(this.dynamicColumn !=[]){
-      //   var IELPosition = this.dynamicPFD + 2;
+      else if (x == 6 || x == 7 || x == 8 || x == 10 || x == 12 || x == 14 || x == 16) {
         this.IELValues *= value;
         this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
-      // }
-      // else{
-      //   this.IELValues *= value;
-      // this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
-      // }
+      }
+      else if (x == 18) {
+        this.IELValues *= value;
+        for (let sheet = 0; sheet < this.SheetValue.length; sheet++) {
+          if (this.SheetValue[sheet][1] == "P" || this.SheetValue[sheet][1] == "") {
+         
+            this.SetOverallIELP();
+            this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
+          }
+          else if (this.SheetValue[sheet][1] == "E" || this.SheetValue[sheet][1] == "A") {
+            break;
+          }
+        }
+      }
     }
+    else if (this.dynamicColumn.length != 0) {
+      var dynamicLength = this.dynamicColumn.length * 2;
+      this.IELPosition = this.dynamicPFD + dynamicLength;
+      if (x == 5) {
+        this.IELValues = value;
+        this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+      }
+      else if (x == 6 || x == 7 || x == 8 || x == 10 || x == 12 || x == 14 || x == 16 || x == 18) {
+        this.IELValues *= value;
+        this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+      }
+      else if (x != this.IELPosition) {
+        this.IELValues *= value;
+        this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+      }
+    }
+  }
+  // if (this.dynamicColumn.length == 0) {
+  //   if (x == 5) {
+  //     this.IELValues = value;
+  //     this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
+  //   }
+  //   else if (x == 6 || x == 7 || x == 8 || x == 10 || x == 12 || x == 14 || x == 16 || x == 18) {
+  //     this.IELValues *= value;
+  //     this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
+  //   }
+  // }
+  // else if (this.dynamicColumn.length != 0) {
+  //   var dynamicLength = this.dynamicColumn.length * 2;
+  //   this.IELPosition = this.dynamicPFD + dynamicLength;
+  //   if (x == 5) {
+  //     this.IELValues = value;
+  //     this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+  //   }
+  //   else if (x == 6 || x == 7 || x == 8 || x == 10 || x == 12 || x == 14 || x == 16 || x == 18) {
+  //     this.IELValues *= value;
+  //     this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+  //   }
+  //   else if (x != this.IELPosition) {
+  //     this.IELValues *= value;
+  //     this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+  //   }
+  // }
+  // this.SheetValue = this.jspreadsheet.getData();
+  // var impactId = 0;
+  // for (let impact = 0; impact < this.SheetValue.length; impact++) {
+  //   if (this.SheetValue[impact][18] != "") {
+  //     let impacts = new ImpactEvent();
+  //     impactId++;
+  //     impacts.ImpactEventDesciption = this.SheetValue[impact][0];
+  //     var riskMatrixId = 0;
+  //     if (this.SheetValue[impact][0] != "") {
+  //       for (let matrix = impact; matrix < this.SheetValue[matrix].length; matrix++) {
+  //         if ((this.SheetValue[matrix][0] == "" || this.SheetValue[matrix][0] == impacts.ImpactEventDesciption)
+  //           && this.SheetValue[matrix][1] == "P" && this.SheetValue[matrix][2] != "" && this.SheetValue[matrix][3] != "") {
+  //           riskMatrixId++
+  //           var initcauseId = 0;
+  //           let OverallP = 1;
+  //           for (let ipl = matrix; ipl < this.SheetValue[matrix].length; ipl++) {
+  //             if (this.SheetValue[ipl][0] != "" && this.SheetValue[ipl][1] == "P" && this.SheetValue[ipl][2] != "" && this.SheetValue[ipl][3] != "" && this.SheetValue[ipl][4] != "" ||
+  //               this.SheetValue[ipl][0] == "" && this.SheetValue[ipl][1] == "" && this.SheetValue[ipl][2] == "" && this.SheetValue[ipl][3] == "" && this.SheetValue[ipl][4] != "" ||
+  //               this.SheetValue[ipl][0] == "" && this.SheetValue[ipl][1] == "P" && this.SheetValue[ipl][2] != "" && this.SheetValue[ipl][3] != "" && this.SheetValue[ipl][4] != "") {
+  //               initcauseId++;
+  //               if (this.dynamicColumn.length == 0) {
+  //                 let IELP = this.SheetValue[ipl][19];
+  //                 OverallP *= IELP;
+  //                 this.IEL = this.jspreadsheet.setValueFromCoords(20, y, OverallP, true);
+  //               }
+  //             }
+  //             else if ((this.SheetValue[ipl][1] == "E" || this.SheetValue[ipl][1] == "A") || (this.SheetValue[ipl][0] == "" && this.SheetValue[ipl][1] == "" && this.SheetValue[ipl][2] == "" && this.SheetValue[ipl][3] == ""
+  //               && this.SheetValue[ipl][4] == "" && this.SheetValue[ipl][5] == "" && this.SheetValue[ipl][6] == "" && this.SheetValue[ipl][7] == "")) {
+  //               break;
+  //             }
+  //           }
+  //         }
+  //         else if ((this.SheetValue[matrix][0] == "" || this.SheetValue[matrix][0] == impacts.ImpactEventDesciption)
+  //           && this.SheetValue[matrix][1] == "E" && this.SheetValue[matrix][2] != "" && this.SheetValue[matrix][3] != "") {
+  //           riskMatrixId++
+  //           var initcauseId = 0;
+  //           let OverallE = 1;
+  //           for (let ipl = matrix; ipl < this.SheetValue[matrix].length; ipl++) {
+  //             if (this.SheetValue[ipl][0] != "" && this.SheetValue[ipl][1] == "E" && this.SheetValue[ipl][2] != "" && this.SheetValue[ipl][3] != "" && this.SheetValue[ipl][4] != "" ||
+  //               this.SheetValue[ipl][0] == "" && this.SheetValue[ipl][1] == "" && this.SheetValue[ipl][2] == "" && this.SheetValue[ipl][3] == "" && this.SheetValue[ipl][4] != "" ||
+  //               this.SheetValue[ipl][0] == "" && this.SheetValue[ipl][1] == "E" && this.SheetValue[ipl][2] != "" && this.SheetValue[ipl][3] != "" && this.SheetValue[ipl][4] != "") {
+  //               initcauseId++;
+  //               if (this.dynamicColumn.length == 0) {
+  //                 let IELE = this.SheetValue[ipl][19];
+  //                 OverallE *= IELE;
+  //                 this.IEL = this.jspreadsheet.setValueFromCoords(20, y, OverallE, true);
+  //               }
+  //             }
+  //             else if ((this.SheetValue[ipl][1] == "P" || this.SheetValue[ipl][1] == "A") || (this.SheetValue[ipl][0] == "" && this.SheetValue[ipl][1] == "" && this.SheetValue[ipl][2] == "" && this.SheetValue[ipl][3] == ""
+  //               && this.SheetValue[ipl][4] == "" && this.SheetValue[ipl][5] == "" && this.SheetValue[ipl][6] == "" && this.SheetValue[ipl][7] == "")) {
+  //               break;
+  //             }
+  //           }
+  //         }
+  //         else if ((this.SheetValue[matrix][0] == "" || this.SheetValue[matrix][0] == impacts.ImpactEventDesciption)
+  //           && this.SheetValue[matrix][1] == "A" && this.SheetValue[matrix][2] != "" && this.SheetValue[matrix][3] != "") {
+  //           riskMatrixId++
+  //           var initcauseId = 0;
+  //           let OverallA = 1;
+  //           for (let ipl = matrix; ipl < this.SheetValue[matrix].length; ipl++) {
+  //             if (this.SheetValue[ipl][0] != "" && this.SheetValue[ipl][1] == "A" && this.SheetValue[ipl][2] != "" && this.SheetValue[ipl][3] != "" && this.SheetValue[ipl][4] != "" ||
+  //               this.SheetValue[ipl][0] == "" && this.SheetValue[ipl][1] == "" && this.SheetValue[ipl][2] == "" && this.SheetValue[ipl][3] == "" && this.SheetValue[ipl][4] != "" ||
+  //               this.SheetValue[ipl][0] == "" && this.SheetValue[ipl][1] == "A" && this.SheetValue[ipl][2] != "" && this.SheetValue[ipl][3] != "" && this.SheetValue[ipl][4] != "") {
+  //               initcauseId++;
+  //               if (this.dynamicColumn.length == 0) {
+  //                 let IELA = this.SheetValue[ipl][19];
+  //                 OverallA *= IELA;
+  //                 this.IEL = this.jspreadsheet.setValueFromCoords(20, y, OverallA, true);
+  //               }
+  //             }
+  //             else if ((this.SheetValue[ipl][1] == "E" || this.SheetValue[ipl][1] == "P") || (this.SheetValue[ipl][0] == "" && this.SheetValue[ipl][1] == "" && this.SheetValue[ipl][2] == "" && this.SheetValue[ipl][3] == ""
+  //               && this.SheetValue[ipl][4] == "" && this.SheetValue[ipl][5] == "" && this.SheetValue[ipl][6] == "" && this.SheetValue[ipl][7] == "")) {
+  //               break;
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   else if(this.SheetValue[impact][18] == ""){
+  //     break;
+  //   }
+  // }
 
-    // if (x == this.dynamicPFD) {
-    //   var IELPosition = this.dynamicPFD + 2;
-    //   this.IELValues *= value;
-    //   this.IEL = this.jspreadsheet.setValueFromCoords(IELPosition, y, this.IELValues, true);
-    //   this.dynamicPFD += 2;
-    // }
-    
-    console.log('New change on cell ' + cellName + ' to: ' + value + '');
-  }
-  loaded = async (instance) => {
-    console.log('New data is loaded');
-  }
+  //   console.log('New change on cell ' + cellName + ' to: ' + value + '');
+  // }
 
   selectionActive = async (instance, x1, y1, x2, y2, origin) => {
     var cellName1 = jspreadsheet.getColumnNameFromId([x1, y1]);
     var cellName2 = jspreadsheet.getColumnNameFromId([x2, y2]);
     this.x = x1;
     this.y = y1;
-    // this.getData.setMerge(x1,0,y2)
-    // var split = this.cellName.split("")[0];
     if ((x1 == 2) && (x2 == 2)) {
       if (this.sifDesignObj.RiskMatrix == "6*6 matrix") {
         this.RiskMatrix6 = true;
@@ -201,48 +311,10 @@ export class SILComponent implements OnInit {
         this.RiskMatrix5 = true;
       }
     }
-    this.SheetValue = this.jspreadsheet.getData();
-    if (x1 == 5) {
-      for (let n = 0; n < this.SheetValue.length; n++) {
-        if (this.SheetValue[n] == this.y) {
-          var val1 = this.SheetValue[n][5]
-          this.IEL = this.jspreadsheet.setValueFromCoords([19], [y1], [val1], [true]);
-        }
-      }
-    }
-    // if ((x1 == 5) || (x1 == 6) || (x1 == 7) || (x1 == 8)) {
-    //   this.SheetValue = this.jspreadsheet.getData();
-    //   for (let n = 0; n < this.SheetValue.length; n++) {
-    //     if(this.dynamicColumn.length==0){
-    //     if(this.SheetValue[n][5]!=0 && this.SheetValue[n][6]!=0 && this.SheetValue[n][7]!=0 && this.SheetValue[n][8]!=0 && this.SheetValue[n][10]!=0 && this.SheetValue[n][12]!=0 && this.SheetValue[n][14]!=0 && this.SheetValue[n][16]!=0 && this.SheetValue[n][18]!=0){
-    //       var val=this.SheetValue[n][5]*this.SheetValue[n][6]*this.SheetValue[n][7]*this.SheetValue[n][8]*this.SheetValue[n][10]*this.SheetValue[n][12]*this.SheetValue[n][14]*this.SheetValue[n][16]*this.SheetValue[n][18];
-    //       var val1=val.toPrecision(3)
-    //       this.IEL=this.jspreadsheet.setValueFromCoords([19], [y1], [val1], [true]);
-    //     }
-    //     }
-    //     else{
-    //       var dLen;
-    //       var counter=1;
-    //       var number;
-    //       var num1=1;
-    //       this.dynamicColumn.forEach(element => {
-    //           element.pfdDescription==this.SheetValue[n][counter+18];
-    //           element.pfdValue=Number(this.SheetValue[n][counter+19]);
-    //           num1*=element.pfdValue;
-    //           counter++;
-    //           counter++;
-    //       });
-    //       dLen= this.dynamicColumn.length*2;
-    //       number=num1.toPrecision(5)
-    //       if(this.SheetValue[n][5]!=0 && this.SheetValue[n][6]!=0 && this.SheetValue[n][7]!=0 && this.SheetValue[n][8]!=0 && this.SheetValue[n][10]!=0 && this.SheetValue[n][12]!=0 && this.SheetValue[n][14]!=0 && this.SheetValue[n][16]!=0 && this.SheetValue[n][18]!=0){
-    //         var val2=this.SheetValue[n][5]*this.SheetValue[n][6]*this.SheetValue[n][7]*this.SheetValue[n][8]*this.SheetValue[n][10]*this.SheetValue[n][12]*this.SheetValue[n][14]*this.SheetValue[n][16]*this.SheetValue[n][18]*number;
-    //         var val3=val2.toPrecision(3)
-    //         this.IEL=this.jspreadsheet.setValueFromCoords([dLen+19], [y1], [val3], [true]);
-    //       }
-    //     }
-    //   }   
-    // }
-    // else { console.log('The selection from ' + cellName1 + ' to ' + cellName2 + ''); }
+  }
+
+  SetOverallIELP() {
+    alert("19")
   }
 
   public getMasterData() {
@@ -674,7 +746,6 @@ export class SILComponent implements OnInit {
       // },
       onchange: this.changed,
       onselection: this.selectionActive,
-      onload: this.loaded,
       tableOverflow: true,
       tableWidth: "1350px",
       tableHeight: "600px",
