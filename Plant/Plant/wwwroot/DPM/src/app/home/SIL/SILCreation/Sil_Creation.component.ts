@@ -65,9 +65,14 @@ export class SILComponent implements OnInit {
   public dynamicIPLObj: DynamicTitle = new DynamicTitle();
   public counter = 0;
   public IEL: number = 0;
-  public IELValues: number;
+  public IELValues: number=1;
   public dynamicPFD: number = 19;
   public IELPosition: number = 0;
+  public OIEL:number=0;
+  public OIELValue:number=0;
+  public PFDAVG:number=0;
+  public RRF:number=0;
+  public SIL:number=0;
 
   ngOnInit() {
     this.primengConfig.ripple = true;
@@ -113,10 +118,10 @@ export class SILComponent implements OnInit {
       this.columns.push({ type: 'text', title: 'Description', width: "90", wordWrap: true }),
       this.columns.push({ type: 'text', title: 'PFD', width: "55" }),
       this.columns.push({ type: 'number', title: 'IEL', width: "55", source: this.IEL }),
-      this.columns.push({ type: 'number', title: 'Overall IEL', width: "55" }),
-      this.columns.push({ type: 'number', title: 'PFDavg', width: "55" }),
-      this.columns.push({ type: 'number', title: 'RRF', width: "55" }),
-      this.columns.push({ type: 'number', title: 'SIL', width: "55" })
+      this.columns.push({ type: 'number', title: 'Overall IEL', width: "55", source: this.OIEL }),
+      this.columns.push({ type: 'number', title: 'PFDavg', width: "55", source: this.PFDAVG }),
+      this.columns.push({ type: 'number', title: 'RRF', width: "55", source: this.RRF }),
+      this.columns.push({ type: 'number', title: 'SIL', width: "55", source: this.SIL })
   }
 
   CreateHeaders() {
@@ -156,6 +161,7 @@ export class SILComponent implements OnInit {
     var cellName = jspreadsheet.getColumnNameFromId([x, y]);
     this.SheetValue = this.jspreadsheet.getData();
     if (this.dynamicColumn.length == 0) {
+      
       if (x == 5) {
         this.IELValues = value;
         this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
@@ -166,13 +172,31 @@ export class SILComponent implements OnInit {
       }
       else if (x == 18) {
         this.IELValues *= value;
+        this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
+        
         for (let sheet = 0; sheet < this.SheetValue.length; sheet++) {
-          if (this.SheetValue[sheet][1] == "P" || this.SheetValue[sheet][1] == "") {
-         
-            this.SetOverallIELP();
-            this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
+          if (this.SheetValue[sheet][1] == "P" ||  (this.SheetValue[sheet][1] == "" && this.SheetValue[sheet][4] != "" )) {
+             var oiel=this.SheetValue[sheet][19]
+             this.OIELValue +=this.IELValues;
+             this.OIEL = this.jspreadsheet.setValueFromCoords(20, sheet, this.OIELValue, true);
+             this.IELValues=0;
+            // var OIEL=10;
+            // // this.SetOverallIELP();
+            // this.OIEL = this.jspreadsheet.setValueFromCoords(20, y, OIEL, true);
+            // var pfd=this.SheetValue[sheet][3]/OIEL;
+            // this.PFDAVG = this.jspreadsheet.setValueFromCoords(21, y, pfd, true);
+            // var rrf=1/pfd;
+            // rrf.toPrecision(3);
+            // this.RRF = this.jspreadsheet.setValueFromCoords(22, y, rrf, true);
+            // if(rrf<10){var sil=0;}
+            // else if(rrf>10||rrf<100){var sil=1;}
+            // else if(rrf>100||rrf<1000){var sil=2;}
+            // else if(rrf>1000||rrf<10000){var sil=3;}
+            // else if(rrf>10000||rrf<100000){var sil=4;}
+            // else{alert("Need another sif")}
+            // this.SIL = this.jspreadsheet.setValueFromCoords(23, y, sil, true);
           }
-          else if (this.SheetValue[sheet][1] == "E" || this.SheetValue[sheet][1] == "A") {
+          else if (this.SheetValue[sheet][1] == "E" || this.SheetValue[sheet][1] == "A"|| this.SheetValue[sheet][4] == "") {
             break;
           }
         }
