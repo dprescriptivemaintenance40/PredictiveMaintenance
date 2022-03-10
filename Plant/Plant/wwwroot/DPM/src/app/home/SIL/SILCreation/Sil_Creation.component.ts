@@ -64,6 +64,7 @@ export class SILComponent implements OnInit {
   public IPLTitle: string = "";
   public dynamicIPLObj: DynamicTitle = new DynamicTitle();
   public counter = 0;
+  public sheet = 0;
   public IEL: number = 0;
   public IELValues: number = 1;
   public dynamicPFD: number = 19;
@@ -79,7 +80,8 @@ export class SILComponent implements OnInit {
   public cat: string = "";
   public categoryIndex: number;
   public categoryRow: number;
-
+  public changedValue:number=0;
+  
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
@@ -168,15 +170,26 @@ export class SILComponent implements OnInit {
   changed = async (instance, cell, x, y, value) => {
     // var cellName = jspreadsheet.getColumnNameFromId([x, y]);
     this.SheetValue = this.jspreadsheet.getData();
+
     if (this.dynamicColumn.length == 0) {
 
       if (x == 5) {
+        if(value==0){
+          value=this.IELValues/this.changedValue;
+        }
         this.IELValues = value;
         this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
       }
       else if (x == 6 || x == 7 || x == 8 || x == 10 || x == 12 || x == 14 || x == 16) {
+        if(value==0){
+          value=this.IELValues/this.changedValue;
+          this.IELValues = value;
+          this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
+        }
+        else{
         this.IELValues *= value;
         this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
+        }
       }
       else if (x == 18) {
         for (let category = this.sheetIndex; category < this.SheetValue.length; category++) {
@@ -234,7 +247,6 @@ export class SILComponent implements OnInit {
                   this.IELValues.toPrecision(3);
                   this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
                   this.OIELEValue += this.IELValues;
-                  this.OIELEValue.toPrecision(3);
                   this.OIEL = this.jspreadsheet.setValueFromCoords(20, this.categoryRow, this.OIELEValue, true);
                   var pfd = this.SheetValue[this.categoryRow][3][0] / this.OIELEValue;
                   pfd.toPrecision(3);
@@ -327,6 +339,13 @@ export class SILComponent implements OnInit {
       }
       else if (this.sifDesignObj.RiskMatrix == "5*5 matrix") {
         this.RiskMatrix5 = true;
+      }
+    }
+    if (x1==5 || x1 == 6 || x1 == 7 || x1 == 8 || x1 == 10 || x1 == 12 || x1 == 14 || x1 == 16 || x1==18) {
+      this.SheetValue = this.jspreadsheet.getData();
+      var val=this.SheetValue[y1][x1]
+      if(val!=""){
+       this.changedValue=val;
       }
     }
   }
