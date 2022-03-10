@@ -6,10 +6,9 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, DynamicGroupName, RiskMatrix, SIFDesign } from 'src/app/home/SIL/Shared/Model/Sil_Creation.model';
 import { SILConstantAPI } from '../Shared/Model/SILConstant';
-import { values } from './value';
 import { HomeComponent } from "../../home.component";
 import { DynamicTitle } from "../Shared/Model/Sil_dynamic.model";
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
+import { FormBuilder, Validators, } from "@angular/forms";
 
 @Component({
   selector: 'app-sil',
@@ -80,9 +79,18 @@ export class SILComponent implements OnInit {
   constructor(private SILClassificationBLService: CommonBLService,
     private primengConfig: PrimeNGConfig,
     private messageService: MessageService,
-    private SILConstantAPI: SILConstantAPI, private home: HomeComponent) {
-
+    private SILConstantAPI: SILConstantAPI, 
+    private home: HomeComponent,
+    private formBuilder:FormBuilder) {
   }
+  
+  silClassification = this.formBuilder.group({
+    'sidId': ['',Validators.required],
+    'interLockTag': ['',Validators.required],
+    'matrix': ['',Validators.required],
+    'sensor': ['',Validators.required],
+    'finalElement': ['',Validators.required],  
+  })
 
   CreateColumns() {
     this.columns.push({ type: "text", title: 'Impact Event', width: "100", wordWrap: true, source: this.impact.ImpactEventDesciption }),
@@ -110,6 +118,7 @@ export class SILComponent implements OnInit {
       this.columns.push({ type: 'number', title: 'RRF', width: "55" }),
       this.columns.push({ type: 'number', title: 'SIL', width: "55" })
   }
+
   CreateHeaders() {
     this.nestedHeaders = [];
     this.nestedHeaders.push({ title: 'Consequence Screening', colspan: '4' }),
@@ -122,6 +131,7 @@ export class SILComponent implements OnInit {
       this.nestedHeaders.push({ title: 'IPL Dyke, PRV', colspan: '2' }),
       this.nestedHeaders.push({ title: 'Calculations', colspan: '5' })
   }
+
   ngAfterViewInit() {
     this.CreateColumns();
     this.CreateHeaders();
@@ -141,7 +151,6 @@ export class SILComponent implements OnInit {
     // this.getData.hideColumn(21);
     // this.getData.hideColumn(22);
   }
-
 
   changed = async (instance, cell, x, y, value) => {
     var cellName = jspreadsheet.getColumnNameFromId([x, y]);
@@ -824,6 +833,7 @@ export class SILComponent implements OnInit {
   RemoveCol(){
     this.removeTitle = true;
   }
+
   DeleteCol(title){
   if(this.dynamicColumn.find(i=>i.GroupName==title)){
     this.dynamicColumn.splice(title,1);

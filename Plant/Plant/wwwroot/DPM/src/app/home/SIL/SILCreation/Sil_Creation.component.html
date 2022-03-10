@@ -1,27 +1,28 @@
 <p-toast></p-toast>
 <!-- <p-fieldset legend=""  [toggleable]="true"> -->
+    <form [formGroup]="silClassification">
     <div class="card dpm-card w-100 p-3">
     <div class="row">
         <div class="col-md-2 d-flex flex-column">
             <label style=" margin-right: 12px;">Node</label>
-            <input type="text" class="form-control" [value]="node" [readonly]="true" [(ngModel)]="sifDesignObj.HazopNodeId" 
+            <input type="text" class="form-control" [value]="node" formControlName="node" [readonly]="true" [(ngModel)]="sifDesignObj.HazopNodeId" 
             (click)="Node()"    pInputText />
         </div>
         <div class="col-md-2 d-flex flex-column">
             <label style=" margin-right: 12px;">SIF ID</label>
-            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Id" pInputText />
+            <input type="text" class="form-control" formControlName="sidId" [(ngModel)]="sifDesignObj.Id" pInputText />
         </div>
 
         <!-- <div class="row"> -->
         <div class="col-md-2 d-flex flex-column">
             <label style=" margin-right: 12px;">InterLock (SIF) Tag</label>
-            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.InterLockTag"
+            <input type="text" class="form-control" formControlName="interLockTag" [(ngModel)]="sifDesignObj.InterLockTag"
                 pInputText />
         </div>
         <!-- <div class="row"> -->
             <div class="col-md-2" d-flex flex-column>
                 <label style=" margin-right: 6px;">Risk Matrix</label>
-                <select name="" id="" class="form-select" class="form-control"
+                <select name="" id="" class="form-select" formControlName="matrix" class="form-control"
                     [(ngModel)]="sifDesignObj.RiskMatrix">
                     <option value="5*5 matrix">5*5 matrix</option>
                     <option value="6*6 matrix">6*6 matrix</option>
@@ -29,12 +30,12 @@
             </div>
         <div class="col-md-2 d-flex flex-column">
             <label style=" margin-right: 12px;">Sensor</label>
-            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.Sensor" pInputText />
+            <input type="text" class="form-control" formControlName="sensor" [(ngModel)]="sifDesignObj.Sensor" pInputText />
             <!-- </div> -->
         </div><br>
         <div class="col-md-2 d-flex flex-column">
             <label style="margin-right: 12px;">Final Elements(s)</label>
-            <input type="text" class="form-control" [(ngModel)]="sifDesignObj.FinalElement"
+            <input type="text" class="form-control" formControlName="finalElement" [(ngModel)]="sifDesignObj.FinalElement"
                 pInputText />
         </div>
         <!-- <div class="row"> -->
@@ -42,7 +43,7 @@
             <label style=" margin-right: 12px;">SIF Description</label>
             <span class="p-float-label">
                 <textarea inputId="textarea" [readonly]="true" [value]="description" style="height: 50px;" cols="40"
-                    class="form-control" [(ngModel)]="sifDesignObj.SIFDescription"
+                    class="form-control" formControlName="description" [(ngModel)]="sifDesignObj.SIFDescription"
                     pInputTextarea></textarea>
             </span>
         </div>
@@ -57,7 +58,8 @@
 <!-- </p-fieldset> -->
 <br>
 <button style="float: right;" label="Save" type="button" class="btn btn-dark" 
-    (click)="Save()" pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save">  Save</i></button>
+    (click)="Save()" pTooltip="Save Values" [disabled] = "!silClassification.valid" tooltipPosition="top"><i class="pi pi-save">  Save</i></button>
+</form>
 <button style="float: right;margin-right: 10px;" label="Add" type="button" class="btn btn-dark" 
     (click)="Add()" pTooltip="Add New Record" tooltipPosition="top"><i class="pi pi-plus ">  Add</i></button>
 <button style="float: right;margin-right: 10px;" label="Add Column" type="button" class="btn btn-dark" 
