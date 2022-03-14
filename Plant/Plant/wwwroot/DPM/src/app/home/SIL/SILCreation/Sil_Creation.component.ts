@@ -73,15 +73,33 @@ export class SILComponent implements OnInit {
   public OIELPValue: number = 0;
   public OIELEValue: number = 0;
   public OIELAValue: number = 0;
+  public dynamicOIELPValue: number = 0;
+  public dynamicOIELEValue: number = 0;
+  public dynamicOIELAValue: number = 0;
   public PFDAVG: number = 0;
   public RRF: number = 0;
   public SIL: number = 0;
   public sheetIndex: number = 0;
+  public dynamicsheetIndex: number = 0;
   public cat: string = "";
   public categoryIndex: number;
+  public dynamiccategoryIndex: number;
   public categoryRow: number;
-  public changedValue:number=0;
-  
+  public dynamiccategoryRow: number;
+  public changedValue: number = 0;
+  public dynamicIndex: number = 18;
+  public dynamic: number = 0;
+  public dynamicList: any = [];
+  public dynamicPFDPosition: number = 18;
+  public dynamicColumnPfd: number = 0;
+  public getdynamicPFDValue: number;
+  public OverallIELPosition: number = 0;
+  public PFDAVGPosition: number = 0;
+  public RRFPosition: number = 0;
+  public TargetSILPosition: number = 0;
+  public OIELValues: number = 0;
+  public AddedIEL = 0;
+
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.getMasterData();
@@ -172,23 +190,22 @@ export class SILComponent implements OnInit {
     this.SheetValue = this.jspreadsheet.getData();
 
     if (this.dynamicColumn.length == 0) {
-
       if (x == 5) {
-        if(value==0){
-          value=this.IELValues/this.changedValue;
+        if (value == 0) {
+          value = this.IELValues / this.changedValue;
         }
         this.IELValues = value;
         this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
       }
       else if (x == 6 || x == 7 || x == 8 || x == 10 || x == 12 || x == 14 || x == 16) {
-        if(value==0){
-          value=this.IELValues/this.changedValue;
+        if (value == 0) {
+          value = this.IELValues / this.changedValue;
           this.IELValues = value;
           this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
         }
-        else{
-        this.IELValues *= value;
-        this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
+        else {
+          this.IELValues *= value;
+          this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
         }
       }
       else if (x == 18) {
@@ -311,8 +328,28 @@ export class SILComponent implements OnInit {
       }
     }
     else if (this.dynamicColumn.length != 0) {
+      var dynamicPFDPositionId = 0;
+      var i = 0;
+      this.dynamicList = [];
+      this.dynamicColumnPfd = 0;
+      this.dynamicPFDPosition = 18;
+      this.dynamicColumn.forEach(dynamichseet => {
+        let dynamicPosition = {}
+        dynamicPosition['Id'] = dynamicPFDPositionId++;
+        this.dynamicColumnPfd = this.dynamicPFDPosition += 2;
+        dynamicPosition['dynamicPFDValue'] = this.dynamicColumnPfd;
+        this.dynamicList.push(dynamicPosition);
+        if (this.dynamicList[i].dynamicPFDValue == x) {
+          this.getdynamicPFDValue = this.dynamicList[i].dynamicPFDValue;
+        }
+        i++;
+      });
       var dynamicLength = this.dynamicColumn.length * 2;
       this.IELPosition = this.dynamicPFD + dynamicLength;
+      this.OverallIELPosition = this.IELPosition + 1;
+      this.PFDAVGPosition = this.OverallIELPosition + 1;
+      this.RRFPosition = this.PFDAVGPosition + 1;
+      this.TargetSILPosition = this.RRFPosition + 1;
       if (x == 5) {
         this.IELValues = value;
         this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
@@ -321,9 +358,163 @@ export class SILComponent implements OnInit {
         this.IELValues *= value;
         this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
       }
-      else if (x != this.IELPosition) {
-        this.IELValues *= value;
-        this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+      // else if (x == 18) {
+      //   for (let dynamicSheet = this.dynamic; dynamicSheet < this.dynamicColumn.length; dynamicSheet++) {
+      //     this.dynamicIndex += 2;
+      //     this.dynamic++;
+      //     break;
+      //   }
+      //   this.IELValues *= value;
+      //   this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+      // }
+      else if (x == this.getdynamicPFDValue) {
+        // this.dynamicIndex += 2;
+        // this.IELValues *= value;
+        // this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+        for (let category = this.dynamicsheetIndex; category < this.SheetValue.length; category++) {
+          if (this.SheetValue[category][1] != "") {
+            this.cat = this.SheetValue[category][1];
+            this.dynamicsheetIndex = category;
+            this.dynamicsheetIndex++;
+            this.dynamiccategoryRow = category;
+            this.dynamiccategoryIndex = category;
+            break;
+          }
+        }
+
+        if (this.cat == "P") {
+          for (let sheet = this.dynamiccategoryIndex; sheet < this.SheetValue.length; sheet++) {
+            if (this.SheetValue[sheet][1] == 'P' || this.SheetValue[sheet][1] == "") {
+              for (let initcause = sheet; initcause < this.SheetValue.length; initcause++) {
+                if ((this.SheetValue[initcause][1] == "P" || this.SheetValue[initcause][1] == "") && this.SheetValue[initcause][4] != "") {
+                  if (x != this.IELPosition) {
+                    this.IELValues *= value;
+                    this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+                  }
+                }
+
+                else if (this.SheetValue[initcause][1] == 'E' || this.SheetValue[initcause][1] == 'A') {
+                  break;
+                }
+              }
+              for (let initcause = sheet; initcause < this.SheetValue.length; initcause++) {
+                if ((this.SheetValue[initcause][1] == "P" || this.SheetValue[initcause][1] == "") && this.SheetValue[initcause][4] != "") {
+                  if (x == this.IELPosition - 1) {
+                    this.dynamicOIELPValue += this.IELValues;
+                    this.OIEL = this.jspreadsheet.setValueFromCoords(this.OverallIELPosition, this.dynamiccategoryRow, this.dynamicOIELPValue, true);
+                    var pfd = this.SheetValue[this.dynamiccategoryRow][3][0] / this.dynamicOIELPValue;
+                    pfd.toPrecision(3);
+                    this.PFDAVG = this.jspreadsheet.setValueFromCoords(this.PFDAVGPosition, this.dynamiccategoryRow, pfd, true);
+                    var rrf = 1 / pfd;
+                    rrf.toPrecision(3);
+                    this.RRF = this.jspreadsheet.setValueFromCoords(this.RRFPosition, this.dynamiccategoryRow, rrf, true);
+                    if (rrf < 10) { var sil = 0; }
+                    else if (rrf > 10 || rrf < 100) { var sil = 1; }
+                    else if (rrf > 100 || rrf < 1000) { var sil = 2; }
+                    else if (rrf > 1000 || rrf < 10000) { var sil = 3; }
+                    else if (rrf > 10000 || rrf < 100000) { var sil = 4; }
+                    else { alert("Need another sif") }
+                    this.SIL = this.jspreadsheet.setValueFromCoords(this.TargetSILPosition, this.dynamiccategoryRow, sil, true);
+                    this.dynamiccategoryIndex++;
+                    break;
+                  }
+                  else if (this.SheetValue[initcause][1] == 'E' || this.SheetValue[initcause][1] == 'A') {
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (this.cat == "E") {
+          for (let sheet = this.dynamiccategoryIndex; sheet < this.SheetValue.length; sheet++) {
+            if (this.SheetValue[sheet][1] == 'E' || this.SheetValue[sheet][1] == "") {
+              for (let initcause = sheet; initcause < this.SheetValue.length; initcause++) {
+                if ((this.SheetValue[initcause][1] == "E" || this.SheetValue[initcause][1] == "") && this.SheetValue[initcause][4] != "") {
+                  if (x != this.IELPosition) {
+                    this.IELValues *= value;
+                    this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+                  }
+                }
+
+                else if (this.SheetValue[initcause][1] == 'P' || this.SheetValue[initcause][1] == 'A') {
+                  break;
+                }
+              }
+              for (let initcause = sheet; initcause < this.SheetValue.length; initcause++) {
+                if ((this.SheetValue[initcause][1] == "E" || this.SheetValue[initcause][1] == "") && this.SheetValue[initcause][4] != "") {
+                  if (x == this.IELPosition - 1) {
+                    this.dynamicOIELEValue += this.IELValues;
+                    this.OIEL = this.jspreadsheet.setValueFromCoords(this.OverallIELPosition, this.dynamiccategoryRow, this.dynamicOIELEValue, true);
+                    var pfd = this.SheetValue[this.dynamiccategoryRow][3][0] / this.dynamicOIELEValue;
+                    pfd.toPrecision(3);
+                    this.PFDAVG = this.jspreadsheet.setValueFromCoords(this.PFDAVGPosition, this.dynamiccategoryRow, pfd, true);
+                    var rrf = 1 / pfd;
+                    rrf.toPrecision(3);
+                    this.RRF = this.jspreadsheet.setValueFromCoords(this.RRFPosition, this.dynamiccategoryRow, rrf, true);
+                    if (rrf < 10) { var sil = 0; }
+                    else if (rrf > 10 || rrf < 100) { var sil = 1; }
+                    else if (rrf > 100 || rrf < 1000) { var sil = 2; }
+                    else if (rrf > 1000 || rrf < 10000) { var sil = 3; }
+                    else if (rrf > 10000 || rrf < 100000) { var sil = 4; }
+                    else { alert("Need another sif") }
+                    this.SIL = this.jspreadsheet.setValueFromCoords(this.TargetSILPosition, this.dynamiccategoryRow, sil, true);
+                    this.dynamiccategoryIndex++;
+                    break;
+                  }
+                  else if (this.SheetValue[initcause][1] == 'P' || this.SheetValue[initcause][1] == 'A') {
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (this.cat == "A") {
+          for (let sheet = this.dynamiccategoryIndex; sheet < this.SheetValue.length; sheet++) {
+            if (this.SheetValue[sheet][1] == 'A' || this.SheetValue[sheet][1] == "") {
+              for (let initcause = sheet; initcause < this.SheetValue.length; initcause++) {
+                if ((this.SheetValue[initcause][1] == "A" || this.SheetValue[initcause][1] == "") && this.SheetValue[initcause][4] != "") {
+                  if (x != this.IELPosition) {
+                    this.IELValues *= value;
+                    this.IEL = this.jspreadsheet.setValueFromCoords(this.IELPosition, y, this.IELValues, true);
+                  }
+                }
+
+                else if (this.SheetValue[initcause][1] == 'E' || this.SheetValue[initcause][1] == 'P') {
+                  break;
+                }
+              }
+              for (let initcause = sheet; initcause < this.SheetValue.length; initcause++) {
+                if ((this.SheetValue[initcause][1] == "A" || this.SheetValue[initcause][1] == "") && this.SheetValue[initcause][4] != "") {
+                  if (x == this.IELPosition - 1) {
+                    this.dynamicOIELAValue += this.IELValues;
+                    this.OIEL = this.jspreadsheet.setValueFromCoords(this.OverallIELPosition, this.dynamiccategoryRow, this.dynamicOIELAValue, true);
+                    var pfd = this.SheetValue[this.dynamiccategoryRow][3][0] / this.dynamicOIELAValue;
+                    pfd.toPrecision(3);
+                    this.PFDAVG = this.jspreadsheet.setValueFromCoords(this.PFDAVGPosition, this.dynamiccategoryRow, pfd, true);
+                    var rrf = 1 / pfd;
+                    rrf.toPrecision(3);
+                    this.RRF = this.jspreadsheet.setValueFromCoords(this.RRFPosition, this.dynamiccategoryRow, rrf, true);
+                    if (rrf < 10) { var sil = 0; }
+                    else if (rrf > 10 || rrf < 100) { var sil = 1; }
+                    else if (rrf > 100 || rrf < 1000) { var sil = 2; }
+                    else if (rrf > 1000 || rrf < 10000) { var sil = 3; }
+                    else if (rrf > 10000 || rrf < 100000) { var sil = 4; }
+                    else { alert("Need another sif") }
+                    this.SIL = this.jspreadsheet.setValueFromCoords(this.TargetSILPosition, this.dynamiccategoryRow, sil, true);
+                    this.dynamiccategoryIndex++;
+                    break;
+                  }
+                  else if (this.SheetValue[initcause][1] == 'E' || this.SheetValue[initcause][1] == 'P') {
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+
       }
     }
   }
@@ -341,17 +532,13 @@ export class SILComponent implements OnInit {
         this.RiskMatrix5 = true;
       }
     }
-    if (x1==5 || x1 == 6 || x1 == 7 || x1 == 8 || x1 == 10 || x1 == 12 || x1 == 14 || x1 == 16 || x1==18) {
+    if (x1 == 5 || x1 == 6 || x1 == 7 || x1 == 8 || x1 == 10 || x1 == 12 || x1 == 14 || x1 == 16 || x1 == 18) {
       this.SheetValue = this.jspreadsheet.getData();
-      var val=this.SheetValue[y1][x1]
-      if(val!=""){
-       this.changedValue=val;
+      var val = this.SheetValue[y1][x1]
+      if (val != "") {
+        this.changedValue = val;
       }
     }
-  }
-
-  SetOverallIELP() {
-    alert("19")
   }
 
   public getMasterData() {
