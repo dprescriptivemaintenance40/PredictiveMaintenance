@@ -17,6 +17,9 @@ export class SilWorksheetComponent implements OnInit {
     public getId: number = 0;
     public reportDataList: any = [];
     public getAllList: any = [];
+    public ICCountP:number=0;
+    public ICCountE:number=0;
+    public ICCountA:number=0;
     public ICP:number=1;
     public ICE:number=1;
     public ICA:number=1;
@@ -130,8 +133,7 @@ export class SilWorksheetComponent implements OnInit {
                                     obj0['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
                                     obj0['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
                                     this.ICP+=1;
-                                    this.span=this.ICP.toString()
-                                    obj['ICP']=this.span;
+                                    this.ICCountP=this.ICP
                                     // this.span=document.querySelector('span');
                                     // this.span.setAttribute("rowspan", this.ICP.toString());
                                     this.IELP += obj0['getIEL'];
@@ -178,7 +180,7 @@ export class SilWorksheetComponent implements OnInit {
                                 if (j == 0) {
                                     obj1['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
                                     obj1['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELE;
-                                    this.ICE+=1;
+                                   
                                     this.IELP += obj1['getIEL'];
                                     this.PFDAVGP = this.TRFP / this.IELE;
                                     obj1['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
@@ -214,8 +216,7 @@ export class SilWorksheetComponent implements OnInit {
                                     obj2['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
                                     obj2['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELE;
                                     this.ICE+=1;
-                                    this.span=this.ICE.toString()
-                                    obj['ICE']=this.span;
+                                    this.ICCountE=this.ICE
                                     this.IELP += obj2['getIEL'];
                                     this.PFDAVGP = this.TRFP / this.IELE;
                                     obj2['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
@@ -260,7 +261,7 @@ export class SilWorksheetComponent implements OnInit {
                                 if (b == 0) {
                                     obj3['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[b].initiatingCause
                                     obj3['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[b].IELA;
-                                    this.ICA+=1;
+                                   
                                     this.IELA += obj3['getIEL'];
                                     this.PFDAVGA = this.TRFA / this.IELA;
                                     obj3['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[b].IEF;
@@ -297,8 +298,7 @@ export class SilWorksheetComponent implements OnInit {
                                     obj4['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[b].initiatingCause
                                     obj4['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[b].IELA;
                                     this.ICA+=1;
-                                    this.span=this.ICA.toString()
-                                    obj['ICA']=this.span;
+                                    this.ICCountA=this.ICA
                                     this.IELA += obj4['getIEL'];
                                     this.PFDAVGA = this.TRFA / this.IELA;
                                     obj4['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[b].IEF;
@@ -336,6 +336,7 @@ export class SilWorksheetComponent implements OnInit {
                     }
                 });
             });
+           
     }
     getRowspan(value){
         if(value=="P"){

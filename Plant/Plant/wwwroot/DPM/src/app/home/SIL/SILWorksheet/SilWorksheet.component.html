@@ -68,29 +68,48 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let p of getAllList">
+                    <tr *ngFor="let p of getAllList; let i = index">
                         <td>{{p.getImpactEvent}}</td>
-                        <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getCategory}}</td>
-                        <!-- <td ng-if="p.getCategory=='E'" [attr.rowspan]='p.ICE'>{{p.getCategory}}</td>
-                        <td ng-if="p.getCategory=='A'" [attr.rowspan]='p.ICA'>{{p.getCategory}}</td> -->
-                        <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getSeverity}}</td>
-                        <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getTRF}}</td>
-                        <td>{{p.getinitiatingcauses}}</td>
-                        <!-- <td>{{p.getIEL}}</td> -->
-                        <td>{{p.getIEF}}</td>
-                        <td>{{p.getIP}}</td>
-                        <td>{{p.getPP}}</td>
-                        <td>{{p.getTR}}</td>
-                        <td>{{p.getDescription1}}</td>
-                        <td>{{p.getPFD1}}</td>
-                        <td>{{p.getDescription2}}</td>
-                        <td>{{p.getPFD2}}</td>
-                        <td>{{p.getDescription3}}</td>
-                        <td>{{p.getPFD3}}</td>
-                        <td>{{p.getDescription4}}</td>
-                        <td>{{p.getPFD4}}</td>
-                        <td>{{p.getDescription5}}</td>
-                        <td>{{p.getPFD5}}</td>
+                        <div *ngIf="i===0 || i===ICCountP || i===ICCountP+ICCountE  then default else other"></div>
+                        <ng-template #default>
+                           
+                            <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getCategory}}</td>
+                            <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getSeverity}}</td>
+                            <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getTRF}}</td>
+                            <td>{{p.getinitiatingcauses}}</td>
+                            <td>{{p.getIEF}}</td>
+                            <td>{{p.getIP}}</td>
+                            <td>{{p.getPP}}</td>
+                            <td>{{p.getTR}}</td>
+                            <td>{{p.getDescription1}}</td>
+                            <td>{{p.getPFD1}}</td>
+                            <td>{{p.getDescription2}}</td>
+                            <td>{{p.getPFD2}}</td>
+                            <td>{{p.getDescription3}}</td>
+                            <td>{{p.getPFD3}}</td>
+                            <td>{{p.getDescription4}}</td>
+                            <td>{{p.getPFD4}}</td>
+                            <td>{{p.getDescription5}}</td>
+                            <td>{{p.getPFD5}}</td> 
+                        </ng-template>
+
+                        <ng-template #other>
+                            <td>{{p.getinitiatingcauses}}</td>
+                            <td>{{p.getIEF}}</td>
+                            <td>{{p.getIP}}</td>
+                            <td>{{p.getPP}}</td>
+                            <td>{{p.getTR}}</td>
+                            <td>{{p.getDescription1}}</td>
+                            <td>{{p.getPFD1}}</td>
+                            <td>{{p.getDescription2}}</td>
+                            <td>{{p.getPFD2}}</td>
+                            <td>{{p.getDescription3}}</td>
+                            <td>{{p.getPFD3}}</td>
+                            <td>{{p.getDescription4}}</td>
+                            <td>{{p.getPFD4}}</td>
+                            <td>{{p.getDescription5}}</td>
+                            <td>{{p.getPFD5}}</td>
+                        </ng-template>
 
                     </tr>
                 </tbody>
