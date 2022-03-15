@@ -37,7 +37,7 @@
                 <thead>
                     <tr>
                         <th colspan="4">Consequence Screening</th>
-                        <th colspan="3">Initial Event</th>
+                        <th colspan="2">Initial Event</th>
                         <th colspan="3">Conditional Modifiers</th>
                         <th colspan="2">General Process Design</th>
                         <th colspan="2">BPCS</th>
@@ -70,9 +70,11 @@
                 <tbody>
                     <tr *ngFor="let p of getAllList">
                         <td>{{p.getImpactEvent}}</td>
-                        <td>{{p.getCategory}}</td>
-                        <td>{{p.getSeverity}}</td>
-                        <td>{{p.getTRF}}</td>
+                        <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getCategory}}</td>
+                        <!-- <td ng-if="p.getCategory=='E'" [attr.rowspan]='p.ICE'>{{p.getCategory}}</td>
+                        <td ng-if="p.getCategory=='A'" [attr.rowspan]='p.ICA'>{{p.getCategory}}</td> -->
+                        <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getSeverity}}</td>
+                        <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getTRF}}</td>
                         <td>{{p.getinitiatingcauses}}</td>
                         <!-- <td>{{p.getIEL}}</td> -->
                         <td>{{p.getIEF}}</td>

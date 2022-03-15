@@ -3,9 +3,16 @@
     align-items: center;
     justify-content: center;
 } 
+.table {
+  overflow: scroll;
+  margin:0;
+  padding:0;
+  empty-cells: hide;
+}
   #divID table thead tr th, 
     #divID td {
         border: 1px solid #0c0c0c;
+        
   }
   #divID table tbody tr td:nth-child(1)
  {
