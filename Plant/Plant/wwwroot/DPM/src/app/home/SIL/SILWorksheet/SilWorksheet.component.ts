@@ -14,9 +14,12 @@ import { SILConstantAPI } from '../Shared/Model/SILConstant';
 export class SilWorksheetComponent implements OnInit {
     id: any;
     silDataList: any;
+    silCalculation:any;
     public getId: number = 0;
+    public DynamicTitle:any;
     public reportDataList: any = [];
     public getAllList: any = [];
+    public getDynamicList: any = [];
     public ICCountP:number=0;
     public ICCountE:number=0;
     public ICCountA:number=0;
@@ -24,15 +27,18 @@ export class SilWorksheetComponent implements OnInit {
     public ICE:number=1;
     public ICA:number=1;
     public span:any;
-    public IELP: number = 0;
-    public IELA: number = 0;
-    public IELE: number = 0;
     public TRFP: number = 0;
     public TRFE: number = 0;
     public TRFA: number = 0;
+    public OIELP: number = 0;
+    public OIELA: number = 0;
+    public OIELE: number = 0;
     public PFDAVGP: number = 0;
     public PFDAVGE: number = 0;
     public PFDAVGA: number = 0;
+    public RRFP: number = 0;
+    public RRFE: number = 0;
+    public RRFA: number = 0;
     public SILP: number = 0;
     public SILE: number = 0;
     public SILA: number = 0;
@@ -56,9 +62,33 @@ export class SilWorksheetComponent implements OnInit {
 
     ngOnInit() {
         this.id = (this.route.snapshot.params['id']);
+        this.getSILCalculation();
         this.getSILData();
+
     }
 
+    getSILCalculation(){
+        const params = new HttpParams()
+            .set('Id', this.id);
+        var url: string = this.ReportTemplateConstantAPI.GetSILCalculation;
+        this.ReportTemplateBLService.getWithParameters(url, params)
+            .subscribe((res: any) => {
+                console.log(res)
+                this.silCalculation = res;
+                this.OIELP=this.silCalculation[0].OverallIELP;
+                this.OIELE=this.silCalculation[0].OverallIELE;
+                this.OIELA=this.silCalculation[0].OverallIELA;
+                this.PFDAVGP=this.silCalculation[0].PFDP;
+                this.PFDAVGE=this.silCalculation[0].PFDE;
+                this.PFDAVGA=this.silCalculation[0].PFDA;
+                this.RRFP=this.silCalculation[0].RRFP;
+                this.RRFE=this.silCalculation[0].RRFE;
+                this.RRFA=this.silCalculation[0].RRFA;
+                this.SILP=this.silCalculation[0].SILP;
+                this.SILE=this.silCalculation[0].SILE;
+                this.SILA=this.silCalculation[0].SILA;
+            })
+    }
     getSILData() {
         const params = new HttpParams()
             .set('Id', this.id);
@@ -97,10 +127,8 @@ export class SilWorksheetComponent implements OnInit {
                             for (let j = 0; j < impact.RiskMatrix[i].InitiatingCauses.length; j++) {
                                 if (j == 0) {
                                     obj['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
-                                    obj['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
-                                    this.IELP += obj['getIEL'];
-                                    this.PFDAVGP = this.TRFP / this.IELP;
                                     obj['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
+                                    obj['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
                                     obj['getIP'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
                                     obj['getPP'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
                                     obj['getTR'] = impact.RiskMatrix[i].InitiatingCauses[j].TR;
@@ -126,19 +154,27 @@ export class SilWorksheetComponent implements OnInit {
                                             obj['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
                                         }
                                     }
+                                    
+                                    if(impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length!=0){
+                                        for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length; x++) {
+                                                obj1['getDynamicTitle']=impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].GroupName
+                                                obj1['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
+                                                obj1['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
+                                                this.DynamicTitle= obj1['getDynamicTitle'];
+                                        }
+                                        this.getDynamicList.push(obj1);
+                                    }
                                     this.getAllList.push(obj);
                                 }
                                 else {
                                     let obj0 = {}
                                     obj0['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
-                                    obj0['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
+                                    obj0['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
                                     this.ICP+=1;
                                     this.ICCountP=this.ICP
                                     // this.span=document.querySelector('span');
                                     // this.span.setAttribute("rowspan", this.ICP.toString());
-                                    this.IELP += obj0['getIEL'];
-                                    this.PFDAVGP = this.TRFP / this.IELP;
-                                    obj0['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
+                                    obj0['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
                                     obj0['getIP'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
                                     obj0['getPP'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
                                     obj0['getTR'] = impact.RiskMatrix[i].InitiatingCauses[j].TR;
@@ -164,6 +200,15 @@ export class SilWorksheetComponent implements OnInit {
                                             obj0['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
                                         }
                                     }
+                                    if(impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length!=0){
+                                        for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length; x++) {
+                                                obj['getDynamicTitle']=impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].GroupName
+                                                obj['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
+                                                obj['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
+                                                this.DynamicTitle= obj['getDynamicTitle'];
+                                        }
+                                        this.getDynamicList.push(obj);
+                                    }
                                     this.getAllList.push(obj0);
                                 }
                             }
@@ -179,11 +224,8 @@ export class SilWorksheetComponent implements OnInit {
                             for (let j = 0; j < impact.RiskMatrix[i].InitiatingCauses.length; j++) {
                                 if (j == 0) {
                                     obj1['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
-                                    obj1['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELE;
-                                   
-                                    this.IELP += obj1['getIEL'];
-                                    this.PFDAVGP = this.TRFP / this.IELE;
                                     obj1['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
+                                    obj1['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELE;
                                     obj1['getIP'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
                                     obj1['getPP'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
                                     obj1['getTR'] = impact.RiskMatrix[i].InitiatingCauses[j].TR;
@@ -214,12 +256,10 @@ export class SilWorksheetComponent implements OnInit {
                                 else {
                                     let obj2 = {}
                                     obj2['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
-                                    obj2['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELE;
                                     this.ICE+=1;
                                     this.ICCountE=this.ICE
-                                    this.IELP += obj2['getIEL'];
-                                    this.PFDAVGP = this.TRFP / this.IELE;
                                     obj2['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
+                                    obj2['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELE;
                                     obj2['getIP'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
                                     obj2['getPP'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
                                     obj2['getTR'] = impact.RiskMatrix[i].InitiatingCauses[j].TR;
@@ -260,11 +300,8 @@ export class SilWorksheetComponent implements OnInit {
                             for (let b = 0; b < impact.RiskMatrix[i].InitiatingCauses.length; b++) {
                                 if (b == 0) {
                                     obj3['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[b].initiatingCause
-                                    obj3['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[b].IELA;
-                                   
-                                    this.IELA += obj3['getIEL'];
-                                    this.PFDAVGA = this.TRFA / this.IELA;
                                     obj3['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[b].IEF;
+                                    obj3['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[b].IELA;
                                     obj3['getIP'] = impact.RiskMatrix[i].InitiatingCauses[b].IP;
                                     obj3['getPP'] = impact.RiskMatrix[i].InitiatingCauses[b].PP;
                                     obj3['getTR'] = impact.RiskMatrix[i].InitiatingCauses[b].TR;
@@ -296,12 +333,10 @@ export class SilWorksheetComponent implements OnInit {
                                 else {
                                     let obj4 = {}
                                     obj4['getinitiatingcauses'] = impact.RiskMatrix[i].InitiatingCauses[b].initiatingCause
-                                    obj4['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[b].IELA;
                                     this.ICA+=1;
                                     this.ICCountA=this.ICA
-                                    this.IELA += obj4['getIEL'];
-                                    this.PFDAVGA = this.TRFA / this.IELA;
                                     obj4['getIEF'] = impact.RiskMatrix[i].InitiatingCauses[b].IEF;
+                                    obj4['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[b].IELA;
                                     obj4['getIP'] = impact.RiskMatrix[i].InitiatingCauses[b].IP;
                                     obj4['getPP'] = impact.RiskMatrix[i].InitiatingCauses[b].PP;
                                     obj4['getTR'] = impact.RiskMatrix[i].InitiatingCauses[b].TR;
@@ -352,5 +387,60 @@ export class SilWorksheetComponent implements OnInit {
            return "1"
         }
     }
-   
+    getOIEL(value){
+        if(value=="P"){
+            return this.OIELP.toPrecision(3)
+        }
+        else if(value=="E"){
+            return  this.OIELE.toPrecision(3)
+        }
+        else if(value=="A"){
+            return  this.OIELA.toPrecision(3)
+        }
+        else{
+           return "1"
+        }
+    }
+    getPFD(value){
+        if(value=="P"){
+            return this.PFDAVGP.toPrecision(3)
+        }
+        else if(value=="E"){
+            return  this.PFDAVGE.toPrecision(3)
+        }
+        else if(value=="A"){
+            return  this.PFDAVGA.toPrecision(3)
+        }
+        else{
+           return "1"
+        }
+    }
+    getRRF(value){
+        if(value=="P"){
+            return this.RRFP.toPrecision(3)
+        }
+        else if(value=="E"){
+            return  this.RRFE.toPrecision(3)
+        }
+        else if(value=="A"){
+            return  this.RRFA.toPrecision(3)
+        }
+        else{
+           return "1"
+        }
+    }
+    getSIL(value){
+        if(value=="P"){
+            return this.SILP
+        }
+        else if(value=="E"){
+            return  this.SILE
+        }
+        else if(value=="A"){
+            return  this.SILA
+        }
+        else{
+           return "1"
+        }
+    }
 }

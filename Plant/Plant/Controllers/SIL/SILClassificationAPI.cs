@@ -90,7 +90,28 @@ namespace Plant.Controllers.SIL
                                                 .ThenInclude(a => a.RiskMatrix)
                                                 .ThenInclude(a => a.InitiatingCauses)
                                                 .ThenInclude(a => a.ProtectionLayers)
+                                                .Include(a => a.ImpactEvents)
+                                                .ThenInclude(a => a.RiskMatrix)
+                                                .ThenInclude(a => a.InitiatingCauses)
+                                                .ThenInclude(a => a.DynamicGroupNames)
                                                 .ToListAsync();
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetSILCalculation")]
+        public async Task<ActionResult<List<Calculation>>> GetSILCalculation(int id)
+        {
+            try
+            {
+                var value= _Context.Calculation.Where(a => a.calculationId == id)
+                                                                 .ToListAsync();
+                List<Calculation> patients = await value;
+                return patients;
             }
             catch (Exception exe)
             {

@@ -32,9 +32,9 @@
             </div>
 
         </div>
-        <div id="divID">
+        <div id="divID" style="overflow-x:auto;">
             <table class="table table-bordered" style="border-bottom: 1px solid;">
-                <thead>
+                <thead style="text-align: center;">
                     <tr>
                         <th colspan="4">Consequence Screening</th>
                         <th colspan="2">Initial Event</th>
@@ -44,6 +44,8 @@
                         <th colspan="2">Alarm</th>
                         <th colspan="2">Restricted Access</th>
                         <th colspan="2">IPL Dyke, PRV</th>
+                        <th colspan="2" *ngFor="let d of getDynamicList;" ng-if="DynamicTitle!=null">{{d.getDynamicTitle}}</th>
+                        <th colspan="5">Calculation</th>
                     </tr>
                     <tr>
                         <th>Impact</th>
@@ -65,6 +67,13 @@
                         <th>PFD</th>
                         <th>Desc</th>
                         <th>PFD</th>
+                        <th *ngFor="let d of getDynamicList;" ng-if="DynamicTitle!=null">Desc</th>
+                        <th *ngFor="let d of getDynamicList;" ng-if="DynamicTitle!=null">PFD</th>
+                        <th>IEL</th>
+                        <th>OverallIEL</th>
+                        <th>PFD Average</th>
+                        <th>RRF</th>
+                        <th>SIL</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,7 +99,14 @@
                             <td>{{p.getDescription4}}</td>
                             <td>{{p.getPFD4}}</td>
                             <td>{{p.getDescription5}}</td>
-                            <td>{{p.getPFD5}}</td> 
+                            <td>{{p.getPFD5}}</td>
+                            <td *ngFor="let d of getDynamicList;" ng-if="d.getDynamicDescription!=null">{{d.getDynamicDescription}}</td>
+                            <td *ngFor="let d of getDynamicList;" ng-if="d.getDynamicPFD!=null">{{d.getDynamicPFD}}</td> 
+                            <td>{{p.getIEL}}</td>
+                            <td [attr.rowspan]='getRowspan(p.getCategory)'>{{getOIEL(p.getCategory)}}</td>
+                            <td [attr.rowspan]='getRowspan(p.getCategory)'>{{getPFD(p.getCategory)}}</td>
+                            <td [attr.rowspan]='getRowspan(p.getCategory)'>{{getRRF(p.getCategory)}}</td>
+                            <td [attr.rowspan]='getRowspan(p.getCategory)'>{{getSIL(p.getCategory)}}</td>
                         </ng-template>
 
                         <ng-template #other>
@@ -109,6 +125,9 @@
                             <td>{{p.getPFD4}}</td>
                             <td>{{p.getDescription5}}</td>
                             <td>{{p.getPFD5}}</td>
+                            <td *ngFor="let d of getDynamicList;" ng-if="d.getDynamicDescription!=null">{{d.getDynamicDescription}}</td>
+                            <td *ngFor="let d of getDynamicList;" ng-if="d.getDynamicPFD!=null">{{d.getDynamicPFD}}</td>
+                            <td>{{p.getIEL}}</td>
                         </ng-template>
 
                     </tr>

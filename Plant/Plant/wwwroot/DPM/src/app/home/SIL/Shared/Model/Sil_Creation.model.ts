@@ -118,7 +118,7 @@ export class Calculation {
     }
     public CalculateIEL() {
         var ielTemp: number = 0;
-        var ielTemp1: number = 0;
+        var ielTemp1: number = 1;
         this.SIFId = this.sif.Id;
         this.sif.ImpactEvents.forEach(impactevent => {
             impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
@@ -128,10 +128,13 @@ export class Calculation {
                             ielTemp = protectionlayer.PFD;
                         }
                         else {
-                            ielTemp1 = protectionlayer.PFD * ielTemp;
+                            ielTemp1 *= protectionlayer.PFD;
                         }
                     });
-                    initiatingcause.IELP = ielTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    initiatingcause.IELP = ielTemp1 * ielTemp * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    ielTemp1=1;
+                    ielTemp=0;
+
                 });
             });
             impactevent.RiskMatrix.filter(i => i.Category == "E").forEach(riskmatrix => {
@@ -141,10 +144,12 @@ export class Calculation {
                             ielTemp = protectionlayer.PFD;
                         }
                         else {
-                            ielTemp1 = protectionlayer.PFD * ielTemp;
+                            ielTemp1 *= protectionlayer.PFD;
                         }
                     });
-                    initiatingcause.IELE = ielTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    initiatingcause.IELE = ielTemp1 * ielTemp * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    ielTemp1=1;
+                    ielTemp=0;
                 });
             });
             impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
@@ -154,10 +159,12 @@ export class Calculation {
                             ielTemp = protectionlayer.PFD;
                         }
                         else {
-                            ielTemp1 = protectionlayer.PFD * ielTemp;
+                            ielTemp1 *= protectionlayer.PFD ;
                         }
                     });
-                    initiatingcause.IELA = ielTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    initiatingcause.IELA = ielTemp1 * ielTemp * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    ielTemp1=1;
+                    ielTemp=0;
                 });
             });
         })
@@ -202,14 +209,6 @@ export class Calculation {
     public CalculatePFD() {
 
         this.sif.ImpactEvents.forEach(impactevent => {
-            impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
-                riskmatrix.InitiatingCauses.forEach(riska => {
-                    if (this.PFDA == 0) {
-                        this.PFDA = riskmatrix.TRF / this.OverallIELA;
-                        this.TRFA = riskmatrix.TRF;
-                    }
-                });
-            });
             impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
                 riskmatrix.InitiatingCauses.forEach(riskp => {
                     if (this.PFDP == 0) {
@@ -223,6 +222,14 @@ export class Calculation {
                     if (this.PFDE == 0) {
                         this.PFDE = riskmatrix.TRF / this.OverallIELE;
                         this.TRFE = riskmatrix.TRF;
+                    }
+                });
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riska => {
+                    if (this.PFDA == 0) {
+                        this.PFDA = riskmatrix.TRF / this.OverallIELA;
+                        this.TRFA = riskmatrix.TRF;
                     }
                 });
             });

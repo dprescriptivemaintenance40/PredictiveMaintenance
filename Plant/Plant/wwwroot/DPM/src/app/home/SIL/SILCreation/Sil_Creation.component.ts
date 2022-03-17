@@ -9,7 +9,7 @@ import { SILConstantAPI } from '../Shared/Model/SILConstant';
 import { HomeComponent } from "../../home.component";
 import { DynamicTitle } from "../Shared/Model/Sil_dynamic.model";
 import { FormBuilder, Validators, } from "@angular/forms";
-
+import {values} from './value';
 @Component({
   selector: 'app-sil',
   templateUrl: './Sil_Creation.component.html',
@@ -35,6 +35,7 @@ export class SILComponent implements OnInit {
   public SheetValue: Array<any> = [];
   public cols: Array<any> = [];
   public arr: any = [];
+  public value:any;
   public RiskMatrix6: boolean = false;
   public RiskMatrix5: boolean = false;
   public display: boolean = false;
@@ -49,7 +50,7 @@ export class SILComponent implements OnInit {
   public sifDesignObj: SIFDesign = new SIFDesign();
   public dynamicColumn: Array<DynamicGroupName> = new Array<DynamicGroupName>();
   public TargetSil: number = 0;
-  public cal: Calculation = new Calculation(this.sifDesignObj);
+  public cal:any;
   public company: string = "";
   public facility: string = "";
   public session: string = "";
@@ -103,6 +104,7 @@ export class SILComponent implements OnInit {
 
   ngOnInit() {
     this.primengConfig.ripple = true;
+    this.value=values;
     this.getMasterData();
     this.val = this.jspreadsheet.data;
     this.home.CloseSideBar();
@@ -947,8 +949,8 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2][0];
-            riskMatrix.TRF = this.SheetValue[i][3][0];
+            riskMatrix.Severity = this.SheetValue[i][2];
+            riskMatrix.TRF = this.SheetValue[i][3];
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
             var initcauseId = 0;
@@ -1092,6 +1094,14 @@ export class SILComponent implements OnInit {
                 protectionlayers.PFD = this.SheetValue[j][16]
                 initcause.ProtectionLayers.push(protectionlayers);
 
+                let iplDyke = new ProtectionLayer();
+                iplDyke.Id = 5;
+                iplDyke.ICId = initcause.Id;
+                iplDyke.NameOfIPL = "IPL Dyke,PRV";
+                iplDyke.Description = this.SheetValue[j][17]
+                iplDyke.PFD = this.SheetValue[j][18]
+                initcause.ProtectionLayers.push(iplDyke);
+
                 let pfdDescIndex = 19;
                 let pfdValueIndex = 20;
                 this.dynamicColumn.forEach(dynamicolumns => {
@@ -1214,6 +1224,7 @@ export class SILComponent implements OnInit {
       }
     }
     let calc = new Calculation(sif);
+    calc.SIFId=sif.Id;
     this.cal = calc;
     console.log(this.cal);
     // var OverallIELP = this.cal.OverallIELP;
