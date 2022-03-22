@@ -156,13 +156,7 @@ export class SilWorksheetComponent implements OnInit {
                                     }
                                     
                                     if(impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length!=0){
-                                        for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length; x++) {
-                                                obj1['getDynamicTitle']=impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].GroupName
-                                                obj1['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
-                                                obj1['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
-                                                this.DynamicTitle= obj1['getDynamicTitle'];
-                                        }
-                                        this.getDynamicList.push(obj1);
+                                       
                                     }
                                     this.getAllList.push(obj);
                                 }
@@ -199,15 +193,6 @@ export class SilWorksheetComponent implements OnInit {
                                             obj0['getDescription5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
                                             obj0['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
                                         }
-                                    }
-                                    if(impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length!=0){
-                                        for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length; x++) {
-                                                obj['getDynamicTitle']=impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].GroupName
-                                                obj['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
-                                                obj['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
-                                                this.DynamicTitle= obj['getDynamicTitle'];
-                                        }
-                                        this.getDynamicList.push(obj);
                                     }
                                     this.getAllList.push(obj0);
                                 }

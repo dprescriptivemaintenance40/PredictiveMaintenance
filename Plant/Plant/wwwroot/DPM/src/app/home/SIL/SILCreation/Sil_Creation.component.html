@@ -10,13 +10,13 @@
         </div>
         <div class="col-md-2 d-flex flex-column">
             <label style=" margin-right: 12px;">SIF ID</label>
-            <input type="text" class="form-control" formControlName="sidId" [(ngModel)]="sifDesignObj.Id" pInputText />
+            <input type="text" class="form-control" formControlName="sifId" [(ngModel)]="sifDesignObj.Id" pInputText />
         </div>
 
         <!-- <div class="row"> -->
         <div class="col-md-2 d-flex flex-column">
             <label style=" margin-right: 12px;">InterLock (SIF) Tag</label>
-            <input type="text" class="form-control" formControlName="interLockTag" [(ngModel)]="sifDesignObj.InterLockTag"
+            <input type="text" class="form-control" value="LAHH" formControlName="interLockTag" [(ngModel)]="sifDesignObj.InterLockTag"
                 pInputText />
         </div>
         <!-- <div class="row"> -->
@@ -30,12 +30,12 @@
             </div>
         <div class="col-md-2 d-flex flex-column">
             <label style=" margin-right: 12px;">Sensor</label>
-            <input type="text" class="form-control" formControlName="sensor" [(ngModel)]="sifDesignObj.Sensor" pInputText />
+            <input type="text" class="form-control" value="LS" formControlName="sensor" [(ngModel)]="sifDesignObj.Sensor" pInputText />
             <!-- </div> -->
         </div><br>
         <div class="col-md-2 d-flex flex-column">
             <label style="margin-right: 12px;">Final Elements(s)</label>
-            <input type="text" class="form-control" formControlName="finalElement" [(ngModel)]="sifDesignObj.FinalElement"
+            <input type="text" class="form-control" value="MOV" formControlName="finalElement" [(ngModel)]="sifDesignObj.FinalElement"
                 pInputText />
         </div>
         <!-- <div class="row"> -->

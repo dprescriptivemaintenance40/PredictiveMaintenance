@@ -1,8 +1,6 @@
 export class SIFDesign {
-    // private calculation: Calculation = null;
-    // constructor() {
-    //     this.calculation = new Calculation(this);
-    // }
+
+    //private calculation: Calculation = null;
     public Id: number = 0;
     public HazopNodeId: number = 0;
     public InterLockTag: string = "";
@@ -12,6 +10,10 @@ export class SIFDesign {
     public RiskMatrix: string = "";
     public TargetSIL: number = 0;
     public ImpactEvents: Array<ImpactEvent> = new Array<ImpactEvent>();
+    public Calculations:Array<Calculation>= new Array<Calculation>();
+    // constructor() {
+    //     this.calculation= new Calculation(this);
+    // }
 }
 
 export class ImpactEvent {
@@ -88,7 +90,6 @@ export class DynamicGroupName
 // }
 
 export class Calculation {
-    public sif: SIFDesign = new SIFDesign();
     public calculationId: number = 0;
     public SIFId: number;
     public TRFP: number = 0;   //Tolerable Risk Frequency or TMEL
@@ -106,19 +107,40 @@ export class Calculation {
     public SILP: number = 0;
     public SILA: number = 0;
     public SILE: number = 0;
-
-    constructor(_sif: SIFDesign) {
-        this.sif = _sif;
+ }
+ export class CalculateSIF{
+    public sif;
+    public calculationId: number = 0;
+    public SIFId: number;
+    public TRFP: number = 0;   //Tolerable Risk Frequency or TMEL
+    public TRFE: number = 0;   //Tolerable Risk Frequency or TMEL
+    public TRFA: number = 0;   //Tolerable Risk Frequency or TMEL
+    public OverallIELP: number = 0;
+    public OverallIELE: number = 0;
+    public OverallIELA: number = 0;
+    public PFDP: number = 0;
+    public PFDA: number = 0;
+    public PFDE: number = 0;
+    public RRFP: number = 0;
+    public RRFA: number = 0;
+    public RRFE: number = 0;
+    public SILP: number = 0;
+    public SILA: number = 0;
+    public SILE: number = 0;
+     constructor(_sif){
+        this.sif= _sif;
         this.CalculateIEL();
         this.CalculateOverallIEL();
         this.CalculatePFD();
         this.CalculateRRF();
         this.CalculateSIL();
         this.CalculateTargetSIL();
-    }
+     }
     public CalculateIEL() {
         var ielTemp: number = 0;
         var ielTemp1: number = 1;
+        var DIelTemp: number = 0;
+        var DIelTemp1: number = 1;
         this.SIFId = this.sif.Id;
         this.sif.ImpactEvents.forEach(impactevent => {
             impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
@@ -131,10 +153,24 @@ export class Calculation {
                             ielTemp1 *= protectionlayer.PFD;
                         }
                     });
+                    if(initiatingcause.DynamicGroupNames.length!=0){
+                    initiatingcause.DynamicGroupNames.forEach( dgroup=> {
+                        if (DIelTemp == 0) {
+                            DIelTemp = dgroup.pfdValue;
+                        }
+                        else {
+                            DIelTemp1 *= dgroup.pfdValue;
+                        }
+                    });
+                    initiatingcause.IELP = ielTemp1 * ielTemp * DIelTemp * DIelTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    }
+                    else{
                     initiatingcause.IELP = ielTemp1 * ielTemp * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    }
                     ielTemp1=1;
                     ielTemp=0;
-
+                    DIelTemp1=1;
+                    DIelTemp=0;
                 });
             });
             impactevent.RiskMatrix.filter(i => i.Category == "E").forEach(riskmatrix => {
@@ -147,9 +183,24 @@ export class Calculation {
                             ielTemp1 *= protectionlayer.PFD;
                         }
                     });
-                    initiatingcause.IELE = ielTemp1 * ielTemp * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    if(initiatingcause.DynamicGroupNames.length!=0){
+                    initiatingcause.DynamicGroupNames.forEach( dgroup=> {
+                        if (DIelTemp == 0) {
+                            DIelTemp = dgroup.pfdValue;
+                        }
+                        else {
+                            DIelTemp1 *= dgroup.pfdValue;
+                        }
+                    });
+                    initiatingcause.IELE = ielTemp1 * ielTemp * DIelTemp * DIelTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    }
+                    else{
+                        initiatingcause.IELE = ielTemp1 * ielTemp * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    }
                     ielTemp1=1;
                     ielTemp=0;
+                    DIelTemp1=1;
+                    DIelTemp=0;
                 });
             });
             impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
@@ -162,9 +213,24 @@ export class Calculation {
                             ielTemp1 *= protectionlayer.PFD ;
                         }
                     });
-                    initiatingcause.IELA = ielTemp1 * ielTemp * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    if(initiatingcause.DynamicGroupNames.length!=0){
+                    initiatingcause.DynamicGroupNames.forEach( dgroup=> {
+                        if (DIelTemp == 0) {
+                            DIelTemp = dgroup.pfdValue;
+                        }
+                        else {
+                            DIelTemp1 *= dgroup.pfdValue;
+                        }
+                    });
+                    initiatingcause.IELA = ielTemp1 * ielTemp * DIelTemp * DIelTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    }
+                    else{
+                        initiatingcause.IELE = ielTemp1 * ielTemp * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                    }
                     ielTemp1=1;
                     ielTemp=0;
+                    DIelTemp1=1;
+                    DIelTemp=0;
                 });
             });
         })

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Plant.DAL;
 using Plant.Models;
 
@@ -12,9 +13,11 @@ namespace Plant.Controllers.SIL
     public class SILClassificationAPI : ControllerBase
     {
         private readonly PlantDBContext _Context;
+        
         public SILClassificationAPI(PlantDBContext plantDBContext)
         {
             _Context = plantDBContext;
+         
         }
 
         // GET: api/<SILClassificationAPI>
@@ -122,7 +125,8 @@ namespace Plant.Controllers.SIL
         // POST api/<SILClassificationAPI>
         [HttpPost]
         [Route("SaveSheetData")]
-        public async Task<ActionResult<List<SIFDesign>>> SaveSheetData([FromBody] List<SIFDesign> sifDesigns)
+        
+        public async Task<ActionResult> SaveSheetData(List<SIFDesign> sifDesigns)
         {
             try
             {
@@ -137,10 +141,35 @@ namespace Plant.Controllers.SIL
                     sifDesignObj.RiskMatrix = sifDesign.RiskMatrix;
                     sifDesignObj.TargetSIL = sifDesign.TargetSIL;
                     var impacts = sifDesign.ImpactEvents;
+                    var calculation = sifDesign.Calculations;
+                    sifDesign.Calculations = new List<Calculation>();
+                    sifDesign.Calculations = null;
                     sifDesign.ImpactEvents = new List<ImpactEvent>();
                     sifDesign.ImpactEvents = null;
                     _Context.SIFDesign.Add(sifDesignObj);
                     await _Context.SaveChangesAsync();
+                    foreach(var cal in calculation)
+                    {
+                        Calculation cal1 = new Calculation();
+                        cal1.SIFId = sifDesignObj.Id;
+                        cal1.TRFP = cal.TRFP;
+                        cal1.TRFE = cal.TRFE;
+                        cal1.TRFA = cal.TRFA;
+                        cal1.OverallIELP = cal.OverallIELP;
+                        cal1.OverallIELE = cal.OverallIELE;
+                        cal1.OverallIELA = cal.OverallIELA;
+                        cal1.PFDP = cal.PFDP;
+                        cal1.PFDE = cal.PFDE;
+                        cal1.PFDA = cal.PFDA;
+                        cal1.RRFP = cal.RRFP;
+                        cal1.RRFE = cal.RRFE;
+                        cal1.RRFA = cal.RRFA;
+                        cal1.SILP = cal.SILP;
+                        cal1.SILE = cal.SILE;
+                        cal1.SILA = cal.SILA;
+                        _Context.Calculation.Add(cal1);
+                        await _Context.SaveChangesAsync();
+                    }
                     foreach (var impact in impacts)
                     {
                         ImpactEvent impactEvents = new ImpactEvent();

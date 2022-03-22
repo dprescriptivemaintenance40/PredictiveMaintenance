@@ -14,7 +14,8 @@ namespace Plant.Models
         public string RiskMatrix { get; set; }
         public int TargetSIL { get; set; }
         public List<ImpactEvent> ImpactEvents { get; set; }
-}
+        public List<Calculation> Calculations { get; set; }
+    }
     public class ImpactEvent
     {
         public int Id { get; set; }
@@ -37,7 +38,7 @@ namespace Plant.Models
     }
 
     public class InitiatingCause
-{
+    {
     public int Id { get; set; }
     public int RMId { get; set; }
     public string initiatingCause { get; set; }
@@ -79,7 +80,7 @@ namespace Plant.Models
     public class Calculation
     {
         public int calculationId { get; set; }
-        public int? SIFId { get; set; }
+        public int SIFId { get; set; }
         public float TRFP { get; set; }
         public float TRFE { get; set; }
         public float TRFA { get; set; }
@@ -95,8 +96,5 @@ namespace Plant.Models
         public float SILP { get; set; }
         public float SILA { get; set; }
         public float SILE { get; set; }
-
-        [ForeignKey("SIFId")]
-        public SIFDesign SIFDesign;
     }
 }

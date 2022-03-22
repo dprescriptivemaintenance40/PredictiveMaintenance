@@ -1,15 +1,18 @@
 import { Component, ViewChild, ElementRef, OnInit } from "@angular/core";
 import * as jspreadsheet from "jspreadsheet-ce";
+import * as _ from "lodash";
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
-import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, DynamicGroupName, RiskMatrix, SIFDesign } from 'src/app/home/SIL/Shared/Model/Sil_Creation.model';
+import { Calculation, ImpactEvent, InitiatingCause, ProtectionLayer, DynamicGroupName, RiskMatrix, SIFDesign, CalculateSIF } from 'src/app/home/SIL/Shared/Model/Sil_Creation.model';
 import { SILConstantAPI } from '../Shared/Model/SILConstant';
 import { HomeComponent } from "../../home.component";
 import { DynamicTitle } from "../Shared/Model/Sil_dynamic.model";
 import { FormBuilder, Validators, } from "@angular/forms";
 import {values} from './value';
+import {parse, stringify} from 'flatted';
+
 @Component({
   selector: 'app-sil',
   templateUrl: './Sil_Creation.component.html',
@@ -47,7 +50,8 @@ export class SILComponent implements OnInit {
   public impact: ImpactEvent = new ImpactEvent();
   public RiskMatrixVal: RiskMatrix = new RiskMatrix();
   public initcauses: InitiatingCause = new InitiatingCause();
-  public sifDesignObj: SIFDesign = new SIFDesign();
+  public sifDesignObj:SIFDesign=new SIFDesign();
+  public Calculations:SIFDesign=new SIFDesign();
   public dynamicColumn: Array<DynamicGroupName> = new Array<DynamicGroupName>();
   public TargetSil: number = 0;
   public cal:any;
@@ -120,7 +124,7 @@ export class SILComponent implements OnInit {
 
   silClassification = this.formBuilder.group({
     'node': [''],
-    'sidId': ['', Validators.required],
+    'sifId': ['', Validators.required],
     'interLockTag': ['', Validators.required],
     'matrix': ['', Validators.required],
     'sensor': ['', Validators.required],
@@ -1039,8 +1043,8 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2][0];
-            riskMatrix.TRF = this.SheetValue[i][3][0];
+            riskMatrix.Severity = this.SheetValue[i][2];
+            riskMatrix.TRF = this.SheetValue[i][3];
             // var trfe= riskMatrix.TRFE;
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
@@ -1129,8 +1133,8 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2][0];
-            riskMatrix.TRF = this.SheetValue[i][3][0];
+            riskMatrix.Severity = this.SheetValue[i][2];
+            riskMatrix.TRF = this.SheetValue[i][3];
             // var trfa= riskMatrix.TRFA;
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
@@ -1220,34 +1224,32 @@ export class SILComponent implements OnInit {
           }
         }
         sif.ImpactEvents.push(impacts)
-
+        var cal=new CalculateSIF(sif); 
+        var value=this.prepareObj(cal);
       }
     }
-    let calc = new Calculation(sif);
-    calc.SIFId=sif.Id;
-    this.cal = calc;
-    console.log(this.cal);
-    // var OverallIELP = this.cal.OverallIELP;
-    // this.iel = this.getData.setRowData([20], [OverallIELP]);
+    sif.Calculations.push(value)
     sifDesignObj.push(sif);
     this.TargetSil = sif.TargetSIL;
-    console.log(sifDesignObj);
-    this.SaveSheetData(sifDesignObj, this.cal);
-    console.log(this.cal)
-
+    console.log(sifDesignObj)
+    this.SaveSheetData(sifDesignObj);
   }
 
-  public SaveSheetData(sifDesignObj: any, calculate: any) {
-    this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.SIFSave, sifDesignObj).subscribe((res: any) => {
-      this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.CalculationSave, calculate).subscribe((res: any) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
-      }, (err) => {
-        this.jspreadsheet.setData([[]]);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
-      });
+  public SaveSheetData(sifDesignObj: any) {
+    // var value=parse(stringify(sifDesignObj));
+    var sifJson = _.cloneDeep(sifDesignObj);
+    sifJson[0].Calculations.forEach(element => {
+      element= _.cloneDeep(
+        _.omit(element,['sif']));
+    });
+    
+    this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.SIFSave
+            , sifJson).subscribe((res: any) => {
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
     },
-      (err) => {
+    (err:any) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
+        console.log(err.message)
       });
   }
 
@@ -1422,6 +1424,25 @@ export class SILComponent implements OnInit {
     }
     this.dynamicIPLObj.title = "";
     this.removeTitle = false;
+  }
+  prepareObj(sif){
+    let obj:Calculation=new Calculation;
+    obj.OverallIELP=sif.OverallIELP;
+    obj.OverallIELE=sif.OverallIELE;
+    obj.OverallIELA=sif.OverallIELA;
+    obj.PFDP=sif.PFDP;
+    obj.PFDE=sif.PFDE;
+    obj.PFDA=sif.PFDA;
+    obj.RRFP=sif.RRFP;
+    obj.RRFE=sif.RRFE;
+    obj.RRFA=sif.RRFA;
+    obj.SILP=sif.SILP;
+    obj.SILE=sif.SILE;
+    obj.SILA=sif.SILA;
+    obj.TRFP=sif.TRFP;
+    obj.TRFE=sif.TRFE;
+    obj.TRFA=sif.TRFA;
+    return obj;
   }
 }
 
