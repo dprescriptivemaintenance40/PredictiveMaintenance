@@ -25,7 +25,8 @@ import { SilWorksheetComponent } from "./SIL/SILWorksheet/SilWorksheet.component
                 { path:'FCA', component:FCAComponent},
                 { path:'MSS' , component:MSSComponent},
                 { path: 'RCMList' , component:RCMListComponent},
-                { path:'SIL' , component:SILComponent},
+                { path:'SIL',component:SILComponent},
+                { path:'SIL/:id' , component:SILComponent},
                 { path:'Worksheet/:id', component:SilWorksheetComponent}
             ]
         }

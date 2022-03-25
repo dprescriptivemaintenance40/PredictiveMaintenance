@@ -1,4 +1,3 @@
-export class DynamicTitle
-{
-    public title:string="";
+export class DynamicTitle {
+    public title: string = "";
 }

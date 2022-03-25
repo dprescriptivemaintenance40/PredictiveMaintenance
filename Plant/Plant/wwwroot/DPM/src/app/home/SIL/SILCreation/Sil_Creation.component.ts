@@ -10,8 +10,9 @@ import { SILConstantAPI } from '../Shared/Model/SILConstant';
 import { HomeComponent } from "../../home.component";
 import { DynamicTitle } from "../Shared/Model/Sil_dynamic.model";
 import { FormBuilder, Validators, } from "@angular/forms";
-import {values} from './value';
-import {parse, stringify} from 'flatted';
+import { values } from './value';
+import { ActivatedRoute, Router } from "@angular/router";
+import { HttpParams } from "@angular/common/http";
 
 @Component({
   selector: 'app-sil',
@@ -37,7 +38,8 @@ export class SILComponent implements OnInit {
   public val: any = [];
   public SheetValue: Array<any> = [];
   public cols: Array<any> = [];
-  public arr: any = [];
+  public editNestedHeadersList: any = [];
+  public editSILList: any = [];
   public value: any;
   public RiskMatrix6: boolean = false;
   public RiskMatrix5: boolean = false;
@@ -50,8 +52,8 @@ export class SILComponent implements OnInit {
   public impact: ImpactEvent = new ImpactEvent();
   public RiskMatrixVal: RiskMatrix = new RiskMatrix();
   public initcauses: InitiatingCause = new InitiatingCause();
-  public sifDesignObj:SIFDesign=new SIFDesign();
-  public Calculations:SIFDesign=new SIFDesign();
+  public sifDesignObj: SIFDesign = new SIFDesign();
+  public Calculations: SIFDesign = new SIFDesign();
   public dynamicColumn: Array<DynamicGroupName> = new Array<DynamicGroupName>();
   public TargetSil: number = 0;
   public cal: any;
@@ -85,6 +87,7 @@ export class SILComponent implements OnInit {
   public RRF: number = 0;
   public SIL: number = 0;
   public sheetIndex: number = 0;
+  public StaticIELIndex: number = 0;
   public dynamicsheetIndex: number = 0;
   public cat: string = "";
   public categoryIndex: number;
@@ -107,8 +110,12 @@ export class SILComponent implements OnInit {
   public AddedIEL = 0;
   public condition: number = 0;
   public IELList: any = [];
+  public editSIFId: string = "";
+  public getSILData: any = [];
 
   ngOnInit() {
+    this.editSIFId = (this.route.snapshot.params['id']);
+    this.getSIfData();
     this.primengConfig.ripple = true;
     this.value = values;
     this.getMasterData();
@@ -121,7 +128,9 @@ export class SILComponent implements OnInit {
     private messageService: MessageService,
     private SILConstantAPI: SILConstantAPI,
     private home: HomeComponent,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    public router: Router) {
   }
 
   silClassification = this.formBuilder.group({
@@ -134,6 +143,348 @@ export class SILComponent implements OnInit {
     'description': ['']
   })
 
+  getSIfData() {
+    const params = new HttpParams()
+      .set('Id', this.editSIFId);
+    var url: string = this.SILConstantAPI.GetSILData;
+    this.SILClassificationBLService.getWithParameters('/SILClassificationAPI/GetSILData', params)
+      .subscribe((res: any) => {
+        this.editSILList = res;
+        console.log(this.editSILList);
+        this.node = this.editSILList[0].HazopNodeId;
+        this.sifid = this.editSILList[0].sifId;;
+        this.sifDesignObj.FinalElement = this.editSILList[0].FinalElement;;
+        this.sifDesignObj.RiskMatrix = this.editSILList[0].RiskMatrix;;
+        this.sifDesignObj.Sensor = this.editSILList[0].Sensor;;
+        this.description = this.editSILList[0].SIFDescription;;
+        this.sifDesignObj.InterLockTag = this.editSILList[0].InterLockTag;;
+        this.sifDesignObj.TargetSIL = this.editSILList[0].TargetSIL;
+        this.editSILList[0].ImpactEvents.forEach(impact => {
+          let editSheet = {}
+          let editSheet2 = {};
+          let editSheet4 = {};
+
+
+
+          // Category P
+          for (let i = 0; i < impact.RiskMatrix.length; i++) {
+            if (impact.RiskMatrix[i].Category == 'P') {
+              editSheet['1'] = impact.RiskMatrix[i].Category;
+              editSheet['2'] = impact.RiskMatrix[i].Severity;
+              editSheet['3'] = impact.RiskMatrix[i].TRF;
+              if (impact.RiskMatrix[0].Category == 'P') {
+                editSheet['0'] = impact.ImpactEventDesciption;
+              }
+              // this.TRF = obj['getTRF']
+              for (let j = 0; j < impact.RiskMatrix[i].InitiatingCauses.length; j++) {
+                if (j == 0) {
+                  editSheet['4'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
+                  editSheet['5'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
+                  // editSheet['6'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
+                  editSheet['6'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
+                  editSheet['7'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
+                  editSheet['8'] = impact.RiskMatrix[i].InitiatingCauses[j].TR;
+                  for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers.length; x++) {
+                    if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'General Process Design') {
+                      editSheet['9'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet['10'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'BPCS') {
+                      editSheet['11'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet['12'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Alarm') {
+                      editSheet['13'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet['14'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Restricted Acess') {
+                      editSheet['15'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet['16'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'IPL Dyke,PRV') {
+                      editSheet['17'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet['18'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                  }
+
+                  // if (impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length != 0) {
+                  //     for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length; x++) {
+                  //        let obj1 = {}
+                  //         obj1['getDynamicTitle'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].GroupName
+                  //         obj1['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
+                  //         obj1['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
+                  //         this.getSILData.push(obj1);
+                  //         // console.log(this.getDynamicList);
+                  //         // this.DynamicTitle = obj1['getDynamicTitle'];
+
+                  //     }
+                  // }
+                  this.getSILData.push(editSheet);
+                }
+                else {
+                  let editSheet1 = {}
+                  editSheet1['4'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
+                  editSheet1['5'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
+                  // this.ICP += 1;
+                  // this.ICCountP = this.ICP
+                  // this.span=document.querySelector('span');
+                  // this.span.setAttribute("rowspan", this.ICP.toString());
+                  // editSheet1['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELP;
+                  editSheet1['6'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
+                  editSheet1['7'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
+                  editSheet1['8'] = impact.RiskMatrix[i].InitiatingCauses[j].TR;
+                  for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers.length; x++) {
+                    if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'General Process Design') {
+                      editSheet1['9'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet1['10'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'BPCS') {
+                      editSheet1['11'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet1['12'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Alarm') {
+                      editSheet1['13'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet1['14'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Restricted Acess') {
+                      editSheet1['15'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet1['16'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'IPL Dyke,PRV') {
+                      editSheet1['17'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet1['18'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                  }
+                  // if (impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length != 0) {
+                  //     for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length; x++) {
+                  //         obj['getDynamicTitle'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].GroupName
+                  //         obj['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
+                  //         obj['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
+                  //         this.getSILData.push(obj);
+                  //         // this.DynamicTitle = obj['getDynamicTitle'];
+                  //     }
+
+                  // }
+                  this.getSILData.push(editSheet1);
+                }
+              }
+            }
+            else if (impact.RiskMatrix[i].Category == 'E') {
+              editSheet2['1'] = impact.RiskMatrix[i].Category;
+              editSheet2['2'] = impact.RiskMatrix[i].Severity;
+              editSheet2['3'] = impact.RiskMatrix[i].TRF;
+              if (impact.RiskMatrix[0].Category == 'E') {
+                editSheet2['0'] = impact.ImpactEventDesciption;
+              }
+              // this.TRFP = obj1['getTRF']
+              for (let j = 0; j < impact.RiskMatrix[i].InitiatingCauses.length; j++) {
+                if (j == 0) {
+                  editSheet2['4'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
+                  editSheet2['5'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
+                  // obj1['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELE;
+                  editSheet2['6'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
+                  editSheet2['7'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
+                  editSheet2['8'] = impact.RiskMatrix[i].InitiatingCauses[j].TR;
+                  for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers.length; x++) {
+                    if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'General Process Design') {
+                      editSheet2['9'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet2['10'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'BPCS') {
+                      editSheet2['11'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet2['12'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Alarm') {
+                      editSheet2['13'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet2['14'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Restricted Acess') {
+                      editSheet2['15'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet2['16'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'IPL Dyke,PRV') {
+                      editSheet2['17'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet2['18'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                  }
+                  this.getSILData.push(editSheet2);
+                }
+                else {
+                  let editSheet3 = {}
+                  editSheet3['4'] = impact.RiskMatrix[i].InitiatingCauses[j].initiatingCause
+                  // this.ICE += 1;
+                  // this.ICCountE = this.ICE
+                  editSheet3['5'] = impact.RiskMatrix[i].InitiatingCauses[j].IEF;
+                  // obj2['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[j].IELE;
+                  editSheet3['6'] = impact.RiskMatrix[i].InitiatingCauses[j].IP;
+                  editSheet3['7'] = impact.RiskMatrix[i].InitiatingCauses[j].PP;
+                  editSheet3['8'] = impact.RiskMatrix[i].InitiatingCauses[j].TR;
+                  for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers.length; x++) {
+                    if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'General Process Design') {
+                      editSheet3['9'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet3['10'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'BPCS') {
+                      editSheet3['11'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet3['12'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Alarm') {
+                      editSheet3['13'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet3['14'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'Restricted Acess') {
+                      editSheet3['15'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet3['16'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].NameOfIPL == 'IPL Dyke,PRV') {
+                      editSheet3['17'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
+                      editSheet3['18'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
+                    }
+                  }
+                  this.getSILData.push(editSheet3);
+                }
+              }
+            }
+            else if (impact.RiskMatrix[i].Category == 'A') {
+              editSheet4['1'] = impact.RiskMatrix[i].Category;
+              editSheet4['2'] = impact.RiskMatrix[i].Severity;
+              editSheet4['3'] = impact.RiskMatrix[i].TRF;
+              if (impact.RiskMatrix[0].Category == 'A') {
+                editSheet4['0'] = impact.ImpactEventDesciption;
+              }
+              // this.TRFA = obj3['getTRF']
+              for (let b = 0; b < impact.RiskMatrix[i].InitiatingCauses.length; b++) {
+                if (b == 0) {
+                  editSheet4['4'] = impact.RiskMatrix[i].InitiatingCauses[b].initiatingCause
+                  editSheet4['5'] = impact.RiskMatrix[i].InitiatingCauses[b].IEF;
+                  // obj3['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[b].IELA;
+                  editSheet4['6'] = impact.RiskMatrix[i].InitiatingCauses[b].IP;
+                  editSheet4['7'] = impact.RiskMatrix[i].InitiatingCauses[b].PP;
+                  editSheet4['8'] = impact.RiskMatrix[i].InitiatingCauses[b].TR;
+                  for (let z = 0; z < impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers.length; z++) {
+                    if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'General Process Design') {
+                      editSheet4['9'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
+                      editSheet4['10'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'BPCS') {
+                      editSheet4['11'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
+                      editSheet4['12'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'Alarm') {
+                      editSheet4['13'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
+                      editSheet4['14'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'Restricted Acess') {
+                      editSheet4['15'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
+                      editSheet4['16'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'IPL Dyke,PRV') {
+                      editSheet4['17'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
+                      editSheet4['18'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
+                    }
+                  }
+                  this.getSILData.push(editSheet4);
+
+                }
+                else {
+                  let editSheet5 = {}
+                  editSheet5['4'] = impact.RiskMatrix[i].InitiatingCauses[b].initiatingCause
+                  // this.ICA += 1;
+                  // this.ICCountA = this.ICA
+                  editSheet5['5'] = impact.RiskMatrix[i].InitiatingCauses[b].IEF;
+                  // editSheet5['getIEL'] = impact.RiskMatrix[i].InitiatingCauses[b].IELA;
+                  editSheet5['6'] = impact.RiskMatrix[i].InitiatingCauses[b].IP;
+                  editSheet5['7'] = impact.RiskMatrix[i].InitiatingCauses[b].PP;
+                  editSheet5['8'] = impact.RiskMatrix[i].InitiatingCauses[b].TR;
+                  for (let z = 0; z < impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers.length; z++) {
+                    if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'General Process Design') {
+                      editSheet5['9'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
+                      editSheet5['10'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'BPCS') {
+                      editSheet5['11'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
+                      editSheet5['12'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'Alarm') {
+                      editSheet5['13'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
+                      editSheet5['14'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'Restricted Acess') {
+                      editSheet5['15'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
+                      editSheet5['16'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
+                    }
+                    else if (impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].NameOfIPL == 'IPL Dyke,PRV') {
+                      editSheet5['17'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
+                      editSheet5['18'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
+                    }
+                  }
+                  this.getSILData.push(editSheet5);
+                }
+
+              }
+            }
+
+          }
+        });
+        // this.editSILList.forEach(sifObj => {
+        //   let editSheet = {}
+        //   sifObj.ImpactEvents.forEach(impact => {
+        //     editSheet['0'] = impact.ImpactEventDesciption;
+        //     impact.RiskMatrix.forEach(risk => {
+        //       editSheet['1'] = risk.Category;
+        //       editSheet['2'] = risk.Severity;
+        //       editSheet['3'] = risk.TRF;
+        //       risk.InitiatingCauses.forEach(init => {
+        //         editSheet['4'] = init.initiatingCause;
+        //         editSheet['5'] = init.IEF;
+        //         editSheet['6'] = init.IP;
+        //         editSheet['7'] = init.PP;
+        //         editSheet['8'] = init.TR;
+        //         init.ProtectionLayers.forEach(prot => {
+        //           if (prot.NameOfIPL == "General Process Design") {
+        //             editSheet['9'] = prot.Description;
+        //             editSheet['10'] = prot.PFD;
+        //           }
+        //           else if (prot.NameOfIPL == "BPCS") {
+        //             editSheet['11'] = prot.Description;
+        //             editSheet['12'] = prot.PFD;
+        //           }
+        //           else if (prot.NameOfIPL == "Alarm") {
+        //             editSheet['13'] = prot.Description;
+        //             editSheet['14'] = prot.PFD;
+        //           }
+        //           else if (prot.NameOfIPL == "Restricted Acess") {
+        //             editSheet['15'] = prot.Description;
+        //             editSheet['16'] = prot.PFD;
+        //           }
+        //           else if (prot.NameOfIPL == "IPL Dyke,PRV") {
+        //             editSheet['17'] = prot.Description;
+        //             editSheet['18'] = prot.PFD;
+        //           }
+        //         })
+        //         this.getSILData.push(editSheet)
+        //       })
+        //     })
+        //   })
+        // });
+        this.EditJsSheet();
+        // console.log(this.editSILList);
+      });
+  }
+  EditJsSheet() {
+    this.jspreadsheet.destroy();
+    this.jspreadsheet = jspreadsheet(this.spreadsheetDiv.nativeElement, {
+      data: this.getSILData,
+      columns: this.columns,
+      nestedHeaders: this.nestedHeaders,
+      onchange: this.changed,
+      onselection: this.selectionActive,
+      tableOverflow: true,
+      tableWidth: "1350px",
+      tableHeight: "600px",
+      minDimensions: [24, 20]
+    });
+  }
   CreateColumns() {
     this.columns.push({ type: "text", title: 'Impact Event', width: "100", wordWrap: true, source: this.impact.ImpactEventDesciption }),
       this.columns.push({ type: 'dropdown', title: 'Category', width: "50", wordWrap: true, source: this.CategoryNameList }),
@@ -188,11 +539,24 @@ export class SILComponent implements OnInit {
       tableHeight: "600px",
       minDimensions: [24, 20]
     });
-    // this.getData.hideColumn(19);
-    // this.getData.hideColumn(20);
-    // this.getData.hideColumn(21);
-    // this.getData.hideColumn(22);
   }
+  // this.jspreadsheet.destroy()
+
+  // this.jspreadsheet = jspreadsheet(this.spreadsheetDiv.nativeElement, {
+  //   data: this.data,
+  //   columns: this.columns,
+  //   nestedHeaders: this.nestedHeaders,
+  //   onchange: this.changed,
+  //   onselection: this.selectionActive,
+  //   tableOverflow: true,
+  //   tableWidth: "1350px",
+  //   tableHeight: "600px",
+  //   minDimensions: [24, 20]
+  // });
+  // this.getData.hideColumn(19);
+  // this.getData.hideColumn(20);
+  // this.getData.hideColumn(21);
+
 
   changed = async (instance, cell, x, y, value) => {
     // var cellName = jspreadsheet.getColumnNameFromId([x, y]);
@@ -200,6 +564,14 @@ export class SILComponent implements OnInit {
 
     if (this.dynamicColumn.length == 0) {
       if (x == 5) {
+        for (let Yindex = 0; Yindex < this.SheetValue.length; Yindex++) {
+          if (y == Yindex) {
+            this.IELValues = Number(this.SheetValue[Yindex][19]);
+            if (this.SheetValue[Yindex][19] == "0.00" || this.SheetValue[Yindex][19] == "") {
+              this.IELValues = 1;
+            }
+          }
+        }
         if (value == 0) {
           if (this.IELValues == this.changedValue) {
             value = this.IELValues % this.changedValue;
@@ -236,6 +608,14 @@ export class SILComponent implements OnInit {
         }
       }
       else if (x == 6 || x == 7 || x == 8 || x == 10 || x == 12 || x == 14 || x == 16) {
+        for (let Yindex = 0; Yindex < this.SheetValue.length; Yindex++) {
+          if (y == Yindex) {
+            this.IELValues = Number(this.SheetValue[Yindex][19]);
+            if (this.SheetValue[Yindex][19] == "0.00") {
+              this.IELValues = 1;
+            }
+          }
+        }
         if (value == 0) {
           if (this.IELValues == this.changedValue) {
             value = this.IELValues % this.changedValue;
@@ -266,6 +646,14 @@ export class SILComponent implements OnInit {
         }
       }
       else if (x == 18) {
+        for (let Yindex = 0; Yindex < this.SheetValue.length; Yindex++) {
+          if (y == Yindex) {
+            this.IELValues = Number(this.SheetValue[Yindex][19]);
+            if (this.SheetValue[Yindex][19] == "0.00") {
+              this.IELValues = 1;
+            }
+          }
+        }
         if (value == 0) {
           if (this.IELValues == this.changedValue) {
             value = this.IELValues % this.changedValue;
@@ -447,8 +835,8 @@ export class SILComponent implements OnInit {
     for (let category = this.sheetIndex; category < this.SheetValue.length; category++) {
       if (this.SheetValue[category][1] != "") {
         this.cat = this.SheetValue[category][1];
-        this.sheetIndex = category;
-        this.sheetIndex++;
+        this.StaticIELIndex = category;
+        // this.sheetIndex++;
         this.categoryRow = category;
         this.categoryIndex = category;
         break;
@@ -460,16 +848,28 @@ export class SILComponent implements OnInit {
         if (this.SheetValue[sheet][1] == 'P' || this.SheetValue[sheet][1] == "") {
           for (let initcause = sheet; initcause < this.SheetValue.length; initcause++) {
             if ((this.SheetValue[initcause][1] == "P" || this.SheetValue[initcause][1] == "") && this.SheetValue[initcause][4] != "" && x != 20) {
-              if (this.SheetValue[initcause][1] == "") {
-                let tempOIELPVAlue = this.OIELPValue;
-                let storeOIELPVAlue = tempOIELPVAlue + Number(this.IELValues);
-                tempOIELPVAlue += storeOIELPVAlue
-                this.OIEL = this.jspreadsheet.setValueFromCoords(20, this.categoryRow, storeOIELPVAlue, true);
-                // this.OIELPValue += Number(this.IELValues);
-              } else if (this.SheetValue[initcause][1] != "") {
-                this.OIELPValue = Number(this.IELValues);
+              if (this.SheetValue[initcause][1] == "" || this.SheetValue[initcause][1] != "") {
+                this.OIELPValue = 0;
+                for (let ielP = this.StaticIELIndex; ielP < this.SheetValue.length; ielP++) {
+                  if ((this.SheetValue[ielP][1] == "P" || this.SheetValue[ielP][1] == "") && this.SheetValue[ielP][4] != "") {
+                    let tempOIELPVAlue = 0;
+                    tempOIELPVAlue = this.SheetValue[ielP][19];
+                    this.OIELPValue += Number(tempOIELPVAlue);
+                  }
+                  else if (this.SheetValue[ielP][1] == 'E' || this.SheetValue[ielP][1] == 'A') {
+                    break;
+                  }
+                }
                 this.OIEL = this.jspreadsheet.setValueFromCoords(20, this.categoryRow, this.OIELPValue, true);
               }
+              // let tempOIELPVAlue = this.OIELPValue;
+              // let storeOIELPVAlue = tempOIELPVAlue + Number(this.IELValues);
+              // tempOIELPVAlue += storeOIELPVAlue
+              // this.OIELPValue += Number(this.IELValues);
+              // else if (this.SheetValue[initcause][1] != "") {
+              //   this.OIELPValue = Number(this.IELValues);
+              //   this.OIEL = this.jspreadsheet.setValueFromCoords(20, this.categoryRow, this.OIELPValue, true);
+              // }
               var pfd = this.SheetValue[this.categoryRow][3] / this.OIELPValue;
               this.PFDAVG = this.jspreadsheet.setValueFromCoords(21, this.categoryRow, pfd.toPrecision(3), true);
               var rrf = 1 / pfd;
@@ -501,19 +901,23 @@ export class SILComponent implements OnInit {
               //   this.IELValues *= Number(value);
               //   this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
               // }
-              if (this.SheetValue[initcause][1] == "") {
-                let tempOIELEVAlue = this.OIELEValue;
-                let storeOIELEVAlue = tempOIELEVAlue + Number(this.IELValues);
-                tempOIELEVAlue += storeOIELEVAlue
-                this.OIEL = this.jspreadsheet.setValueFromCoords(20, this.categoryRow, storeOIELEVAlue, true);
-                // this.OIELPValue += Number(this.IELValues);
-              } else if (this.SheetValue[initcause][1] != "") {
-                this.OIELEValue = Number(this.IELValues);
+              if (this.SheetValue[initcause][1] == "" || this.SheetValue[initcause][1] != "") {
+                this.OIELEValue = 0;
+                for (let ielP = this.StaticIELIndex; ielP < this.SheetValue.length; ielP++) {
+                  if ((this.SheetValue[ielP][1] == "E" || this.SheetValue[ielP][1] == "") && this.SheetValue[ielP][4] != "") {
+                    let tempOIELEVAlue = 0;
+                    tempOIELEVAlue = this.SheetValue[ielP][19];
+                    this.OIELEValue += Number(tempOIELEVAlue);
+                  }
+                  else if (this.SheetValue[ielP][1] == 'A' || this.SheetValue[ielP][1] == 'P') {
+                    break;
+                  }
+                }
                 this.OIEL = this.jspreadsheet.setValueFromCoords(20, this.categoryRow, this.OIELEValue, true);
               }
-              if (this.condition != y) {
+              // if (this.condition != y) {
 
-              }
+              // }
               var pfd = this.SheetValue[this.categoryRow][3] / this.OIELEValue;
               this.PFDAVG = this.jspreadsheet.setValueFromCoords(21, this.categoryRow, pfd.toPrecision(3), true);
               var rrf = 1 / pfd;
@@ -547,18 +951,19 @@ export class SILComponent implements OnInit {
               //   this.IELValues *= Number(value);
               //   this.IEL = this.jspreadsheet.setValueFromCoords(19, y, this.IELValues, true);
               // }
-              if (this.SheetValue[initcause][1] == "") {
-                let tempOIELAVAlue = this.OIELAValue;
-                let storeOIELAVAlue = tempOIELAVAlue + Number(this.IELValues);
-                tempOIELAVAlue += storeOIELAVAlue
-                this.OIEL = this.jspreadsheet.setValueFromCoords(20, this.categoryRow, storeOIELAVAlue, true);
-                // this.OIELPValue += Number(this.IELValues);
-              } else if (this.SheetValue[initcause][1] != "") {
-                this.OIELAValue = Number(this.IELValues);
+              if (this.SheetValue[initcause][1] == "" || this.SheetValue[initcause][1] != "") {
+                this.OIELAValue = 0;
+                for (let ielP = this.StaticIELIndex; ielP < this.SheetValue.length; ielP++) {
+                  if ((this.SheetValue[ielP][1] == "A" || this.SheetValue[ielP][1] == "") && this.SheetValue[ielP][4] != "") {
+                    let tempOIELAVAlue = 0;
+                    tempOIELAVAlue = this.SheetValue[ielP][19];
+                    this.OIELAValue += Number(tempOIELAVAlue);
+                  }
+                  else if (this.SheetValue[ielP][1] == 'E' || this.SheetValue[ielP][1] == 'P') {
+                    break;
+                  }
+                }
                 this.OIEL = this.jspreadsheet.setValueFromCoords(20, this.categoryRow, this.OIELAValue, true);
-              }
-              if (this.condition != y) {
-
               }
               var pfd = this.SheetValue[this.categoryRow][3] / this.OIELAValue;
               this.PFDAVG = this.jspreadsheet.setValueFromCoords(21, this.categoryRow, pfd.toPrecision(3), true);
@@ -801,8 +1206,7 @@ export class SILComponent implements OnInit {
 
   public Save() {
     this.SheetValue = this.jspreadsheet.getData();
-    this.arr = this.jspreadsheet.getHeaders();
-    this.cols = this.arr.split(",");
+    // this.cols = this.arr.split(",");
     let sifDesignObj = [];
     let sif = new SIFDesign();
     sif.Id = this.sifid;
@@ -1100,8 +1504,8 @@ export class SILComponent implements OnInit {
           }
         }
         sif.ImpactEvents.push(impacts)
-        var cal=new CalculateSIF(sif); 
-        var value=this.prepareObj(cal);
+        var cal = new CalculateSIF(sif);
+        var value = this.prepareObj(cal);
       }
     }
     sif.Calculations.push(value)
@@ -1115,18 +1519,18 @@ export class SILComponent implements OnInit {
     // var value=parse(stringify(sifDesignObj));
     var sifJson = _.cloneDeep(sifDesignObj);
     sifJson[0].Calculations.forEach(element => {
-      element= _.cloneDeep(
-        _.omit(element,['sif']));
+      element = _.cloneDeep(
+        _.omit(element, ['sif']));
     });
-    
+
     this.SILClassificationBLService.postWithoutHeaders(this.SILConstantAPI.SIFSave
-            , sifJson).subscribe((res: any) => {
-              this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
-    },
-    (err:any) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
-        console.log(err.message)
-      });
+      , sifJson).subscribe((res: any) => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: "SILClassification Added SuccessFully" })
+      },
+        (err: any) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error" })
+          console.log(err.message)
+        });
   }
 
   public RiskMatrix(Matrix: any) {
@@ -1301,23 +1705,24 @@ export class SILComponent implements OnInit {
     this.dynamicIPLObj.title = "";
     this.removeTitle = false;
   }
-  prepareObj(sif){
-    let obj:Calculation=new Calculation;
-    obj.OverallIELP=sif.OverallIELP;
-    obj.OverallIELE=sif.OverallIELE;
-    obj.OverallIELA=sif.OverallIELA;
-    obj.PFDP=sif.PFDP;
-    obj.PFDE=sif.PFDE;
-    obj.PFDA=sif.PFDA;
-    obj.RRFP=sif.RRFP;
-    obj.RRFE=sif.RRFE;
-    obj.RRFA=sif.RRFA;
-    obj.SILP=sif.SILP;
-    obj.SILE=sif.SILE;
-    obj.SILA=sif.SILA;
-    obj.TRFP=sif.TRFP;
-    obj.TRFE=sif.TRFE;
-    obj.TRFA=sif.TRFA;
+
+  prepareObj(sif) {
+    let obj: Calculation = new Calculation;
+    obj.OverallIELP = sif.OverallIELP;
+    obj.OverallIELE = sif.OverallIELE;
+    obj.OverallIELA = sif.OverallIELA;
+    obj.PFDP = sif.PFDP;
+    obj.PFDE = sif.PFDE;
+    obj.PFDA = sif.PFDA;
+    obj.RRFP = sif.RRFP;
+    obj.RRFE = sif.RRFE;
+    obj.RRFA = sif.RRFA;
+    obj.SILP = sif.SILP;
+    obj.SILE = sif.SILE;
+    obj.SILA = sif.SILA;
+    obj.TRFP = sif.TRFP;
+    obj.TRFE = sif.TRFE;
+    obj.TRFA = sif.TRFA;
     return obj;
   }
 }
