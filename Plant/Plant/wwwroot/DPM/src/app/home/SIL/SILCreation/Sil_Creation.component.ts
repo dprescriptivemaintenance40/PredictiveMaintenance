@@ -118,6 +118,9 @@ export class SILComponent implements OnInit {
     this.getSIfData();
     this.primengConfig.ripple = true;
     this.value = values;
+    this.sifDesignObj.InterLockTag="LAHH";
+    this.sifDesignObj.Sensor="LS"
+    this.sifDesignObj.FinalElement="MOV"
     this.getMasterData();
     this.val = this.jspreadsheet.data;
     this.home.CloseSideBar();
@@ -1233,8 +1236,8 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2][0];
-            riskMatrix.TRF = this.SheetValue[i][3][0];
+            riskMatrix.Severity = this.SheetValue[i][2];
+            riskMatrix.TRF = this.SheetValue[i][3];
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
             var initcauseId = 0;

@@ -225,7 +225,7 @@ export class Calculation {
                     initiatingcause.IELA = ielTemp1 * ielTemp * DIelTemp * DIelTemp1 * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
                     }
                     else{
-                        initiatingcause.IELE = ielTemp1 * ielTemp * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
+                        initiatingcause.IELA = ielTemp1 * ielTemp * initiatingcause.IEF * initiatingcause.IP * initiatingcause.PP * initiatingcause.TR;
                     }
                     ielTemp1=1;
                     ielTemp=0;
@@ -303,13 +303,6 @@ export class Calculation {
     }
     public CalculateRRF() {
         this.sif.ImpactEvents.forEach(impactevent => {
-            impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
-                riskmatrix.InitiatingCauses.filter(i => i.RiskMatrix.Category == "A").forEach(riska => {
-                    if (this.RRFA == 0) {
-                        this.RRFA = 1 / this.PFDA;
-                    }
-                });
-            });
             impactevent.RiskMatrix.filter(i => i.Category == "P").forEach(riskmatrix => {
                 riskmatrix.InitiatingCauses.forEach(riskp => {
                     if (this.RRFP == 0) {
@@ -321,6 +314,13 @@ export class Calculation {
                 riskmatrix.InitiatingCauses.forEach(riske => {
                     if (this.RRFE == 0) {
                         this.RRFE = 1 / this.PFDE;
+                    }
+                });
+            });
+            impactevent.RiskMatrix.filter(i => i.Category == "A").forEach(riskmatrix => {
+                riskmatrix.InitiatingCauses.forEach(riska => {
+                    if (this.RRFA == 0) {
+                        this.RRFA = 1 / this.PFDA;
                     }
                 });
             });

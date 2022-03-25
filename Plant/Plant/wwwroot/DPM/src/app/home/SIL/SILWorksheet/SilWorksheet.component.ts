@@ -15,11 +15,27 @@ export class SilWorksheetComponent implements OnInit {
     id: any;
     silDataList: any;
     silCalculation: any;
-    public getId: number = 0;
+    public p: number = 0;
+    public q: number = 1;
+    public r: number = 0;
+    public s: number = 1;
     public DynamicTitle: any;
     public reportDataList: any = [];
     public getAllList: any = [];
-    public getDynamicList: any = [];
+    public getTitleList: any = [];
+    public getTitleListP: any = [];
+    public CatP:string="";
+    public getTitleListE: any = [];
+    public CatE:string="";
+    public getTitleListA: any = [];
+    public CatA:string="";
+    public getDynamicList1: any = [];
+    public getDynamicList1P: any = [];
+    public getDynamicList1E: any = [];
+    public getDynamicList1A: any = [];
+    public getDynamicListE: any = [];
+    public getDynamicListA: any = [];
+    public getDynamicListP: any = [];
     public ICCountP: number = 0;
     public ICCountE: number = 0;
     public ICCountA: number = 0;
@@ -118,6 +134,7 @@ export class SilWorksheetComponent implements OnInit {
                     for (let i = 0; i < impact.RiskMatrix.length; i++) {
                         if (impact.RiskMatrix[i].Category == 'P') {
                             obj['getCategory'] = impact.RiskMatrix[i].Category;
+                            this.CatP= impact.RiskMatrix[i].Category;
                             obj['getSeverity'] = impact.RiskMatrix[i].Severity;
                             obj['getTRF'] = impact.RiskMatrix[i].TRF;
                             if (impact.RiskMatrix[0].Category == 'P') {
@@ -157,13 +174,15 @@ export class SilWorksheetComponent implements OnInit {
 
                                     if (impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length != 0) {
                                         for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length; x++) {
-                                           let obj1 = {}
-                                            obj1['getDynamicTitle'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].GroupName
-                                            obj1['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
-                                            obj1['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
-                                            this.getDynamicList.push(obj1);
+                                            let obj2={};
+                                            var title = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].GroupName
+                                            obj2['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
+                                            obj2['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
+                                            this.getDynamicListP.push(obj2);
                                             // console.log(this.getDynamicList);
-                                            this.DynamicTitle = obj1['getDynamicTitle'];
+                                            this.getTitleListP.push(title);
+                                            this.getTitle();
+                                            this.DynamicTitle = title;
 
                                         }
                                     }
@@ -205,13 +224,14 @@ export class SilWorksheetComponent implements OnInit {
                                     }
                                     if (impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length != 0) {
                                         for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length; x++) {
-                                            obj['getDynamicTitle'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].GroupName
-                                            obj['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
-                                            obj['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
-                                            this.getDynamicList.push(obj);
-                                            this.DynamicTitle = obj['getDynamicTitle'];
+                                            
+                                            let obj1={};
+                                            obj1['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
+                                            obj1['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
+                                            this.getDynamicList1P.push(obj1);
+                                            
                                         }
-                                      
+
                                     }
                                     this.getAllList.push(obj0);
                                 }
@@ -219,6 +239,7 @@ export class SilWorksheetComponent implements OnInit {
                         }
                         else if (impact.RiskMatrix[i].Category == 'E') {
                             obj1['getCategory'] = impact.RiskMatrix[i].Category;
+                            this.CatE=impact.RiskMatrix[i].Category;
                             obj1['getSeverity'] = impact.RiskMatrix[i].Severity;
                             obj1['getTRF'] = impact.RiskMatrix[i].TRF;
                             if (impact.RiskMatrix[0].Category == 'E') {
@@ -255,6 +276,19 @@ export class SilWorksheetComponent implements OnInit {
                                             obj1['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
                                         }
                                     }
+                                        if (impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length != 0) {
+                                            for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length; x++) {
+                                            let obj2={};
+                                            var title = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].GroupName
+                                            obj2['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
+                                            obj2['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
+                                            this.getDynamicListE.push(obj2);
+                                            // console.log(this.getDynamicList);
+                                            this.getTitleListE.push(title);
+                                            this.getTitle();
+                                            this.DynamicTitle = title;
+                                            }
+                                        }
                                     this.getAllList.push(obj1);
                                 }
                                 else {
@@ -288,13 +322,23 @@ export class SilWorksheetComponent implements OnInit {
                                             obj2['getDescription5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].Description;
                                             obj2['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[j].ProtectionLayers[x].PFD;
                                         }
-                                    }
+                                       }
+                                        if (impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length != 0) {
+                                            for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames.length; x++) {
+                                               let obj4={};
+                                                obj4['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdDescription;
+                                                obj4['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[j].DynamicGroupNames[x].pfdValue;
+                                                this.getDynamicList1E.push(obj4);
+                                            }
+    
+                                        }
                                     this.getAllList.push(obj2);
                                 }
                             }
                         }
                         else if (impact.RiskMatrix[i].Category == 'A') {
                             obj3['getCategory'] = impact.RiskMatrix[i].Category;
+                            this.CatA=impact.RiskMatrix[i].Category;
                             obj3['getSeverity'] = impact.RiskMatrix[i].Severity;
                             obj3['getTRF'] = impact.RiskMatrix[i].TRF;
                             if (impact.RiskMatrix[0].Category == 'A') {
@@ -330,7 +374,22 @@ export class SilWorksheetComponent implements OnInit {
                                             obj3['getDescription5'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
                                             obj3['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
                                         }
-                                    }
+                                        }
+                                        if (impact.RiskMatrix[i].InitiatingCauses[b].DynamicGroupNames.length != 0) {
+                                            for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[b].DynamicGroupNames.length; x++) {
+                                            let obj2={};
+                                            var title = impact.RiskMatrix[i].InitiatingCauses[b].DynamicGroupNames[x].GroupName
+                                            obj2['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[b].DynamicGroupNames[x].pfdDescription;
+                                            obj2['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[b].DynamicGroupNames[x].pfdValue;
+                                            this.getDynamicListA.push(obj2);
+                                            // console.log(this.getDynamicList);
+                                            this.getTitleListA.push(title);
+                                            this.getTitle();
+                                            this.DynamicTitle = title;
+                                            }
+    
+                                        }
+                                    
                                     this.getAllList.push(obj3);
 
                                 }
@@ -365,7 +424,18 @@ export class SilWorksheetComponent implements OnInit {
                                             obj4['getDescription5'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].Description;
                                             obj4['getPFD5'] = impact.RiskMatrix[i].InitiatingCauses[b].ProtectionLayers[z].PFD;
                                         }
-                                    }
+                                        }
+                                        if (impact.RiskMatrix[i].InitiatingCauses[b].DynamicGroupNames.length != 0) {
+                                            for (let x = 0; x < impact.RiskMatrix[i].InitiatingCauses[b].DynamicGroupNames.length; x++) {
+                                                
+                                                let obj5={};
+                                                obj5['getDynamicDescription'] = impact.RiskMatrix[i].InitiatingCauses[b].DynamicGroupNames[x].pfdDescription;
+                                                obj5['getDynamicPFD'] = impact.RiskMatrix[i].InitiatingCauses[b].DynamicGroupNames[x].pfdValue;
+                                                this.getDynamicList1A.push(obj5);
+                                            }
+    
+                                        }
+                            
                                     this.getAllList.push(obj4);
                                 }
 
@@ -446,5 +516,46 @@ export class SilWorksheetComponent implements OnInit {
         else {
             return "1"
         }
+    }
+    getTitle(){
+        if(this.CatP!="" && this.CatE!="" && this.CatA!=null){
+            this.getTitleList=this.getTitleListP;
+        }
+        else if(this.CatP!="" && this.CatE==="" && this.CatA===""){
+            this.getTitleList=this.getTitleListP;
+        }
+        else if(this.CatP==="" && this.CatE!="" && this.CatA===""){
+            this.getTitleList=this.getTitleListE;
+        }
+        else if(this.CatP==="" && this.CatE==="" && this.CatA!=""){
+            this.getTitleList=this.getTitleListA;
+        }
+    }
+    getDynamicList(){
+        if(this.p==this.r && this.q==this.s){
+            if(this.getDynamicList1P.length<this.q){
+                return false;
+            }
+            else{
+            this.getDynamicList1.push(this.getDynamicList1P[this.p]);
+            this.getDynamicList1.push(this.getDynamicList1P[this.q]);
+            this.p+=2;
+            this.q+=2;
+            return this.getDynamicList1;
+            }
+        }
+        else{
+            this.removeDList();
+            delete this.getDynamicList1[this.r];
+            delete this.getDynamicList1[this.s];
+            this.r+=2;
+            this.s+=2;
+            return false;
+        }
+        
+    }
+    removeDList(){
+        delete this.getDynamicList1P[this.r];
+        delete this.getDynamicList1P[this.s];
     }
 }
