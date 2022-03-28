@@ -111,16 +111,20 @@ export class SILComponent implements OnInit {
   public condition: number = 0;
   public IELList: any = [];
   public editSIFId: string = "";
+  public editSIFCalculations: string = "";
+  public silCalculationList: any = [];
   public getSILData: any = [];
 
   ngOnInit() {
     this.editSIFId = (this.route.snapshot.params['id']);
+    this.editSIFCalculations = (this.route.snapshot.params['id']);
+    this.getSILCalculation();
     this.getSIfData();
     this.primengConfig.ripple = true;
     this.value = values;
-    this.sifDesignObj.InterLockTag="LAHH";
-    this.sifDesignObj.Sensor="LS"
-    this.sifDesignObj.FinalElement="MOV"
+    this.sifDesignObj.InterLockTag = "LAHH";
+    this.sifDesignObj.Sensor = "LS"
+    this.sifDesignObj.FinalElement = "MOV"
     this.getMasterData();
     this.val = this.jspreadsheet.data;
     this.home.CloseSideBar();
@@ -474,6 +478,31 @@ export class SILComponent implements OnInit {
         // console.log(this.editSILList);
       });
   }
+
+  getSILCalculation() {
+    const params = new HttpParams()
+      .set('Id', this.editSIFCalculations);
+    var url: string = this.SILConstantAPI.GetSILCalculation;
+    this.SILClassificationBLService.getWithParameters(url, params)
+      .subscribe((res: any) => {
+        console.log(res)
+        this.silCalculationList = res;
+        console.log(this.silCalculationList)
+        // this.OIELP = this.silCalculation[0].OverallIELP;
+        // this.OIELE = this.silCalculation[0].OverallIELE;
+        // this.OIELA = this.silCalculation[0].OverallIELA;
+        // this.PFDAVGP = this.silCalculation[0].PFDP;
+        // this.PFDAVGE = this.silCalculation[0].PFDE;
+        // this.PFDAVGA = this.silCalculation[0].PFDA;
+        // this.RRFP = this.silCalculation[0].RRFP;
+        // this.RRFE = this.silCalculation[0].RRFE;
+        // this.RRFA = this.silCalculation[0].RRFA;
+        // this.SILP = this.silCalculation[0].SILP;
+        // this.SILE = this.silCalculation[0].SILE;
+        // this.SILA = this.silCalculation[0].SILA;
+      })
+  }
+
   EditJsSheet() {
     this.jspreadsheet.destroy();
     this.jspreadsheet = jspreadsheet(this.spreadsheetDiv.nativeElement, {
@@ -1236,8 +1265,8 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2];
-            riskMatrix.TRF = this.SheetValue[i][3];
+            riskMatrix.Severity = this.SheetValue[i][2][0];
+            riskMatrix.TRF = this.SheetValue[i][3][0];
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
             var initcauseId = 0;
@@ -1326,8 +1355,8 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2];
-            riskMatrix.TRF = this.SheetValue[i][3];
+            riskMatrix.Severity = this.SheetValue[i][2][0];
+            riskMatrix.TRF = this.SheetValue[i][3][0];
             // var trfe= riskMatrix.TRFE;
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
@@ -1416,8 +1445,8 @@ export class SILComponent implements OnInit {
             riskMatrix.RMId = riskMatrixId;
             riskMatrix.IEId = impacts.Id;
             riskMatrix.Category = this.SheetValue[i][1];
-            riskMatrix.Severity = this.SheetValue[i][2];
-            riskMatrix.TRF = this.SheetValue[i][3];
+            riskMatrix.Severity = this.SheetValue[i][2][0];
+            riskMatrix.TRF = this.SheetValue[i][3][0];
             // var trfa= riskMatrix.TRFA;
             impacts.RiskMatrix.push(riskMatrix);
             this.RiskMatrixVal = riskMatrix;
