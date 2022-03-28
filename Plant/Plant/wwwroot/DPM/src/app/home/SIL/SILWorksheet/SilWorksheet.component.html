@@ -67,9 +67,11 @@
                         <th>PFD</th>
                         <th>Desc</th>
                         <th>PFD</th>
-                        <ng-container *ngFor="let d of getTitleList;" ng-if="DynamicTitle!=null">
-                        <th>Desc</th>
-                        <th>PFD</th>
+                        <ng-container *ngIf="DynamicTitle">
+                            <ng-container *ngFor="let d of getTitleList;">
+                                <th>Desc</th>
+                                <th>PFD</th>
+                            </ng-container>
                         </ng-container>
                         <th>IEL</th>
                         <th>OverallIEL</th>
@@ -83,7 +85,7 @@
                         <td>{{p.getImpactEvent}}</td>
                         <div *ngIf="i===0 || i===ICCountP || i===ICCountP+ICCountE  then default else other"></div>
                         <ng-template #default>
-                           
+
                             <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getCategory}}</td>
                             <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getSeverity}}</td>
                             <td [attr.rowspan]='getRowspan(p.getCategory)'>{{p.getTRF}}</td>
@@ -105,19 +107,19 @@
                             <ng-container ng-if="DynamicTitle!=null">
                                 <ng-container *ngFor="let po of getDynamicListP;">
                                     <td *ngIf="p.getCategory==='P'">{{po.getDynamicDescription}}</td>
-                                    <td *ngIf="p.getCategory==='P'">{{po.getDynamicPFD}}</td> 
+                                    <td *ngIf="p.getCategory==='P'">{{po.getDynamicPFD}}</td>
                                 </ng-container>
                             </ng-container>
                             <ng-container ng-if="DynamicTitle!=null">
                                 <ng-container *ngFor="let e of getDynamicListE;">
                                     <td *ngIf="p.getCategory==='E'">{{e.getDynamicDescription}}</td>
-                                    <td *ngIf="p.getCategory==='E'">{{e.getDynamicPFD}}</td> 
+                                    <td *ngIf="p.getCategory==='E'">{{e.getDynamicPFD}}</td>
                                 </ng-container>
                             </ng-container>
                             <ng-container ng-if="DynamicTitle!=null">
                                 <ng-container *ngFor="let a of getDynamicListA;">
                                     <td *ngIf="p.getCategory==='A'">{{a.getDynamicDescription}}</td>
-                                    <td *ngIf="p.getCategory==='A'">{{a.getDynamicPFD}}</td> 
+                                    <td *ngIf="p.getCategory==='A'">{{a.getDynamicPFD}}</td>
                                 </ng-container>
                             </ng-container>
                             <td>{{p.getIEL}}</td>
@@ -143,13 +145,22 @@
                             <td>{{p.getPFD4}}</td>
                             <td>{{p.getDescription5}}</td>
                             <td>{{p.getPFD5}}</td>
-                        
-                            <ng-container ng-if="DynamicTitle!=null">
-                                <ng-container *ngIf="getDynamicList() as getDynamicList1">
-                                 <ng-container *ngFor="let a of getDynamicList1;">
-                                    <td>{{a.getDynamicDescription}}</td>
-                                    <td>{{a.getDynamicPFD}}</td> 
+                            <ng-container *ngIf="DynamicTitle">
+                                <ng-container *ngFor="let po of p.getDynamicList1P;">
+                                    <td>{{po.getDynamicDescription}}</td>
+                                    <td>{{po.getDynamicPFD}}</td>
                                 </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="DynamicTitle">
+                                <ng-container *ngFor="let e of p.getDynamicList1E;">
+                                    <td>{{e.getDynamicDescription}}</td>
+                                    <td>{{e.getDynamicPFD}}</td>
+                                </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="DynamicTitle">
+                                <ng-container *ngFor="let a of p.getDynamicList1A;">
+                                    <td>{{a.getDynamicDescription}}</td>
+                                    <td>{{a.getDynamicPFD}}</td>
                                 </ng-container>
                             </ng-container>
                             <td>{{p.getIEL}}</td>

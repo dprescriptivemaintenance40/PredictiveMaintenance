@@ -37,6 +37,50 @@ export class HomeComponent implements OnInit {
       icon: 'pi pi-home',
     },
     {
+      label: 'Predictive Maintenance',
+      icon: 'pi pi-home',
+      items: [
+        {
+        label: 'Screw Compressor',
+        items: [
+          {
+            label: 'Constraints and Validations',
+            url: '#/Home/ConstraintValidation',
+          },
+          {
+            label: 'Model Pipeline',
+            url: '#/Home/ModelPipeline',
+          },
+          {
+            label: 'Predictive Charts',
+            url: '#/Home/PredictiveChart',
+          },
+          {
+            label: 'Predictive Reports',
+            url: '#/Home/PredictiveReport',
+          },
+          {
+            label: 'Data Insights',
+            url: '#/Home/DataInsight',
+          }
+        ]
+        },
+        {
+          label: 'Centrifugal Pump',
+          url: '#/Home/report'
+        },
+        {
+          label: 'Valve',
+          url: '#/Home/report'
+        },
+        {
+          label: 'Motors',
+          url: '#/Home/report'
+        }
+      ]
+      
+    },
+    {
       label: 'FCA',
       url: '#/Home/FCA',
       icon: 'pi pi-home',

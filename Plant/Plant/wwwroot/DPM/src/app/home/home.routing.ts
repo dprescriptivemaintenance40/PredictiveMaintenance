@@ -11,6 +11,11 @@ import { SILreportComponent } from "./SIL/SILReport/SILreport.component";
 import { SILComponent } from "../home/SIL/SILCreation/Sil_Creation.component";
 import { VisComponent } from "./Vis/Vis.component";
 import { SilWorksheetComponent } from "./SIL/SILWorksheet/SilWorksheet.component";
+import { ConstraintValidationComponent } from "./PredictiveMaintenance/ScrewCompressor/constraint-validation/constraint-validation.component";
+import { ModelPipelineComponent } from "./PredictiveMaintenance/ScrewCompressor/model-pipeline/model-pipeline.component";
+import { PredictiveReportComponent } from "./PredictiveMaintenance/ScrewCompressor/predictive-report/predictive-report.component";
+import { DataInsightComponent } from "./PredictiveMaintenance/ScrewCompressor/data-insight/data-insight.component";
+import { PredictiveChartComponent } from "./PredictiveMaintenance/ScrewCompressor/predictive-chart/predictive-chart.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -27,7 +32,12 @@ import { SilWorksheetComponent } from "./SIL/SILWorksheet/SilWorksheet.component
                 { path: 'RCMList' , component:RCMListComponent},
                 { path:'SIL',component:SILComponent},
                 { path:'SIL/:id' , component:SILComponent},
-                { path:'Worksheet/:id', component:SilWorksheetComponent}
+                { path:'Worksheet/:id', component:SilWorksheetComponent},
+                { path:'ConstraintValidation', component:ConstraintValidationComponent},
+                { path:'ModelPipeline', component:ModelPipelineComponent},
+                { path:'PredictiveChart', component:PredictiveChartComponent},
+                { path:'PredictiveReport', component:PredictiveReportComponent},
+                { path:'DataInsight', component:DataInsightComponent}
             ]
         }
     ])],

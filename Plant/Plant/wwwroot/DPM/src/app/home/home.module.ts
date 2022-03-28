@@ -19,6 +19,12 @@ import { Matrix5Component } from "./SIL/Shared/5x5Matrix/matrix-five.component";
 import {TabViewModule} from 'primeng/tabview';
 import { SilWorksheetComponent } from "./SIL/SILWorksheet/SilWorksheet.component";
 import { NgxCopyPasteModule } from "ngx-copypaste";
+import { PredictiveReportComponent } from './PredictiveMaintenance/ScrewCompressor/predictive-report/predictive-report.component';
+import { PredictiveChartComponent } from './PredictiveMaintenance/ScrewCompressor/predictive-chart/predictive-chart.component';
+import { ConstraintValidationComponent } from './PredictiveMaintenance/ScrewCompressor/constraint-validation/constraint-validation.component';
+import { ModelPipelineComponent } from './PredictiveMaintenance/ScrewCompressor/model-pipeline/model-pipeline.component';
+import { DataInsightComponent } from './PredictiveMaintenance/ScrewCompressor/data-insight/data-insight.component';
+
 @NgModule({
     declarations: [
         HomeComponent,
@@ -32,7 +38,12 @@ import { NgxCopyPasteModule } from "ngx-copypaste";
         RCMListComponent,
         SILComponent,Matrix6Component,
         Matrix5Component,
-        SilWorksheetComponent
+        SilWorksheetComponent,
+        PredictiveReportComponent,
+        PredictiveChartComponent,
+        ConstraintValidationComponent,
+        ModelPipelineComponent,
+        DataInsightComponent,
         
     ],
     imports: [    
