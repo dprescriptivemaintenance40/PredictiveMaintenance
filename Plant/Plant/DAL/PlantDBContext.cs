@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Plant.Models;
 using Plant.Models.Historical;
+using Plant.Models.PredictiveMaintenance.PredictiveChart;
+
 namespace Plant.DAL
 {
     public class PlantDBContext : DbContext
@@ -48,6 +50,8 @@ namespace Plant.DAL
         //public DbSet<ReportTemplateMaster> ReportTemplateMasters { get; set; }
         public DbSet<ReportMaster> ReportMasters { get; set; }
 
+        //PredictiveMaintenance
+        public DbSet<PredictiveChart> PredictiveCharts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -278,6 +282,8 @@ namespace Plant.DAL
             modelBuilder.Entity<ReportMaster>().ToTable("tblReport");
 
 
+            //PredictiveMaintenance
+            modelBuilder.Entity<PredictiveChart>().ToTable("tblPredictiveCsvData");
 
 
             //Data Seeding
