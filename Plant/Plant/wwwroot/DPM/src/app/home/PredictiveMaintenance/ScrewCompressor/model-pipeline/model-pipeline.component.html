@@ -1,1 +1,51 @@
-<p>model-pipeline works!</p>
+
+<p-toast></p-toast>
+<div class="card dpm-card w-100 p-3">
+<div class="row" style="text-align: center;">
+    <div class="col-5">
+        <label for="myfile"> Upload Historical data :  </label>
+        <input type="file" id="myfile">
+    </div>
+    <div class="col-1">
+      <button class="btn btn-success btn-sm" (click)="Upload()">
+        Process
+      </button>
+    </div>
+    <div class="col-4">
+        <input type="checkbox" style="width: 50px;height: 20px;" [checked]="Manual" (click)="selectCheckBox()"> Manual
+        <input type="checkbox" style="width: 50px;height: 20px;" [checked]="Automated" (click)="selectCheckBox()"> Automated
+    </div>
+</div>
+<br><br>
+<div class="row">
+    <div class="col-6">
+        <div *ngIf="load">
+        <span>{{progress}} </span> <i *ngIf="value==100" style="color: green;" class="pi pi-check-circle"></i>
+        <p-progressBar [value]= "value" [style]="{'width': '600px'}"></p-progressBar>
+        </div><br>
+        <div *ngIf="validate">
+            <span>{{progress1}} </span> <i *ngIf="value1==100" style="color: green;" class="pi pi-check-circle"></i>
+            <p-progressBar [value]= "value1"  [style]="{'width': '600px'}"></p-progressBar>
+        </div><br>
+        <div *ngIf="calculate">
+            <span>{{progress2}} </span> <i *ngIf="value2==100" style="color: green;" class="pi pi-check-circle"></i>
+            <p-progressBar [value]= "value2"  [style]="{'width': '600px'}"></p-progressBar>
+        </div><br>
+        <div *ngIf="aggregate">
+            <span>{{progress3}} </span> <i *ngIf="value3==100" style="color: green;" class="pi pi-check-circle"></i>
+            <p-progressBar [value]= "value3"  [style]="{'width': '600px'}"></p-progressBar>
+        </div><br>
+        <div *ngIf="extrapolation">
+            <span>{{progress4}} </span> <i *ngIf="value4==100" style="color: green;" class="pi pi-check-circle"></i>
+            <p-progressBar [value]= "value4"  [style]="{'width': '600px'}"></p-progressBar>
+        </div><br>
+        <div *ngIf="predict">
+            <span>{{progress5}} </span> <i *ngIf="value5==100" style="color: green;" class="pi pi-check-circle"></i>
+            <p-progressBar [value]= "value5"  [style]="{'width': '600px'}"></p-progressBar>
+        </div>
+    </div>
+    <div class="col-6">
+       <img src="dist/DPM/assets/pipeline.png" style="width: 610px;height: 560px;" alt="">
+    </div>
+</div>
+</div>

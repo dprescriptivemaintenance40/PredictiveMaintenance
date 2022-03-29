@@ -67,15 +67,78 @@ export class HomeComponent implements OnInit {
         },
         {
           label: 'Centrifugal Pump',
-          url: '#/Home/report'
+          items: [
+            {
+              label: 'Constraints and Validations',
+              //url: '#/Home/ConstraintValidation',
+            },
+            {
+              label: 'Model Pipeline',
+              //url: '#/Home/ModelPipeline',
+            },
+            {
+              label: 'Predictive Charts',
+              //url: '#/Home/PredictiveChart',
+            },
+            {
+              label: 'Predictive Reports',
+              //url: '#/Home/PredictiveReport',
+            },
+            {
+              label: 'Data Insights',
+              //url: '#/Home/DataInsight',
+            }
+          ]
         },
         {
           label: 'Valve',
-          url: '#/Home/report'
+          items: [
+            {
+              label: 'Constraints and Validations',
+              //url: '#/Home/ConstraintValidation',
+            },
+            {
+              label: 'Model Pipeline',
+              //url: '#/Home/ModelPipeline',
+            },
+            {
+              label: 'Predictive Charts',
+              //url: '#/Home/PredictiveChart',
+            },
+            {
+              label: 'Predictive Reports',
+              //url: '#/Home/PredictiveReport',
+            },
+            {
+              label: 'Data Insights',
+              //url: '#/Home/DataInsight',
+            }
+          ]
         },
         {
           label: 'Motors',
-          url: '#/Home/report'
+          items: [
+            {
+              label: 'Constraints and Validations',
+              //url: '#/Home/ConstraintValidation',
+            },
+            {
+              label: 'Model Pipeline',
+             // url: '#/Home/ModelPipeline',
+            },
+            {
+              label: 'Predictive Charts',
+              //url: '#/Home/PredictiveChart',
+            },
+            {
+              label: 'Predictive Reports',
+              //url: '#/Home/PredictiveReport',
+            },
+            {
+              label: 'Data Insights',
+              //url: '#/Home/DataInsight',
+            }
+          ]
         }
       ]
       

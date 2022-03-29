@@ -1,6 +1,7 @@
 
 import { NgModule } from "@angular/core";
 import { SharedModule } from "../shared/shared.module";
+import {ProgressBarModule} from 'primeng/progressbar';
 import { HomeComponent } from "./home.component";
 import { HomeRoutingModule } from "./home.routing";
 import { FCAComponent } from "./RCM/FCA/fca.component";
@@ -48,7 +49,7 @@ import { DataInsightComponent } from './PredictiveMaintenance/ScrewCompressor/da
     ],
     imports: [    
         HomeRoutingModule,       
-        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule
+        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule
     ],
     providers: [ExcelFormatService],
     bootstrap: [HomeComponent],exports:[HomeComponent]

@@ -30,6 +30,7 @@ import {TreeTableModule} from 'primeng/treetable';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {MultiSelectModule} from 'primeng/multiselect';
+
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [
