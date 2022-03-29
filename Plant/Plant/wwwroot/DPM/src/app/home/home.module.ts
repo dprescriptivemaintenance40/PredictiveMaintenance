@@ -25,7 +25,7 @@ import { PredictiveChartComponent } from './PredictiveMaintenance/ScrewCompresso
 import { ConstraintValidationComponent } from './PredictiveMaintenance/ScrewCompressor/constraint-validation/constraint-validation.component';
 import { ModelPipelineComponent } from './PredictiveMaintenance/ScrewCompressor/model-pipeline/model-pipeline.component';
 import { DataInsightComponent } from './PredictiveMaintenance/ScrewCompressor/data-insight/data-insight.component';
-
+import { ChartsModule } from 'ng2-charts'
 @NgModule({
     declarations: [
         HomeComponent,
@@ -49,7 +49,12 @@ import { DataInsightComponent } from './PredictiveMaintenance/ScrewCompressor/da
     ],
     imports: [    
         HomeRoutingModule,       
-        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule
+        SharedModule,
+        FieldsetModule,
+        TabViewModule,
+        NgxCopyPasteModule,
+        ProgressBarModule,
+        ChartsModule
     ],
     providers: [ExcelFormatService],
     bootstrap: [HomeComponent],exports:[HomeComponent]

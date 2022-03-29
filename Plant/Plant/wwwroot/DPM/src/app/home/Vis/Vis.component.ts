@@ -322,14 +322,14 @@ export class VisComponent implements OnInit {
 
             options: {
               events: ["mousemove",],
-              scales: {
-                x: {
-                  stacked: true
-                },
-                y: {
-                  stacked: true
-                }
-              }
+              // scales: {
+              //   x: {
+              //     stacked: true
+              //   },
+              //   y: {
+              //     stacked: true
+              //   }
+              // }
 
             }
 
