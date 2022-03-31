@@ -24,7 +24,7 @@
         <p-progressBar [value]= "value" [style]="{'width': '600px'}"></p-progressBar>
         </div><br>
         <div *ngIf="validate">
-            <span>{{progress1}} </span> <i *ngIf="value1==100" style="color: green;" class="pi pi-check-circle"></i>
+            <span>{{progress1}}  : {{ validating}}</span> <i *ngIf="value1==100" style="color: green;" class="pi pi-check-circle"></i>
             <p-progressBar [value]= "value1"  [style]="{'width': '600px'}"></p-progressBar>
         </div><br>
         <div *ngIf="calculate">
@@ -32,7 +32,7 @@
             <p-progressBar [value]= "value2"  [style]="{'width': '600px'}"></p-progressBar>
         </div><br>
         <div *ngIf="aggregate">
-            <span>{{progress3}} </span> <i *ngIf="value3==100" style="color: green;" class="pi pi-check-circle"></i>
+            <span>{{progress3}}</span> <i *ngIf="value3==100" style="color: green;" class="pi pi-check-circle"></i>
             <p-progressBar [value]= "value3"  [style]="{'width': '600px'}"></p-progressBar>
         </div><br>
         <div *ngIf="extrapolation">

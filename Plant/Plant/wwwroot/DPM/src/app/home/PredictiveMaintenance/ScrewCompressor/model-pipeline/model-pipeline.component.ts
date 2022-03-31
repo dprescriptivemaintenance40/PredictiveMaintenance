@@ -14,6 +14,7 @@ export class ModelPipelineComponent implements OnInit {
   currentlyChecked: boolean;
   Manual:boolean=true;
   Automated:boolean=false;
+  validating:string="";
   value: number = 0;
   value1: number = 0;
   value2: number = 0;
@@ -58,7 +59,7 @@ export class ModelPipelineComponent implements OnInit {
       this.progress = "Loading the data";
       if (this.value >= 100) {
         this.value = 100;
-        this.progress = "Completed loading of data";
+        this.progress = "Completed loading of data : 1876 rows were added";
         this.Validate();
         clearInterval(interval);
       }
@@ -68,8 +69,18 @@ export class ModelPipelineComponent implements OnInit {
     this.validate = true;
     let interval = setInterval(() => {
       this.value1 = this.value1 + Math.floor(Math.random() * 10) + 5;
-      this.progress1 = "Validating the data";
-      if (this.value1 >= 100) {
+      this.progress1="Validating the data "
+      if(this.value1>=10 && this.value1<=30){
+        this.validating = "Detecting inaccurate data";
+      }
+      else if(this.value1>30 && this.value1<=70){
+        this.validating = "Removing inaccurate data";
+      }
+      else if(this.value1>70 && this.value1<100){
+        this.validating = "Moving inaccurate data to other file";
+      }
+      else if (this.value1 >= 100) {
+        this.validating=""
         this.value1 = 100;
         this.progress1 = "Completed Validating of data";
         this.Calculate();
