@@ -56,7 +56,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\DemoData.csv";
+                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\DemoData1.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -66,7 +66,8 @@ namespace Plant.Controllers.PredictiveMaintenance
                         {
                             PredictiveChart predictiveCharts = new PredictiveChart();
                             predictiveCharts.Date = predictivecsvRecords.Date;
-                            predictiveCharts.ValueNew = predictivecsvRecords.ValueNew;
+                            predictiveCharts.td1new = predictivecsvRecords.td1new;
+                            predictiveCharts.td1predicted = predictivecsvRecords.td1predicted;
                             _Context.PredictiveCharts.Add(predictiveCharts);
                             _Context.SaveChanges();
                             //predictiveCharts.Events = predictivecsvRecords.Events;
