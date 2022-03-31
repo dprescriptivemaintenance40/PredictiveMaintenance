@@ -62,7 +62,11 @@ export class HomeComponent implements OnInit {
           {
             label: 'Data Insights',
             url: '#/Home/DataInsight',
-          }
+          },
+          {
+            label: 'Model Confidence',
+            url: '#/Home/ModelConfidence',
+          },
         ]
         },
         {
