@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
         label: 'Compressor',
         items: [
           {
-            label: 'Constraints and Validations',
+            label: 'Constraints & Validations',
             url: '#/Home/ConstraintValidation',
           },
           {
@@ -60,17 +60,17 @@ export class HomeComponent implements OnInit {
             url: '#/Home/PredictiveChart',
           },
           {
-            label: 'Predictive Reports',
-            url: '#/Home/PredictiveReport',
+            label: 'Model Confidence',
+            url: '#/Home/ModelConfidence',
           },
           {
             label: 'Data Insights',
             url: '#/Home/DataInsight',
           },
           {
-            label: 'Model Confidence',
-            url: '#/Home/ModelConfidence',
-          },
+            label: 'Predictive Reports',
+            url: '#/Home/PredictiveReport',
+          }
         ]
         },
         {

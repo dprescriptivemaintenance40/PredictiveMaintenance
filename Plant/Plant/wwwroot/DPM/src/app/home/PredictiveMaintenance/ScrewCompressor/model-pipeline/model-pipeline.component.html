@@ -12,8 +12,8 @@
       </button>
     </div>
     <div class="col-4">
-        <input type="checkbox" style="width: 50px;height: 20px;" [checked]="Manual" (click)="selectCheckBox()"> Manual
-        <input type="checkbox" style="width: 50px;height: 20px;" [checked]="Automated" (click)="selectCheckBox()"> Automated
+        <input type="checkbox" style="width: 50px;height: 20px;"  [checked]="Manual" (change)="selectCheckBoxM()" > Manual
+        <input type="checkbox" style="width: 50px;height: 20px;" [checked]="Automated" (change)="selectCheckBoxA($event)" > Automated
     </div>
 </div>
 <br><br>

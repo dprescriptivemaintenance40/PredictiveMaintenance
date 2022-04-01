@@ -40,16 +40,26 @@ export class ModelPipelineComponent implements OnInit {
   ngOnInit() {
 
   }
-  selectCheckBox() {
+  selectCheckBoxM() {
     // If the checkbox was already checked, clear the currentlyChecked variable
-    if(this.Manual=== true && this.Automated===false) {
+    if(this.Manual=== true) {
       this.Manual=false;
-      alert("Scada and Sensor are not configured...")
-      this.Automated=true;
     }
     else{
       this.Manual=true;
       this.Automated=false;
+    }
+  }
+  selectCheckBoxA(a) {
+    if(this.Automated=== false) {
+      this.Automated=false;
+      this.Manual=true;
+      alert("Scada and Sensor are not configured...") 
+    }
+    else{
+      this.Automated=false;
+      this.Manual=true;
+      alert("Scada and Sensor are not configured...") 
     }
   }
   Upload() {
