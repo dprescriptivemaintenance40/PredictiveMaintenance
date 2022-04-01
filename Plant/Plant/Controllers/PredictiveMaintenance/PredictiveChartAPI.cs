@@ -7,6 +7,7 @@ using Plant.Models.PredictiveMaintenance.PredictiveChart;
 using Plant.DAL;
 using Microsoft.EntityFrameworkCore;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
+using Plant.Models.PredictiveMaintenance.DataExplanation;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Plant.Controllers.PredictiveMaintenance
@@ -51,6 +52,20 @@ namespace Plant.Controllers.PredictiveMaintenance
             try
             {
                 return await _Context.ModelConfidences.ToListAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("GetDataExplanation")]
+        public async Task<ActionResult<IEnumerable<DataExplanation>>> GetDataExplanation()
+        {
+            try
+            {
+                return await _Context.DataExplanations.ToListAsync();
             }
             catch (Exception)
             {
@@ -131,6 +146,40 @@ namespace Plant.Controllers.PredictiveMaintenance
             }
         }
 
+        [HttpPost]
+        [Route("PostSeasonalAccuracyData")]
+        public IEnumerable<string> PostSeasonalAccuracyData()
+        {
+            try
+            {
+                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\SeasonalAccuracyMap.csv";
+                using (var streamReader = new StreamReader(PredictiveDataCSVPath))
+                {
+                    using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
+                    {
+                        var DataExplanationRecord = csvReader.GetRecords<DataExplanation>().ToList();
+                        foreach (var DataExplanationRecords in DataExplanationRecord)
+                        {
+                            DataExplanation dataExplanation = new DataExplanation();
+                            dataExplanation.MonthYear = DataExplanationRecords.MonthYear;
+                            dataExplanation.Td1LowerLimit = DataExplanationRecords.Td1LowerLimit;
+                            dataExplanation.Difflowerlimit = DataExplanationRecords.Difflowerlimit;
+                            dataExplanation.Td1UpperLimit = DataExplanationRecords.Td1UpperLimit;
+                            dataExplanation.Diffupperlimit = DataExplanationRecords.Diffupperlimit;
+                            _Context.DataExplanations.Add(dataExplanation);
+                            _Context.SaveChanges();
+                            //predictiveCharts.Events = predictivecsvRecords.Events;
+                        }
+                    }
+                }
+
+                return new string[] { "Success" };
+            }
+            catch (Exception exe)
+            {
+                throw;
+            }
+        }
         // PUT api/<PredictiveChart>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

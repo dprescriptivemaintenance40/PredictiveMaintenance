@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
       icon: 'pi pi-home',
       items: [
         {
-        label: 'Screw Compressor',
+        label: 'Compressor',
         items: [
           {
             label: 'Constraints and Validations',
@@ -50,6 +50,10 @@ export class HomeComponent implements OnInit {
           {
             label: 'Model Pipeline',
             url: '#/Home/ModelPipeline',
+          },
+          {
+            label: 'Data Explanation',
+            url: '#/Home/DataExplanation',
           },
           {
             label: 'Predictive Charts',

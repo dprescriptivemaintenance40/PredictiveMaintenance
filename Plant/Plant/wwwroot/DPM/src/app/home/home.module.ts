@@ -26,6 +26,7 @@ import { ConstraintValidationComponent } from './PredictiveMaintenance/ScrewComp
 import { ModelPipelineComponent } from './PredictiveMaintenance/ScrewCompressor/model-pipeline/model-pipeline.component';
 import { DataInsightComponent } from './PredictiveMaintenance/ScrewCompressor/data-insight/data-insight.component';
 import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompressor/model-confidence/model-confidence.component";
+import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompressor/data-explanation/data-explanation.component";
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompresso
         ModelPipelineComponent,
         DataInsightComponent,
         ModelConfidenceComponent,
+        DataExplanationComponent
         
     ],
     imports: [    

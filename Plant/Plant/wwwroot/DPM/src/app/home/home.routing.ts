@@ -17,6 +17,7 @@ import { PredictiveReportComponent } from "./PredictiveMaintenance/ScrewCompress
 import { DataInsightComponent } from "./PredictiveMaintenance/ScrewCompressor/data-insight/data-insight.component";
 import { PredictiveChartComponent } from "./PredictiveMaintenance/ScrewCompressor/predictive-chart/predictive-chart.component";
 import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompressor/model-confidence/model-confidence.component";
+import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompressor/data-explanation/data-explanation.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -39,7 +40,8 @@ import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompresso
                 { path:'PredictiveChart', component:PredictiveChartComponent},
                 { path:'PredictiveReport', component:PredictiveReportComponent},
                 { path:'DataInsight', component:DataInsightComponent},
-                { path:'ModelConfidence', component:ModelConfidenceComponent}
+                { path:'ModelConfidence', component:ModelConfidenceComponent},
+                {path:'DataExplanation', component:DataExplanationComponent}
             ]
         }
     ])],
