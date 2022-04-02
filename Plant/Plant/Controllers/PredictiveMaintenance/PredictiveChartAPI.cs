@@ -8,6 +8,7 @@ using Plant.DAL;
 using Microsoft.EntityFrameworkCore;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
+using Plant.Models.PredictiveMaintenance;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Plant.Controllers.PredictiveMaintenance
@@ -73,6 +74,20 @@ namespace Plant.Controllers.PredictiveMaintenance
                 throw;
             }
         }
+        [HttpGet]
+        [Route("GetPredictivePercentage")]
+        public async Task<ActionResult<IEnumerable<PredictivePercentage>>> GetPredictivePercentage()
+        {
+            try
+            {
+                return await _Context.PredictivePercentages.ToListAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         // GET api/<PredictiveChart>/5
         [HttpGet("{id}")]
         public string Get(int id)
@@ -86,7 +101,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\DemoData1.csv";
+                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\DemoData1.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -119,7 +134,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\ModelConfidence.csv";
+                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\ModelConfidence.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -152,7 +167,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\SeasonalAccuracyMap.csv";
+                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\SeasonalAccuracyMap.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -169,6 +184,39 @@ namespace Plant.Controllers.PredictiveMaintenance
                             _Context.DataExplanations.Add(dataExplanation);
                             _Context.SaveChanges();
                             //predictiveCharts.Events = predictivecsvRecords.Events;
+                        }
+                    }
+                }
+
+                return new string[] { "Success" };
+            }
+            catch (Exception exe)
+            {
+                throw;
+            }
+        }
+        [HttpPost]
+        [Route("PostPredictivePercentageData")]
+        public IEnumerable<string> PostPredictivePercentageData()
+        {
+            try
+            {
+                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\PredictivePercentageData.csv";
+                using (var streamReader = new StreamReader(PredictiveDataCSVPath))
+                {
+                    using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
+                    {
+                        var PredictivePercentageRecord = csvReader.GetRecords<PredictivePercentage>().ToList();
+                        foreach (var PredictivePercentageRecords in PredictivePercentageRecord)
+                        {
+                            PredictivePercentage predictivePercentage = new PredictivePercentage();
+                            predictivePercentage.Date = PredictivePercentageRecords.Date;
+                            predictivePercentage.Predicted = PredictivePercentageRecords.Predicted;
+                            predictivePercentage.Historical = PredictivePercentageRecords.Historical;
+                            predictivePercentage.Difference = PredictivePercentageRecords.Difference;
+                            predictivePercentage.Percentage = PredictivePercentageRecords.Percentage;
+                            _Context.PredictivePercentages.Add(predictivePercentage);
+                            _Context.SaveChanges();
                         }
                     }
                 }

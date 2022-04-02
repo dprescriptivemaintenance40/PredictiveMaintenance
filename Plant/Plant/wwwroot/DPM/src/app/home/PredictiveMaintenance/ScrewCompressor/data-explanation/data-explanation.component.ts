@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import * as Chart from 'chart.js';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
@@ -10,6 +10,8 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 export class DataExplanationComponent implements OnInit {
 
   public chart;
+  public Show:boolean = false;
+  public Hide:boolean=true;
   public GetDataExplanation: any = [];
   public getTd1LowerLimit: any = [];
   public getTd1UpperLimit: any = [];
@@ -49,7 +51,7 @@ export class DataExplanationComponent implements OnInit {
           // y: {
           //   stacked: true
           // }
-          responsive:true
+          // responsive:true
         }
       }
     },
@@ -73,5 +75,14 @@ export class DataExplanationComponent implements OnInit {
         this.chart= document.getElementById("Chart2")
         this.chart.style.height="400px"
       })
+  }
+  show(val){
+    if(val>=9){
+      this.Show= true; 
+      alert("greater")
+    }
+  }
+  hide(){
+      this.Show= false; 
   }
 }

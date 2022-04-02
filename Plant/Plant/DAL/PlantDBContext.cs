@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Plant.Models;
 using Plant.Models.Historical;
+using Plant.Models.PredictiveMaintenance;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.PredictiveChart;
@@ -56,6 +57,7 @@ namespace Plant.DAL
         public DbSet<PredictiveChart> PredictiveCharts { get; set; }
         public DbSet<ModelConfidence> ModelConfidences { get; set; }
         public DbSet<DataExplanation> DataExplanations { get; set; }
+        public DbSet<PredictivePercentage> PredictivePercentages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -290,6 +292,7 @@ namespace Plant.DAL
             modelBuilder.Entity<PredictiveChart>().ToTable("tblPredictiveCsvData");
             modelBuilder.Entity<ModelConfidence>().ToTable("tblModelConfidenceCsvData");
             modelBuilder.Entity<DataExplanation>().ToTable("tblDataExplanation");
+            modelBuilder.Entity<PredictivePercentage>().ToTable("tblPredictivePercentage");
 
             //Data Seeding
             modelBuilder.Entity<SILClassificationMaster>()
