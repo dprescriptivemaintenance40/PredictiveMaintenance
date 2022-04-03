@@ -77,16 +77,22 @@ export class DataExplanationComponent implements OnInit {
         this.chart.style.height="400px"
       })
   }
-  show(val){
+  showLL(val){
     if(val>=9){
       this.Show= true; 
       var a = prompt("Enter Details for Value "+val, "");
-      // if (a != null) {
-      //   this.ShowValue = a;
-      //   }
+      if (a != null) {
+        document.getElementById("paraLL").innerHTML =  a;
+        }
     }
   }
-  hide(){
-      this.Show= false; 
+  showUL(val){
+    if(val>=9){
+      this.Show= true; 
+      var a = prompt("Enter Details for Value "+val, "");
+      if (a != null) {
+        document.getElementById("paraUL").innerHTML =  a;
+        }
+    }
   }
 }

@@ -18,10 +18,13 @@
                     <tr *ngFor="let a of allData;let i as index;">
                       <td>{{a.MonthYear}}</td>
                       <td>{{a.Td1LowerLimit}}</td>
-                      <td id="i" [style.background-color]="a.Difflowerlimit >= 9 ? 'yellow' : 'white' ">
-                        <span (click)="show(a.Difflowerlimit)">{{a.Difflowerlimit}}</span>
+                      <td [style.background-color]="a.Difflowerlimit >= 9 ? 'yellow' : 'white' ">
+                        <span (click)="showLL(a.Difflowerlimit)">{{a.Difflowerlimit}}</span><br>
+                        <span *ngIf="a.Difflowerlimit >= 9" id="paraLL"></span></td>
                       <td>{{a.Td1UpperLimit}}</td>
-                      <td [style.background-color]="a.Diffupperlimit >= 9 ? 'yellow' : 'white' ">{{a.Diffupperlimit}}</td>
+                      <td [style.background-color]="a.Diffupperlimit >= 9 ? 'yellow' : 'white' ">
+                        <span (click)="showUL(a.Diffupperlimit)">{{a.Diffupperlimit}}</span><br>
+                        <span *ngIf="a.Diffupperlimit >= 9" id="paraUL"></span></td>
                    </tr>
                 </tbody>
             </table>
