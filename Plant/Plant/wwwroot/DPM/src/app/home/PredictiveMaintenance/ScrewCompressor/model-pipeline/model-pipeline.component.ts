@@ -51,16 +51,31 @@ export class ModelPipelineComponent implements OnInit {
     }
   }
   selectCheckBoxA(a) {
-    if(this.Automated=== false) {
+    // if(this.Automated=== false) {
+    //   this.Automated=false;
+    //   this.Manual=true;
+    //   alert("Scada and Sensor are not configured...");
+    //   this.Automated = false;
+    // }
+    // else{
+    //   this.Automated=false;
+    //   this.Manual=true;
+    //   alert("Scada and Sensor are not configured...");
+    //   this.Automated = false; 
+    // }
+    if(this.Manual=== true) {
       this.Automated=false;
-      this.Manual=true;
-      alert("Scada and Sensor are not configured...") 
+      // this.Manual=true;
+      alert("Scada and Sensor are not configured...");
+    
+      this.Automated = false;
     }
-    else{
-      this.Automated=false;
-      this.Manual=true;
-      alert("Scada and Sensor are not configured...") 
-    }
+    // else{
+    //   this.Automated=false;
+    //   this.Manual=true;
+    //   alert("Scada and Sensor are not configured...");
+    //   this.Automated = false; 
+    // }
   }
   Upload() {
     this.load = true;

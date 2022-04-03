@@ -17,10 +17,14 @@ export class ModelConfidenceComponent implements OnInit {
   public getpredictedDate: any = [];
   public getPredictedValues: any = [];
   public color: string = "";
+  public displayConfidenceDetails: boolean = false;
+  public getPredictivePercentageList:any = [];
+
   constructor(private ModelConfidenceCommonBLService: CommonBLService) { }
 
   ngOnInit(): void {
     this.GetModelConfidenceCsvData();
+    this.GetPredictivePercentageData();
   }
 
   lineChart() {
@@ -54,6 +58,9 @@ export class ModelConfidenceComponent implements OnInit {
     },
     )
   }
+  public showDetails(){
+    this.displayConfidenceDetails = true;
+  }
   public GetModelConfidenceCsvData() {
     this.ModelConfidenceCommonBLService.getWithoutParameters('/PredictiveChartAPI/GetModelConfidenceCsvData')
       .subscribe((res: any) => {
@@ -73,6 +80,28 @@ export class ModelConfidenceComponent implements OnInit {
           this.gettd1predictedValues.push(csvRecord.ValuePredicted);
 
         });
+        this.lineChart();
+      })
+  }
+  public GetPredictivePercentageData() {
+    this.ModelConfidenceCommonBLService.getWithoutParameters('/PredictiveChartAPI/GetPredictivePercentage')
+      .subscribe((res: any) => {
+        this.getPredictivePercentageList = res;
+        console.log(this.getPredictiveList)
+        // this.getPredictiveList.forEach(csvRecord => {
+        //   if (csvRecord.ValueNew == "") {
+        //     csvRecord.ValueNew = "N/A";
+        //   }
+        //   if (csvRecord.ValuePredicted == "") {
+        //     csvRecord.ValuePredicted = "N/A";
+        //   }
+        //   if (csvRecord.ValueNew != "" || csvRecord.ValuePredicted != "") {
+        //     this.gettd1newDate.push(csvRecord.Date);
+        //   }
+        //   this.gettd1newValues.push(csvRecord.ValueNew);
+        //   this.gettd1predictedValues.push(csvRecord.ValuePredicted);
+
+        // });
         this.lineChart();
       })
   }

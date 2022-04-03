@@ -27,7 +27,7 @@ import { ModelPipelineComponent } from './PredictiveMaintenance/ScrewCompressor/
 import { DataInsightComponent } from './PredictiveMaintenance/ScrewCompressor/data-insight/data-insight.component';
 import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompressor/model-confidence/model-confidence.component";
 import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompressor/data-explanation/data-explanation.component";
-
+import {DialogModule} from 'primeng/dialog';
 
 @NgModule({
     declarations: [
@@ -54,7 +54,7 @@ import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompresso
     ],
     imports: [    
         HomeRoutingModule,       
-        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule
+        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule,DialogModule
     ],
     providers: [ExcelFormatService],
     bootstrap: [HomeComponent],exports:[HomeComponent]

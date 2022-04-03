@@ -134,7 +134,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\ModelConfidence.csv";
+                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\ModelConfidence.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -167,7 +167,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\SeasonalAccuracyMap.csv";
+                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\SeasonalAccuracyMap.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -201,7 +201,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\PredictivePercentageData.csv";
+                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\PredictivePercentageData.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
