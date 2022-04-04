@@ -1,17 +1,18 @@
 <div class="card dpm-card w-100 p-3">
     <div class="row">
         <div class="col-lg-12">
-            <button class="btn btn-secondary float-right" (click) = showDetails()>View Details</button>
+            <button class="btn btn-secondary float-right" (click)=showDetails()>View Details</button>
             <!-- <button pButton type="button" class="p-button-raised p-button-rounded">View Details</button> -->
         </div>
     </div>
     <div id="chart2">
         <canvas id="Chart2"></canvas>
     </div>
-    <p-dialog header="View Model Confidence Details" [(visible)]="displayConfidenceDetails" [style]="{width:'100%'}">
-        <p-table [value]="getPredictivePercentageList" responsiveLayout="scroll"
-        [scrollable]="true" [style]="{width:'100%'}" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                    [rowsPerPageOptions]="[25,50,75]">
+    <p-dialog header="View Model Confidence Details" [(visible)]="displayConfidenceDetails" [style]="{width:'55%'}">
+        <p-table [value]="getPredictivePercentageList" responsiveLayout="scroll" [scrollable]="true"
+            [style]="{width:'100%'}" [paginator]="true" [rowHover]="true" [rows]="75" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[75,150,300]">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Date</th>
@@ -26,8 +27,9 @@
                     <td>{{percentageList.Date}}</td>
                     <td>{{percentageList.Predicted}}</td>
                     <td>{{percentageList.Historical}}</td>
-                    <td [style.background-color]="percentageList.Difference > 5 ? 'yellow' : 'white' ">{{percentageList.Difference}}</td>
-                    <td>{{percentageList.Percentage}}</td>
+                    <td>{{percentageList.Difference | number:'1.1-2'}}</td>
+                    <td [style.background-color]="percentageList.Difference > 10 ? 'yellow' : 'white' ">
+                        {{percentageList.Percentage }}</td>
                 </tr>
             </ng-template>
         </p-table>

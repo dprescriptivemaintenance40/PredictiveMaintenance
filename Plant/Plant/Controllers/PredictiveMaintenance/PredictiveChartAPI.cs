@@ -101,7 +101,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\DemoData1.csv";
+                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\DemoData1.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
