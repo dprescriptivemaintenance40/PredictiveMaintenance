@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-12">
             <button class="btn btn-secondary float-right" style="margin: 10px;" (click) = showDetails()>View Details</button>
-            <button class="btn btn-secondary float-right" style="margin: 10px;">Example of bad data</button>
+            <button class="btn btn-secondary float-right" style="margin: 10px;" (click) = showBadData()>Example of bad data</button>
             <!-- <button pButton type="button" class="p-button-raised p-button-rounded">View Details</button> -->
         </div>
     </div>
@@ -36,4 +36,9 @@
         </p-table>
     </p-dialog>
 
+    <p-dialog header="Example of Bad Data in Model Confidence" [(visible)]="displayBadData" [style]="{width:'70%'}">
+        
+            <img src="dist/DPM/assets/BadDataOfMC.png" alt="" [style]="{width:'100%'}">
+  
+    </p-dialog>
 </div>

@@ -18,6 +18,7 @@ export class ModelConfidenceComponent implements OnInit {
   public getPredictedValues: any = [];
   public color: string = "";
   public displayConfidenceDetails: boolean = false;
+  public displayBadData: boolean = false;
   public getPredictivePercentageList:any = [];
 
   constructor(private ModelConfidenceCommonBLService: CommonBLService) { }
@@ -60,6 +61,9 @@ export class ModelConfidenceComponent implements OnInit {
   }
   public showDetails(){
     this.displayConfidenceDetails = true;
+  }
+  public showBadData(){
+     this.displayBadData=true;
   }
   public GetModelConfidenceCsvData() {
     this.ModelConfidenceCommonBLService.getWithoutParameters('/PredictiveChartAPI/GetModelConfidenceCsvData')

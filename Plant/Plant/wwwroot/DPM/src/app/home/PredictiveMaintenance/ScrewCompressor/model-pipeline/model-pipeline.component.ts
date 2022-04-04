@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
 enum CheckBoxType { Manual, Automated,NONE};
@@ -33,13 +34,16 @@ export class ModelPipelineComponent implements OnInit {
   aggregate: boolean = false;
   extrapolation: boolean = false;
   predict: boolean = false;
-  constructor(private messageService: MessageService) {
+  dataExplanation: boolean = false;
+
+  constructor(private messageService: MessageService,private route:Router) {
 
   }
 
   ngOnInit() {
 
   }
+ 
   selectCheckBoxM() {
     // If the checkbox was already checked, clear the currentlyChecked variable
     if(this.Manual=== true) {
@@ -166,6 +170,7 @@ export class ModelPipelineComponent implements OnInit {
           detail: 'File Uploaded',
         });
         clearInterval(interval);
+        this.dataExplanation=true;
       }
     }, 2000);
   }

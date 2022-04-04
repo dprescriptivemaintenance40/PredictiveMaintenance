@@ -43,6 +43,10 @@
         <div *ngIf="predict">
             <span>{{progress5}} </span> <i *ngIf="value5==100" style="color: green;" class="pi pi-check-circle"></i>
             <p-progressBar [value]= "value5"  [style]="{'width': '600px'}"></p-progressBar>
+        </div><br><br>
+        <div *ngIf="dataExplanation">
+            <span>Their is 2% of data which needs explanation </span> <br>
+            <a href="#/Home/DataExplanation">Let's see Data Explanation</a>
         </div>
     </div>
     <div class="col-6">
