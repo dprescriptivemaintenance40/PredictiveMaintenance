@@ -17,6 +17,9 @@ export class ModelConfidenceComponent implements OnInit {
   public getpredictedDate: any = [];
   public getPredictedValues: any = [];
   public color: string = "";
+  public average:string = "";
+  public max:string = "";
+  public min:string = "";
   public displayConfidenceDetails: boolean = false;
   public displayBadData: boolean = false;
   public getPredictivePercentageList:any = [];
@@ -24,9 +27,13 @@ export class ModelConfidenceComponent implements OnInit {
   constructor(private ModelConfidenceCommonBLService: CommonBLService) { }
 
   ngOnInit(): void {
+    this.average = "0%";
+    this.max = "9%";
+    this.min = "-5%";
     this.GetModelConfidenceCsvData();
     this.GetPredictivePercentageData();
   }
+  
 
   lineChart() {
     const stackedLine = new Chart("Chart2", {

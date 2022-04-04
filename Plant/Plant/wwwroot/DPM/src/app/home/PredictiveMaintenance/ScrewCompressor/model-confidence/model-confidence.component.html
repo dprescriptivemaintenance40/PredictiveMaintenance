@@ -14,7 +14,23 @@
             [style]="{width:'100%'}" [paginator]="true" [rowHover]="true" [rows]="75" [showCurrentPageReport]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [rowsPerPageOptions]="[75,150,300]">
-            <ng-template pTemplate="header">
+            <ng-template pTemplate = "header">
+                <div class="row">
+                    <div class="col-md-2 d-flex flex-column">
+                        <label style=" margin-right: 12px;">Average</label>
+                        <input type="text" class="form-control" [(ngModel)]="average"  [readonly]="true"  pInputText />
+                    </div>  
+                    <div class="col-md-2 d-flex flex-column">
+                        <label style=" margin-right: 12px;">Maximum</label>
+                        <input type="text" class="form-control" [(ngModel)]="max" [readonly]="true"  pInputText />
+                    </div>
+                    <div class="col-md-2 d-flex flex-column">
+                        <label style=" margin-right: 12px;">Minimum</label>
+                        <input type="text" class="form-control" [(ngModel)]="min"  [readonly]="true"  pInputText />
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="content">     
                 <tr>
                     <th>Date</th>
                     <th>Predicted</th>
