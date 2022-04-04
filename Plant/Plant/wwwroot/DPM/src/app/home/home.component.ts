@@ -56,12 +56,12 @@ export class HomeComponent implements OnInit {
             url: '#/Home/DataExplanation',
           },
           {
-            label: 'Predictive Charts',
-            url: '#/Home/PredictiveChart',
-          },
-          {
             label: 'Model Confidence',
             url: '#/Home/ModelConfidence',
+          },
+          {
+            label: 'Predictive Charts',
+            url: '#/Home/PredictiveChart',
           },
           {
             label: 'Data Insights',

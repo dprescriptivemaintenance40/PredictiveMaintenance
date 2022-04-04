@@ -10,6 +10,7 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 export class DataExplanationComponent implements OnInit {
 
   public chart;
+  public ShowValue:string=""
   public Show:boolean = false;
   public Hide:boolean=true;
   public GetDataExplanation: any = [];
@@ -31,14 +32,14 @@ export class DataExplanationComponent implements OnInit {
       data: {
         labels: this.getMonthYear,
         datasets: [{
-          label: 'Historical Data(Line Chart)',
+          label: 'TD1 Lower Limit(Line Chart)',
           data: this.getTd1LowerLimit,
           // fill: true,
           // backgroundColor: 'blue',
           borderColor: 'blue',
 
         }, {
-          label: 'Predicted Data(Line Chart)',
+          label: 'TD1 Upper Limit(Line Chart)',
           data: this.getTd1UpperLimit,
           // fill: true,
           // backgroundColor: 'blue',
@@ -76,13 +77,22 @@ export class DataExplanationComponent implements OnInit {
         this.chart.style.height="400px"
       })
   }
-  show(val){
+  showLL(val){
     if(val>=9){
       this.Show= true; 
-      alert("greater")
+      var a = prompt("Enter Details for Value "+val, "");
+      if (a != null) {
+        document.getElementById("paraLL").innerHTML =  a;
+        }
     }
   }
-  hide(){
-      this.Show= false; 
+  showUL(val){
+    if(val>=9){
+      this.Show= true; 
+      var a = prompt("Enter Details for Value "+val, "");
+      if (a != null) {
+        document.getElementById("paraUL").innerHTML =  a;
+        }
+    }
   }
 }
