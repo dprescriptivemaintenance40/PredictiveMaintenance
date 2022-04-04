@@ -1,6 +1,20 @@
 <div class="card dpm-card w-100 p-3">
     <div class="row">
         <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-2 d-flex flex-column">
+                    <label style=" margin-right: 12px;">Average</label>
+                    <input type="text" class="form-control" [(ngModel)]="average"  [readonly]="true"  pInputText />
+                </div>  
+                <div class="col-md-2 d-flex flex-column">
+                    <label style=" margin-right: 12px;">Maximum</label>
+                    <input type="text" class="form-control" [(ngModel)]="max" [readonly]="true"  pInputText />
+                </div>
+                <div class="col-md-2 d-flex flex-column">
+                    <label style=" margin-right: 12px;">Minimum</label>
+                    <input type="text" class="form-control" [(ngModel)]="min"  [readonly]="true"  pInputText />
+                </div>
+            </div>
             <button class="btn btn-secondary float-right" style="margin: 10px;" (click) = showDetails()>View Details</button>
             <button class="btn btn-secondary float-right" style="margin: 10px;" (click) = showBadData()>Example of bad data</button>
             <!-- <button pButton type="button" class="p-button-raised p-button-rounded">View Details</button> -->
@@ -14,23 +28,7 @@
             [style]="{width:'100%'}" [paginator]="true" [rowHover]="true" [rows]="75" [showCurrentPageReport]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [rowsPerPageOptions]="[75,150,300]">
-            <ng-template pTemplate = "header">
-                <div class="row">
-                    <div class="col-md-2 d-flex flex-column">
-                        <label style=" margin-right: 12px;">Average</label>
-                        <input type="text" class="form-control" [(ngModel)]="average"  [readonly]="true"  pInputText />
-                    </div>  
-                    <div class="col-md-2 d-flex flex-column">
-                        <label style=" margin-right: 12px;">Maximum</label>
-                        <input type="text" class="form-control" [(ngModel)]="max" [readonly]="true"  pInputText />
-                    </div>
-                    <div class="col-md-2 d-flex flex-column">
-                        <label style=" margin-right: 12px;">Minimum</label>
-                        <input type="text" class="form-control" [(ngModel)]="min"  [readonly]="true"  pInputText />
-                    </div>
-                </div>
-            </ng-template>
-            <ng-template pTemplate="content">     
+            <ng-template pTemplate="header">     
                 <tr>
                     <th>Date</th>
                     <th>Predicted</th>
