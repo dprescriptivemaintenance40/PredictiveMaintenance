@@ -5,6 +5,7 @@ using Plant.Models.PredictiveMaintenance;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.PredictiveChart;
+using static Plant.Models.EquipmentTables.EquipmentDataProcess;
 
 namespace Plant.DAL
 {
@@ -58,6 +59,18 @@ namespace Plant.DAL
         public DbSet<ModelConfidence> ModelConfidences { get; set; }
         public DbSet<DataExplanation> DataExplanations { get; set; }
         public DbSet<PredictivePercentage> PredictivePercentages { get; set; }
+
+        //EquipmentDataProcessTables
+        public DbSet<EquipmentTable> EquipmentTables { get; set; }
+        public DbSet<PatternTable> PatternTables { get; set; }
+        public DbSet<EquipmentProcess> EquipmentProcesss { get; set; }
+        public DbSet<BatchTable> BatchTables { get; set; }
+        public DbSet<StagingTableSingle> StagingTableSingles { get; set; }
+        public DbSet<CleanTableSingle> CleanTableSingles { get; set; }
+        public DbSet<ErrorTableSingle> ErrorTableSingles { get; set; }
+        public DbSet<ProcessedTableSingle> ProcessedTableSingles { get; set; }
+        public DbSet<PredictedTableSingle> PredictedTableSingles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -294,6 +307,33 @@ namespace Plant.DAL
             modelBuilder.Entity<DataExplanation>().ToTable("tblDataExplanation");
             modelBuilder.Entity<PredictivePercentage>().ToTable("tblPredictivePercentage");
 
+            //EquipmentDataProcessTables
+            modelBuilder.Entity<EquipmentTable>().ToTable("tblEquipmentTable");
+            modelBuilder.Entity<EquipmentTable>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<PatternTable>().ToTable("tblPatternTable");
+            modelBuilder.Entity<PatternTable>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<EquipmentProcess>().ToTable("tblEquipmentProcess");
+            modelBuilder.Entity<EquipmentProcess>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<BatchTable>().ToTable("tblBatchTable");
+            modelBuilder.Entity<BatchTable>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<StagingTableSingle>().ToTable("tblStagingTableSingle");
+            modelBuilder.Entity<StagingTableSingle>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<CleanTableSingle>().ToTable("tblCleanTableSingle");
+            modelBuilder.Entity<CleanTableSingle>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<ErrorTableSingle>().ToTable("tblErrorTableSingle");
+            modelBuilder.Entity<ErrorTableSingle>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<ProcessedTableSingle>().ToTable("tblProcessedTableSingle");
+            modelBuilder.Entity<ProcessedTableSingle>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<PredictedTableSingle>().ToTable("tblPredictedTableSingle");
+            modelBuilder.Entity<PredictedTableSingle>().HasKey(c => c.Id);
             //Data Seeding
             modelBuilder.Entity<SILClassificationMaster>()
                .HasData(

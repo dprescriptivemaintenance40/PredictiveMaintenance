@@ -1,5 +1,6 @@
 ﻿using Plant.Models.Historical;
 using System.ComponentModel.DataAnnotations.Schema;
+using static Plant.Models.EquipmentTables.EquipmentDataProcess;
 
 namespace Plant.Models
 {
@@ -21,6 +22,8 @@ namespace Plant.Models
         public List<SIF> sif { get; set; }
         public List<CompressorModel> compressorModel { get; set; }
         public List<PumpModel> pumpModel { get; set; }
+        public List<EquipmentTable> equipmentTable { get; set; }
+        public List<PatternTable> patternTable { get; set; }
         public Network networks { get; set; }
         public RCM RCM { get; set; }
     }
