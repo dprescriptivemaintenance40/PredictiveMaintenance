@@ -29,11 +29,7 @@ namespace Plant.Models.EquipmentTables
         public class EquipmentProcess
         {
             public int Id { get; set; }
-
-            [ForeignKey("equipmentTable")]
             public int EquipmentTableId { get; set; }  //foreign key
-
-            [ForeignKey("patternTable")]
             public int PatternId { get; set; }         //foreign key
             public string DataInput { get; set; }      //File-F,Automated-A,Manual-M
             public string FolderPath { get; set; }

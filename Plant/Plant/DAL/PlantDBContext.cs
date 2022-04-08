@@ -316,6 +316,17 @@ namespace Plant.DAL
 
             modelBuilder.Entity<EquipmentProcess>().ToTable("tblEquipmentProcess");
             modelBuilder.Entity<EquipmentProcess>().HasKey(c => c.Id);
+            modelBuilder.Entity<EquipmentProcess>()
+                .HasOne(p => p.equipmentTable)
+                .WithMany()
+                .HasForeignKey(p => p.EquipmentTableId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<EquipmentProcess>()
+                .HasOne(p => p.patternTable)
+                .WithMany()
+                .HasForeignKey(p => p.PatternId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<BatchTable>().ToTable("tblBatchTable");
             modelBuilder.Entity<BatchTable>().HasKey(c => c.Id);
