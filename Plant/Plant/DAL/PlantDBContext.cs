@@ -5,6 +5,7 @@ using Plant.Models.PredictiveMaintenance;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.PredictiveChart;
+using static Plant.Models.EquipmentTables.CompressorDataProcess;
 using static Plant.Models.EquipmentTables.EquipmentDataProcess;
 
 namespace Plant.DAL
@@ -65,11 +66,11 @@ namespace Plant.DAL
         public DbSet<PatternTable> PatternTables { get; set; }
         public DbSet<EquipmentProcess> EquipmentProcesss { get; set; }
         public DbSet<BatchTable> BatchTables { get; set; }
-        public DbSet<StagingTableSingle> StagingTableSingles { get; set; }
-        public DbSet<CleanTableSingle> CleanTableSingles { get; set; }
-        public DbSet<ErrorTableSingle> ErrorTableSingles { get; set; }
-        public DbSet<ProcessedTableSingle> ProcessedTableSingles { get; set; }
-        public DbSet<PredictedTableSingle> PredictedTableSingles { get; set; }
+        public DbSet<StagingTableCompressor> StagingTableSingles { get; set; }
+        public DbSet<CleanTableCompressor> CleanTableSingles { get; set; }
+        public DbSet<ErrorTableCompressor> ErrorTableSingles { get; set; }
+        public DbSet<ProcessedTableCompressor> ProcessedTableSingles { get; set; }
+        public DbSet<PredictedTableCompressor> PredictedTableSingles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -330,21 +331,32 @@ namespace Plant.DAL
 
             modelBuilder.Entity<BatchTable>().ToTable("tblBatchTable");
             modelBuilder.Entity<BatchTable>().HasKey(c => c.Id);
+            modelBuilder.Entity<BatchTable>()
+               .HasOne(p => p.equipmentTable)
+               .WithMany()
+               .HasForeignKey(p => p.EquipmentTableId)
+               .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<StagingTableSingle>().ToTable("tblStagingTableSingle");
-            modelBuilder.Entity<StagingTableSingle>().HasKey(c => c.Id);
+            modelBuilder.Entity<BatchTable>()
+                .HasOne(p => p.equipmentProcess)
+                .WithMany()
+                .HasForeignKey(p => p.EquipmentProcessId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<CleanTableSingle>().ToTable("tblCleanTableSingle");
-            modelBuilder.Entity<CleanTableSingle>().HasKey(c => c.Id);
+            modelBuilder.Entity<StagingTableCompressor>().ToTable("tblStagingTableCompressor");
+            modelBuilder.Entity<StagingTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<ErrorTableSingle>().ToTable("tblErrorTableSingle");
-            modelBuilder.Entity<ErrorTableSingle>().HasKey(c => c.Id);
+            modelBuilder.Entity<CleanTableCompressor>().ToTable("tblCleanTableCompressor");
+            modelBuilder.Entity<CleanTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<ProcessedTableSingle>().ToTable("tblProcessedTableSingle");
-            modelBuilder.Entity<ProcessedTableSingle>().HasKey(c => c.Id);
+            modelBuilder.Entity<ErrorTableCompressor>().ToTable("tblErrorTableCompressor");
+            modelBuilder.Entity<ErrorTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<PredictedTableSingle>().ToTable("tblPredictedTableSingle");
-            modelBuilder.Entity<PredictedTableSingle>().HasKey(c => c.Id);
+            modelBuilder.Entity<ProcessedTableCompressor>().ToTable("tblProcessedTableCompressor");
+            modelBuilder.Entity<ProcessedTableCompressor>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<PredictedTableCompressor>().ToTable("tblPredictedTableCompressor");
+            modelBuilder.Entity<PredictedTableCompressor>().HasKey(c => c.Id);
             //Data Seeding
             modelBuilder.Entity<SILClassificationMaster>()
                .HasData(
