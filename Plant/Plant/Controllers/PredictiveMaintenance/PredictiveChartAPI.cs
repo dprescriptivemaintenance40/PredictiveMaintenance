@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance;
+using System.Diagnostics;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Plant.Controllers.PredictiveMaintenance
@@ -228,6 +229,87 @@ namespace Plant.Controllers.PredictiveMaintenance
                 throw;
             }
         }
+
+        [HttpPost]
+        [Route("PostCompressor")]
+        public IEnumerable<string> PostCompressor( )
+        {
+            try
+            {
+                ProcessStartInfo start = new ProcessStartInfo();
+                start.FileName = "C:/Users/admin/AppData/Local/Programs/Python/Python310/python.EXE"; ;//cmd is full path to python.exe
+                start.Arguments = "E:/DPMNewPortal/PredictiveMaintenance/Plant/Plant/FillMissingValues.py";  //args is path to .py file and any cmd line args
+                start.UseShellExecute = false;
+                start.RedirectStandardOutput = true;
+                using (Process process = Process.Start(start))
+                {
+                    using (StreamReader reader = process.StandardOutput)
+                    {
+                        string result = reader.ReadToEnd();
+                        Console.Write(result);
+                        //return new string[] { result };
+                    }
+                }
+
+
+                ProcessStartInfo start1 = new ProcessStartInfo();
+                start1.FileName = "C:/Users/admin/AppData/Local/Programs/Python/Python310/python.EXE"; ;//cmd is full path to python.exe
+                start1.Arguments = "E:/DPMNewPortal/PredictiveMaintenance/Plant/Plant/seasonal.py";  //args is path to .py file and any cmd line args
+                start1.UseShellExecute = false;
+                start1.RedirectStandardOutput = true;
+                using (Process process = Process.Start(start1))
+                {
+                    using (StreamReader reader = process.StandardOutput)
+                    {
+                        string result = reader.ReadToEnd();
+                        Console.Write(result);
+                        return new string[] { result };
+                    }
+                }
+
+            }
+            catch (Exception exe)
+            {
+                throw;
+            }
+        }
+
+        //[HttpPost]
+        //[Route("UploadCSV")]
+        //public async Task<ActionResult<List<TempCompressorModel>>> UploadCSV([FromBody] List<TempCompressorModel> tempCompressorModel)
+        //{
+        //    try
+        //    {
+        //        foreach (var item in tempCompressorModel)
+        //        {
+        //            CompressorModel compressor = new CompressorModel();
+        //            compressor.OrganizationId = item.OrganizationId;
+        //            compressor.EquipmentId = 1083;
+        //            compressor.PS1 = item.PS1;
+        //            compressor.PD1 = item.PD1;
+        //            compressor.PS2 = item.PS2;
+
+        //            compressor.PD2 = item.PD2;
+        //            compressor.TS1 = item.TS1;
+        //            compressor.TD1 = item.TD1;
+        //            compressor.TS2 = item.TS2;
+        //            compressor.TD2 = item.TD2;
+        //            compressor.InsertedDate = item.InsertedDate;
+        //            await _Context.CompressorsModel.AddAsync(compressor);
+        //            await _Context.SaveChangesAsync();
+
+        //        }
+
+        //        return Ok();
+        //    }
+
+
+        //    catch (System.Exception exe)
+        //    {
+
+        //        return BadRequest(exe.Message);
+        //    }
+        //}
         // PUT api/<PredictiveChart>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
