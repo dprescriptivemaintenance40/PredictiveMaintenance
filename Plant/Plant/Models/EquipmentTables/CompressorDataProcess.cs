@@ -9,6 +9,12 @@ namespace Plant.Models.EquipmentTables
 {
     public class CompressorDataProcess
     {
+        public class CompressorObjectModel
+        {
+            public int Id { get; set; }
+            public string Date { get; set; }
+            public string TD1Value { get; set; }
+        }
         public class StagingTableCompressor
         {
             public int Id { get; set; }

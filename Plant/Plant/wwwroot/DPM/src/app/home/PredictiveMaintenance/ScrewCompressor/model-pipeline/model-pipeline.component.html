@@ -6,14 +6,16 @@
         <input type="file" id="myfile">
     </div>
     <div class="col-1">
-      <button class="btn btn-success btn-sm"  (click)="addfiles($event)">
+      
         Process
       </button>
     </div> -->
-        <div class="col-md-8 form-group">
+        <div class="col-md-4 form-group">
             <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file"
                 accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+          
         </div>
+        <button class="btn btn-success btn-sm" style="margin-left: 10px;height: 40px;" (click)="Upload()">Process</button>
         <div class="col-4">
             <input type="checkbox" style="width: 50px;height: 20px;" [checked]="Manual" (change)="selectCheckBoxM()">
             Manual

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import * as xlsx from "xlsx";
  import { HttpClient } from '@angular/common/http';
+import { CompressorObjectModel } from './model-pipeline.model';
 enum CheckBoxType { Manual, Automated, NONE };
 @Component({
   selector: 'app-model-pipeline',
@@ -23,6 +24,7 @@ export class ModelPipelineComponent implements OnInit {
   value3: number = 0;
   value4: number = 0;
   value5: number = 0;
+  count:number=0;
   progress: string = "";
   progress1: string = "";
   progress2: string = "";
@@ -36,6 +38,7 @@ export class ModelPipelineComponent implements OnInit {
   extrapolation: boolean = false;
   predict: boolean = false;
   dataExplanation: boolean = false;
+  public CompressorObject:Array<CompressorObjectModel>=new Array<CompressorObjectModel>();
   public file: File
   public filelist: any;
   public arrayBuffer: any;
@@ -89,12 +92,18 @@ export class ModelPipelineComponent implements OnInit {
   }
   Upload() {
     this.load = true;
+      this.http.post("api/CompressorProcessAPI/PostCompressor",this.CompressorObject).subscribe (res =>
+        alert(res)
+        ),
+        (err)=>{
+          console.log(err.message)
+        }
     let interval = setInterval(() => {
       this.value = this.value + Math.floor(Math.random() * 10) + 5;
       this.progress = "Loading the data";
       if (this.value >= 100) {
         this.value = 100;
-        this.progress = "Completed loading of data : 1876 rows were added";
+        this.progress = "Completed loading of data : "+ this.count+" rows were added";
         this.Validate();
         clearInterval(interval);
       }
@@ -187,7 +196,7 @@ export class ModelPipelineComponent implements OnInit {
   }
 
   addfile(event) {
-    this.Upload()    
+      
     this.file= event.target.files[0];     
     let fileReader = new FileReader();    
     fileReader.readAsArrayBuffer(this.file);     
@@ -207,19 +216,16 @@ export class ModelPipelineComponent implements OnInit {
         console.log(this.compressorList)
         this.filelist = [];    
         // console.log(this.filelist)  
-        var TempcompressorModelObj = [];
+        
         this.compressorList.forEach(element => {
-          var obj:any={};
-          obj['SrNo'] = JSON.stringify(element.SrNo),
-          obj['Datetime'] = JSON.stringify(element.Datetime),
-          obj['td1'] = JSON.stringify(element.td1);
-          TempcompressorModelObj.push(obj);
-         
+          var obj:CompressorObjectModel=new CompressorObjectModel();
+          obj.Id= element.__rowNum__,
+          obj.Date = element.Date,
+          obj.TD1Value= element.TD1;
+          this.CompressorObject.push(obj);
+          this.count+=1;
         }); 
-        console.log(TempcompressorModelObj)
-       this.http.post("api/PredictiveChartAPI/UploadCSV",TempcompressorModelObj).subscribe (res =>
-        alert(res)
-        );
-      } 
+        console.log(this.CompressorObject);
+        }   
     }
 }
