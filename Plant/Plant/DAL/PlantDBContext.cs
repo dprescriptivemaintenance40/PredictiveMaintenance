@@ -65,6 +65,7 @@ namespace Plant.DAL
         public DbSet<EquipmentTable> EquipmentTables { get; set; }
         public DbSet<PatternTable> PatternTables { get; set; }
         public DbSet<EquipmentProcess> EquipmentProcesss { get; set; }
+        public DbSet<CompressorConstraint> CompressorConstraints { get; set; }
         public DbSet<BatchTable> BatchTables { get; set; }
         public DbSet<StagingTableCompressor> StagingTableSingles { get; set; }
         public DbSet<CleanTableCompressor> CleanTableSingles { get; set; }
@@ -92,39 +93,39 @@ namespace Plant.DAL
             //        .WithMany(b => b.safetyFactors)
             //        .HasForeignKey(a => a.PlantId);
 
-            modelBuilder.Entity<Equipment>().ToTable("tblEquipmentList");
+            modelBuilder.Entity<Equipment>().ToTable("EquipmentList");
             modelBuilder.Entity<Equipment>().HasKey(C => C.EquipmentId);
             modelBuilder.Entity<Equipment>()
                 .HasOne(p => p.networks)
                     .WithMany(b => b.equipmentList)
                     .HasForeignKey(a => a.NetworkId);
 
-            modelBuilder.Entity<Edge>().ToTable("tblEdge");
+            modelBuilder.Entity<Edge>().ToTable("Edge");
             modelBuilder.Entity<Edge>().HasKey(C => C.EdgeId);
             modelBuilder.Entity<Edge>()
                 .HasOne(p => p.networks)
                     .WithMany(b => b.edges)
                     .HasForeignKey(a => a.NetworkId);
 
-            modelBuilder.Entity<CompressorModel>().ToTable("tblCompressorDetails");
+            modelBuilder.Entity<CompressorModel>().ToTable("CompressorDetails");
             modelBuilder.Entity<CompressorModel>().HasKey(c => c.CompressorId);
             modelBuilder.Entity<CompressorModel>()
              .HasOne(p => p.equipments)
              .WithMany(p => p.compressorModel)
              .HasForeignKey(p => p.EquipmentId);
 
-            modelBuilder.Entity<PumpModel>().ToTable("tblPumpDetails");
+            modelBuilder.Entity<PumpModel>().ToTable("PumpDetails");
             modelBuilder.Entity<PumpModel>().HasKey(c => c.PumpId);
             modelBuilder.Entity<PumpModel>()
              .HasOne(p => p.equipments)
              .WithMany(p => p.pumpModel)
              .HasForeignKey(p => p.EquipmentId);
 
-            modelBuilder.Entity<RCM>().ToTable("tblRCM");
+            modelBuilder.Entity<RCM>().ToTable("RCM");
             modelBuilder.Entity<RCM>().HasKey(r => r.RCMId);
-            modelBuilder.Entity<FailureModes>().ToTable("tblRCMFailureModel");
+            modelBuilder.Entity<FailureModes>().ToTable("RCMFailureModel");
             modelBuilder.Entity<FailureModes>().HasKey(r => r.FailureModeId);
-            modelBuilder.Entity<MSS>().ToTable("tblMSS");
+            modelBuilder.Entity<MSS>().ToTable("MSS");
             modelBuilder.Entity<MSS>().HasKey(r => r.MSSId);
 
             modelBuilder.Entity<FailureModes>()
@@ -140,38 +141,38 @@ namespace Plant.DAL
 
             //SIL Classification
 
-            modelBuilder.Entity<SIFDesign>().ToTable("tblSIFDesign");
+            modelBuilder.Entity<SIFDesign>().ToTable("SIFDesign");
             modelBuilder.Entity<SIFDesign>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<ImpactEvent>().ToTable("tblImpactEvent");
+            modelBuilder.Entity<ImpactEvent>().ToTable("ImpactEvent");
             modelBuilder.Entity<ImpactEvent>().HasKey(c => c.Id);
             modelBuilder.Entity<ImpactEvent>()
                 .HasOne(p => p.SIFDesign)
                 .WithMany(p => p.ImpactEvents)
                 .HasForeignKey(p => p.SIFId);
 
-            modelBuilder.Entity<RiskMatrix>().ToTable("tblRiskMatrix");
+            modelBuilder.Entity<RiskMatrix>().ToTable("RiskMatrix");
             modelBuilder.Entity<RiskMatrix>().HasKey(c => c.RMId);
             modelBuilder.Entity<RiskMatrix>()
                .HasOne(p => p.ImpactEvent)
                .WithMany(p => p.RiskMatrix)
                .HasForeignKey(p => p.IEId);
 
-            modelBuilder.Entity<InitiatingCause>().ToTable("tblInitiatingCause");
+            modelBuilder.Entity<InitiatingCause>().ToTable("InitiatingCause");
             modelBuilder.Entity<InitiatingCause>().HasKey(c => c.Id);
             modelBuilder.Entity<InitiatingCause>()
                 .HasOne(p => p.RiskMatrix)
                 .WithMany(p => p.InitiatingCauses)
                 .HasForeignKey(p => p.RMId);
 
-            modelBuilder.Entity<ProtectionLayer>().ToTable("tblIPL");
+            modelBuilder.Entity<ProtectionLayer>().ToTable("IPL");
             modelBuilder.Entity<ProtectionLayer>().HasKey(c => c.Id);
             modelBuilder.Entity<ProtectionLayer>()
                 .HasOne(p => p.InitiatingCause)
                 .WithMany(p => p.ProtectionLayers)
                 .HasForeignKey(p => p.ICId);
 
-            modelBuilder.Entity<DynamicGroupName>().ToTable("tbldynamicColumns");
+            modelBuilder.Entity<DynamicGroupName>().ToTable("DynamicColumns");
             modelBuilder.Entity<DynamicGroupName>().HasKey(c => c.DynamicId);
             modelBuilder.Entity<DynamicGroupName>()
                .HasOne(p => p.InitiatingCause)
@@ -179,7 +180,7 @@ namespace Plant.DAL
                .HasForeignKey(p => p.ICId);
 
 
-            modelBuilder.Entity<Calculation>().ToTable("tblCalculation");
+            modelBuilder.Entity<Calculation>().ToTable("Calculation");
             modelBuilder.Entity<Calculation>().HasKey(c => c.calculationId);
             //modelBuilder.Entity<Calculation>()
             //    .HasOne(p => p.silClassification)
@@ -188,38 +189,38 @@ namespace Plant.DAL
 
             //SIL Classification Master
 
-            modelBuilder.Entity<SILClassificationMaster>().ToTable("tblSILClassificationMaster");
+            modelBuilder.Entity<SILClassificationMaster>().ToTable("SILClassification_Master");
             modelBuilder.Entity<SILClassificationMaster>().HasKey(c => c.SILCMasterId);
 
-            modelBuilder.Entity<RiskMatrixMaster>().ToTable("tblRiskMatrixMaster");
+            modelBuilder.Entity<RiskMatrixMaster>().ToTable("RiskMatrix_Master");
             modelBuilder.Entity<RiskMatrixMaster>().HasKey(c => c.RMMId);
             modelBuilder.Entity<RiskMatrixMaster>()
                 .HasOne(p => p.silClassificationMaster)
                 .WithMany(p => p.riskMatrixMaster)
                 .HasForeignKey(p => p.SILCMasterId);
 
-            modelBuilder.Entity<Category>().ToTable("tblCategory");
+            modelBuilder.Entity<Category>().ToTable("Category");
             modelBuilder.Entity<Category>().HasKey(c => c.CategoryId);
             modelBuilder.Entity<Category>()
                 .HasOne(p => p.riskMatrixMaster)
                 .WithMany(p => p.Category)
                 .HasForeignKey(p => p.RMMId);
 
-            modelBuilder.Entity<Severity>().ToTable("tblSeverity");
+            modelBuilder.Entity<Severity>().ToTable("Severity");
             modelBuilder.Entity<Severity>().HasKey(c => c.SeverityId);
             modelBuilder.Entity<Severity>()
                 .HasOne(p => p.riskMatrixMaster)
                 .WithMany(p => p.Severity)
                 .HasForeignKey(p => p.RMMId);
 
-            modelBuilder.Entity<TRF>().ToTable("tblTRF");
+            modelBuilder.Entity<TRF>().ToTable("TRF");
             modelBuilder.Entity<TRF>().HasKey(c => c.TRFId);
             modelBuilder.Entity<TRF>()
                 .HasOne(p => p.riskMatrixMaster)
                 .WithMany(p => p.TRF)
                 .HasForeignKey(p => p.RMMId);
 
-            modelBuilder.Entity<InitiatingCausesMaster>().ToTable("tblInitiatingCausesMaster");
+            modelBuilder.Entity<InitiatingCausesMaster>().ToTable("InitiatingCauses_Master");
             modelBuilder.Entity<InitiatingCausesMaster>().HasKey(c => c.ICMId);
             modelBuilder.Entity<InitiatingCausesMaster>()
                 .HasOne(p => p.silClassificationMaster)
@@ -265,7 +266,7 @@ namespace Plant.DAL
             //  .WithMany(p => p.sis)
             //  .HasForeignKey(p => p.SafetyFactorId);
 
-            modelBuilder.Entity<SIF>().ToTable("tblSIF");
+            modelBuilder.Entity<SIF>().ToTable("SIF");
             modelBuilder.Entity<SIF>().HasKey(c => c.SIFId);
             modelBuilder.Entity<SIF>()
              .HasOne(p => p.equipments)
@@ -275,7 +276,7 @@ namespace Plant.DAL
             //modelBuilder.Entity<Elements>().ToTable("tblElements");
             //modelBuilder.Entity<Elements>().HasKey(c => c.ElementId);
 
-            modelBuilder.Entity<Sensor>().ToTable("tblSensor");
+            modelBuilder.Entity<Sensor>().ToTable("Sensor");
             modelBuilder.Entity<Sensor>().HasKey(c => c.SensorId);
             modelBuilder.Entity<Sensor>()
              .HasOne(p => p.sif)
@@ -284,14 +285,14 @@ namespace Plant.DAL
 
             //modelBuilder.Entity<ReportTemplateMaster>().ToTable("tblReportTemplate");
 
-            modelBuilder.Entity<LogicSolver>().ToTable("tblLogicSolver");
+            modelBuilder.Entity<LogicSolver>().ToTable("LogicSolver");
             modelBuilder.Entity<LogicSolver>().HasKey(c => c.LogicSolverId);
             modelBuilder.Entity<LogicSolver>()
              .HasOne(p => p.sif)
              .WithMany(p => p.logicSolver)
              .HasForeignKey(p => p.SIFId);
 
-            modelBuilder.Entity<FinalElement>().ToTable("tblFinalElement");
+            modelBuilder.Entity<FinalElement>().ToTable("FinalElement");
             modelBuilder.Entity<FinalElement>().HasKey(c => c.FinalElementId);
             modelBuilder.Entity<FinalElement>()
              .HasOne(p => p.sif)
@@ -299,24 +300,40 @@ namespace Plant.DAL
              .HasForeignKey(p => p.SIFId);
 
             //Report
-            modelBuilder.Entity<ReportMaster>().ToTable("tblReport");
+            modelBuilder.Entity<ReportMaster>().ToTable("Report");
 
 
             //PredictiveMaintenance
-            modelBuilder.Entity<PredictiveChart>().ToTable("tblPredictiveCsvData");
-            modelBuilder.Entity<ModelConfidence>().ToTable("tblModelConfidenceCsvData");
-            modelBuilder.Entity<DataExplanation>().ToTable("tblDataExplanation");
-            modelBuilder.Entity<PredictivePercentage>().ToTable("tblPredictivePercentage");
+            modelBuilder.Entity<PredictiveChart>().ToTable("Predictive_CsvData");
+            modelBuilder.Entity<ModelConfidence>().ToTable("ModelConfidence_CsvData");
+            modelBuilder.Entity<DataExplanation>().ToTable("DataExplanation");
+            modelBuilder.Entity<PredictivePercentage>().ToTable("PredictivePercentage");
 
             //EquipmentDataProcessTables
-            modelBuilder.Entity<EquipmentTable>().ToTable("tblEquipmentTable");
+            modelBuilder.Entity<EquipmentTable>().ToTable("Equipment");
             modelBuilder.Entity<EquipmentTable>().HasKey(c => c.Id);
+            modelBuilder.Entity<EquipmentTable>()
+                    .Property(p => p.NameOfEquipment)
+                    .HasColumnType("varchar(200)");
+            modelBuilder.Entity<EquipmentTable>()
+                    .Property(p => p.TypeOfEquipment)
+                    .HasColumnType("varchar(200)");
 
-            modelBuilder.Entity<PatternTable>().ToTable("tblPatternTable");
+            modelBuilder.Entity<PatternTable>().ToTable("Pattern");
             modelBuilder.Entity<PatternTable>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<EquipmentProcess>().ToTable("tblEquipmentProcess");
+            modelBuilder.Entity<EquipmentProcess>().ToTable("EquipmentProcess");
             modelBuilder.Entity<EquipmentProcess>().HasKey(c => c.Id);
+            modelBuilder.Entity<EquipmentProcess>()
+                    .Property(p => p.DataInput)
+                    .HasColumnType("char");
+            modelBuilder.Entity<EquipmentProcess>()
+                    .Property(p => p.FolderPath)
+                    .HasColumnType("varchar(200)");
+            modelBuilder.Entity<EquipmentProcess>()
+                    .Property(p => p.Description)
+                    .HasColumnType("varchar(200)");
+
             modelBuilder.Entity<EquipmentProcess>()
                 .HasOne(p => p.equipmentTable)
                 .WithMany()
@@ -329,8 +346,15 @@ namespace Plant.DAL
                 .HasForeignKey(p => p.PatternId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<BatchTable>().ToTable("tblBatchTable");
+            modelBuilder.Entity<CompressorConstraint>().ToTable("Constraints");
+            modelBuilder.Entity<CompressorConstraint>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<BatchTable>().ToTable("Batch");
             modelBuilder.Entity<BatchTable>().HasKey(c => c.Id);
+            modelBuilder.Entity<BatchTable>()
+                    .Property(p => p.Description)
+                    .HasColumnType("varchar(200)");
+           
             modelBuilder.Entity<BatchTable>()
                .HasOne(p => p.equipmentTable)
                .WithMany()
@@ -343,19 +367,19 @@ namespace Plant.DAL
                 .HasForeignKey(p => p.EquipmentProcessId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<StagingTableCompressor>().ToTable("tblStagingTableCompressor");
+            modelBuilder.Entity<StagingTableCompressor>().ToTable("Compressor_Staging");
             modelBuilder.Entity<StagingTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<CleanTableCompressor>().ToTable("tblCleanTableCompressor");
+            modelBuilder.Entity<CleanTableCompressor>().ToTable("Compressor_Cleaning");
             modelBuilder.Entity<CleanTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<ErrorTableCompressor>().ToTable("tblErrorTableCompressor");
+            modelBuilder.Entity<ErrorTableCompressor>().ToTable("Compressor_Error");
             modelBuilder.Entity<ErrorTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<ProcessedTableCompressor>().ToTable("tblProcessedTableCompressor");
+            modelBuilder.Entity<ProcessedTableCompressor>().ToTable("Compressor_Processed");
             modelBuilder.Entity<ProcessedTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<PredictedTableCompressor>().ToTable("tblPredictedTableCompressor");
+            modelBuilder.Entity<PredictedTableCompressor>().ToTable("Compressor_Predicted");
             modelBuilder.Entity<PredictedTableCompressor>().HasKey(c => c.Id);
             //Data Seeding
             modelBuilder.Entity<SILClassificationMaster>()

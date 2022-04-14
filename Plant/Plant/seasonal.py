@@ -8,7 +8,6 @@ import datetime
 
 print("========= Welcome to Dynamic Prescriptive Maintenance =========")
 print("===== Copyright © DPM AI Analytics ====")
-print ("Process is started please wait")
 
 series = pd.read_csv('CompressorFilledValues.csv')
 
@@ -47,8 +46,8 @@ bigdata = pd.concat([resultFinal,finalDf])
 #finalDf.plot(ax=ax)
 cond =  bigdata.index >= '2019-06-10' 
 colorsarr = np.where(cond, 'red', 'green')
-print(colorsarr)
+
 plt.plot(bigdata.index,bigdata["TD1New"])
 plt.show()
 bigdata.to_csv("CompressorFinalOutPut.csv")
-print (" Process is end, check Output folder for output")
+print ("Process is end, check Output folder for output")

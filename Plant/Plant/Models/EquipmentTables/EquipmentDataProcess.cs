@@ -40,7 +40,7 @@ namespace Plant.Models.EquipmentTables
             public EquipmentTable equipmentTable { get; set; }
             public PatternTable patternTable { get; set; }
         }
-        public class EquipmentConstraintCompressor
+        public class CompressorConstraint
         {
             public int Id { get; set; }
             [ForeignKey("equipmentProcess")]
@@ -55,8 +55,8 @@ namespace Plant.Models.EquipmentTables
             public int EquipmentProcessId { get; set; }  //foreign key
             public string Description { get; set; }     
             public string DateTimeUploaded { get; set; }
-            public EquipmentProcess equipmentProcess { get; set; }
             public EquipmentTable equipmentTable { get; set; }
+            public EquipmentProcess equipmentProcess { get; set; }
         }
         
     }
