@@ -10,6 +10,7 @@ using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance;
 using System.Diagnostics;
+using static Plant.Models.EquipmentTables.CompressorDataProcess;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Plant.Controllers.PredictiveMaintenance
@@ -102,7 +103,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\DemoData1.csv";
+                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\DemoData1.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -135,7 +136,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\ModelConfidence.csv";
+                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\ModelConfidence.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -168,7 +169,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\SeasonalAccuracyMap.csv";
+                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\SeasonalAccuracyMap.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -202,7 +203,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             try
             {
-                string PredictiveDataCSVPath = @"E:\DPMNewPortal\PredictiveMaintenance\Plant\Plant\PredictivePercentageData.csv";
+                string PredictiveDataCSVPath = @"G:\PredictiveMaintenance\Plant\Plant\PredictivePercentageData.csv";
                 using (var streamReader = new StreamReader(PredictiveDataCSVPath))
                 {
                     using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -230,49 +231,7 @@ namespace Plant.Controllers.PredictiveMaintenance
             }
         }
 
-        [HttpPost]
-        [Route("PostCompressor")]
-        public IEnumerable<string> PostCompressor( )
-        {
-            try
-            {
-                ProcessStartInfo start = new ProcessStartInfo();
-                start.FileName = "C:/Users/admin/AppData/Local/Programs/Python/Python310/python.EXE"; ;//cmd is full path to python.exe
-                start.Arguments = "E:/DPMNewPortal/PredictiveMaintenance/Plant/Plant/FillMissingValues.py";  //args is path to .py file and any cmd line args
-                start.UseShellExecute = false;
-                start.RedirectStandardOutput = true;
-                using (Process process = Process.Start(start))
-                {
-                    using (StreamReader reader = process.StandardOutput)
-                    {
-                        string result = reader.ReadToEnd();
-                        Console.Write(result);
-                        //return new string[] { result };
-                    }
-                }
-
-
-                ProcessStartInfo start1 = new ProcessStartInfo();
-                start1.FileName = "C:/Users/admin/AppData/Local/Programs/Python/Python310/python.EXE"; ;//cmd is full path to python.exe
-                start1.Arguments = "E:/DPMNewPortal/PredictiveMaintenance/Plant/Plant/seasonal.py";  //args is path to .py file and any cmd line args
-                start1.UseShellExecute = false;
-                start1.RedirectStandardOutput = true;
-                using (Process process = Process.Start(start1))
-                {
-                    using (StreamReader reader = process.StandardOutput)
-                    {
-                        string result = reader.ReadToEnd();
-                        Console.Write(result);
-                        return new string[] { result };
-                    }
-                }
-
-            }
-            catch (Exception exe)
-            {
-                throw;
-            }
-        }
+        
 
         //[HttpPost]
         //[Route("UploadCSV")]

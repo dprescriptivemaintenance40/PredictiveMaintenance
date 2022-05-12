@@ -1,5 +1,8 @@
-﻿using KiranaPasalManagementSystem.Response;
+﻿using CsvHelper;
+using KiranaPasalManagementSystem.Response;
 using Microsoft.AspNetCore.Mvc;
+using Plant.DAL;
+using Plant.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +12,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static Plant.Models.EquipmentTables.CompressorDataProcess;
+using static Plant.Models.EquipmentTables.EquipmentDataProcess;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,6 +22,11 @@ namespace Plant.Controllers.PredictiveMaintenance
     [ApiController]
     public class CompressorProcessAPI : ControllerBase
     {
+        private readonly PlantDBContext _Context;
+        public CompressorProcessAPI(PlantDBContext plantDBContext)
+        {
+            _Context = plantDBContext;
+        }
         // GET: api/<ValuesController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -34,78 +43,13 @@ namespace Plant.Controllers.PredictiveMaintenance
 
         // POST api/<ValuesController>
         [HttpPost]
-        [Route("PostCompressor")]
-        public IEnumerable<string> PostCompressor(List<CompressorObjectModel> obj)
+        [Route("StagingTableCompressor")]
+        public IEnumerable<string> StagingTableCompressor()
         {
-            try
-            {
-                //Validations
-                foreach (var data in obj)
-                {
-                    string value = data.TD1Value;
-                    if (value != "")
-                    {
-                        var td1Value = float.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
-                        var regex1 = new Regex(@"^[0-9]*(?:\.[0-9]+)?$");
-                        if (td1Value <= 0)
-                        {
-                            //value must be greater than zero
-                        }
-                        else
-                        {
-                            string td1Value1 = value.ToString();
-                           
-                            if (!regex1.IsMatch(td1Value1))
-                            {
-                              //value must be number  
-                            }
-                        }
-                       
-                    }
-                    else
-                    {
-                        //null values are not allowed
-                    }
-                }
-
-                //Finding missing values
-                ProcessStartInfo start = new ProcessStartInfo();
-                start.FileName = "C:/Users/HP/AppData/Local/Programs/Python/Python310/python.EXE"; //cmd is full path to python.exe
-                start.Arguments = "FillMissingValues.py";  //args is path to .py file and any cmd line args
-                start.UseShellExecute = false;
-                start.RedirectStandardOutput = true;
-                using (Process process = Process.Start(start))
-                {
-                    using (StreamReader reader = process.StandardOutput)
-                    {
-                        string result = reader.ReadToEnd();
-                        Console.Write(result);
-                        //return new string[] { result };
-                    }
-                }
-              
-
-                 //Predicting v0alues
-                 ProcessStartInfo start1 = new ProcessStartInfo();
-                start1.FileName = "C:/Users/HP/AppData/Local/Programs/Python/Python310/python.EXE"; //cmd is full path to python.exe
-                start1.Arguments = "seasonal.py";  //args is path to .py file and any cmd line args
-                start1.UseShellExecute = false;
-                start1.RedirectStandardOutput = true;
-                using (Process process = Process.Start(start1))
-                {
-                    using (StreamReader reader = process.StandardOutput)
-                    {
-                        string result = reader.ReadToEnd();
-                        Console.Write(result);
-                        return new string[] { result };
-                    }
-                }
-
-            }
-            catch (Exception exe)
-            {
-                throw;
-            }
+            //List<> edge = _Context.Edges.ToList<Edge>();
+            //var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+            //var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+            return new string[] { "value1", "value2" };
         }
 
         // PUT api/<ValuesController>/5

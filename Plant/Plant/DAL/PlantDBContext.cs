@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CsvHelper;
+using Microsoft.EntityFrameworkCore;
 using Plant.Models;
 using Plant.Models.Historical;
 using Plant.Models.PredictiveMaintenance;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.PredictiveChart;
+using System.Globalization;
 using static Plant.Models.EquipmentTables.CompressorDataProcess;
 using static Plant.Models.EquipmentTables.EquipmentDataProcess;
 
@@ -67,19 +69,19 @@ namespace Plant.DAL
         public DbSet<EquipmentProcess> EquipmentProcesss { get; set; }
         public DbSet<CompressorConstraint> CompressorConstraints { get; set; }
         public DbSet<BatchTable> BatchTables { get; set; }
-        public DbSet<StagingTableCompressor> StagingTableSingles { get; set; }
-        public DbSet<CleanTableCompressor> CleanTableSingles { get; set; }
-        public DbSet<ErrorTableCompressor> ErrorTableSingles { get; set; }
-        public DbSet<ProcessedTableCompressor> ProcessedTableSingles { get; set; }
-        public DbSet<PredictedTableCompressor> PredictedTableSingles { get; set; }
+        //public DbSet<StagingTableCompressor> StagingTableSingles { get; set; }
+        //public DbSet<CleanTableCompressor> CleanTableSingles { get; set; }
+        //public DbSet<ErrorTableCompressor> ErrorTableSingles { get; set; }
+        //public DbSet<ProcessedTableCompressor> ProcessedTableSingles { get; set; }
+        //public DbSet<PredictedTableCompressor> PredictedTableSingles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Plants>().ToTable("tblPlant");
+            modelBuilder.Entity<Plants>().ToTable("Plant");
             modelBuilder.Entity<Plants>().HasKey(c => c.PlantId);
 
-            modelBuilder.Entity<Network>().ToTable("tblNetwork");
+            modelBuilder.Entity<Network>().ToTable("Network");
             modelBuilder.Entity<Network>().HasKey(C => C.NetworkId);
             modelBuilder.Entity<Network>()
                 .HasOne(p => p.plant)
@@ -354,11 +356,11 @@ namespace Plant.DAL
             modelBuilder.Entity<BatchTable>()
                     .Property(p => p.Description)
                     .HasColumnType("varchar(200)");
-           
+
             modelBuilder.Entity<BatchTable>()
                .HasOne(p => p.equipmentTable)
                .WithMany()
-               .HasForeignKey(p => p.EquipmentTableId)
+               .HasForeignKey(p => p.EquipmentTblId)
                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<BatchTable>()
@@ -367,20 +369,22 @@ namespace Plant.DAL
                 .HasForeignKey(p => p.EquipmentProcessId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<StagingTableCompressor>().ToTable("Compressor_Staging");
-            modelBuilder.Entity<StagingTableCompressor>().HasKey(c => c.Id);
+            //modelBuilder.Entity<StagingTableCompressor>().ToTable("Compressor_Staging");
+            //modelBuilder.Entity<StagingTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<CleanTableCompressor>().ToTable("Compressor_Cleaning");
-            modelBuilder.Entity<CleanTableCompressor>().HasKey(c => c.Id);
+            //modelBuilder.Entity<CleanTableCompressor>().ToTable("Compressor_Cleaning");
+            //modelBuilder.Entity<CleanTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<ErrorTableCompressor>().ToTable("Compressor_Error");
-            modelBuilder.Entity<ErrorTableCompressor>().HasKey(c => c.Id);
+            //modelBuilder.Entity<ErrorTableCompressor>().ToTable("Compressor_Error");
+            //modelBuilder.Entity<ErrorTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<ProcessedTableCompressor>().ToTable("Compressor_Processed");
-            modelBuilder.Entity<ProcessedTableCompressor>().HasKey(c => c.Id);
+            //modelBuilder.Entity<ProcessedTableCompressor>().ToTable("Compressor_Processed");
+            //modelBuilder.Entity<ProcessedTableCompressor>().HasKey(c => c.Id);
 
-            modelBuilder.Entity<PredictedTableCompressor>().ToTable("Compressor_Predicted");
-            modelBuilder.Entity<PredictedTableCompressor>().HasKey(c => c.Id);
+            //modelBuilder.Entity<PredictedTableCompressor>().ToTable("Compressor_Predicted");
+            //modelBuilder.Entity<PredictedTableCompressor>().HasKey(c => c.Id);
+
+
             //Data Seeding
             modelBuilder.Entity<SILClassificationMaster>()
                .HasData(
@@ -395,7 +399,7 @@ namespace Plant.DAL
                new RiskMatrixMaster
                {
                    SILCMasterId = 1,
-                   RMMId=1
+                   RMMId = 1
                }
               );
 
@@ -404,8 +408,8 @@ namespace Plant.DAL
               new Category
               {
                   RMMId = 1,
-                  CategoryId=1,
-                  CategoryName="P"
+                  CategoryId = 1,
+                  CategoryName = "P"
               },
               new Category
               {
@@ -425,8 +429,8 @@ namespace Plant.DAL
               new Severity
               {
                   RMMId = 1,
-                  SeverityId=1,
-                  SeverityValue=1
+                  SeverityId = 1,
+                  SeverityValue = 1
               },
               new Severity
               {
@@ -505,8 +509,8 @@ namespace Plant.DAL
               {
                   SILCMasterId = 1,
                   ICMId = 1,
-                  InitiatingCause= "Aboveground piping full breach failure (pipe size <= 150mm, 6 in)",
-                  IEF= 1.00E-06F
+                  InitiatingCause = "Aboveground piping full breach failure (pipe size <= 150mm, 6 in)",
+                  IEF = 1.00E-06F
               },
               new InitiatingCausesMaster
               {
@@ -524,10 +528,10 @@ namespace Plant.DAL
               },
               new InitiatingCausesMaster
               {
-                   SILCMasterId = 1,
-                   ICMId = 4,
-                   InitiatingCause = "Aboveground piping leak(pipe size > 150 mm, 6 in)",
-                   IEF = 1.00E-06F
+                  SILCMasterId = 1,
+                  ICMId = 4,
+                  InitiatingCause = "Aboveground piping leak(pipe size > 150 mm, 6 in)",
+                  IEF = 1.00E-06F
               },
               new InitiatingCausesMaster
               {
@@ -654,13 +658,15 @@ namespace Plant.DAL
                   ICMId = 22,
                   InitiatingCause = "Operator failure (to execute a complete, routine procedure; well-trained operator,unstressed, not fatigued)",
                   IEF = 1.00E-02F
-              }, new InitiatingCausesMaster
+              },
+              new InitiatingCausesMaster
               {
                   SILCMasterId = 1,
                   ICMId = 23,
                   InitiatingCause = "Premature opening of spring loaded relief valve",
                   IEF = 1.00E-02F
-              }, new InitiatingCausesMaster
+              },
+              new InitiatingCausesMaster
               {
                   SILCMasterId = 1,
                   ICMId = 24,
@@ -675,32 +681,32 @@ namespace Plant.DAL
                   IEF = 1.00E-05F
               },
               new InitiatingCausesMaster
+              {
+                  SILCMasterId = 1,
+                  ICMId = 26,
+                  InitiatingCause = "Pump seal complete failure",
+                  IEF = 1.00E-01F
+              },
+               new InitiatingCausesMaster
                {
                    SILCMasterId = 1,
-                   ICMId = 26,
-                   InitiatingCause = "Pump seal complete failure",
+                   ICMId = 27,
+                   InitiatingCause = "Pump seal leak",
+                   IEF = 1.00E+00F
+               },
+               new InitiatingCausesMaster
+               {
+                   SILCMasterId = 1,
+                   ICMId = 28,
+                   InitiatingCause = "Pump, compressor, fan or blower failure",
                    IEF = 1.00E-01F
                },
                new InitiatingCausesMaster
                {
-                    SILCMasterId = 1,
-                    ICMId = 27,
-                    InitiatingCause = "Pump seal leak",
-                    IEF = 1.00E+00F
-               },
-               new InitiatingCausesMaster
-               {
-                     SILCMasterId = 1,
-                     ICMId = 28,
-                     InitiatingCause = "Pump, compressor, fan or blower failure",
-                     IEF = 1.00E-01F
-               },
-               new InitiatingCausesMaster
-               {
-                     SILCMasterId = 1,
-                     ICMId = 29,
-                     InitiatingCause = "Screw conveyor failure",
-                     IEF = 1.00E+00F
+                   SILCMasterId = 1,
+                   ICMId = 29,
+                   InitiatingCause = "Screw conveyor failure",
+                   IEF = 1.00E+00F
                },
                new InitiatingCausesMaster
                {
@@ -737,7 +743,9 @@ namespace Plant.DAL
                    InitiatingCause = "Malfunction of Level Transmitter",
                    IEF = 1.00E-03F
                }
-             );  
+             );
+
+          
         }
     }
 

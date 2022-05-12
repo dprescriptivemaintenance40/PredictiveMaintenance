@@ -16,6 +16,7 @@ namespace Plant.Models.EquipmentTables
             public int EquipmentId { get; set; }
             public string NameOfEquipment { get; set; }
             public string TypeOfEquipment { get; set; }
+            public List<EquipmentProcess> equipmentProcessList { get; set; }
             public Equipment equipment { get; set; }
         }
         public class PatternTable
@@ -36,7 +37,7 @@ namespace Plant.Models.EquipmentTables
             public string DataInput { get; set; }      //File-F,Automated-A,Manual-M
             public string FolderPath { get; set; }
             public string Description { get; set; }
-            public List<BatchTable> batchTable { get; set; }
+            public List<BatchTable> batchTableList { get; set; }
             public EquipmentTable equipmentTable { get; set; }
             public PatternTable patternTable { get; set; }
         }
@@ -51,7 +52,7 @@ namespace Plant.Models.EquipmentTables
         public class BatchTable
         {
             public int Id { get; set; }
-            public int EquipmentTableId { get; set; }
+            public int EquipmentTblId { get; set; }
             public int EquipmentProcessId { get; set; }  //foreign key
             public string Description { get; set; }     
             public string DateTimeUploaded { get; set; }
