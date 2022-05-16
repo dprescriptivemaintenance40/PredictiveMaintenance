@@ -28,4 +28,8 @@ export class DashboardComponent implements OnInit {
   public plantShow(id:any){
     this.router.navigateByUrl('/Home/VisNetwork', { state : { PlantId : id} })
   }
+
+  newTab(url: string) { 
+  window.open(url, "_blank");
+  }
 }
