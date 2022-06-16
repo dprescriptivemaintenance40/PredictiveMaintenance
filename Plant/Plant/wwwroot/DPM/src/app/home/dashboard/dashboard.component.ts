@@ -29,6 +29,9 @@ export class DashboardComponent implements OnInit {
     this.router.navigateByUrl('/Home/VisNetwork', { state : { PlantId : id} })
   }
 
+  report(){
+    this.router.navigate(["Home/report"])
+  }
   newTab(url: string) { 
   window.open(url, "_blank");
   }

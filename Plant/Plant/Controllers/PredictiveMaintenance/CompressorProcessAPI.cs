@@ -2,17 +2,7 @@
 using KiranaPasalManagementSystem.Response;
 using Microsoft.AspNetCore.Mvc;
 using Plant.DAL;
-using Plant.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using static Plant.Models.EquipmentTables.CompressorDataProcess;
-using static Plant.Models.EquipmentTables.EquipmentDataProcess;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

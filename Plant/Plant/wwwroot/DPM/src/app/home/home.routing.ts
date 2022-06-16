@@ -18,12 +18,16 @@ import { DataInsightComponent } from "./PredictiveMaintenance/ScrewCompressor/da
 import { PredictiveChartComponent } from "./PredictiveMaintenance/ScrewCompressor/predictive-chart/predictive-chart.component";
 import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompressor/model-confidence/model-confidence.component";
 import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompressor/data-explanation/data-explanation.component";
+import { RFMComponent } from "./RFM/rfm.component";
+import { DashboardReportComponent } from "./DashboardReport/dashboardReport.component";
+
 @NgModule({
     imports: [RouterModule.forChild([
         {
             path: '', component: HomeComponent,
             children: [
                 { path: '', redirectTo: 'aboutus', pathMatch: 'full' },
+                {path:'report',component:DashboardReportComponent},
                 { path: 'aboutus' , component: AboutComponent},
                 { path: 'report' , component: SILreportComponent},
                 { path: 'LandingPage', component: DashboardComponent },
@@ -31,6 +35,7 @@ import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompresso
                 { path: 'FMEA', component: FMEAComponent},
                 { path:'FCA', component:FCAComponent},
                 { path:'MSS' , component:MSSComponent},
+                { path:'RFM', component:RFMComponent},
                 { path: 'RCMList' , component:RCMListComponent},
                 { path:'SIL',component:SILComponent},
                 { path:'SIL/:id' , component:SILComponent},

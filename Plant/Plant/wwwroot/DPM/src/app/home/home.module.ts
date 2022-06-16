@@ -28,6 +28,7 @@ import { DataInsightComponent } from './PredictiveMaintenance/ScrewCompressor/da
 import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompressor/model-confidence/model-confidence.component";
 import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompressor/data-explanation/data-explanation.component";
 import {DialogModule} from 'primeng/dialog';
+import { RFMComponent } from "./RFM/rfm.component";
 
 @NgModule({
     declarations: [
@@ -49,7 +50,8 @@ import {DialogModule} from 'primeng/dialog';
         ModelPipelineComponent,
         DataInsightComponent,
         ModelConfidenceComponent,
-        DataExplanationComponent
+        DataExplanationComponent,
+        RFMComponent
         
     ],
     imports: [    
