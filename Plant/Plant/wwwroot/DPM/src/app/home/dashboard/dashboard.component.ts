@@ -35,4 +35,7 @@ export class DashboardComponent implements OnInit {
   newTab(url: string) { 
   window.open(url, "_blank");
   }
+  HelpTab(url: string) { 
+    window.open(url, "dist/DPM/assets/ISO14224.xlsx");
+    }
 }
