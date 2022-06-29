@@ -25,6 +25,7 @@
 <div>
   <button class="btn btn-primary float-right"   (click)="report()">Report</button>
   <a href="dist/DPM/assets/ISO14224.xlsx" style="height:36px; width: 50px;" class="btn btn-primary float-right mr-3 px-2 py-2">Help</a> <br> <br>
-  <iframe title="Predictive_Dashboard" style="margin-left: 10px;" width="1100" height="580" src="https://app.powerbi.com/reportEmbed?reportId=953c67c4-1acb-4c54-ad3c-ee54af08f4ec&autoAuth=true&ctid=69dfca66-8162-4071-bfcc-ae458f959be0&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLWluZGlhLWNlbnRyYWwtYS1wcmltYXJ5LXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
+  <iframe title="Predictive_Dashboard" style="margin-left: 10px;" width="1100" height="580"  
+  src="https://localhost:44365" (load)="getPowerBiKeys()"  
       frameborder="1" allowFullScreen="true"></iframe>
-</div>
+     </div>

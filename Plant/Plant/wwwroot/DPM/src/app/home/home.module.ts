@@ -29,6 +29,8 @@ import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompresso
 import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompressor/data-explanation/data-explanation.component";
 import {DialogModule} from 'primeng/dialog';
 import { RFMComponent } from "./RFM/rfm.component";
+import { PowerBIEmbedModule } from 'powerbi-client-angular';
+
 
 @NgModule({
     declarations: [
@@ -51,12 +53,12 @@ import { RFMComponent } from "./RFM/rfm.component";
         DataInsightComponent,
         ModelConfidenceComponent,
         DataExplanationComponent,
-        RFMComponent
+        RFMComponent,
         
     ],
     imports: [    
         HomeRoutingModule,       
-        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule,DialogModule
+        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule,DialogModule, PowerBIEmbedModule
     ],
     providers: [ExcelFormatService],
     bootstrap: [HomeComponent],exports:[HomeComponent]
