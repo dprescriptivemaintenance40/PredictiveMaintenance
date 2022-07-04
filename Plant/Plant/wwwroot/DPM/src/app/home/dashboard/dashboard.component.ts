@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DashboardServiceService } from './DashboardService/-dashboard-service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,10 +13,9 @@ export class DashboardComponent implements OnInit {
   keyData: any;
 
 
-  constructor(public router: Router, public http: HttpClient, private service: DashboardServiceService) { }
+  constructor(public router: Router, public http: HttpClient) { }
 
   ngOnInit(): void {
-    this.getPowerBiKeys();
     const firstTime = localStorage.getItem('key')
     if (!firstTime) {
       localStorage.setItem('key', 'loaded')
@@ -37,17 +35,6 @@ export class DashboardComponent implements OnInit {
 
   public plantShow(id: any) {
     this.router.navigateByUrl('/Home/VisNetwork', { state: { PlantId: id } })
-  }
-
-  getPowerBiKeys() {
-    this.service.getKeyApi().subscribe(
-      res => {
-        this.keyData = res;
-      },
-      err => {
-        console.log(err);
-      }
-    );
   }
 
   report() {
