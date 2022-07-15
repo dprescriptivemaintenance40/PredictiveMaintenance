@@ -29,8 +29,14 @@ import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompresso
 import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompressor/data-explanation/data-explanation.component";
 import {DialogModule} from 'primeng/dialog';
 import { RFMComponent } from "./RFM/rfm.component";
-
-
+import { CBAComponent } from "./RCM/CBA/cba-add/cba-add.component";
+import { RiskMatrix5Component } from "./RCM/CBA/Shared/CBA/RiskMatrix5/riskmatrix5.component";
+import { RiskMatrix6Component } from "./RCM/CBA/Shared/CBA/RiskMatrix6/riskmatrix6.component";
+import { RCMFunctionalAnalysis } from "./RCM/CBA/RCMFunctionalAnalysis/rcmreport.component";
+import { PrescriptiveConfigurationComponent } from "./RCM/FMEA/prescriptive-configuration/prescriptive-configuration.component";
+import { PrescriptiveReportComponent } from "./RCM/FMEA/prescriptive-report/prescriptive-report.component";
+import { PrescriptiveUpdateComponent } from "./RCM/FMEA/prescriptive-update/prescriptive-update.component";
+import { FMEASHEETComponent } from "./RCM/FMEA/fmea-sheet/fmea-sheet.component";
 
 @NgModule({
     declarations: [
@@ -54,11 +60,18 @@ import { RFMComponent } from "./RFM/rfm.component";
         ModelConfidenceComponent,
         DataExplanationComponent,
         RFMComponent,
-        
+        CBAComponent,
+        RCMFunctionalAnalysis,
+        RiskMatrix5Component,
+        RiskMatrix6Component,
+        PrescriptiveConfigurationComponent,
+        PrescriptiveReportComponent,
+        PrescriptiveUpdateComponent,
+        FMEASHEETComponent
     ],
     imports: [    
         HomeRoutingModule,       
-        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule,DialogModule,
+        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule,DialogModule
     ],
     providers: [ExcelFormatService],
     bootstrap: [HomeComponent],exports:[HomeComponent]

@@ -45,7 +45,7 @@
             </div>
             <div class="col-md-3 d-flex flex-column">
                 <label class="d-block">Tag Number</label>
-                <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="this.RCMOBJ.TagNumber" class="form-control" placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1" disabled>
+                <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control" placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1">
             </div>
             <div class="col-md-2 d-flex flex-column">
                 <label class="invisible ">Tag Number</label>
@@ -139,7 +139,7 @@
                                 <!-- (click)="FailureModeSelected(func, $event)" -->
                                 <label> <input type="checkbox"
                                                name = "{{i}}"
-                                               (change)="FailureModeSelected(func, $event)"
+                                               (click)="FailureModeSelected(func, $event)"
                                                 [checked]="func.values"
                                                 [(ngModel)]="func.checked"
                                                 /> 
@@ -230,8 +230,8 @@
         <div *ngIf="prescriptiveEffect" class="stepsdemo-content dpm-card mt-2" id="scrollToTop">
             <p-card>
                 <ng-template pTemplate="title" class="mb-0">
-                    <h5 class="p-card-title" style="">Enter Factors for <span class="text-primary"><strong>{{FMLSEffectModeName}}</strong></span>
-                        <a (click)="panel.show($event)" class="factor-desc" title="Explaination of each factors." style="">
+                    <h5 class="p-card-title" >Enter Factors for <span class="text-primary"><strong>{{FMLSEffectModeName}}</strong></span>
+                        <a (click)="panel.show($event)" class="factor-desc" title="Explaination of each factors.">
                             <i class="fas fa-info-circle fa-1px ml-2 text-primary"></i>
                         </a>
                         <div class="badge badge-warning">
@@ -259,7 +259,7 @@
                             <div class="col-md-5">
                                 <label> Down Time Factor:</label>
                             </div>
-                            <div style="" class="col-md-5">
+                            <div class="col-md-5">
                                 <div class="d-flex justify-content-between align-items-center range-from">
                                     <span class="d-block text-primary small font-weight-bold"> 1</span>
                                     <span class="d-block text-primary small font-weight-bold"> 10</span>
@@ -276,7 +276,7 @@
                             <div class="col-md-5">
                                 <label> Scrape Factor:</label>
                             </div>
-                            <div style="" class="col-md-5">
+                            <div class="col-md-5">
                                 <div class="d-flex justify-content-between align-items-center range-from">
                                     <span class="d-block text-primary small font-weight-bold"> 1</span>
                                     <span class="d-block text-primary small font-weight-bold"> 5</span>
@@ -295,7 +295,7 @@
                             <div class="col-md-5">
                                 <label> Safety Factor:</label>
                             </div>
-                            <div style="" class="col-md-5">
+                            <div class="col-md-5">
                                 <div class="d-flex justify-content-between align-items-center range-from">
                                     <span class="d-block text-primary small font-weight-bold"> 1</span>
                                     <span class="d-block text-primary small font-weight-bold"> 20</span>
@@ -313,7 +313,7 @@
                             <div class="col-md-5">
                                 <label>Protection Factor:</label>
                             </div>
-                            <div style="" class="col-md-5">
+                            <div class="col-md-5">
                                 <div class="d-flex justify-content-between align-items-center range-from">
                                     <span class="d-block text-primary small font-weight-bold"> 1</span>
                                     <span class="d-block text-primary small font-weight-bold"> 10</span>
@@ -332,7 +332,7 @@
                             <div class="col-md-5">
                                 <label>Frequency Factor :</label>
                             </div>
-                            <div style="" class="col-md-5">
+                            <div class="col-md-5">
                                 <div class="d-flex justify-content-between align-items-center range-from">
                                     <span class="d-block text-primary small font-weight-bold"> 1</span>
                                     <span class="d-block text-primary small font-weight-bold"> 15</span>

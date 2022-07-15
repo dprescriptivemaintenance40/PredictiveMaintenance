@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CsvHelper;
-using System.IO;
 using System.Globalization;
-using System.Linq;
 using Plant.Models.PredictiveMaintenance.PredictiveChart;
 using Plant.DAL;
 using Microsoft.EntityFrameworkCore;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance;
-using System.Diagnostics;
-using static Plant.Models.EquipmentTables.CompressorDataProcess;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Plant.Controllers.PredictiveMaintenance
@@ -124,7 +120,7 @@ namespace Plant.Controllers.PredictiveMaintenance
              
                 return new string[] { "Success" };
             }
-            catch (Exception exe)
+            catch (Exception )
             {
                 throw;
             }
@@ -157,7 +153,7 @@ namespace Plant.Controllers.PredictiveMaintenance
 
                 return new string[] { "Success" };
             }
-            catch (Exception exe)
+            catch (Exception)
             {
                 throw;
             }
@@ -192,7 +188,7 @@ namespace Plant.Controllers.PredictiveMaintenance
 
                 return new string[] { "Success" };
             }
-            catch (Exception exe)
+            catch (Exception )
             {
                 throw;
             }
@@ -225,7 +221,7 @@ namespace Plant.Controllers.PredictiveMaintenance
 
                 return new string[] { "Success" };
             }
-            catch (Exception exe)
+            catch (Exception)
             {
                 throw;
             }

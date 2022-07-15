@@ -1,5 +1,3 @@
-import { RCM } from "src/app/shared/Models/rcm.models";
-
 export class Equipment
 {
     public EquipmentId : number;

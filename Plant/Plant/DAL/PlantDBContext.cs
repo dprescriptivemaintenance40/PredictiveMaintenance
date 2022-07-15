@@ -1,4 +1,5 @@
 ﻿using CsvHelper;
+using DPM.Models.Prescriptive;
 using Microsoft.EntityFrameworkCore;
 using Plant.Models;
 using Plant.Models.Historical;
@@ -23,12 +24,20 @@ namespace Plant.DAL
         public DbSet<Plants> Plants { get; set; }
         public DbSet<Network> Networks { get; set; }
 
-        //FMEA
+       
         public DbSet<CompressorModel> CompressorsModel { get; set; }
         public DbSet<PumpModel> PumpsModel { get; set; }
+
+        //FMEA
         public DbSet<RCM> RCMs { get; set; }
+        public DbSet<PrescriptiveLookupMasterModel> PrescriptiveLookupMassterModelData { get; set; }
         public DbSet<FailureModes> FailureModes { get; set; }
         public DbSet<MSS> MSS { get; set; }
+
+        public DbSet<PrescriptiveCbaModel> PrescriptiveCbaModels { get; set; }
+        public DbSet<CBAFailureMode> CBAFailureModes { get; set; }
+        public DbSet<CBAMaintenanceTask> CBAMaintenanceTasks { get; set; }
+        public DbSet<CBAMainenanceInterval> CBAMainenanceIntervals { get; set; }
 
         //SILClassificationMaster
         public DbSet<SILClassificationMaster> SilClassificationMaster { get; set; }
@@ -123,8 +132,10 @@ namespace Plant.DAL
              .WithMany(p => p.pumpModel)
              .HasForeignKey(p => p.EquipmentId);
 
+            //FMEA
             modelBuilder.Entity<RCM>().ToTable("RCM");
-            modelBuilder.Entity<RCM>().HasKey(r => r.RCMId);
+            //modelBuilder.Entity<RCM>().HasKey(r => r.RCMId);
+            modelBuilder.Entity<PrescriptiveLookupMasterModel>().ToTable("prescriptive_lookupmaster");
             modelBuilder.Entity<FailureModes>().ToTable("RCMFailureModel");
             modelBuilder.Entity<FailureModes>().HasKey(r => r.FailureModeId);
             modelBuilder.Entity<MSS>().ToTable("MSS");
@@ -140,6 +151,22 @@ namespace Plant.DAL
                 .WithMany(r => r.MSS)
                 .HasForeignKey(r => r.FailureModeId);
 
+            modelBuilder.Entity<PrescriptiveCbaModel>().ToTable("prescriptivecbatable");
+            modelBuilder.Entity<CBAFailureMode>().ToTable("cbafailuremodes");
+            modelBuilder.Entity<CBAFailureMode>()
+                        .HasOne(p => p.PrescriptiveCbaModels)
+                        .WithMany(b => b.CBAFailureModes)
+                        .HasForeignKey(a => a.PCMId);
+            modelBuilder.Entity<CBAMaintenanceTask>().ToTable("cbamaintenancetask");
+            modelBuilder.Entity<CBAMaintenanceTask>()
+                        .HasOne(p => p.CBAFailureMode)
+                        .WithMany(b => b.CBAMaintenanceTasks)
+                        .HasForeignKey(a => a.CFMId);
+            modelBuilder.Entity<CBAMainenanceInterval>().ToTable("cbamainenanceinterval");
+            modelBuilder.Entity<CBAMainenanceInterval>()
+                        .HasOne(p => p.CBAMaintenanceTasks)
+                        .WithMany(b => b.CBAMainenanceIntervals)
+                        .HasForeignKey(a => a.CMTId);
 
             //SIL Classification
 

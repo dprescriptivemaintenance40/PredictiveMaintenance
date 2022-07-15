@@ -19,12 +19,15 @@ export class HomeComponent implements OnInit {
   menuOpened: boolean = true;
   FormData: FormGroup;
 
-  public CloseSideBar(){
-    if(this.router.url === "/Home/SIL" ){
-     this.menuOpened = false;
+  public CloseSideBar() {
+    if (this.router.url === "/Home/SIL") {
+      this.menuOpened = false;
     }
   }
 
+  public MenuClosed() {
+    this.menuOpened = false;
+  }
   public MenuItems: any[] = [
     {
       label: 'About-Us',
@@ -41,37 +44,37 @@ export class HomeComponent implements OnInit {
       icon: 'pi pi-home',
       items: [
         {
-        label: 'Compressor',
-        items: [
-          {
-            label: 'Constraints & Validations',
-            url: '#/Home/ConstraintValidation',
-          },
-          {
-            label: 'Model Pipeline',
-            url: '#/Home/ModelPipeline',
-          },
-          {
-            label: 'Data Explanation',
-            url: '#/Home/DataExplanation',
-          },
-          {
-            label: 'Model Confidence',
-            url: '#/Home/ModelConfidence',
-          },
-          {
-            label: 'Predictive Charts',
-            url: '#/Home/PredictiveChart',
-          },
-          {
-            label: 'Data Insights',
-            url: '#/Home/DataInsight',
-          },
-          {
-            label: 'Predictive Reports',
-            url: '#/Home/PredictiveReport',
-          }
-        ]
+          label: 'Compressor',
+          items: [
+            {
+              label: 'Constraints & Validations',
+              url: '#/Home/ConstraintValidation',
+            },
+            {
+              label: 'Model Pipeline',
+              url: '#/Home/ModelPipeline',
+            },
+            {
+              label: 'Data Explanation',
+              url: '#/Home/DataExplanation',
+            },
+            {
+              label: 'Model Confidence',
+              url: '#/Home/ModelConfidence',
+            },
+            {
+              label: 'Predictive Charts',
+              url: '#/Home/PredictiveChart',
+            },
+            {
+              label: 'Data Insights',
+              url: '#/Home/DataInsight',
+            },
+            {
+              label: 'Predictive Reports',
+              url: '#/Home/PredictiveReport',
+            }
+          ]
         },
         {
           label: 'Centrifugal Pump',
@@ -132,7 +135,7 @@ export class HomeComponent implements OnInit {
             },
             {
               label: 'Model Pipeline',
-             // url: '#/Home/ModelPipeline',
+              // url: '#/Home/ModelPipeline',
             },
             {
               label: 'Predictive Charts',
@@ -149,18 +152,58 @@ export class HomeComponent implements OnInit {
           ]
         }
       ]
-      
+
     },
     {
-      label: 'FCA',
-      url: '#/Home/FCA',
-      icon: 'pi pi-home',
+      label: 'Strategic Analysis',
+      icon: 'pi pi-chart-line',
+      items: [
+        {
+          label: 'Develop maintenance strategy',
+          items: [
+            {
+              label: 'RCM (Relaibility Centered Maintenance)',
+              items: [
+                {
+                  label: 'Configuration',
+                  url: '#/Home/Configuration'
+                },
+                {
+                  label: 'FMEA',
+                  url: '#/Home/FMEA'
+                },
+                {
+                  label: 'FCA',
+                  url: '#/Home/FCA',
+                },
+                {
+                  label: 'MSS',
+                  url: '#/Home/MSS',
+                },
+                {
+                  label: 'CBA',
+                  url: '#/Home/CBA',
+                },
+              ]
+            },
+          ]
+        }
+      ]
     },
-    {
-      label: 'MSS',
-      url: '#/Home/MSS',
-      icon: 'pi pi-home',
-    },
+    // {
+    //   label: 'FMEA Add',
+    //   url: '#/Home/Prescriptive/ADD'
+    // },
+    // {
+    //   label: 'FCA',
+    //   url: '#/Home/FCA',
+    //   icon: 'pi pi-home',
+    // },
+    // {
+    //   label: 'MSS',
+    //   url: '#/Home/MSS',
+    //   icon: 'pi pi-home',
+    // },
     {
       label: 'RFM',
       url: '#/Home/RFM',
@@ -176,18 +219,19 @@ export class HomeComponent implements OnInit {
       icon: 'pi pi-home',
       items: [
         {
-        label: 'SIL Design',
-        url: '#/Home/SIL',
+          label: 'SIL Design',
+          url: '#/Home/SIL',
 
-        },{
+        }, {
           label: 'SIL Search',
           url: '#/Home/report'
         }
 
       ]
-      
+
     }
   ];
+
   constructor(public builder: FormBuilder,
     public http: HttpClient,
     public router: Router,
@@ -205,7 +249,7 @@ export class HomeComponent implements OnInit {
       Email: new FormControl('', [Validators.compose([Validators.required, Validators.email])]),
       Comment: new FormControl('', [Validators.required]),
     });
-    
+
   }
 
 

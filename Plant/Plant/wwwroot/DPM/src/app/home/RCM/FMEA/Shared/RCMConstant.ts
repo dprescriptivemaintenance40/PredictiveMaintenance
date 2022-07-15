@@ -6,32 +6,40 @@ import { Injectable } from "@angular/core";
 export class RCMContantAPI {
     //#region  FMEA - Add, configuration, consequence, display, list,  FCA, MSS API's
 
-    public FMEATagCheck: string = '/PrescriptiveAPI';
+   
+    public FMEATagCheck: string = '/RCMAPI';
+    public FMEAConfiguration: string = '/PrescriptiveLookupMasterAPI';
+
+
     public FMEATreeSave: string = '/RCMAPI/SaveFMEA';
     public SaveConsequence: string = '/RCMAPI/SaveConsequence';
     public FMEAFileUpload: string = '/RCMAPI/UploadFile';
     public FMEADeleteFileUpload: string = '/RCMAPI/UpdateFileUpload';
+    public FMEADropdownData: string = '/PrescriptiveLookupMasterAPI/GetRecords';
     public FMEASaveConsequence: string = '/PrescriptiveAPI/CFPrescriptiveAdd';
     public PrescriptiveRecordsForFCA: string = '/RCMAPI/GetPrescriptiveRecordsForFCA';
     public PrescriptiveRecordsForMSS: string = '/RCMAPI/GetPrescriptiveRecordsForMSS';
+    public PrescriptiveRecordsForCBA: string = '/RCMAPI/GetPrescriptiveRecordsForCBA';
     public FCASave: string = '/RCMAPI/PrespectivePattern';
     public FCAWebal: string = '/RCMAPI/WebalAlgo';
     public FCAWebalWithDetails: string = '/PrescriptiveAPI/WebalAlgoritmWithDetails';
     public MSSSave: string = '/RCMAPI/UpdatePrespectiveMSS';
-    public FMEAConfiguration: string = '/PrescriptiveLookupMasterAPI';
-    public FMEAListSingleDelete: string = '/PrescriptiveAPI/DeletePrespectiveModel';
+    
+    public FMEAListSingleDelete: string = '/RCMAPI/DeletePrespectiveModel';
     public FMEAParentAttachments: string = '/PrescriptiveAPI/CompontentAttachment';
     //#endregion
 
+    public CBASheet:string = '/RCMAPI/SaveCBASheetData'
+    public CBARecordsForReport = '/RCMAPI/GetCBARecordsForReportById';
 
     //#region  FMEA Update API's only
 
-    public SaveFailureModeUpdate: string = '/PrescriptiveAPI/EditConsequenceTree';
-    public UpdateChanges: string = '/PrescriptiveAPI/FunctionModeAndConsequenceUpdate';
-    public DeleteFailureModeFrommTree: string = '/PrescriptiveAPI/FailureModeDelete';
-    public SaveUpdatedPattern: string = '/PrescriptiveAPI/UpdatePrespectivePattern';
+    public SaveFailureModeUpdate: string = '/RCMAPI/EditConsequenceTree';
+    public UpdateChanges: string = '/RCMAPI/FunctionModeAndConsequenceUpdate';
+    public DeleteFailureModeFrommTree: string = '/RCMAPI/FailureModeDelete';
+    public SaveUpdatedPattern: string = '/RCMAPI/UpdatePrespectivePattern';
     public UpdateMSSToTree: string = '/PrescriptiveAPI/PrescriptiveUpdateSingleFMMSSUpdate';
-    public SaveFunction: string = '/PrescriptiveAPI/FunctionUpdate';
+    public SaveFunction: string = '/RCMAPI/FunctionUpdate';
 
     //#endregion
 

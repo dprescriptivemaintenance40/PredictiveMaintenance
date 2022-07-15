@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { AuthGuard } from "src/app/auth.guard";
 import { RouterModule } from "@angular/router";
 import { AboutComponent } from "./About-us/about.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -20,6 +21,12 @@ import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompresso
 import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompressor/data-explanation/data-explanation.component";
 import { RFMComponent } from "./RFM/rfm.component";
 import { DashboardReportComponent } from "./DashboardReport/dashboardReport.component";
+import { CBAComponent } from "./RCM/CBA/cba-add/cba-add.component";
+import { PrescriptiveConfigurationComponent } from "./RCM/FMEA/prescriptive-configuration/prescriptive-configuration.component";
+import { PrescriptiveReportComponent } from "./RCM/FMEA/prescriptive-report/prescriptive-report.component";
+import { RCMFunctionalAnalysis } from "./RCM/CBA/RCMFunctionalAnalysis/rcmreport.component";
+import { PrescriptiveUpdateComponent } from "./RCM/FMEA/prescriptive-update/prescriptive-update.component";
+import { FMEASHEETComponent } from "./RCM/FMEA/fmea-sheet/fmea-sheet.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -27,26 +34,32 @@ import { DashboardReportComponent } from "./DashboardReport/dashboardReport.comp
             path: '', component: HomeComponent,
             children: [
                 { path: '', redirectTo: 'aboutus', pathMatch: 'full' },
-                {path:'report',component:DashboardReportComponent},
-                { path: 'aboutus' , component: AboutComponent},
-                { path: 'report' , component: SILreportComponent},
+                { path: 'report', component: DashboardReportComponent },
+                { path: 'aboutus', component: AboutComponent },
+                { path: 'report', component: SILreportComponent },
                 { path: 'LandingPage', component: DashboardComponent },
-                { path: 'VisNetwork', component: VisComponent},
-                { path: 'FMEA', component: FMEAComponent},
-                { path:'FCA', component:FCAComponent},
-                { path:'MSS' , component:MSSComponent},
-                { path:'RFM', component:RFMComponent},
-                { path: 'RCMList' , component:RCMListComponent},
-                { path:'SIL',component:SILComponent},
-                { path:'SIL/:id' , component:SILComponent},
-                { path:'Worksheet/:id', component:SilWorksheetComponent},
-                { path:'ConstraintValidation', component:ConstraintValidationComponent},
-                { path:'ModelPipeline', component:ModelPipelineComponent},
-                { path:'PredictiveChart', component:PredictiveChartComponent},
-                { path:'PredictiveReport', component:PredictiveReportComponent},
-                { path:'DataInsight', component:DataInsightComponent},
-                { path:'ModelConfidence', component:ModelConfidenceComponent},
-                {path:'DataExplanation', component:DataExplanationComponent}
+                { path: 'VisNetwork', component: VisComponent },
+                { path: 'Configuration', component: PrescriptiveConfigurationComponent },
+                { path: 'FMEA', component: FMEAComponent },
+                { path: 'FCA', component: FCAComponent },
+                { path: 'MSS', component: MSSComponent },
+                { path: 'CBA', component: CBAComponent },
+                { path: 'RCMList', component: RCMListComponent },
+                { path: 'RCMUpdate', component: PrescriptiveUpdateComponent, canDeactivate: [AuthGuard] },
+                { path: 'Report', component: PrescriptiveReportComponent },
+                { path: 'RCMFunctionalAnalysis', component: RCMFunctionalAnalysis },
+                { path: 'RFM', component: RFMComponent },
+                { path: 'SIL', component: SILComponent },
+                { path: 'SIL/:id', component: SILComponent },
+                { path: 'Worksheet/:id', component: SilWorksheetComponent },
+                { path: 'ConstraintValidation', component: ConstraintValidationComponent },
+                { path: 'ModelPipeline', component: ModelPipelineComponent },
+                { path: 'PredictiveChart', component: PredictiveChartComponent },
+                { path: 'PredictiveReport', component: PredictiveReportComponent },
+                { path: 'DataInsight', component: DataInsightComponent },
+                { path: 'ModelConfidence', component: ModelConfidenceComponent },
+                { path: 'DataExplanation', component: DataExplanationComponent },
+                {path:'FMEASHEET',component:FMEASHEETComponent}
             ]
         }
     ])],

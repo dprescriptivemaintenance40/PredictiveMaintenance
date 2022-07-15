@@ -8,7 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SafeUrl } from '@angular/platform-browser';
-import { FailureModes, RCM } from 'src/app/shared/Models/rcm.models';
+import { FailureModes, RCM,MSS } from 'src/app/shared/Models/rcm.models';
 import { RCMContantAPI } from './Shared/RCMConstant';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
@@ -251,11 +251,11 @@ export class FMEAComponent implements OnInit {
       }
     });
 
-    this.RCMOBJ = new RCM();
-    this.state = window.history.state;    
-    this.RCMOBJ.EquipmentId = this.state.Machine.EquipmentId
-    this.RCMOBJ.OrganizationId = this.state.OrganizationId;
-    this.RCMOBJ.TagNumber = this.state.Machine.MachineId
+    // this.RCMOBJ = new RCM();
+    // this.state = window.history.state;    
+    // this.RCMOBJ.EquipmentId = this.state.Machine.EquipmentId
+    // this.RCMOBJ.OrganizationId = this.state.OrganizationId;
+    // this.RCMOBJ.TagNumber = this.state.Machine.MachineId
   }
 
 
@@ -349,16 +349,16 @@ export class FMEAComponent implements OnInit {
         formData.append('file', fileToUpload, fileToUpload.name);
         formData.append('removePath', !!filedata ? filedata.dbPath : "");
         this.fileUpload = fileToUpload.name;
-        // var url : string =  this.prescriptiveContantAPI.FMEAFileUpload
-        // this.prescriptiveBLService.postWithoutHeaders(url,formData)
-        //   .subscribe((res: any) => {
-        //     this.dbPath = res.dbPath;
-        //     this.fullPath = res.fullPath;
-        //     this.fileUpload = res.fileName;
-        //     this.FileId = res.FileId;
-        //     this.uploadedAttachmentList.push(res)
-        //     this.fileAttachmentEnable = true;
-        //   }, err => { console.log(err.err) });
+        var url : string =  this.RCMConstantAPI.FMEAFileUpload
+        this.RCMBLService.postWithoutHeaders(url,formData)
+          .subscribe((res: any) => {
+            this.dbPath = res.dbPath;
+            this.fullPath = res.fullPath;
+            this.fileUpload = res.fileName;
+            this.FileId = res.FileId;
+            this.uploadedAttachmentList.push(res)
+            this.fileAttachmentEnable = true;
+          }, err => { console.log(err.err) });
       } else {
         this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Only Pdf's and Images are allowed" })
       }
@@ -445,34 +445,39 @@ export class FMEAComponent implements OnInit {
     }
     console.log(this.EquipmentType)
   }
-
-  FailureModeSelected(value, event) {
-    if (event.target.checked === false) {
-      var findIndexOF = value.PrescriptiveLookupMasterId
-      var index = -1;
-      var filteredObj = this.dropedMode.find((item, i) => {
+  FailureModeSelected(value, event){
+    if(event.target.checked === false){
+      let findIndexOF = value.PrescriptiveLookupMasterId
+      let index = -1,index2 = -1;
+      let filteredObj = this.failuerMode.find((item, i) => {
         if (item.PrescriptiveLookupMasterId === findIndexOF) {
           index = i;
           return i;
         }
       });
+      this.dropedMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === findIndexOF) {
+          index2 = i;
+          return i;
+        }
+      });
       this.failuerMode[index].checked = false;
-      this.dropedMode.splice(index, 1)
+      this.dropedMode.splice(index2, 1)
     }
-
-    if (event.target.checked === true) {
+    
+    if(event.target.checked === true){
       let obj = {}
-      obj['Date'] = value.Date;
-      obj['Description'] = value.Description;
-      obj['EquipmentType'] = value.EquipmentType;
-      obj['Function'] = value.Function;
-      obj['MachineType'] = value.MachineType;
-      obj['PrescriptiveLookupMasterId'] = value.PrescriptiveLookupMasterId;
+      obj['Date']= value.Date;
+      obj['Description']= value.Description;
+      obj['EquipmentType']= value.EquipmentType;
+      obj['Function']= value.Function;
+      obj['MachineType']= value.MachineType;
+      obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
       this.dropedMode.push(obj);
 
-      var fIO = value.PrescriptiveLookupMasterId
-      var index1 = -1;
-      var filtObj = this.failuerMode.find((item, i) => {
+      let fIO = value.PrescriptiveLookupMasterId
+      let index1 = -1;
+      let filtObj = this.failuerMode.find((item, i) => {
         if (item.PrescriptiveLookupMasterId === fIO) {
           index1 = i;
           return i;
@@ -486,7 +491,8 @@ export class FMEAComponent implements OnInit {
     const params = new HttpParams()
       .set('MachineType', this.MachineType)
       .set('EquipmentType', this.EquipmentType)
-    this.httpObj.get('https://portal.dpmaianalytics.com/api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
+      this.httpObj.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
+    // this.httpObj.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
 
       res => {
         this.dropDownData = [];
@@ -511,46 +517,46 @@ export class FMEAComponent implements OnInit {
 
 
   async GeneratePrescription() {
-    if (this.EquipmentType.length > 0 && this.RCMOBJ.TagNumber.length > 0) {
+    if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
       this.getDropDownLookMasterData();
-      this.prescriptiveSelect = false;
-      this.prescriptiveSteps = true;
-      this.prescriptiveFuntion = true;
-      this.prescriptiveFunctionFailure = false;
-      this.prescriptiveFailureMode = false;
-      this.prescriptiveEffect = false;
-      this.prescriptiveEffect1 = false
-      this.prescriptiveTree = false;
-      this.activeIndex = 0;
-      // var url : string =  this.prescriptiveContantAPI.FMEATagCheck
-      // await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
-      //       (res: any) => {
-      //         var check = 0;
-      //         res.forEach(element => {
-      //           if(element.TagNumber == this.TagNumber){
-      //               check = 1;
-      //           }
-      //         });
+      // this.prescriptiveSelect = false;
+      // this.prescriptiveSteps = true;
+      // this.prescriptiveFuntion = true;
+      // this.prescriptiveFunctionFailure = false;
+      // this.prescriptiveFailureMode = false;
+      // this.prescriptiveEffect = false;
+      // this.prescriptiveEffect1 = false
+      // this.prescriptiveTree = false;
+      // this.activeIndex = 0;
+      var url : string =  this.RCMConstantAPI.FMEATagCheck
+      await this.RCMBLService.getWithoutParameters(url).subscribe(
+            (res: any) => {
+              var check = 0;
+              res.forEach(element => {
+                if(element.TagNumber == this.TagNumber){
+                    check = 1;
+                }
+              });
 
-      //         if(check === 0){
-      //           this.getDropDownLookMasterData();
-      //           this.prescriptiveSelect = false;
-      //           this.prescriptiveSteps = true;
-      //           this.prescriptiveFuntion = true;
-      //           this.prescriptiveFunctionFailure = false;
-      //           this.prescriptiveFailureMode = false;
-      //           this.prescriptiveEffect = false;
-      //           this.prescriptiveEffect1 = false
-      //           this.prescriptiveTree = false;
-      //           this.activeIndex = 0;
-      //         }else{
-      //           this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Tag Number is already Existing, if you want to add something you can update it from Assets List' });
-      //         }
+              if(check === 0){
+                this.getDropDownLookMasterData();
+                this.prescriptiveSelect = false;
+                this.prescriptiveSteps = true;
+                this.prescriptiveFuntion = true;
+                this.prescriptiveFunctionFailure = false;
+                this.prescriptiveFailureMode = false;
+                this.prescriptiveEffect = false;
+                this.prescriptiveEffect1 = false
+                this.prescriptiveTree = false;
+                this.activeIndex = 0;
+              }else{
+                this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Tag Number is already Existing, if you want to add something you can update it from Assets List' });
+              }
 
-      //       }, err => {
-      //         console.log(err.error);
-      //       }
-      //     )
+            }, err => {
+              console.log(err.err);
+            }
+          )
 
     } else if (this.EquipmentType.length == 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Equipment Type is missing' });
@@ -876,13 +882,12 @@ export class FMEAComponent implements OnInit {
        res => {
           console.log(res);
           this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-          this.router.navigateByUrl('/Home/LandingPage');
+          this.router.navigateByUrl('/Home/RCMList');
         }, err => { console.log(err.err) 
           this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something wrong Happen, plz try again later' });
-          this.router.navigateByUrl('/Home/LandingPage')
+          this.router.navigateByUrl('/Home/RCMList')
         }
       )
-
   }
 
   treeSave() {
@@ -892,8 +897,8 @@ export class FMEAComponent implements OnInit {
     this.MachineType = "";
     this.isNewEntity = false;
     this.RCMOBJ.EquipmentType = this.EquipmentType;
-    // this.RCMOBJ.TagNumber = this.TagNumber
-    // this.RCMOBJ.FunctionFluidType = this.FunctionFluidType
+    this.RCMOBJ.TagNumber = this.TagNumber;
+    this.RCMOBJ.Function = this.FunctionFluidType
     // this.RCMOBJ.FunctionRatedHead = this.FunctionRatedHead
     // this.RCMOBJ.FunctionPeriodType = this.FunctionPeriodType
     this.RCMOBJ.FunctionFailure = this.FunctionFailure
@@ -938,7 +943,7 @@ export class FMEAComponent implements OnInit {
         err => { console.log(err.Message);
            this.RCMOBJ.failureModes = [];
            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something wrong Happen, plz try again later' });
-           this.router.navigateByUrl('/Home/LandingPage')
+          //  this.router.navigateByUrl('/Home/LandingPage')
           }
 
       )
@@ -1520,5 +1525,3 @@ export class FMEAComponent implements OnInit {
 
 
 }
-
-

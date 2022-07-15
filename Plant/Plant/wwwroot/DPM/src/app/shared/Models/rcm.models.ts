@@ -1,9 +1,9 @@
 export class RCM
     {
         public RCMId : number = 0 ;
-        public OrganizationId : number = 0;
+        // public OrganizationId : number = 0;
         public TagNumber : string = "";
-        public EquipmentId : number = 0;
+        // public EquipmentId : number = 0;
         public MachineType : string = "";
         public EquipmentType : string = "";
         public Function : string = "";
@@ -13,8 +13,12 @@ export class RCM
         public FMWithConsequenceTree : string = "";
         public FCAAdded : string = "";
         public MSSAdded : string = "";
+        public CBAAdded : string = "";
         public EquipmentCriticalityType : string = "";
-        public failureModes :Array<FailureModes>=Array<FailureModes>();
+        public failureModes : any = []
+   
+   
+        // public failureModes :Array<FailureModes>=Array<FailureModes>();
     }
 
     export class FailureModes
@@ -51,8 +55,9 @@ export class RCM
         public FCAUpdateConditions : string = "";
         public MSSStartergyList : string = "";
         public MSS : any = []
+        // public RCMObj:RCM = null;
         // public MSS : Array<MSS>=new Array<MSS>();
-        public RCM:RCM=new RCM();
+        // public RCM:RCM=new RCM();
     }
 
     export class MSS
@@ -61,12 +66,13 @@ export class RCM
         public RCMId: number = 0;
         public FailureModeId: number = 0;
         public MSSStartergy: string = "";
+        public MSSFrequency:string = "";
         public MSSMaintenanceInterval: string = "";
         public MSSAvailability: string = "";
         public MSSMaintenanceTask: string = "";
         public MSSIntervalSelectionCriteria: string = "";
         public MSSFinalAvaliability: number = 0;
-        //   public FailureModes:FailureModes=null;
-       public FailureModes:FailureModes=new FailureModes();
+        // public failureModes = null;
+       public FailureModes = new FailureModes();
     }
    

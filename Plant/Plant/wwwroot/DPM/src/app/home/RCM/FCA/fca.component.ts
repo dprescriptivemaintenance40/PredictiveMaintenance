@@ -174,14 +174,27 @@ export class FCAComponent implements OnInit {
   }
 
   BaxkToAssetList() {
-    this.router.navigateByUrl('/Home/LandingPage');
+    this.router.navigateByUrl('/Home/RCMList');
   }
+  // async getPrescriptiveRecords() {
+  //   this.SelectBoxEnabled = true;
+  //   const params = new HttpParams()
+  //   .set('OrganizationId','1')
+  //   var url: string = this.RCMContantAPI.PrescriptiveRecordsForFCA
+  //   await this.RCMBLService.getWithParameters(url,params).subscribe(
+  //     (res: any) => {
+  //       this.PrescriptiveTreeList = res
+  //       if (this.PrescriptiveTreeList.length != 0) {
+  //         this.PrescriptiveTreeList.forEach(element => {
+  //           this.TagList.push(element.TagNumber)
+  //         });
+  //       }
+  //     })
+  // }
   async getPrescriptiveRecords() {
     this.SelectBoxEnabled = true;
-    const params = new HttpParams()
-    .set('OrganizationId','1')
     var url: string = this.RCMContantAPI.PrescriptiveRecordsForFCA
-    await this.RCMBLService.getWithParameters(url,params).subscribe(
+    await this.RCMBLService.getWithoutParameters(url).subscribe(
       (res: any) => {
         this.PrescriptiveTreeList = res
         if (this.PrescriptiveTreeList.length != 0) {
@@ -190,7 +203,7 @@ export class FCAComponent implements OnInit {
           });
         }
       })
-  }
+    }
 
   TagNumberSelect() {
     if (this.SelectedTagNumber != "") {
@@ -1342,7 +1355,7 @@ export class FCAComponent implements OnInit {
       res => {
         this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
         this.SaveFCAEnable = false
-        this.router.navigateByUrl('/Home/LandingPage');
+        this.router.navigateByUrl('/Home/RCMList');
       }, err => console.log(err.error)
     )
 

@@ -30,7 +30,7 @@ namespace Plant.Controllers
                 List<Equipment> equipment = _Context.Equipments.ToList<Equipment>();
                 return Ok(equipment);
             }
-            catch (Exception exe)
+            catch (Exception)
             {
                 throw;
             }
@@ -45,7 +45,7 @@ namespace Plant.Controllers
                 List<Edge> edge = _Context.Edges.ToList<Edge>();
                 return Ok(edge);
             }
-            catch (Exception exe)
+            catch (Exception)
             {
                 throw;
             }
@@ -81,7 +81,7 @@ namespace Plant.Controllers
                                             .ThenInclude(r => r.pumpModel).ToList<Plants>();
                 return Ok(plant);
             }
-            catch (Exception exe)
+            catch (Exception )
             {
                 throw;
             }

@@ -8,8 +8,8 @@ namespace Plant.Models
         [Key]
         public int RCMId { get; set; }
         public string TagNumber { get; set; }
-        public int OrganizationId { get; set; }
-        public int EquipmentId { get; set; }
+        //public int OrganizationId { get; set; }
+        //public int EquipmentId { get; set; }
         public string MachineType { get; set; }
         public string EquipmentType { get; set; }
         public string Function { get; set; }
@@ -19,6 +19,7 @@ namespace Plant.Models
         public string FMWithConsequenceTree { get; set; }
         public string FCAAdded { get; set; }
         public string MSSAdded { get; set; }
+        public string CBAAdded { get; set; }
         public string EquipmentCriticalityType { get; set; }  
         public List<FailureModes> failureModes { get; set; }
         //public int OrgainzationId { get; internal set; }
@@ -62,7 +63,7 @@ namespace Plant.Models
         public string FCAUpdateConditions { get; set; }
         public string MSSStartergyList { get; set; }
         public List<MSS> MSS { get; set; }
-        public RCM RCM { get; set; }
+        public RCM RCM;
     }
 
     public class MSS
@@ -72,12 +73,13 @@ namespace Plant.Models
         public int RCMId { get; set; }
         public int FailureModeId { get; set; }
         public string MSSStartergy { get; set; }
+        public string MSSFrequency { get; set; }
         public string MSSMaintenanceInterval { get; set; }
         public string MSSAvailability { get; set; }
         public string MSSMaintenanceTask { get; set; }
         public string MSSIntervalSelectionCriteria { get; set; }
         public decimal MSSFinalAvaliability { get; set; }
-        public FailureModes FailureModes { get; set; }
+        public FailureModes FailureModes;
     }
 }
 
