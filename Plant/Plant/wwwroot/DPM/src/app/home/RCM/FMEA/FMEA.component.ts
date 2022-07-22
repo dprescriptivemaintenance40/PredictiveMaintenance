@@ -8,7 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SafeUrl } from '@angular/platform-browser';
-import { FailureModes, RCM,MSS } from 'src/app/shared/Models/rcm.models';
+import { FailureModes, RCM, MSS } from 'src/app/shared/Models/rcm.models';
 import { RCMContantAPI } from './Shared/RCMConstant';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
@@ -57,10 +57,12 @@ export class FMEAComponent implements OnInit {
   public prescriptiveEffect: boolean = false;
   public effectFooter: boolean = true;
   public EquipmentType: string = "";
+  public SubUnit: string = "";
+  public Application: string = "";
   public EquipmentList: any = []
   public TagNumber: string = "";
   public dropDownData: any = [];
-  public treeResponseData: RCM =new RCM();
+  public treeResponseData: RCM = new RCM();
   public RadioValue: string = '';
 
   public FunctionFluidType: string = "";
@@ -349,8 +351,8 @@ export class FMEAComponent implements OnInit {
         formData.append('file', fileToUpload, fileToUpload.name);
         formData.append('removePath', !!filedata ? filedata.dbPath : "");
         this.fileUpload = fileToUpload.name;
-        var url : string =  this.RCMConstantAPI.FMEAFileUpload
-        this.RCMBLService.postWithoutHeaders(url,formData)
+        var url: string = this.RCMConstantAPI.FMEAFileUpload
+        this.RCMBLService.postWithoutHeaders(url, formData)
           .subscribe((res: any) => {
             this.dbPath = res.dbPath;
             this.fullPath = res.fullPath;
@@ -434,21 +436,22 @@ export class FMEAComponent implements OnInit {
 
   }
 
-  MachineEquipmentSelect(event) {
-    if (this.MachineType == "Pump") {
-      this.EquipmentList = null
-      this.EquipmentList = ["Centrifugal Pump"]
-    }
-    if (this.MachineType == "Compressor") {
-      this.EquipmentList = null
-      this.EquipmentList = ["Screw Compressor"]
-    }
-    console.log(this.EquipmentType)
-  }
-  FailureModeSelected(value, event){
-    if(event.target.checked === false){
+  // MachineEquipmentSelect(event) {
+  //   if (this.MachineType == "Pump") {
+  //     this.EquipmentList = null
+  //     this.EquipmentList = ["Centrifugal Pump"]
+  //   }
+  //   if (this.MachineType == "Compressor") {
+  //     this.EquipmentList = null
+  //     this.EquipmentList = ["Screw Compressor"]
+  //   }
+  //   console.log(this.EquipmentType)
+  // }
+
+  FailureModeSelected(value, event) {
+    if (event.target.checked === false) {
       let findIndexOF = value.PrescriptiveLookupMasterId
-      let index = -1,index2 = -1;
+      let index = -1, index2 = -1;
       let filteredObj = this.failuerMode.find((item, i) => {
         if (item.PrescriptiveLookupMasterId === findIndexOF) {
           index = i;
@@ -464,15 +467,15 @@ export class FMEAComponent implements OnInit {
       this.failuerMode[index].checked = false;
       this.dropedMode.splice(index2, 1)
     }
-    
-    if(event.target.checked === true){
+
+    if (event.target.checked === true) {
       let obj = {}
-      obj['Date']= value.Date;
-      obj['Description']= value.Description;
-      obj['EquipmentType']= value.EquipmentType;
-      obj['Function']= value.Function;
-      obj['MachineType']= value.MachineType;
-      obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
+      obj['Date'] = value.Date;
+      obj['Description'] = value.Description;
+      obj['EquipmentType'] = value.EquipmentType;
+      obj['Function'] = value.Function;
+      obj['MachineType'] = value.MachineType;
+      obj['PrescriptiveLookupMasterId'] = value.PrescriptiveLookupMasterId;
       this.dropedMode.push(obj);
 
       let fIO = value.PrescriptiveLookupMasterId
@@ -490,9 +493,9 @@ export class FMEAComponent implements OnInit {
   getDropDownLookMasterData() {
     const params = new HttpParams()
       .set('MachineType', this.MachineType)
-      .set('EquipmentType', this.EquipmentType)
-      this.httpObj.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
-    // this.httpObj.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
+      // .set('EquipmentType', this.EquipmentType)
+    this.httpObj.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
+      // this.httpObj.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
 
       res => {
         this.dropDownData = [];
@@ -528,35 +531,35 @@ export class FMEAComponent implements OnInit {
       // this.prescriptiveEffect1 = false
       // this.prescriptiveTree = false;
       // this.activeIndex = 0;
-      var url : string =  this.RCMConstantAPI.FMEATagCheck
+      var url: string = this.RCMConstantAPI.FMEATagCheck
       await this.RCMBLService.getWithoutParameters(url).subscribe(
-            (res: any) => {
-              var check = 0;
-              res.forEach(element => {
-                if(element.TagNumber == this.TagNumber){
-                    check = 1;
-                }
-              });
-
-              if(check === 0){
-                this.getDropDownLookMasterData();
-                this.prescriptiveSelect = false;
-                this.prescriptiveSteps = true;
-                this.prescriptiveFuntion = true;
-                this.prescriptiveFunctionFailure = false;
-                this.prescriptiveFailureMode = false;
-                this.prescriptiveEffect = false;
-                this.prescriptiveEffect1 = false
-                this.prescriptiveTree = false;
-                this.activeIndex = 0;
-              }else{
-                this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Tag Number is already Existing, if you want to add something you can update it from Assets List' });
-              }
-
-            }, err => {
-              console.log(err.err);
+        (res: any) => {
+          var check = 0;
+          res.forEach(element => {
+            if (element.TagNumber == this.TagNumber) {
+              check = 1;
             }
-          )
+          });
+
+          if (check === 0) {
+            this.getDropDownLookMasterData();
+            this.prescriptiveSelect = false;
+            this.prescriptiveSteps = true;
+            this.prescriptiveFuntion = true;
+            this.prescriptiveFunctionFailure = false;
+            this.prescriptiveFailureMode = false;
+            this.prescriptiveEffect = false;
+            this.prescriptiveEffect1 = false
+            this.prescriptiveTree = false;
+            this.activeIndex = 0;
+          } else {
+            this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Tag Number is already Existing, if you want to add something you can update it from Assets List' });
+          }
+
+        }, err => {
+          console.log(err.err);
+        }
+      )
 
     } else if (this.EquipmentType.length == 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Equipment Type is missing' });
@@ -854,7 +857,7 @@ export class FMEAComponent implements OnInit {
     // this.RCMOBJ.Type = this.treeResponseData.Type;
     this.RCMOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
     localStorage.setItem('TestingOBj', JSON.stringify(this.data1));
-    
+
     for (let index = 0; index < this.FMChild.length; index++) {
       let obj = new FailureModes();
       obj.FailureModeId = this.treeResponseData.failureModes[index].FailureModeId;
@@ -878,16 +881,17 @@ export class FMEAComponent implements OnInit {
       obj.Remark = this.FactoryToAddInFM[index].Remark
       this.RCMOBJ.failureModes.push(obj)
     }
-    this.RCMBLService.PutData(this.RCMConstantAPI.SaveConsequence,this.RCMOBJ).subscribe(
-       res => {
-          console.log(res);
-          this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-          this.router.navigateByUrl('/Home/RCMList');
-        }, err => { console.log(err.err) 
-          this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something wrong Happen, plz try again later' });
-          this.router.navigateByUrl('/Home/RCMList')
-        }
-      )
+    this.RCMBLService.PutData(this.RCMConstantAPI.SaveConsequence, this.RCMOBJ).subscribe(
+      res => {
+        console.log(res);
+        this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
+        this.router.navigateByUrl('/Home/RCMList');
+      }, err => {
+        console.log(err.err)
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something wrong Happen, plz try again later' });
+        this.router.navigateByUrl('/Home/RCMList')
+      }
+    )
   }
 
   treeSave() {
@@ -898,6 +902,8 @@ export class FMEAComponent implements OnInit {
     this.isNewEntity = false;
     this.RCMOBJ.EquipmentType = this.EquipmentType;
     this.RCMOBJ.TagNumber = this.TagNumber;
+    this.RCMOBJ.Application = this.Application;
+    this.RCMOBJ.SubUnit = this.SubUnit;
     this.RCMOBJ.Function = this.FunctionFluidType
     // this.RCMOBJ.FunctionRatedHead = this.FunctionRatedHead
     // this.RCMOBJ.FunctionPeriodType = this.FunctionPeriodType
@@ -929,9 +935,9 @@ export class FMEAComponent implements OnInit {
 
     this.RCMBLService.postWithoutHeaders(this.RCMConstantAPI.FMEATreeSave, this.RCMOBJ)
       .subscribe(
-        (res:any) => {
+        (res: any) => {
           console.log(res);
-          this.treeResponseData=new RCM();
+          this.treeResponseData = new RCM();
           this.treeResponseData = res;
           localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
           this.prescriptiveTreeNextEnable = true
@@ -940,11 +946,12 @@ export class FMEAComponent implements OnInit {
           this.prescriptiveTreeBackEnable = false
 
         },
-        err => { console.log(err.Message);
-           this.RCMOBJ.failureModes = [];
-           this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something wrong Happen, plz try again later' });
+        err => {
+          console.log(err.Message);
+          this.RCMOBJ.failureModes = [];
+          this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something wrong Happen, plz try again later' });
           //  this.router.navigateByUrl('/Home/LandingPage')
-          }
+        }
 
       )
   }

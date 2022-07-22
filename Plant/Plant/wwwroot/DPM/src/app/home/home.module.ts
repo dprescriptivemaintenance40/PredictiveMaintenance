@@ -1,4 +1,3 @@
-
 import { NgModule } from "@angular/core";
 import { SharedModule } from "../shared/shared.module";
 import {ProgressBarModule} from 'primeng/progressbar';

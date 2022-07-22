@@ -13,16 +13,21 @@
             <div class="card-header">
                 <h5 class="card-title mb-0 mt-2"><i class="fa fa-tasks"></i>&nbsp;Prescriptive Recommendation</h5>
                 <div class="col" *ngIf="Table2 || Table3">
-                    <button type="button" style="float: right" class="btn btn-secondary btn-sm" (click)="BackToTable1()">Back</button>
+                    <button type="button" style="float: right" class="btn btn-secondary btn-sm"
+                        (click)="BackToTable1()">Back</button>
 
                 </div>
                 <div class="col" *ngIf="Table4">
-                    <button type="button" style="float: right" class="btn btn-secondary btn-sm" (click)="BackToTable3()">Back</button>
+                    <button type="button" style="float: right" class="btn btn-secondary btn-sm"
+                        (click)="BackToTable3()">Back</button>
 
                 </div>
             </div>
             <div class="card-body">
-                <p-table *ngIf="Table1" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="prescriptiveRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                <p-table *ngIf="Table1" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}"
+                    [value]="prescriptiveRecords" [paginator]="true" [rowHover]="true" [rows]="10"
+                    [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
                     <!-- <ng-template pTemplate="colgroup">
                         <colgroup>
@@ -65,51 +70,93 @@
                     <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
                         <div class="prescriptive-card p-3">
                             <!-- <td (click)="FailureModeTable(p)">{{rowIndex + 1}}</td> -->
-                            <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6"><small>{{p.MachineType}}</small>
+                            <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6">
+                                <small>{{p.MachineType}}</small>
                                 <span class="d-block font-weight-normal h5 mt-2">{{p.EquipmentType}}
-                                <span (click)="FailureModeTable(p)" class="badge badge-info ml-2"><small><i
-                                        class="pi pi-tag mr-1"></i></small>Tag No.{{p.TagNumber}}</span>
-                                <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i class="pi pi-chart-line"></i></small> Critical Factor: {{p.ComponentCriticalityFactor}}</span>
-                                <span (click)="FailureModeTable(p)" class="badge badge-warning"><i
-                                    class="pi pi-star-o small mr-1"></i>Rating: {{p.ComponentRating}}</span>
-                                <span (click)="FailureModeTable(p)" class="badge badge-dark ml-2"><i class="pi pi-star-o small mr-1"></i>Maintainenance Practice:{{p.CMaintainenancePractice}}</span></span>
+                                    <span (click)="FailureModeTable(p)" class="badge badge-info ml-2"><small><i
+                                                class="pi pi-tag mr-1"></i></small>Tag No.{{p.TagNumber}}</span>
+                                    <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i
+                                                class="pi pi-chart-line"></i></small> SubUnit: {{p.SubUnit}}</span>
+                                    <span (click)="FailureModeTable(p)" class="badge badge-warning"><i
+                                            class="pi pi-star-o small mr-1"></i>Application: {{p.Application}}</span>
+                                    <!-- <span (click)="FailureModeTable(p)" class="badge badge-dark ml-2"><i
+                                            class="pi pi-star-o small mr-1"></i>Maintainenance
+                                        Practice:{{p.MaintainenancePractice}}
+                                </span> -->
+                                </span>
                             </h1>
                             <span class="">
-                                <a class="link-primary mr-1" *ngIf="p.EquipmentCriticalityType === 'CA'? p.MSSAdded == 1 : p.FMWithConsequenceTree.length >0" title="p.EquipmentCriticalityType === 'CA'?'Update RCM Tree':'Update FMEA Tree'}}" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled: p.EquipmentCriticalityType ==='CA'? p.FCAAdded != 1 : ''}"><small><i class="pi pi-pencil mr-2"></i></small>{{p.EquipmentCriticalityType === 'CA'?'Update RCM':'Update FMEA'}}</a>
+                                <a class="link-primary mr-1"
+                                    *ngIf="p.EquipmentCriticalityType === 'CA'? p.MSSAdded == 1 : p.FMWithConsequenceTree.length >0"
+                                    title="p.EquipmentCriticalityType === 'CA'?'Update RCM Tree':'Update FMEA Tree'}}"
+                                    (click)="UpdatePrescriptiveRecords(p)"
+                                    [ngClass]="{disabled: p.EquipmentCriticalityType ==='CA'? p.FCAAdded != 1 : ''}"><small><i
+                                            class="pi pi-pencil mr-2"></i></small>{{p.EquipmentCriticalityType ===
+                                    'CA'?'Update RCM':'Update FMEA'}}</a>
                             </span>
                             <span class="">
-                                <a title="Add Consequence" (click)="ADDConsequenceRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length > 0}" class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add Consequence</a>
+                                <a title="Add Consequence" (click)="ADDConsequenceRecords(p)"
+                                    [ngClass]="{disabled:p.FMWithConsequenceTree.length > 0}"
+                                    class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add
+                                    Consequence</a>
                             </span>
 
                             <span *ngIf="p.EquipmentCriticalityType === 'CA'" class="">
-                                <a  [ngClass]="{disabled:(p.FCAAdded == 1 ||  p.FMWithConsequenceTree.length == 0)}" (click)="viewFMEA(p)" title="FMEA SHEET" class="link-primary mr-1"><small><i class="pi pi-eye mr-2"></i></small>FMEA SHEET</a>
+                                <a (click)="viewFMEA(p)" title="FMEA SHEET" class="link-primary mr-1"><small><i
+                                            class="pi pi-eye mr-2"></i></small>FMEA SHEET</a>
                             </span>
 
                             <span *ngIf="p.EquipmentCriticalityType === 'CA'" class="">
-                                <a  [ngClass]="{disabled:(p.FCAAdded == 1 ||  p.FMWithConsequenceTree.length == 0)}" (click)="getFCAData(p)" title="Add FCA" class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add FCA</a>
+                                <a [ngClass]="{disabled:(p.FCAAdded == 1 ||  p.FMWithConsequenceTree.length == 0)}"
+                                    (click)="getFCAData(p)" title="Add FCA" class="link-primary mr-1"><small><i
+                                            class="pi pi-plus mr-2"></i></small>Add FCA</a>
                             </span>
                             <span class="">
-                                <a *ngIf="p.FCAAdded == 1" [ngClass]="{disabled:(p.MSSAdded == 1 || p.FCAAdded != 1 )}" title="Add MSS to tree" (click)="getMSSData(p)" class="link-primary mr-1 btn-sm"><small><i class="pi pi-plus mr-2"></i></small>Add MSS</a>
+                                <a *ngIf="p.FCAAdded == 1" [ngClass]="{disabled:(p.MSSAdded == 1 || p.FCAAdded != 1 )}"
+                                    title="Add MSS to tree" (click)="getMSSData(p)"
+                                    class="link-primary mr-1 btn-sm"><small><i class="pi pi-plus mr-2"></i></small>Add
+                                    MSS</a>
                             </span>
                             <span class="">
-                                <a *ngIf="p.MSSAdded == 1" [ngClass]="{disabled:(p.CBAAdded == 1 || p.MSSAdded != 1 ||  p.FCAAdded != 1)}" title="Add CBA" (click)="RoutetoCBA(p)" class="link-primary mr-1 btn-sm"><small><i class="pi pi-plus mr-2"></i></small>Add CBA</a>
+                                <a *ngIf="p.MSSAdded == 1"
+                                    [ngClass]="{disabled:(p.CBAAdded == 1 || p.MSSAdded != 1 ||  p.FCAAdded != 1)}"
+                                    title="Add CBA" (click)="RoutetoCBA(p)" class="link-primary mr-1 btn-sm"><small><i
+                                            class="pi pi-plus mr-2"></i></small>Add CBA</a>
                             </span>
                             <span class="">
-                                <a title="Add Attachment" *ngIf="(p.CAttachmentDBPath == null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal" class="link-primary mr-1"> <i class="fa fa-paperclip mr-2" aria-hidden="true"></i>Upload</a>
-                                <a title="View Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="ViewAttachment(p)" data-toggle="modal" data-target="#CommentModal" class="link-primary mr-1"><i class="fa fa-eye mr-2" aria-hidden="true"></i>View Attachment</a>
-                                <a title="Edit Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal" class="link-primary mr-1"><i class="pi pi-pencil mr-2"></i>Edit Attachment</a>
+                                <a title="Add Attachment" *ngIf="(p.CAttachmentDBPath == null)"
+                                    (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"
+                                    class="link-primary mr-1"> <i class="fa fa-paperclip mr-2"
+                                        aria-hidden="true"></i>Upload</a>
+                                <a title="View Attachment" *ngIf="(p.CAttachmentDBPath != null)"
+                                    (click)="ViewAttachment(p)" data-toggle="modal" data-target="#CommentModal"
+                                    class="link-primary mr-1"><i class="fa fa-eye mr-2" aria-hidden="true"></i>View
+                                    Attachment</a>
+                                <a title="Edit Attachment" *ngIf="(p.CAttachmentDBPath != null)"
+                                    (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"
+                                    class="link-primary mr-1"><i class="pi pi-pencil mr-2"></i>Edit Attachment</a>
                             </span>
                             <span class="">
-                                <a style="color: black;" [ngClass]="{disabled:( p.MSSAdded == null || p.MSSAdded == '' || (p.FCAAdded != 1 && p.MSSAdded != ''))}" title="Check MSS" (click)="getMSSTable(p)" class="link-primary mr-1"><i class="fa fa-eye mr-2"></i>View MSS</a>
+                                <a style="color: black;"
+                                    [ngClass]="{disabled:( p.MSSAdded == null || p.MSSAdded == '' || (p.FCAAdded != 1 && p.MSSAdded != ''))}"
+                                    title="Check MSS" (click)="getMSSTable(p)" class="link-primary mr-1"><i
+                                        class="fa fa-eye mr-2"></i>View MSS</a>
                             </span>
                             <span class="">
-                                <a title="Report" [routerLink]="['/Home/Report']" (click)="FMEAReports(p)" [ngClass]="{disabled:p.FMWithConsequenceTree ==''}" class="link-primary mr-1"><small><i class="pi-book pi mr-2" aria-hidden="true"></i></small>Report</a>
+                                <a title="Report" [routerLink]="['/Home/Report']" (click)="FMEAReports(p)"
+                                    [ngClass]="{disabled:p.FMWithConsequenceTree ==''}"
+                                    class="link-primary mr-1"><small><i class="pi-book pi mr-2"
+                                            aria-hidden="true"></i></small>Report</a>
                             </span>
                             <span class="">
-                                <a title="RCMReport" [ngClass]="{disabled:(p.CBAAdded != 1 || p.CBAAdded == null )}" (click)="RCMReports(p)" class="link-primary mr-1"><small><i class="fa fa-eye mr-2" aria-hidden="true"></i></small>RCM Functional Analysis</a>
+                                <a title="RCMReport" [ngClass]="{disabled:(p.CBAAdded != 1 || p.CBAAdded == null )}"
+                                    (click)="RCMReports(p)" class="link-primary mr-1"><small><i class="fa fa-eye mr-2"
+                                            aria-hidden="true"></i></small>RCM Functional Analysis</a>
                             </span>
                             <span class="">
-                                <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteTree"><small><i class="pi pi-trash"></i></small></a>
+                                <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)"
+                                    data-toggle="modal" data-target="#DeleteTree"><small><i
+                                            class="pi pi-trash"></i></small></a>
                             </span>
                             <!-- <td>
                                 <a style="color: green;" [ngClass]="{disabled:p.MSSAdded == 1}" (click)="getMSSData(p)" title="Add MSS"><i class="pi pi-plus"></i></a>
@@ -120,27 +167,39 @@
                         </div>
                     </ng-template>
                 </p-table>
-                <p-table *ngIf="Table2" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="FailureModeDataTabe2" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                <p-table *ngIf="Table2" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}"
+                    [value]="FailureModeDataTabe2" [paginator]="true" [rowHover]="true" [rows]="10"
+                    [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
                     <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
                         <div class="prescriptive-card mb-0 p-3">
                             <!-- <td (click)="FailureModeTable(p)">{{rowIndex + 1}}</td> -->
-                            <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6"><small>{{p.FrequencyMaintainenance}}</small><span class="d-block font-weight-normal h5 mt-2">{{p.MaintainenancePractice}}<span (click)="FailureModeTable(p)"
-                                        class="badge badge-info ml-2"><small><i class="pi pi-tag mr-1"></i></small>Critical Factor : {{p.CriticalityFactor}}</span>
-                                <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i
+                            <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6">
+                                <small>{{p.FrequencyMaintainenance}}</small><span
+                                    class="d-block font-weight-normal h5 mt-2">{{p.MaintainenancePractice}}<span
+                                        (click)="FailureModeTable(p)" class="badge badge-info ml-2"><small><i
+                                                class="pi pi-tag mr-1"></i></small>Critical Factor :
+                                        {{p.CriticalityFactor}}</span>
+                                    <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i
                                                 class="pi pi-chart-line"></i></small> Failure Mode:
                                         {{p.FailureMode}}</span>
-                                <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>Rating:
-                                            {{p.Rating}}</span>
-                                <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>Local Effect:
-                                            {{p.LocalEffect}}</span>
-                                <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>System Effect:
-                                                    {{p.SystemEffect}}</span>
+                                    <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i
+                                            class="pi pi-star-o small mr-1"></i>Rating:
+                                        {{p.Rating}}</span>
+                                    <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i
+                                            class="pi pi-star-o small mr-1"></i>Local Effect:
+                                        {{p.LocalEffect}}</span>
+                                    <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i
+                                            class="pi pi-star-o small mr-1"></i>System Effect:
+                                        {{p.SystemEffect}}</span>
                                 </span>
 
                             </h1>
-                            <p class="mb-1 alert bg-white"><i class="pi pi-info-circle small mr-1"></i>Condition Monitoring: {{p.ConditionMonitoring}}</p>
-                            <p class="mb-0 alert bg-white"><i class="pi pi-info-circle small mr-1"></i>Consequence: {{p.Consequence}}</p>
+                            <p class="mb-1 alert bg-white"><i class="pi pi-info-circle small mr-1"></i>Condition
+                                Monitoring: {{p.ConditionMonitoring}}</p>
+                            <p class="mb-0 alert bg-white"><i class="pi pi-info-circle small mr-1"></i>Consequence:
+                                {{p.Consequence}}</p>
 
                             <!-- <td>
                                                     <a style="color: green;" [ngClass]="{disabled:p.MSSAdded == 1}" (click)="getMSSData(p)" title="Add MSS"><i class="pi pi-plus"></i></a>
@@ -193,7 +252,10 @@
                         </tr>
                     </ng-template> -->
                 </p-table>
-                <p-table *ngIf="Table3" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="FailureModeDataTabe3" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                <p-table *ngIf="Table3" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}"
+                    [value]="FailureModeDataTabe3" [paginator]="true" [rowHover]="true" [rows]="10"
+                    [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
                     <ng-template pTemplate="colgroup">
                         <colgroup>
@@ -217,7 +279,8 @@
                             <td>{{p.FailureMode}}</td>
                             <td>{{p.MSSStartergy}}</td>
                             <td>
-                                <a style="color: black;" title="View more" (click)="getMSSStrategyTable(p)"><i class="fa fa-eye"></i></a>
+                                <a style="color: black;" title="View more" (click)="getMSSStrategyTable(p)"><i
+                                        class="fa fa-eye"></i></a>
 
                             </td>
 
@@ -230,7 +293,9 @@
 
 
 
-                <p-table *ngIf="Table4" [scrollable]="true" [style]="{width:'100%'}" [value]="FailureModeDataTabe4" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                <p-table *ngIf="Table4" [scrollable]="true" [style]="{width:'100%'}" [value]="FailureModeDataTabe4"
+                    [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
                     <ng-template pTemplate="colgroup">
                         <colgroup>
@@ -273,36 +338,40 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="DeleteTree" tabindex="-1" role="dialog" aria-labelledby="DeleteTreeTitle" aria-hidden="true">
+<div class="modal fade" id="DeleteTree" tabindex="-1" role="dialog" aria-labelledby="DeleteTreeTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 Are you sure you want to delete Centrifugal Pump : {{DeleteTreeName}}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SoftDeletePrescriptiveRecords()">Delete</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                    (click)="SoftDeletePrescriptiveRecords()">Delete</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="AttachmentModal" aria-hidden="true">
+<div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="AttachmentModal"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <span>
-                   {{fileToUpload != null ? 'Update' : 'Add'}} Attachment & Remark
+                    {{fileToUpload != null ? 'Update' : 'Add'}} Attachment & Remark
                 </span>
-                <button type="button" class="btn btn-dark" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+                <button type="button" class="btn btn-dark" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="CloseAttachmentModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -312,21 +381,27 @@
                                 <span class="input-group-text" id="uploadAttachments">Upload</span>
                             </div>
                             <div class="custom-file">
-                                <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
-                                <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
-                                <label class="custom-file-label" *ngIf="fileUpload != ''" for="inputGroupFile01">{{fileUpload}}</label>
+                                <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFile($event)"
+                                    class="custom-file-input" id="uploadAttachments"
+                                    aria-describedby="uploadAttachments">
+                                <label class="custom-file-label" *ngIf="fileUpload == ''"
+                                    for="inputGroupFile01">Attachment</label>
+                                <label class="custom-file-label" *ngIf="fileUpload != ''"
+                                    for="inputGroupFile01">{{fileUpload}}</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="input-group mb-3">
-                            <textarea class="form-control custom-textarea" [(ngModel)]="CRemarks" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
+                            <textarea class="form-control custom-textarea" [(ngModel)]="CRemarks" id="message"
+                                name="body" rows="3" placeholder="Add Remark Here"></textarea>
                         </div>
 
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="saveAttachment()">Done</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        (click)="saveAttachment()">Done</button>
                 </div>
 
             </div>
@@ -338,18 +413,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span>
-                   <h3>Attachment & Remark</h3> 
+                    <h3>Attachment & Remark</h3>
                 </span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                         <span aria-hidden="true" >&times;</span>
-                    </button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <div class="modal-body">
                 <div class="row ">
                     <div class="col-md-12">
                         <div class="text-center">
-                            <label for="file " style="font-size: 1.3em; font-weight: bold; border-bottom: 2px solid; margin: 13px; ">Uploaded File</label>
+                            <label for="file "
+                                style="font-size: 1.3em; font-weight: bold; border-bottom: 2px solid; margin: 13px; ">Uploaded
+                                File</label>
                             <div class="text-center" *ngIf="PdfEnable " style="margin: 10px; " id="file ">
                                 <iframe [src]="FileSafeUrl " width="480 " height="300 "> </iframe>
                             </div>
@@ -360,7 +437,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="text-center " style="margin-bottom: 10px; ">
-                            <label for="remark " style="font-size: 1.3em; font-weight: bold; border-bottom: 2px solid; margin: 13px; ">Remark</label>
+                            <label for="remark "
+                                style="font-size: 1.3em; font-weight: bold; border-bottom: 2px solid; margin: 13px; ">Remark</label>
                             <div *ngIf="CRemarks !=='' " id="remark ">
                                 <textarea class="custom-textarea " cols="60 " rows="4 ">{{CRemarks}}</textarea>
                             </div>

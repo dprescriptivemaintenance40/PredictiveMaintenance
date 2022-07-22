@@ -1968,9 +1968,29 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     FailureModeWithLSETree[0].children[0].children[0].children.splice(index3, 1);
 
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(FailureModeWithLSETree)
-    this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
-    let obj = {}
-    obj['FailureModeId'] = id
+    this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
+    let obj = new FailureModes();
+    // let FailureModes = {}
+    obj.FailureModeId = id;
+    obj.AttachmentDBPath = ''
+    obj.AttachmentFullPath = ''
+    obj.ConditionMonitoring = ''
+    obj.Consequence = ''
+    obj.FCAComment = ''
+    obj.FCACondition = ''
+    obj.FCAFFI = ''
+    obj.FCAUpdateConditions = ''
+    obj.FCAUpdateIntervals = ''
+    obj.FailureMode = ''
+    obj.FrequencyMaintainenance = ''
+    obj.LocalEffect = ''
+    obj.MSS = [];
+    obj.MSSStartergyList = ''
+    obj.MaintainenancePractice = ''
+    obj.Pattern = ''
+    obj.Rating = ''
+    obj.Remark = ''
+    obj.SystemEffect = ''
     this.centrifugalPumpPrescriptiveOBJ.failureModes.push(obj)
     var url: string = this.prescriptiveContantAPI.DeleteFailureModeFrommTree;
     this.prescriptiveBLService.PutData(url, this.centrifugalPumpPrescriptiveOBJ).subscribe(

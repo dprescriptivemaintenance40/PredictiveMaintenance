@@ -33,7 +33,11 @@
                 
             <div *ngIf="fg.value.machineType != 'Pump'" class="td">
                 <select class="form-control"  formControlName="equipmentType">
-                    <option ng-disabled="Pump">Screw Compressor</option> 
+                    <option ng-disabled="Pump">Centrifugal</option> 
+                    <option ng-disabled="Pump">Reciprocating</option>
+                    <option ng-disabled="Pump">Screw</option>
+                    <option ng-disabled="Pump">Blowers/fans</option>
+                    <option ng-disabled="Pump">Axial</option>
                     <option disabled>Compressor 2</option>  
                 </select>
             </div>

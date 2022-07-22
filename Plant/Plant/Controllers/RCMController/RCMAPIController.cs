@@ -1100,19 +1100,20 @@ namespace Plant.Controllers.RCMController
                 //}
                 _context.RCMs.Remove(prescriptiveModel);
                 await _context.SaveChangesAsync();
-
-                var cbamodel = _context.PrescriptiveCbaModels.Where(a => a.RCMId == id)
+                if (prescriptiveModel.CBAAdded == "1")
+                {
+                    var cbamodel = _context.PrescriptiveCbaModels.Where(a => a.RCMId == id)
                                                          .Include(a => a.CBAFailureModes)
                                                          .ThenInclude(a => a.CBAMaintenanceTasks)
                                                          .ThenInclude(a => a.CBAMainenanceIntervals)
                                                          .First();
-                if (cbamodel == null)
-                {
-                    return NotFound();
+                    if (cbamodel == null)
+                    {
+                        return NotFound();
+                    }
+                    _context.PrescriptiveCbaModels.Remove(cbamodel);
+                    await _context.SaveChangesAsync();
                 }
-                _context.PrescriptiveCbaModels.Remove(cbamodel);
-                await _context.SaveChangesAsync();
-
                 return NoContent();
 
             }
@@ -1121,6 +1122,112 @@ namespace Plant.Controllers.RCMController
 
                 return BadRequest(exe.Message);
             }
+        }
+
+
+        [HttpPut]
+        [Route("FailureModeDelete")]
+        public async Task<IActionResult> PutPrespectiveFailureModel(RCM obj)
+        {
+            //var MinusCF = 0;
+            //string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            //RecycleBinCentrifugalPumpPrescriptiveModel recyclePM = new RecycleBinCentrifugalPumpPrescriptiveModel();
+            //RestoreCentrifugalPumpPrescriptiveFailureMode recycleChild = new RestoreCentrifugalPumpPrescriptiveFailureMode();
+            //recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes = new List<RestoreCentrifugalPumpPrescriptiveFailureMode>();
+            foreach (var mode in obj.failureModes)
+            {
+                FailureModes FailuerMode = await _context.FailureModes.FindAsync(mode.FailureModeId);
+                //MinusCF = FailuerMode.CriticalityFactor;
+                _context.FailureModes.Remove(FailuerMode);
+
+                var mssModel = await _context.MSS.Where(a => a.FailureModeId == mode.FailureModeId).ToListAsync();
+                foreach (var MSSItem in mssModel)
+                {
+                    _context.MSS.Remove(MSSItem);
+                }
+
+                //recycleChild.RCPPMId = 0;
+                //recycleChild.UserId = userId;
+                //recycleChild.CPPFMId = FailuerMode.CPPFMId;
+                //recycleChild.CFPPrescriptiveId = FailuerMode.CFPPrescriptiveId;
+                //recycleChild.FunctionMode = FailuerMode.FunctionMode;
+                //recycleChild.LocalEffect = FailuerMode.LocalEffect;
+                //recycleChild.SystemEffect = FailuerMode.SystemEffect;
+                //recycleChild.Consequence = FailuerMode.Consequence;
+                //recycleChild.DownTimeFactor = FailuerMode.DownTimeFactor;
+                //recycleChild.ScrapeFactor = FailuerMode.ScrapeFactor;
+                //recycleChild.SafetyFactor = FailuerMode.SafetyFactor;
+                //recycleChild.ProtectionFactor = FailuerMode.ProtectionFactor;
+                //recycleChild.FrequencyFactor = FailuerMode.FrequencyFactor;
+                //recycleChild.CriticalityFactor = FailuerMode.CriticalityFactor;
+                //recycleChild.Rating = FailuerMode.Rating;
+                //recycleChild.MaintainenancePractice = FailuerMode.MaintainenancePractice;
+                //recycleChild.FrequencyMaintainenance = FailuerMode.FrequencyMaintainenance;
+                //recycleChild.ConditionMonitoring = FailuerMode.ConditionMonitoring;
+                //recycleChild.AttachmentDBPath = FailuerMode.AttachmentDBPath;
+                //recycleChild.AttachmentFullPath = FailuerMode.AttachmentFullPath;
+                //recycleChild.Remark = FailuerMode.Remark;
+                //recycleChild.Pattern = FailuerMode.Pattern;
+                //recycleChild.FCACondition = FailuerMode.FCACondition;
+                //recycleChild.FCAInterval = FailuerMode.FCAInterval;
+                //recycleChild.FCAFFI = FailuerMode.FCAFFI;
+                //recycleChild.FCAComment = FailuerMode.FCAComment;
+                //recycleChild.IsDeleted = 1;
+                //recycleChild.DeletedFMTree = obj.FunctionFailure;
+
+            }
+
+            //CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.FindAsync(obj.CFPPrescriptiveId);
+            //var CCF = centrifugalPumpPrescriptiveModel.ComponentCriticalityFactor;
+            //var CF = CCF - MinusCF;
+
+            //centrifugalPumpPrescriptiveModel.ComponentCriticalityFactor = CF;
+
+            //if (CF > 1000)
+            //{
+            //    centrifugalPumpPrescriptiveModel.ComponentRating = "A";
+            //    centrifugalPumpPrescriptiveModel.CMaintainenancePractice = "CBM and OBM Both";
+            //    centrifugalPumpPrescriptiveModel.CFrequencyMaintainenance = "Daily Condition Monitoring, or Online Monitoring";
+            //    centrifugalPumpPrescriptiveModel.CConditionMonitoring = "Vibration Monitoring";
+            //}
+            //else if ((500 < CF) && (CF < 1000))
+            //{
+            //    centrifugalPumpPrescriptiveModel.ComponentRating = "B";
+            //    centrifugalPumpPrescriptiveModel.CMaintainenancePractice = "OBM";
+            //    centrifugalPumpPrescriptiveModel.CFrequencyMaintainenance = "Twice a week Condition Monitoring";
+            //    centrifugalPumpPrescriptiveModel.CConditionMonitoring = "Vibration Monitoring";
+            //}
+            //else if ((200 < CF) && (CF <= 500))
+            //{
+            //    centrifugalPumpPrescriptiveModel.ComponentRating = "C";
+            //    centrifugalPumpPrescriptiveModel.CMaintainenancePractice = "PM";
+            //    centrifugalPumpPrescriptiveModel.CFrequencyMaintainenance = "Weekly Condition Monitoring";
+            //    centrifugalPumpPrescriptiveModel.CConditionMonitoring = "Vibration Monitoring";
+            //}
+            //else if ((100 < CF) && (CF <= 200))
+            //{
+            //    centrifugalPumpPrescriptiveModel.ComponentRating = "D";
+            //    centrifugalPumpPrescriptiveModel.CMaintainenancePractice = "TBM";
+            //    centrifugalPumpPrescriptiveModel.CFrequencyMaintainenance = "Half of PF interval, typically Monthly or fortnightly, time based maintenance";
+            //    centrifugalPumpPrescriptiveModel.CConditionMonitoring = "Not Answered";
+            //}
+            //else if ((0 < CF) && (CF < 100))
+            //{
+            //    centrifugalPumpPrescriptiveModel.ComponentRating = "E";
+            //    centrifugalPumpPrescriptiveModel.CMaintainenancePractice = "Breakdown Maintenance";
+            //    centrifugalPumpPrescriptiveModel.CFrequencyMaintainenance = "All the time of Failure";
+            //    centrifugalPumpPrescriptiveModel.CConditionMonitoring = "Not Answered";
+            //}
+
+            //_context.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
+
+            //centrifugalPumpPrescriptiveModel.FMWithConsequenceTree = obj.FMWithConsequenceTree;
+            //centrifugalPumpPrescriptiveModel.FailureModeWithLSETree = obj.FailureModeWithLSETree;
+            //_context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         // DELETE api/<FMEAAPIController>/5

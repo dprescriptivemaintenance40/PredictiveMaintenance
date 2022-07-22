@@ -16,12 +16,12 @@
    },
    { 
      "id": 3,
-     "name": "External leakage - Process medium",
+     "name": "External leakage process medium",
      "mtbf" : 3.00  
    },
    { 
      "id": 4,
-     "name": "External leakage - Utility medium",
+     "name": "External leakage utility medium",
      "mtbf" : 4.28 
    },
    { 

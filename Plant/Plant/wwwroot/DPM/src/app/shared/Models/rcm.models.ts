@@ -6,6 +6,8 @@ export class RCM
         // public EquipmentId : number = 0;
         public MachineType : string = "";
         public EquipmentType : string = "";
+        public Application:string = "";
+        public SubUnit:string = "";
         public Function : string = "";
         public FunctionFailure : string = "";
         public Date : Date ;

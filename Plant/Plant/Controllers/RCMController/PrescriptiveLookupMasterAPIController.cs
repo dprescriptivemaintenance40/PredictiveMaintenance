@@ -41,15 +41,14 @@ namespace DPM.Controllers.Prescriptive
 
         [HttpGet("{id}")]
         [Route("GetRecords")]
-        public IActionResult GetRecords(string MachineType, string EquipmentType)
+        public IActionResult GetRecords(string MachineType)
         {
             try
             {
                 string MT = MachineType;
-                string ET = EquipmentType;
+                //string ET = EquipmentType;
                 IQueryable<PrescriptiveLookupMasterModel> prescriptiveLookupMasterModels = _context.PrescriptiveLookupMassterModelData
-                                                                                                    .Where(a => a.MachineType == MT
-                                                                                                             && a.EquipmentType == ET)
+                                                                                                    .Where(a => a.MachineType == MT )
                                                                                                     .OrderBy(a => a.PrescriptiveLookupMasterId)
                                                                                                     .AsQueryable();
                 var Data = prescriptiveLookupMasterModels.ToList();

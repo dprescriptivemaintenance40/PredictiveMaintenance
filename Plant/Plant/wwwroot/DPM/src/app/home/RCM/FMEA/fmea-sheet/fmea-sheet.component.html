@@ -1,4 +1,70 @@
-<div *ngIf = "cbaSheet" class="card dpm-card w-100 p-3">
-    <div class="col-lg-8 col-xs-12 col-centered" #spreadsheet ></div>
-</div>
+<a title="Download FMEA Sheet"><i style="float: right; margin: 10px; font-size: 2.5em; color: red"
+        (click)="DownloadFMEASheet()" class="pi pi-file-pdf"></i></a>
+        <button label="Back" type="button" class="btn btn-primary" (click)="BackToRCMList()"
+        pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
+<div *ngIf="cbaSheet" class="card dpm-card w-100 p-3">
+    <h2>FMEA WorkSheet</h2>
+    <div class="row">
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">System</label>
+            <input type="text" class="form-control" aria-describedby="basic-addon1">
+        </div>
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Plant</label>
+            <input type="text" class="form-control" aria-describedby="basic-addon1">
+        </div>
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Compiled by:</label>
+            <input type="text" class="form-control" aria-describedby="basic-addon1">
+        </div>
 
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Date:</label>
+            <input type="text" class="form-control" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Equipment Class</label>
+            <input type="text" [(ngModel)]="EquipmentClass" class="form-control" aria-describedby="basic-addon1">
+        </div>
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Tag No</label>
+            <input type="text" [(ngModel)]="TagNo" class="form-control" aria-describedby="basic-addon1">
+        </div>
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Revieved by:</label>
+            <input type="text" class="form-control" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Date:</label>
+            <input type="text" class="form-control" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Type</label>
+            <input type="text" [(ngModel)]="Type" class="form-control" aria-describedby="basic-addon1">
+        </div>
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Application</label>
+            <input type="text" [(ngModel)]="Application" class="form-control" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Approved by:</label>
+            <input type="text" class="form-control" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Date:</label>
+            <input type="text" class="form-control" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">SubUnit</label>
+            <input type="text" [(ngModel)]="SubUnit" class="form-control" aria-describedby="basic-addon1">
+        </div>
+    </div>
+    <br><br>
+    <div class="col-lg-8 col-xs-12 col-centered" #spreadsheet></div>
+</div>
