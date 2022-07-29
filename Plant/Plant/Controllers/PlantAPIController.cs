@@ -153,8 +153,7 @@ namespace Plant.Controllers
         // POST api/<PlantAPIController> 
         [HttpPost]
         public IEnumerable<string> Post()
-        {
-            try
+        {            try
             {
                 Plants plant = new Plants();
                 plant.Location = "Mumbai";
@@ -435,9 +434,9 @@ namespace Plant.Controllers
                 _Context.SaveChanges();
                 return new string[] { "Success" };
             }
-            catch ( Exception)
+            catch ( Exception exe)
             {
-                throw;
+                throw; 
             }
         }
         [HttpPost]

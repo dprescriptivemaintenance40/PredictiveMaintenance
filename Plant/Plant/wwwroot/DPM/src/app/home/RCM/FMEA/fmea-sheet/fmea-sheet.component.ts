@@ -77,7 +77,7 @@ export class FMEASHEETComponent implements OnInit {
             this.columns.push({ type: 'text', wordWrap: true, width: "40" }),
             this.columns.push({ type: 'text', wordWrap: true, width: "150" }),
             this.columns.push({ type: 'text', title: 'Local Effect', wordWrap: true, width: "200" }),
-            this.columns.push({ type: 'text', title: 'Sysyem Effect', width: "200", wordWrap: true }),
+            this.columns.push({ type: 'text', title: 'System Effect', width: "200", wordWrap: true }),
             this.columns.push({ type: 'text', title: 'Consequence', width: "250", wordWrap: true })
     }
 
