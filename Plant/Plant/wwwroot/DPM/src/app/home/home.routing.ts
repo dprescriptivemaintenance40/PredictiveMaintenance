@@ -27,6 +27,7 @@ import { PrescriptiveReportComponent } from "./RCM/FMEA/prescriptive-report/pres
 import { RCMFunctionalAnalysis } from "./RCM/CBA/RCMFunctionalAnalysis/rcmreport.component";
 import { PrescriptiveUpdateComponent } from "./RCM/FMEA/prescriptive-update/prescriptive-update.component";
 import { FMEASHEETComponent } from "./RCM/FMEA/fmea-sheet/fmea-sheet.component";
+import { CompressorStatusComponent } from "./PredictiveMaintenance/ScrewCompressor/compressor-status/compressor-status.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -59,7 +60,8 @@ import { FMEASHEETComponent } from "./RCM/FMEA/fmea-sheet/fmea-sheet.component";
                 { path: 'DataInsight', component: DataInsightComponent },
                 { path: 'ModelConfidence', component: ModelConfidenceComponent },
                 { path: 'DataExplanation', component: DataExplanationComponent },
-                {path:'FMEASHEET',component:FMEASHEETComponent}
+                { path: 'CompressorStatus', component: CompressorStatusComponent},
+                { path:'FMEASHEET',component:FMEASHEETComponent}
             ]
         }
     ])],

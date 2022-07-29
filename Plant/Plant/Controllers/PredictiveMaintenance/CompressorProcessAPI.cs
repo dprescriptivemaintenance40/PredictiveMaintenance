@@ -1,7 +1,10 @@
 ﻿using CsvHelper;
 using KiranaPasalManagementSystem.Response;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Plant.DAL;
+using static Plant.Models.EquipmentTables.CompressorDataProcess;
+using static Plant.Models.EquipmentTables.EquipmentDataProcess;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,15 +16,34 @@ namespace Plant.Controllers.PredictiveMaintenance
     public class CompressorProcessAPI : ControllerBase
     {
         private readonly PlantDBContext _Context;
-        public CompressorProcessAPI(PlantDBContext plantDBContext)
+        private readonly IConfiguration _config;
+        
+        public CompressorProcessAPI(PlantDBContext plantDBContext, IConfiguration config)
         {
             _Context = plantDBContext;
+            _config = config;
         }
+
         // GET: api/<ValuesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("GetBatch")]
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            List<object> batch = new List<object>();
+            List<BatchTable> batchTable = _Context.BatchTables.ToList<BatchTable>();
+            foreach(var b in batchTable)
+            {
+                List<object> list = new List<object>();
+                list.Add(b);
+                var staging = _Context.StagingTableSingles.Where(r => r.BatchId == b.Id).Count();
+                list.Add(staging);
+                var cleaning = _Context.CleanTableSingles.Where(r => r.BatchId == b.Id).Count();
+                list.Add(cleaning);
+                var errors = _Context.ErrorTableSingles.Where(r => r.BatchId == b.Id).ToList();
+                list.Add(errors);
+                batch.Add(list);
+            }
+            return Ok(batch);
         }
 
         // GET api/<ValuesController>/5
@@ -29,6 +51,49 @@ namespace Plant.Controllers.PredictiveMaintenance
         public string Get(int id)
         {
             return "value";
+        }
+
+        [HttpPost("Upload")]
+        public IActionResult Upload()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                string FilePath = @"G:\DPMBGProcess\ConsoleApp106\Tasks\DataFiles";
+                //   string newPath = Path.Combine(Guid.NewGuid().ToString() + '_' + folderName);
+                if (file.Length > 0)
+                {
+                    var fName = Path.GetFileName(file.FileName);
+                    // var fileName = file.FileName + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_";
+                    BatchTable batch = new BatchTable();
+                    string batchname = "user";
+                    batch.Description = batchname + "_" + Guid.NewGuid();
+                    DateTime now = DateTime.Now;
+                    batch.DateTimeBatchUploaded = now.ToString();
+                    batch.EquipmentProcessId = 1;
+                    batch.EquipmentTblId = 1;
+                    batch.IsCompleted = 1;
+                    batch.DateTimeBatchCompleted = "Batch is processing";
+                    var values = batch;
+                    _Context.BatchTables.Add(batch);
+                    _Context.SaveChanges();
+                    string destinationFileName = FilePath + "\\" + batch.Description + ".csv";
+                    var fullPath = Path.Combine(FilePath, destinationFileName);
+                    using (var fl = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(fl);
+                    }
+                    return Ok(values);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // POST api/<ValuesController>

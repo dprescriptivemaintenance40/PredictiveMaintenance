@@ -1,0 +1,45 @@
+<p-toast></p-toast>
+<div class="card dpm-card w-100 p-3">
+    <div id="divID" style="overflow-x:auto;">
+        <table class="table table-bordered" style="border-bottom: 1px solid;">
+            <thead style="text-align: center;">
+                <tr>
+                    <th colspan="1">Batch Id</th>
+                    <th colspan="3">Batch Description</th>
+                    <th colspan="2">DateTime of BatchUploaded</th>
+                    <th colspan="2">DateTime of BatchCompleted</th>
+                    <th colspan="1">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let b of batch; let i = index">
+                    <td colspan="1">{{b.Id}}</td>
+                    <td colspan="3">{{b.Description}}</td>
+                    <td colspan="2">{{b.DateTimeBatchUploaded}}</td>
+                    <td colspan="2">{{b.DateTimeBatchCompleted}}</td>
+                    <td colspan="1"><button class="btn btn-info" (click)="Show(b.Id)"><i class="pi pi-eye "> Show</i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <div *ngIf="show">
+        <h3>Details of selected batch :</h3> <br>
+        <div *ngFor="let l of list">
+            <div *ngIf="Id===l[0]">
+                <span><b> Batch Id </b> : {{l[0]}}</span><br>
+                <span><b> Staging Count </b> : {{l[1]}}</span><br>
+                <span><b> Cleaning Count </b> : {{l[2]}}</span><br>
+                <span><b> Errors </b> :</span><br>
+                <div *ngIf="noError">
+                    &nbsp;&nbsp;<span>No errors</span>
+                </div>
+                <div *ngFor="let e of l[3];">
+                    &nbsp;&nbsp;<span>Id : {{e.Id}}</span><br>
+                    &nbsp;&nbsp;<span>Description : {{e.Description}}</span><br>
+                    &nbsp;&nbsp;<span>Row Affected : {{e.rowAffected}}</span><br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

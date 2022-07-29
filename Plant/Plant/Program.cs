@@ -8,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(p => p.AddPolicy("MyAllowSpecificOrigins", builder =>
 {
     builder.AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader();
+           .AllowAnyMethod()
+           .AllowAnyHeader();
 }));
 
 builder.Services.AddControllersWithViews();
@@ -38,12 +38,13 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
-app.UseCors("MyAllowSpecificOrigins");
-app.UseStaticFiles();
-
 app.UseRouting();
+app.UseCors("MyAllowSpecificOrigins");
+app.UseAuthentication();
 
+app.UseStaticFiles();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

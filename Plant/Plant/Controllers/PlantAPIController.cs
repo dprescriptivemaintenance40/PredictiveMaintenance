@@ -4,6 +4,7 @@ using Plant.DAL;
 using Plant.Models;
 using Plant.Models.Historical;
 using Newtonsoft.Json.Serialization;
+using static Plant.Models.EquipmentTables.EquipmentDataProcess;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860 
@@ -426,12 +427,42 @@ namespace Plant.Controllers
                 pumpModel.P2 = 6;
                 pumpModel.Q = 3;
                 eqi.pumpModel.Add(pumpModel);
-
-                nwt.equipmentList.Add(eqi);
-                plant.networks.Add(nwt);
-
+                
                 _Context.Plants.Add(plant);
                 _Context.SaveChanges();
+
+                eqi.equipmentTableList = new List<EquipmentTable>();
+                EquipmentTable eqiTable = new EquipmentTable();
+                eqiTable.NameOfEquipment = "Compressor";
+                eqiTable.TypeOfEquipment = "Screw Compressor";
+                eqiTable.EquipmentId = 10;
+                _Context.EquipmentTables.Add(eqiTable);
+                _Context.SaveChanges();
+
+                eqi.patternTableList = new List<PatternTable>();
+                PatternTable pat = new PatternTable();
+                pat.NameOfPattern = "abc";
+                pat.DescriptionOfPattern = "xyz";
+                pat.EquipmentId = 10;
+                eqi.patternTableList.Add(pat);
+                _Context.PatternTables.Add(pat);
+                _Context.SaveChanges();
+
+                eqiTable.equipmentProcessList = new List<EquipmentProcess>();
+                EquipmentProcess eqiProcess = new EquipmentProcess();
+                eqiProcess.DataInput = "F";
+                eqiProcess.FolderPath = "LocalFolder";
+                eqiProcess.EquipmentTableId = 1;
+                eqiProcess.PatternId = 1;
+                eqiProcess.Description = "The execution of file starts when file added in given local folder";
+                eqiTable.equipmentProcessList.Add(eqiProcess);
+
+                _Context.EquipmentProcesss.Add(eqiProcess);
+                _Context.SaveChanges();
+                //nwt.equipmentList.Add(eqi);
+                //plant.networks.Add(nwt);
+
+
                 return new string[] { "Success" };
             }
             catch ( Exception exe)

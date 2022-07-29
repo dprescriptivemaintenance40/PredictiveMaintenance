@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import * as xlsx from "xlsx";
- import { HttpClient } from '@angular/common/http';
+ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { CompressorObjectModel } from './model-pipeline.model';
 enum CheckBoxType { Manual, Automated, NONE };
 @Component({
@@ -43,7 +43,9 @@ export class ModelPipelineComponent implements OnInit {
   public filelist: any;
   public arrayBuffer: any;
   public compressorList:any = [];
-  
+  public uploadSuccess:boolean=false;
+  FileUpload:any;
+
   constructor(private messageService: MessageService, private route: Router
     ,private http:HttpClient) {
 
@@ -90,25 +92,22 @@ export class ModelPipelineComponent implements OnInit {
     //   this.Automated = false; 
     // }
   }
-  Upload() {
-    this.load = true;
-      this.http.post("api/CompressorProcessAPI/PostCompressor",this.CompressorObject).subscribe (res =>
-        alert(res)
-        ),
-        (err)=>{
-          console.log(err.message)
-        }
-    let interval = setInterval(() => {
-      this.value = this.value + Math.floor(Math.random() * 10) + 5;
-      this.progress = "Loading the data";
-      if (this.value >= 100) {
-        this.value = 100;
-        this.progress = "Completed loading of data : "+ this.count+" rows were added";
-        this.Validate();
-        clearInterval(interval);
-      }
-    }, 2000);
+  addfile(event){
+    this.FileUpload=event?.target?.files[0];
   }
+  Upload(){
+    const formData:FormData=new FormData();
+    formData.append("uFile",this.FileUpload);
+    console.log(formData);
+    this.http.post("api/CompressorProcessAPI/Upload",formData).subscribe((res:any)=>{
+      console.log(res);
+      alert("Success");
+      this.uploadSuccess=true;
+    },
+    (err)=> {console.log("Error")
+    alert("Error")}
+  )}
+  
 
   Validate() {
     this.validate = true;
@@ -195,7 +194,7 @@ export class ModelPipelineComponent implements OnInit {
     }, 2000);
   }
 
-  addfile(event) {
+  addfile1(event) {
       
     this.file= event.target.files[0];     
     let fileReader = new FileReader();    
@@ -227,5 +226,24 @@ export class ModelPipelineComponent implements OnInit {
         }); 
         console.log(this.CompressorObject);
         }   
+    }
+  Upload1() {
+      this.load = true;
+        this.http.post("api/CompressorProcessAPI/PostCompressor",this.CompressorObject).subscribe (res =>
+          alert(res)
+          ),
+          (err)=>{
+            console.log(err.message)
+          }
+      let interval = setInterval(() => {
+        this.value = this.value + Math.floor(Math.random() * 10) + 5;
+        this.progress = "Loading the data";
+        if (this.value >= 100) {
+          this.value = 100;
+          this.progress = "Completed loading of data : "+ this.count+" rows were added";
+          this.Validate();
+          clearInterval(interval);
+        }
+      }, 2000);
     }
 }

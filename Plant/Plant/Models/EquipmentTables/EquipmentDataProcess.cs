@@ -17,7 +17,7 @@ namespace Plant.Models.EquipmentTables
             public string NameOfEquipment { get; set; }
             public string TypeOfEquipment { get; set; }
             public List<EquipmentProcess> equipmentProcessList { get; set; }
-            public Equipment equipment { get; set; }
+            public Equipment equipment;
         }
         public class PatternTable
         {
@@ -27,7 +27,8 @@ namespace Plant.Models.EquipmentTables
             public int EquipmentId { get; set; }
             public string NameOfPattern { get; set; }
             public string DescriptionOfPattern { get; set; }
-            public Equipment equipment { get; set; }
+
+            public Equipment equipment;
         }
         public class EquipmentProcess
         {
@@ -38,8 +39,9 @@ namespace Plant.Models.EquipmentTables
             public string FolderPath { get; set; }
             public string Description { get; set; }
             public List<BatchTable> batchTableList { get; set; }
-            public EquipmentTable equipmentTable { get; set; }
-            public PatternTable patternTable { get; set; }
+
+            public EquipmentTable equipmentTable;
+            public PatternTable patternTable;
         }
         public class CompressorConstraint
         {
@@ -47,7 +49,8 @@ namespace Plant.Models.EquipmentTables
             [ForeignKey("equipmentProcess")]
             public int EquipmentProcessId { get; set; }  //foreign key
             public string Package { get; set; }
-            public EquipmentProcess equipmentProcess { get; set; }
+
+            public EquipmentProcess equipmentProcess;
         }
         public class BatchTable
         {
@@ -55,9 +58,12 @@ namespace Plant.Models.EquipmentTables
             public int EquipmentTblId { get; set; }
             public int EquipmentProcessId { get; set; }  //foreign key
             public string Description { get; set; }     
-            public string DateTimeUploaded { get; set; }
-            public EquipmentTable equipmentTable { get; set; }
-            public EquipmentProcess equipmentProcess { get; set; }
+            public string DateTimeBatchUploaded { get; set; }
+            public string DateTimeBatchCompleted { get; set; }
+            public int IsCompleted { get; set; }
+
+            public EquipmentTable equipmentTable;
+            public EquipmentProcess equipmentProcess;
         }
         
     }

@@ -25,6 +25,6 @@ namespace Plant.Models
         public List<EquipmentTable> equipmentTableList { get; set; }
         public List<PatternTable> patternTableList { get; set; }
         public Network networks { get; set; }
-        public RCM RCM { get; set; }
+        //public RCM RCM { get; set; }
     }
 }

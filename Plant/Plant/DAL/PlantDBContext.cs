@@ -78,6 +78,11 @@ namespace Plant.DAL
         public DbSet<EquipmentProcess> EquipmentProcesss { get; set; }
         public DbSet<CompressorConstraint> CompressorConstraints { get; set; }
         public DbSet<BatchTable> BatchTables { get; set; }
+        public DbSet<StagingTableCompressor> StagingTableSingles { get; set; }
+        public DbSet<CleanTableCompressor> CleanTableSingles { get; set; }
+        public DbSet<ErrorTableCompressor> ErrorTableSingles { get; set; }
+        public DbSet<ProcessedTableCompressor> ProcessedTableSingles { get; set; }
+        public DbSet<PredictedTableCompressor> PredictedTableSingles { get; set; }
         //public DbSet<StagingTableCompressor> StagingTableSingles { get; set; }
         //public DbSet<CleanTableCompressor> CleanTableSingles { get; set; }
         //public DbSet<ErrorTableCompressor> ErrorTableSingles { get; set; }
@@ -104,7 +109,7 @@ namespace Plant.DAL
             //        .WithMany(b => b.safetyFactors)
             //        .HasForeignKey(a => a.PlantId);
 
-            modelBuilder.Entity<Equipment>().ToTable("EquipmentList");
+            modelBuilder.Entity<Equipment>().ToTable("Equipment");
             modelBuilder.Entity<Equipment>().HasKey(C => C.EquipmentId);
             modelBuilder.Entity<Equipment>()
                 .HasOne(p => p.networks)
@@ -339,7 +344,7 @@ namespace Plant.DAL
             modelBuilder.Entity<PredictivePercentage>().ToTable("PredictivePercentage");
 
             //EquipmentDataProcessTables
-            modelBuilder.Entity<EquipmentTable>().ToTable("Equipment");
+            modelBuilder.Entity<EquipmentTable>().ToTable("EquipmentTable");
             modelBuilder.Entity<EquipmentTable>().HasKey(c => c.Id);
             modelBuilder.Entity<EquipmentTable>()
                     .Property(p => p.NameOfEquipment)
@@ -365,15 +370,14 @@ namespace Plant.DAL
 
             modelBuilder.Entity<EquipmentProcess>()
                 .HasOne(p => p.equipmentTable)
-                .WithMany()
-                .HasForeignKey(p => p.EquipmentTableId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WithMany(p => p.equipmentProcessList)
+                .HasForeignKey(p => p.EquipmentTableId);
 
             modelBuilder.Entity<EquipmentProcess>()
                 .HasOne(p => p.patternTable)
                 .WithMany()
                 .HasForeignKey(p => p.PatternId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.ClientCascade);
 
             modelBuilder.Entity<CompressorConstraint>().ToTable("Constraints");
             modelBuilder.Entity<CompressorConstraint>().HasKey(c => c.Id);
@@ -387,15 +391,28 @@ namespace Plant.DAL
             modelBuilder.Entity<BatchTable>()
                .HasOne(p => p.equipmentTable)
                .WithMany()
-               .HasForeignKey(p => p.EquipmentTblId)
-               .OnDelete(DeleteBehavior.Restrict);
+               .HasForeignKey(p => p.EquipmentTblId);
 
             modelBuilder.Entity<BatchTable>()
                 .HasOne(p => p.equipmentProcess)
                 .WithMany()
                 .HasForeignKey(p => p.EquipmentProcessId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.ClientCascade);
 
+            modelBuilder.Entity<StagingTableCompressor>().ToTable("Compressor_Staging");
+            modelBuilder.Entity<StagingTableCompressor>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<CleanTableCompressor>().ToTable("Compressor_Cleaning");
+            modelBuilder.Entity<CleanTableCompressor>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<ErrorTableCompressor>().ToTable("Compressor_Error");
+            modelBuilder.Entity<ErrorTableCompressor>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<ProcessedTableCompressor>().ToTable("Compressor_Processed");
+            modelBuilder.Entity<ProcessedTableCompressor>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<PredictedTableCompressor>().ToTable("Compressor_Predicted");
+            modelBuilder.Entity<PredictedTableCompressor>().HasKey(c => c.Id);
             //modelBuilder.Entity<StagingTableCompressor>().ToTable("Compressor_Staging");
             //modelBuilder.Entity<StagingTableCompressor>().HasKey(c => c.Id);
 

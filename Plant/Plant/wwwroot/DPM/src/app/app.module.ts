@@ -9,6 +9,7 @@ import { LoginRegistrationComponent } from './login-registration/login-registrat
 import { SharedModule } from './shared/shared.module';
 import { ConfigModule } from './shared/config.service';
 import { SilReportComponent } from './home/SIL/SilTemplate/SilReport.component';
+import { CompressorStatusComponent } from './home/PredictiveMaintenance/ScrewCompressor/compressor-status/compressor-status.component';
 // import { AuthGuard } from './auth.guard';
 
 
@@ -17,7 +18,8 @@ import { SilReportComponent } from './home/SIL/SilTemplate/SilReport.component';
   declarations: [
     AppComponent,
     LoginRegistrationComponent,
-    SilReportComponent
+    SilReportComponent,
+    CompressorStatusComponent
   ],
   imports: [
     BrowserModule,

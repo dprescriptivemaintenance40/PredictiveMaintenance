@@ -55,6 +55,10 @@ export class HomeComponent implements OnInit {
               url: '#/Home/ModelPipeline',
             },
             {
+              label: 'Status',
+              url: '#/Home/CompressorStatus'
+            },
+            {
               label: 'Data Explanation',
               url: '#/Home/DataExplanation',
             },

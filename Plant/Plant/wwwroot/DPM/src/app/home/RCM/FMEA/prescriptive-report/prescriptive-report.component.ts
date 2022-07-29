@@ -7,7 +7,7 @@ import { MessageService } from 'primeng/api';
 import { PDFDocument } from 'pdf-lib';
 import * as Chart from 'chart.js';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
-import domtoimage from 'dom-to-image';
+// import domtoimage from 'dom-to-image';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-prescriptive-report',

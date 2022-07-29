@@ -34,7 +34,7 @@
         "ng2-charts": "^2.2.3",
         "ngx-copypaste": "^10.0.0",
         "ngx-powerbi": "^4.0.0",
-        "pdf-lib": "^1.6.0",
+        "pdf-lib": "^1.17.1",
         "powerbi-client": "^2.21.0",
         "powerbi-client-angular": "^2.0.0",
         "primeicons": "^4.1.0",
