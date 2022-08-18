@@ -46,6 +46,26 @@ namespace Plant.Controllers.PredictiveMaintenance
             return Ok(batch);
         }
 
+        [HttpGet]
+        [Route("GetBatchRecords")]
+        public IActionResult GetBatchRecords()
+
+        {
+            List<object> batch = new List<object>();
+            List<BatchTable> batchTable = _Context.BatchTables.ToList<BatchTable>();
+            foreach (var b in batchTable)
+            {
+                List<object> list = new List<object>();
+                list.Add(b);
+                var process = _Context.ProcessedTableSingles.Where(r => r.BatchId == b.Id).ToList();
+                list.Add(process);
+                var prediction = _Context.PredictedTableSingles.Where(r => r.BatchId == b.Id).ToList();
+                list.Add(prediction);
+                batch.Add(list);
+            }
+            return Ok(batch);
+        }
+        
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
         public string Get(int id)
