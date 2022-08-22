@@ -103,7 +103,7 @@ export class RCMListComponent implements OnInit {
     }
     localStorage.setItem('PrescriptiveUpdateObject', JSON.stringify(p));
     if (localStorage.getItem('PrescriptiveUpdateObject') != null) {
-      this.router.navigateByUrl('/Home/Prescriptive/Consequences');
+      this.router.navigateByUrl('/Home/Consequences');
       this.getPrescriptiveRecords();
     }
   }

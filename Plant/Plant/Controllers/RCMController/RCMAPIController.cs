@@ -527,6 +527,36 @@ namespace Plant.Controllers.RCMController
             }
         }
 
+        [HttpPut]
+        [Route("CFPrescriptiveAdd")]
+        public async Task<IActionResult> PutPrespective(RCM prescriptiveModel)
+        {
+
+            RCM centrifugalPumpPrescriptiveModel = new RCM();
+            centrifugalPumpPrescriptiveModel = await _context.RCMs.FindAsync(prescriptiveModel.RCMId);
+            centrifugalPumpPrescriptiveModel.failureModes = prescriptiveModel.failureModes;
+            centrifugalPumpPrescriptiveModel.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
+
+            _context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                //if (!PrespectiveModelExists(prescriptiveModel.RCMId))
+                //{
+                //    return NotFound();
+                //}
+                //else
+                //{
+                //    throw;
+                //}
+            }
+
+            return NoContent();
+        }
 
         [HttpPut]
         [Route("PrespectivePattern")]

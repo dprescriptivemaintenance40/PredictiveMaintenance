@@ -173,7 +173,6 @@ export class CBAComponent implements OnInit {
       this.PrescriptiveTreeList.forEach((res: any) => {
         if (res.TagNumber === this.SelectedTagNumber) {
           this.SelectedPrescriptiveTree.push(res);
-          console.log(this.SelectedPrescriptiveTree)
           this.cbasheet();
         }
       });
@@ -215,11 +214,11 @@ export class CBAComponent implements OnInit {
       this.columns.push({ type: 'text', title: 'Maintenance Interval', width: "150" }),
       this.columns.push({ type: 'dropdown', title: 'Maintenance Library', width: "130", source: ['Client', 'Contractor'] }),
       this.columns.push({ type: 'dropdown', title: 'RWC', width: "70", source: ['OPS', 'REL', 'MEC', 'ELE', 'CTL', 'AUT', 'HEL', 'RIG', 'DRV'] }),
-      this.columns.push({ type: 'numeric', title: 'Task duration, h', width: "80" }),
-      this.columns.push({ type: 'numeric', title: 'Resource cost annual Total, k$', width: "200" }),
-      this.columns.push({ type: 'numeric', title: 'Material cost annual Total, k$', width: "200" }),
+      this.columns.push({ type: 'numeric', title: 'Task duration, h', width: "100" }),
+      this.columns.push({ type: 'numeric', title: 'Resource cost annual total, k$', width: "200" }),
+      this.columns.push({ type: 'numeric', title: 'Material cost annual total, k$', width: "200" }),
       this.columns.push({ type: 'numeric', title: 'POC,K', width: "70" }),
-      this.columns.push({ type: 'numeric', title: 'Annual Poc', width: "100" }),
+      this.columns.push({ type: 'numeric', title: 'Annual Poc', width: "120" }),
       this.columns.push({ type: 'text', title: 'Workcenter', width: "80" }),
       this.columns.push({ type: 'dropdown', title: 'On stream', width: "80", source: ['Yes', 'No'] }),
       this.columns.push({ type: 'dropdown', title: 'Status', width: "60", source: ['New', 'Retained', 'Deleted'] }),
@@ -231,7 +230,7 @@ export class CBAComponent implements OnInit {
       this.columns.push({ type: 'text', title: 'Criticality assessment', width: "140" }),
       this.columns.push({ type: 'numeric', title: 'Etbc', width: "40" }),
       this.columns.push({ type: 'numeric', title: 'Total annual poc', width: "100" }),
-      this.columns.push({ type: 'numeric', title: 'Total annualcost with maintenance', width: "200" })
+      this.columns.push({ type: 'numeric', title: 'Total annual cost with maintenance', width: "240" })
     this.columns.push({ type: 'numeric', title: 'Residual risk  with maintenance ', width: "200" })
     this.columns.push({ type: 'numeric', title: 'Mei', width: "80" })
   }
@@ -543,8 +542,8 @@ export class CBAComponent implements OnInit {
         var RepairCostFM = this.SheetValue[sheet][0];
         var RepairCostIndex = sheet;
         var sheetid = sheet + 1;
-        if ((this.SheetValue[sheetid][0] != RepairCostFM && this.SheetValue[sheetid][1] != '') ||
-          (this.SheetValue[sheetid][0] == '' && this.SheetValue[sheetid][1] == '')) {
+        if ((this.SheetValue[sheetid][0] != RepairCostFM && this.SheetValue[sheetid][0] != '' && this.SheetValue[sheetid][1] != '' && this.SheetValue[sheetid][2] != '' && this.SheetValue[sheetid][3] != '') ||
+          (this.SheetValue[sheetid][0] == RepairCostFM && this.SheetValue[sheetid][0] == '' && this.SheetValue[sheetid][1] == '' && this.SheetValue[sheetid][2] == '' && this.SheetValue[sheetid][3] == '')) {
           let obj = {}
           obj['FailureMode'] = RepairCostFM;
           obj['RepairCostIndex'] = RepairCostIndex;
@@ -556,7 +555,7 @@ export class CBAComponent implements OnInit {
         var RepairCost = this.SheetValue[sheet][7];
         this.TotalRepairCosts += Number(RepairCost);
         var index = sheet + 1;
-        if ((this.SheetValue[index][0] != '' && this.SheetValue[index][1] != '') ||
+        if ((this.SheetValue.length == index) || (this.SheetValue[index][0] != '' && this.SheetValue[index][1] != '') ||
           (this.SheetValue[index][0] == '' && this.SheetValue[index][1] == '')) {
           let obj = {}
           obj['FailureMode'] = RepairCostFM;
@@ -624,15 +623,6 @@ export class CBAComponent implements OnInit {
       this.jspreadsheet.setValueFromCoords(15, this.Economicsy, this.TotalEconomicConsequences.toFixed(3), true);
     }
   }
-
-  // public BacktoSelectCBATag() {
-  //   this.jspreadsheet.destroy();
-  //   this.MSSIndex = 0;
-  //   this.PrescriptiveCBA = false;
-  //   this.cbaSheet = false;
-  //   this.Economics = false;
-  //   this.SelectBoxEnabled = true;
-  // }
 
   public ScenarioValue() {
     if (this.ScenarioYN == 'Yes') {

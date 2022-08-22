@@ -16,7 +16,7 @@ export class RCMContantAPI {
     public FMEAFileUpload: string = '/RCMAPI/UploadFile';
     public FMEADeleteFileUpload: string = '/RCMAPI/UpdateFileUpload';
     public FMEADropdownData: string = '/PrescriptiveLookupMasterAPI/GetRecords';
-    public FMEASaveConsequence: string = '/PrescriptiveAPI/CFPrescriptiveAdd';
+    public FMEASaveConsequence: string = '/RCMAPI/PrescriptiveAdd';
     public PrescriptiveRecordsForFCA: string = '/RCMAPI/GetPrescriptiveRecordsForFCA';
     public PrescriptiveRecordsForMSS: string = '/RCMAPI/GetPrescriptiveRecordsForMSS';
     public PrescriptiveRecordsForCBA: string = '/RCMAPI/GetPrescriptiveRecordsForCBA';

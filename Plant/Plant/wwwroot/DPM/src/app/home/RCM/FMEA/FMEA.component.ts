@@ -1312,7 +1312,7 @@ export class FMEAComponent implements OnInit {
         expanded: true,
         data: {
           name:
-            "Will the occurance of the failure mode be evidient to operational stuff during normal operation of the plant?"
+            "Will the occurrence of the failure mode be evidient to operational stuff during normal operation of the plant?"
         },
         children: [
           {
@@ -1322,7 +1322,7 @@ export class FMEAComponent implements OnInit {
             expanded: true,
             data: {
               name:
-                "Does the effect of the failure mode(or the secondary effect resulting from the failures) have direct adverse effect on operational safety or the environment?"
+                "Does the effect of the failure mode(or the secondary effect Resulting from the failures) have direct adverse effect on operational safety or the environment?"
             },
             children: [
               {
@@ -1341,7 +1341,7 @@ export class FMEAComponent implements OnInit {
                 expanded: true,
                 data: {
                   name:
-                    "Does the Failure mode adversily affect operational capabilities of the plant? "
+                    "Does the Failure mode Adversily affect operational capabilities of the plant? "
                 },
                 children: [
                   {
@@ -1374,7 +1374,7 @@ export class FMEAComponent implements OnInit {
             expanded: true,
             data: {
               name:
-                "Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the environment?  "
+                "Does the combination of the failure mode and one Additonal failure or event result in an adverse effect safety of the environment?  "
             },
             children: [
               {

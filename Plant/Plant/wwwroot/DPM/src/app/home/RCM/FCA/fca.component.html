@@ -62,7 +62,7 @@
             Pattern For Failure Mode
         </ng-template>
         <ng-template pTemplate="subtitle">
-            Enter Pattern for {{PatternFMName}}
+            Enter Pattern for "{{PatternFMName}}"
         </ng-template>
         <ng-template pTemplate="content p-0">
             <div class="p-fluid">
@@ -164,7 +164,7 @@
                                         <ng-template pTemplate="subtitle">
                                             <p class="mb-0"><b>2. To help determine the failure rate, we need to know how reliable the equipment is. If the
                                                     equipment was left alone
-                                                    for a period of time, would you expect this failure to have happened.
+                                                    for a period of time, would you expect this failure to have happened?
                                                 </b></p>
                                         </ng-template>
                                         <ng-template pTemplate="content p-0">
@@ -218,7 +218,7 @@
                                                     </div>
                                                     <div class="col-md-3 mt-3 mb-3">
                                                     
-                                                    <input type="checkbox" [(ngModel)]="TempratureChange" value="Temprature Change" name="name1" />&nbsp;&nbsp;&nbsp;&nbsp;Temperature Change
+                                                    <input type="checkbox" [(ngModel)]="TempratureChange" value="Temprature Change" name="name1" />&nbsp;&nbsp;&nbsp;&nbsp;Temperature change
                                                     </div>
                                                 
                                                     <div class="col-md-3 mt-3 mb-3">
@@ -227,7 +227,7 @@
                                                     </div>
                                                     <div class="col-md-3 mt-3 mb-3">
                                                     
-                                                    <input type="checkbox" [(ngModel)]="IncreaseLubricantConsumption" value="Increase Lubricant Consumption" name="name1" />&nbsp;&nbsp;&nbsp;&nbsp;Increase Lubricant Consumption
+                                                    <input type="checkbox" [(ngModel)]="IncreaseLubricantConsumption" value="Increase Lubricant Consumption" name="name1" />&nbsp;&nbsp;&nbsp;&nbsp;Increase lubricant consumption
                                                     </div>
                                                     <div class="col-md-3 mt-3 mb-3">
                                                         
@@ -263,7 +263,7 @@
                                                        
                                                             
                                                             <input type="checkbox" [(ngModel)]="HumanSenses" value=" Human Senses"
-                                                                    name="name1" />&nbsp;&nbsp;&nbsp;&nbsp;Human Senses
+                                                                    name="name1" />&nbsp;&nbsp;&nbsp;&nbsp;Human senses
                                                     </div>
                                                     
                                                     
@@ -275,7 +275,7 @@
                                                     <div class="col-md-3 mt-3 mb-3">                                                        
                                                             
                                                             <input type="checkbox" [(ngModel)]="SampleAnyalysis" value="Sample Anyalysis"
-                                                                    name="name1" />&nbsp;&nbsp;&nbsp;&nbsp;Sample Anyalysis
+                                                                    name="name1" />&nbsp;&nbsp;&nbsp;&nbsp;Sample analysis
                                                         </div>
                                                     </div>
                                             <button class="btn btn-primary btn-sm mt-4" (click)="ConditionSecond()"> <i class="fa fa-check"
@@ -343,8 +343,8 @@
                                         <ng-template pTemplate="title">
                                         </ng-template>
                                         <ng-template pTemplate="subtitle">
-                                            <p class="mb-0"><b>7. Some of the failure cannot avoided by maintenance. Would planned replacement or refurbishment
-                                                    maintenance prevent or mitigate this failure Mode?
+                                            <p class="mb-0"><b>7. Some of the failures cannot avoided by maintenance. Would planned replacement or refurbishment
+                                                    maintenance prevent or mitigate this failure modes?
                                                 </b></p>
                                         </ng-template>
                                         <ng-template pTemplate="content p-0">
@@ -353,7 +353,7 @@
                                                    
                                                     <input type="radio" [(ngModel)]="CommentFIEYN2"
                                                             value=" planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - Yes"
-                                                            name="CommentFIEYN21" />
+                                                            name="CommentFIEYN21"/>Yes
                                                 </div>
                                                 <div class="col-sm-1">
                                                   
@@ -376,7 +376,7 @@
                                         <ng-template pTemplate="subtitle">
                                             <p class="mb-0"><b> 8. Do you have any comments regarding the failure of this equipment or how the maintenance of the
                                                     equipment
-                                                    could be improved
+                                                    could be improved?
                                                 </b></p>
                                         </ng-template>
                                         <ng-template pTemplate="content p-0">
@@ -400,7 +400,7 @@
                                                     or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)'
                                                     || ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure
                                                     Mode Consequences : Safety and/or environmental hazard)') ? 'Safe Life' : 'Useful life'}} for
-                                                    {{PatternFMName}}
+                                                    "{{PatternFMName}}"
                                                 </b></p>
                                         </ng-template>
                                         <ng-template pTemplate="content p-0">
@@ -432,7 +432,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label>Do you want weibull analysis for alpha and beta</label>
+                                                    <label>Do you want Weibull analysis for alpha and beta?</label>
                             
                                                 </div>
                                                 <div class="col-sm">
@@ -474,7 +474,7 @@
                             
                                         </ng-template>
                                         <ng-template pTemplate="subtitle">
-                                            <p class="mb-0"><b> 10: Provide List of Days for Failure Mode, {{PatternFMName}} in excel format to calculate alpha,
+                                            <p class="mb-0"><b> 10: Provide List of Days for Failure Mode,"{{PatternFMName}}" in excel format to calculate alpha,
                                                     beta.
                                                 </b></p>
                                             <p><small>Note : Put just one column in Excel with column name 'Days' or <button class="btn btn-primary btn-sm"
@@ -520,7 +520,7 @@
 
     <div style="overflow: auto;" class="mt-4">
         <label class="form-text text-muted">
-            <h5>Add FCA for {{PatternFMName}}</h5>
+            <h5>Add FCA for "{{PatternFMName}}"</h5>
         </label>
         <button *ngIf="patternaddshow" label="Next" style="float: right;" (click)="PatternAdd()" type="button"
             class="btn btn-dark" pTooltip="Add data to Failure Mode" tooltipPosition="top">Add</button>
@@ -849,7 +849,7 @@
                         or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)'
                         || ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure
                         Mode Consequences : Safety and/or environmental hazard)') ? 'Safe Life' : 'Useful life'}} for
-                        {{PatternFMName}}
+                        "{{PatternFMName}}"
                     </b></p>
             </ng-template>
             <ng-template pTemplate="content p-0">
@@ -926,7 +926,7 @@
 
             </ng-template>
             <ng-template pTemplate="subtitle">
-                <p class="mb-0"><b> 10: Provide List of Days for Failure Mode, {{PatternFMName}} in excel format to calculate alpha,
+                <p class="mb-0"><b> 10: Provide List of Days for Failure Mode,"{{PatternFMName}}" in excel format to calculate alpha,
                         beta.
                     </b></p>
                 <p><small>Note : Put just one column in Excel with column name 'Days' or <button class="btn btn-primary btn-sm"

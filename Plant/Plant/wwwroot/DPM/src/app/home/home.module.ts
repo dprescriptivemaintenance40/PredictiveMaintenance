@@ -36,6 +36,11 @@ import { PrescriptiveConfigurationComponent } from "./RCM/FMEA/prescriptive-conf
 import { PrescriptiveReportComponent } from "./RCM/FMEA/prescriptive-report/prescriptive-report.component";
 import { PrescriptiveUpdateComponent } from "./RCM/FMEA/prescriptive-update/prescriptive-update.component";
 import { FMEASHEETComponent } from "./RCM/FMEA/fmea-sheet/fmea-sheet.component";
+import { PrescriptiveConsequencesComponent } from "./RCM/FMEA/prescriptive-consequences/prescriptive-consequences.component";
+import { NetworkDiagram } from "./RAM/Availability/network-diagram.component";
+import {MultiSelectModule} from 'primeng/multiselect'; 
+import {AccordionModule} from 'primeng/accordion';
+
 
 @NgModule({
     declarations: [
@@ -66,11 +71,14 @@ import { FMEASHEETComponent } from "./RCM/FMEA/fmea-sheet/fmea-sheet.component";
         PrescriptiveConfigurationComponent,
         PrescriptiveReportComponent,
         PrescriptiveUpdateComponent,
-        FMEASHEETComponent
+        FMEASHEETComponent,
+        PrescriptiveConsequencesComponent,
+        NetworkDiagram
     ],
     imports: [    
         HomeRoutingModule,       
-        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule,DialogModule
+        SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule,DialogModule,
+        MultiSelectModule,AccordionModule
     ],
     providers: [ExcelFormatService],
     bootstrap: [HomeComponent],exports:[HomeComponent]

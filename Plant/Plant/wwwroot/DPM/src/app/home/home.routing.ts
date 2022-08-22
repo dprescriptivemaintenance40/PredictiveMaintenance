@@ -28,6 +28,8 @@ import { RCMFunctionalAnalysis } from "./RCM/CBA/RCMFunctionalAnalysis/rcmreport
 import { PrescriptiveUpdateComponent } from "./RCM/FMEA/prescriptive-update/prescriptive-update.component";
 import { FMEASHEETComponent } from "./RCM/FMEA/fmea-sheet/fmea-sheet.component";
 import { CompressorStatusComponent } from "./PredictiveMaintenance/ScrewCompressor/compressor-status/compressor-status.component";
+import { PrescriptiveConsequencesComponent } from "./RCM/FMEA/prescriptive-consequences/prescriptive-consequences.component";
+import { NetworkDiagram } from "./RAM/Availability/network-diagram.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -42,6 +44,7 @@ import { CompressorStatusComponent } from "./PredictiveMaintenance/ScrewCompress
                 { path: 'VisNetwork', component: VisComponent },
                 { path: 'Configuration', component: PrescriptiveConfigurationComponent },
                 { path: 'FMEA', component: FMEAComponent },
+                { path: 'Consequences', component: PrescriptiveConsequencesComponent},
                 { path: 'FCA', component: FCAComponent },
                 { path: 'MSS', component: MSSComponent },
                 { path: 'CBA', component: CBAComponent },
@@ -61,7 +64,9 @@ import { CompressorStatusComponent } from "./PredictiveMaintenance/ScrewCompress
                 { path: 'ModelConfidence', component: ModelConfidenceComponent },
                 { path: 'DataExplanation', component: DataExplanationComponent },
                 { path: 'CompressorStatus', component: CompressorStatusComponent},
-                { path:'FMEASHEET',component:FMEASHEETComponent}
+                { path:'FMEASHEET',component:FMEASHEETComponent},
+                {path:'FMEASHEET',component:FMEASHEETComponent},
+                { path:'NetworkDiagram',component:NetworkDiagram}
             ]
         }
     ])],

@@ -1,0 +1,26 @@
+.border {
+    border: 2px solid black;
+    margin: 1rem 0;
+    padding: 0.25rem;
+    cursor: pointer;
+}
+
+.drop {
+    border: 3px solid #585570;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-color: #585570;
+}
+
+.div {
+    margin-top: 5000px;
+}
+.node-content {
+    text-align: center;
+    border: 1px solid #495ebb;
+    padding: 12px;
+    width: 146px;
+    resize: both;
+    overflow: auto;
+    height:60px
+}

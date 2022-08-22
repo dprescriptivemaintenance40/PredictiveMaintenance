@@ -209,6 +209,16 @@ export class HomeComponent implements OnInit {
     //   icon: 'pi pi-home',
     // },
     {
+      label: 'RAM',
+      icon: 'pi pi-home',
+      items: [
+        {
+          label: 'Network Diagram',
+          url: '#/Home/NetworkDiagram',
+        },
+      ]
+    },
+    {
       label: 'RFM',
       url: '#/Home/RFM',
       icon: 'pi pi-home',

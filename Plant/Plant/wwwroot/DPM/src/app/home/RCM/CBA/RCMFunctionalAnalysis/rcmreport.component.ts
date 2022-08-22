@@ -23,7 +23,6 @@ export class RCMFunctionalAnalysis implements OnInit {
     constructor(public route: ActivatedRoute,
         private RCMReportBLService: CommonBLService,
         private RCMReportContantAPI: RCMContantAPI,) {
-
     }
 
     ngOnInit() {
@@ -47,7 +46,7 @@ export class RCMFunctionalAnalysis implements OnInit {
             });
     }
 
-    public DownloadRCMReport(){
+    public DownloadRCMReport() {
         window.print();
     }
     public SetRCMDataReport() {
@@ -69,10 +68,10 @@ export class RCMFunctionalAnalysis implements OnInit {
             failuremodeobj['ResidualRiskWithMaintenance'] = this.CBAFailureMode[CBAId].ResidualRiskWithMaintenance;
             failuremodeobj['TotalAnnualPOC'] = this.CBAFailureMode[CBAId].TotalAnnualPOC;
             failuremodeobj['MEI'] = this.CBAFailureMode[CBAId].MEI;
-            if (failuremodeobj['MEI'] > 1){
+            if (failuremodeobj['MEI'] > 1) {
                 failuremodeobj['TaskApproved'] = 'Yes';
             }
-            else if(failuremodeobj['MEI'] < 1){
+            else if (failuremodeobj['MEI'] < 1) {
                 failuremodeobj['TaskApproved'] = 'No';
             }
             failuremodeobj['Tasks'] = [];

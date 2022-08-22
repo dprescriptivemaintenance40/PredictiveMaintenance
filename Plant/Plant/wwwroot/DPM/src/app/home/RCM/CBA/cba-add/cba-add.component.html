@@ -27,7 +27,7 @@
                 <input type="text" class="form-control" [ngModel]="SetEquipmentType" [readonly]="true" pInputText />
             </div>
             <div class="col-md-2 d-flex flex-column">
-                <label style=" margin-right: 12px;">Is Age Related</label>
+                <label style=" margin-right: 12px;">Is Age Related ?</label>
                 <input type="text" class="form-control" [ngModel]="SetAgeRelated" [readonly]="true" pInputText />
             </div>
             <div class="col-md-2" d-flex flex-column>
@@ -42,7 +42,7 @@
                 <input type="text" class="form-control" [ngModel]="SetConsequence" pInputText />
             </div><br>
             <div class="col-md-2 d-flex flex-column">
-                <label style="margin-right: 12px;">Has Scenario</label>
+                <label style="margin-right: 12px;">Has Scenario ?</label>
                 <select (change)="ScenarioValue()" class="form-select" [(ngModel)]="ScenarioYN" class="form-control">
                     <option value="">Choose..</option>
                     <option value="Yes">Yes</option>
