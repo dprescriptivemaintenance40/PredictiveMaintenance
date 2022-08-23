@@ -1,36 +1,17 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanDeactivate, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
+import { CookieService } from "ng2-cookies";
 
-export interface CanComponentDeactivate {
-  CanDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
-}
+@Injectable()
+export class AuthGuardService implements CanActivate {
 
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard implements CanActivate {
-
-
-  constructor(private router: Router) {
+  constructor(public _router: Router, public cookies:CookieService) {
   }
-  canDeactivate(component: CanComponentDeactivate, 
-    currentRoute: ActivatedRouteSnapshot, 
-    currentState: RouterStateSnapshot, 
-    nextState?: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-      return component.CanDeactivate();
-  }
-
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): boolean {
-    if (localStorage.getItem('token') != null)
-      return true;
-    else {
-      this.router.navigate(['Login']);
+  canActivate(): boolean {
+    if (!this.cookies.get('access_token')) {
+      this._router.navigate(['Login']);
       return false;
     }
-
+    return true;
   }
 }

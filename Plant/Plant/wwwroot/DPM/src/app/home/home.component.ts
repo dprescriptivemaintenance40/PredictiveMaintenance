@@ -7,6 +7,7 @@ import { CommonLoadingDirective } from '../shared/Loading/common-loading.directi
 import { Title } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { useAnimation } from '@angular/animations';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,7 @@ import { useAnimation } from '@angular/animations';
 export class HomeComponent implements OnInit {
   menuOpened: boolean = true;
   FormData: FormGroup;
+
 
   public CloseSideBar() {
     if (this.router.url === "/Home/SIL") {
@@ -251,7 +253,8 @@ export class HomeComponent implements OnInit {
     public router: Router,
     public messageService: MessageService,
     public commonLoadingDirective: CommonLoadingDirective,
-    private title: Title,) {
+    private title: Title,
+    private cookies:CookieService) {
     this.title.setTitle('Login | Dynamic Prescriptive Maintenence');
   }
 
@@ -268,7 +271,7 @@ export class HomeComponent implements OnInit {
 
 
   logout() {
-    localStorage.clear();
+    this.cookies.delete('access_token');
     this.router.navigateByUrl('/Login');
   }
 

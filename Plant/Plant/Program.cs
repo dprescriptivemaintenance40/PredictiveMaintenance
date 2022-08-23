@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using Plant.DAL;
-
+using System.Configuration;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -17,6 +20,24 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
+var jwtSecret = builder.Configuration.GetValue<string>("JWT:Secret");
+var keyBytes = Encoding.ASCII.GetBytes(jwtSecret);
+var tokenValidationParameters = new TokenValidationParameters
+{
+    ValidateIssuerSigningKey = true,
+    IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+    ValidateIssuer = true,
+    ValidIssuer = "http://localhost:61955",
+    ValidateAudience = true,
+    ValidAudience = "http://localhost:4200",
+    ValidateLifetime = true,
+    ClockSkew = TimeSpan.Zero
+};
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 });
 //builder.Services.AddCors(options =>
 //                        options.AddPolicy("MyAllowSpecificOrigins",

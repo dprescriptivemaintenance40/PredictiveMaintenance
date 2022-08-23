@@ -1,5 +1,8 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { Login } from "../Login/_Login";
 import { CommonDLService } from "./common.dl.service";
 
 @Injectable({
@@ -7,7 +10,7 @@ import { CommonDLService } from "./common.dl.service";
 })
 export class CommonBLService {
 
-    constructor(private commonDLService: CommonDLService) { }
+    constructor(private commonDLService: CommonDLService, private http:HttpClient) { }
     //Dynamic Get API with no Parameters
     public getWithoutParameters(url: string) {
         return this.commonDLService.getWithoutParameters(url)
@@ -16,6 +19,10 @@ export class CommonBLService {
             }));
     }
 
+    //Post API for Authentication
+    public Login(login:Login):Observable<any>{
+       return this.http.post("api/Authentication",login,{responseType:'json'});
+    }
     //Dynamic Get API with Parameters
     public getWithParameters(url: string, params) {
         return this.commonDLService.getWithParameters(url, params)
