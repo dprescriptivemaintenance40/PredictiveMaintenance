@@ -3,6 +3,7 @@ using DPM.Models.Prescriptive;
 using Microsoft.EntityFrameworkCore;
 using Plant.Models;
 using Plant.Models.Historical;
+using Plant.Models.Plant;
 using Plant.Models.PredictiveMaintenance;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
@@ -23,8 +24,31 @@ namespace Plant.DAL
         public DbSet<Edge> Edges { get; set; }
         public DbSet<Plants> Plants { get; set; }
         public DbSet<Network> Networks { get; set; }
+        public DbSet<mst_Asset> mst_Assets { get; set; }
+        public DbSet<Pump> Pumps { get; set; }
+        public DbSet<Compressor> Compressors { get; set; }
+        public DbSet<ScrewCompressor> ScrewCompressors { get; set; }
+        public DbSet<CentrifugalCompressor> CentrifugalCompressors { get; set; }
+        public DbSet<FailureMode> FailureMode { get; set; }
+        public DbSet<ScrewParameter> ScrewParameters { get; set; }
+        public DbSet<ScrewStagingTable> ScrewStagingTables { get; set; }
+        public DbSet<ScrewCleaningTable> ScrewCleaningTables { get; set; }
+        public DbSet<ScrewErrorTable> ScrewErrorTables { get; set; }
 
-       
+        public DbSet<ScrewProcessedTable> ScrewProcessedTables { get; set; }
+        public DbSet<ScrewPredictedTable> ScrewPredictedTables { get; set; }
+        public DbSet<CentrifugalParameter> CentrifugalParameters { get; set; }
+        public DbSet<CentrifugalStagingTable> CentrifugalStagingTables { get; set; }
+        public DbSet<CentrifugalCleaningTable> CentrifugalCleaningTables { get; set; }
+        public DbSet<CentrifugalErrorTable> CentrifugalErrorTables { get; set; }
+        public DbSet<CentrifugalProcessedTable> CentrifugalProcessedTables { get; set; }
+        public DbSet<CentrifugalPredictedTable> CentrifugalPredictedTables { get; set; }
+        public DbSet<ReciprocatingParameter> ReciprocatingParameters { get; set; }
+        public DbSet<ReciprocatingStagingTable> ReciprocatingStagingTables { get; set; }
+        public DbSet<ReciprocatingCleaningTable> ReciprocatingCleaningTables { get; set; }
+        public DbSet<ReciprocatingErrorTable> ReciprocatingErrorTables { get; set; }
+        public DbSet<ReciprocatingProcessedTable> ReciprocatingProcessedTables { get; set; }
+        public DbSet<ReciprocatingPredictedTable> ReciprocatingPredicteds { get; set; }
         public DbSet<CompressorModel> CompressorsModel { get; set; }
         public DbSet<PumpModel> PumpsModel { get; set; }
 
@@ -101,6 +125,13 @@ namespace Plant.DAL
                 .HasOne(p => p.plant)
                     .WithMany(b => b.networks)
                     .HasForeignKey(a => a.PlantId);
+
+            //modelBuilder.Entity<TagNumber>()
+            //.ToTable("TagNumber")
+            //.HasDiscriminator<int>("TagNumberType")
+            //.HasValue<ScrewCompressor>(1)
+            //.HasValue<CentrifugalCompressor>(2)
+            //.HasValue<FailureMode>(3);
 
             //modelBuilder.Entity<SafetyFactor>().ToTable("tblSafetyFactor");
             //modelBuilder.Entity<SafetyFactor>().HasKey(c => c.SafetyFactorId);

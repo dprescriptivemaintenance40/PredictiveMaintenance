@@ -1,4 +1,5 @@
 ﻿using Plant.Models.Historical;
+using Plant.Models.Plant;
 using System.ComponentModel.DataAnnotations.Schema;
 using static Plant.Models.EquipmentTables.EquipmentDataProcess;
 
@@ -10,6 +11,9 @@ namespace Plant.Models
         public int NetworkId { get; set; }
         public string MachineId { get; set; }
         public int TagNumber { get; set; }
+        public string AssetName { get; set; }  //eg. ScrewCompressor 
+        public List<FailureMode> failureMode { get; set; }
+        public List<FailureModes> failureModes { get; set; }
         public string Description { get; set; }
         public decimal FailureRate { get; set; }
         public decimal MDT { get; set; }

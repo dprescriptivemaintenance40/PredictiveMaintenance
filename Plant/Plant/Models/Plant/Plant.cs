@@ -1,4 +1,5 @@
 ﻿
+using Plant.Models.Plant;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Plant.Models
@@ -10,7 +11,7 @@ namespace Plant.Models
         public string PlantName { get; set; }
         public string Location { get; set; }
         public List<Network> networks { get; set; }
-        //public List<SafetyFactor> safetyFactors { get; set; }
+        public List<mst_Asset> mst_Assets { get; set; }
     }
 
 }

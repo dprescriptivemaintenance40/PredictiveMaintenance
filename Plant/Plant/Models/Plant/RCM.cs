@@ -1,3 +1,4 @@
+using Plant.Models.Plant;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,7 +23,8 @@ namespace Plant.Models
         public string FCAAdded { get; set; }
         public string MSSAdded { get; set; }
         public string CBAAdded { get; set; }
-        public string EquipmentCriticalityType { get; set; }  
+        public string EquipmentCriticalityType { get; set; }
+        public List<FailureMode> failureMode { get; set; }
         public List<FailureModes> failureModes { get; set; }
         //public int OrgainzationId { get; internal set; }
         //[NotMapped]
