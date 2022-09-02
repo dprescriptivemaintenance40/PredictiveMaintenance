@@ -30,21 +30,26 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             List<object> batch = new List<object>();
             List<object> subAsset = new List<object>();
-            //List<object> asset = new List<object>();
-            var asset = 0;
+            List<object> asset = new List<object>();
+            //var asset = 0;
             List<mst_Asset> assetTable = _Context.mst_Asset.ToList<mst_Asset>();
             foreach (var b in assetTable)
             {
                 if (b.Id_fk == null)
                 {
-                    asset=b.AssetId;
+                    asset.Add(b.AssetId);
                 }
-                else if(b.Id_fk == asset)
+                else
+                {
+                    foreach (var a in asset)
+                    {
+                        if (b.Id_fk == Convert.ToInt32(a))
                         {
                             subAsset.Add(b.AssetId);
                         }
-                    
-                else if (subAsset.Count != 0)
+                    }
+                }
+                if (subAsset.Count != 0)
                 {
                     foreach (var sa in subAsset)
                     {

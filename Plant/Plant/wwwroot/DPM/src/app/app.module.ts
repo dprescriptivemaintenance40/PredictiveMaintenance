@@ -9,7 +9,7 @@ import { LoginRegistrationComponent } from './login-registration/login-registrat
 import { SharedModule } from './shared/shared.module';
 import { ConfigModule } from './shared/config.service';
 import { SilReportComponent } from './home/SIL/SilTemplate/SilReport.component';
-import { CompressorStatusComponent } from './home/PredictiveMaintenance/ScrewCompressor/compressor-status/compressor-status.component';
+import { CompressorStatusComponent } from './home/PredictiveMaintenance/compressor-status/compressor-status.component';
 import { authInterceptorProviders } from './Token.Interceptor';
 import { AuthGuard } from './auth.guard';
 import { CookieService } from 'ngx-cookie-service';

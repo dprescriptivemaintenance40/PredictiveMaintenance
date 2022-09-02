@@ -45,9 +45,6 @@ export class HomeComponent implements OnInit {
       label: 'Predictive Maintenance',
       icon: 'pi pi-home',
       items: [
-        {
-          label: 'Compressor',
-          items: [
             {
               label: 'Constraints & Validations',
               url: '#/Home/ConstraintValidation',
@@ -81,84 +78,6 @@ export class HomeComponent implements OnInit {
               url: '#/Home/PredictiveReport',
             }
           ]
-        },
-        {
-          label: 'Centrifugal Pump',
-          items: [
-            {
-              label: 'Constraints and Validations',
-              //url: '#/Home/ConstraintValidation',
-            },
-            {
-              label: 'Model Pipeline',
-              //url: '#/Home/ModelPipeline',
-            },
-            {
-              label: 'Predictive Charts',
-              //url: '#/Home/PredictiveChart',
-            },
-            {
-              label: 'Predictive Reports',
-              //url: '#/Home/PredictiveReport',
-            },
-            {
-              label: 'Data Insights',
-              //url: '#/Home/DataInsight',
-            }
-          ]
-        },
-        {
-          label: 'Valve',
-          items: [
-            {
-              label: 'Constraints and Validations',
-              //url: '#/Home/ConstraintValidation',
-            },
-            {
-              label: 'Model Pipeline',
-              //url: '#/Home/ModelPipeline',
-            },
-            {
-              label: 'Predictive Charts',
-              //url: '#/Home/PredictiveChart',
-            },
-            {
-              label: 'Predictive Reports',
-              //url: '#/Home/PredictiveReport',
-            },
-            {
-              label: 'Data Insights',
-              //url: '#/Home/DataInsight',
-            }
-          ]
-        },
-        {
-          label: 'Motors',
-          items: [
-            {
-              label: 'Constraints and Validations',
-              //url: '#/Home/ConstraintValidation',
-            },
-            {
-              label: 'Model Pipeline',
-              // url: '#/Home/ModelPipeline',
-            },
-            {
-              label: 'Predictive Charts',
-              //url: '#/Home/PredictiveChart',
-            },
-            {
-              label: 'Predictive Reports',
-              //url: '#/Home/PredictiveReport',
-            },
-            {
-              label: 'Data Insights',
-              //url: '#/Home/DataInsight',
-            }
-          ]
-        }
-      ]
-
     },
     {
       label: 'Strategic Analysis',
