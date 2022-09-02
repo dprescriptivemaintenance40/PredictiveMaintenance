@@ -1,16 +1,17 @@
 ﻿
 using Plant.Models.Plant;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Plant.Models
 {
     public class Plants
     {
+        [Key]
         public int PlantId { get; set; }
         public int OrganizationId { get; set; }
         public string PlantName { get; set; }
         public string Location { get; set; }
-        public List<Network> networks { get; set; }
         public List<mst_Asset> mst_Assets { get; set; }
     }
 

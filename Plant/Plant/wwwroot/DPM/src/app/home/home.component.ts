@@ -221,11 +221,6 @@ export class HomeComponent implements OnInit {
       ]
     },
     {
-      label: 'RFM',
-      url: '#/Home/RFM',
-      icon: 'pi pi-home',
-    },
-    {
       label: 'RCM Maintenance',
       url: '#/Home/RCMList',
       icon: 'pi pi-home',

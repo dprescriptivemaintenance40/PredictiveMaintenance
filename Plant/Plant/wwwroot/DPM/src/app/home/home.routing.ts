@@ -19,7 +19,6 @@ import { DataInsightComponent } from "./PredictiveMaintenance/ScrewCompressor/da
 import { PredictiveChartComponent } from "./PredictiveMaintenance/ScrewCompressor/predictive-chart/predictive-chart.component";
 import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompressor/model-confidence/model-confidence.component";
 import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompressor/data-explanation/data-explanation.component";
-import { RFMComponent } from "./RFM/rfm.component";
 import { DashboardReportComponent } from "./DashboardReport/dashboardReport.component";
 import { CBAComponent } from "./RCM/CBA/cba-add/cba-add.component";
 import { PrescriptiveConfigurationComponent } from "./RCM/FMEA/prescriptive-configuration/prescriptive-configuration.component";
@@ -52,7 +51,6 @@ import { NetworkDiagram } from "./RAM/Availability/network-diagram.component";
                 { path: 'RCMUpdate', component: PrescriptiveUpdateComponent, canDeactivate: [AuthGuard] },
                 { path: 'Report', component: PrescriptiveReportComponent },
                 { path: 'RCMFunctionalAnalysis', component: RCMFunctionalAnalysis },
-                { path: 'RFM', component: RFMComponent },
                 { path: 'SIL', component: SILComponent },
                 { path: 'SIL/:id', component: SILComponent },
                 { path: 'Worksheet/:id', component: SilWorksheetComponent },

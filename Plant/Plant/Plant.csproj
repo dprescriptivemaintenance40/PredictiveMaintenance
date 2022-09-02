@@ -8,12 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\EquipmentTables\**" />
     <Compile Remove="wwwroot\PlantClientSide\**" />
     <Compile Remove="wwwroot\Vis\**" />
+    <Content Remove="Models\EquipmentTables\**" />
     <Content Remove="wwwroot\PlantClientSide\**" />
     <Content Remove="wwwroot\Vis\**" />
+    <EmbeddedResource Remove="Models\EquipmentTables\**" />
     <EmbeddedResource Remove="wwwroot\PlantClientSide\**" />
     <EmbeddedResource Remove="wwwroot\Vis\**" />
+    <None Remove="Models\EquipmentTables\**" />
     <None Remove="wwwroot\PlantClientSide\**" />
     <None Remove="wwwroot\Vis\**" />
   </ItemGroup>

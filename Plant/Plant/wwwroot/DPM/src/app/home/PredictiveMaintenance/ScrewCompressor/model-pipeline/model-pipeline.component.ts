@@ -13,46 +13,28 @@ enum CheckBoxType { Manual, Automated, NONE };
 })
 export class ModelPipelineComponent implements OnInit {
 
+  BatchId:number;
+  Description:string;
   check_box_type = CheckBoxType;
-  currentlyChecked: boolean;
   Manual: boolean = true;
   Automated: boolean = false;
-  validating: string = "";
-  value: number = 0;
-  value1: number = 0;
-  value2: number = 0;
-  value3: number = 0;
-  value4: number = 0;
-  value5: number = 0;
-  count:number=0;
-  progress: string = "";
-  progress1: string = "";
-  progress2: string = "";
-  progress3: string = "";
-  progress4: string = "";
-  progress5: string = "";
-  load: boolean = false;
-  validate: boolean = false;
-  calculate: boolean = false;
-  aggregate: boolean = false;
-  extrapolation: boolean = false;
-  predict: boolean = false;
-  dataExplanation: boolean = false;
-  public CompressorObject:Array<CompressorObjectModel>=new Array<CompressorObjectModel>();
-  public file: File
-  public filelist: any;
-  public arrayBuffer: any;
-  public compressorList:any = [];
   public uploadSuccess:boolean=false;
   FileUpload:any;
-
-  constructor(private messageService: MessageService, private route: Router
-    ,private http:HttpClient) {
-
+  public Assetlist:any= [];
+  selectedAsset = null;
+  selectedTagNumber=null;
+  constructor(private messageService: MessageService,private http:HttpClient) {
   }
 
   ngOnInit() {
-
+    this.http.get("api/FileUploadingAPI/GetAsset").subscribe((res:any)=>{
+          res.forEach(record =>{
+             this.Assetlist.push(record);
+          })
+    },
+    (err)=> {
+      console.log(err)
+    });
   }
 
   selectCheckBoxM() {
@@ -96,154 +78,26 @@ export class ModelPipelineComponent implements OnInit {
     this.FileUpload=event?.target?.files[0];
   }
   Upload(){
-    const formData:FormData=new FormData();
-    formData.append("uFile",this.FileUpload);
-    console.log(formData);
-    this.http.post("api/CompressorProcessAPI/Upload",formData).subscribe((res:any)=>{
-      console.log(res);
-      alert("Success");
-      this.uploadSuccess=true;
-    },
-    (err)=> {console.log("Error")
-    alert("Error")}
-  )}
-  
-
-  Validate() {
-    this.validate = true;
-    let interval = setInterval(() => {
-      this.value1 = this.value1 + Math.floor(Math.random() * 10) + 5;
-      this.progress1 = "Validating the data "
-      if (this.value1 >= 10 && this.value1 <= 30) {
-        this.validating = "Detecting inaccurate data";
-      }
-      else if (this.value1 > 30 && this.value1 <= 70) {
-        this.validating = "Removing inaccurate data";
-      }
-      else if (this.value1 > 70 && this.value1 < 100) {
-        this.validating = "Moving inaccurate data to other file";
-      }
-      else if (this.value1 >= 100) {
-        this.validating = ""
-        this.value1 = 100;
-        this.progress1 = "Completed Validating of data";
-        this.Calculate();
-        clearInterval(interval);
-      }
-    }, 2000);
-  }
-  
-  Calculate() {
-    this.calculate = true;
-    let interval = setInterval(() => {
-      this.value2 = this.value2 + Math.floor(Math.random() * 10) + 5;
-      this.progress2 = "Calculating Values";
-      if (this.value2 >= 100) {
-        this.value2 = 100;
-        this.progress2 = "Completed Calculation";
-        this.Aggregate();
-        clearInterval(interval);
-      }
-    }, 2000);
-  }
-
-  Aggregate() {
-    this.aggregate = true;
-    let interval = setInterval(() => {
-      this.value3 = this.value3 + Math.floor(Math.random() * 10) + 5;
-      this.progress3 = "Aggregating Values";
-      if (this.value3 >= 100) {
-        this.value3 = 100;
-        this.progress3 = "Completed Aggregation";
-        this.Extrapolate();
-        clearInterval(interval);
-      }
-    }, 2000);
-  }
-
-  Extrapolate() {
-    this.extrapolation = true;
-    let interval = setInterval(() => {
-      this.value4 = this.value4 + Math.floor(Math.random() * 10) + 5;
-      this.progress4 = "Extrapolation the data";
-      if (this.value4 >= 100) {
-        this.value4 = 100;
-        this.progress4 = "Completed Extrapolation of data";
-        this.Predict();
-        clearInterval(interval);
-      }
-    }, 2000);
-  }
-
-  Predict() {
-    this.predict = true;
-    let interval = setInterval(() => {
-      this.value5 = this.value5 + Math.floor(Math.random() * 10) + 5;
-      this.progress5 = "Predicting the data";
-      if (this.value5 >= 100) {
-        this.value5 = 100;
-        this.progress5 = "Completed Prediction of data";
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Success',
-          detail: 'File Uploaded',
-        });
-        clearInterval(interval);
-        this.dataExplanation = true;
-      }
-    }, 2000);
-  }
-
-  addfile1(event) {
-      
-    this.file= event.target.files[0];     
-    let fileReader = new FileReader();    
-    fileReader.readAsArrayBuffer(this.file);     
-    fileReader.onload = (e) => {    
-        this.arrayBuffer = fileReader.result;    
-        var data = new Uint8Array(this.arrayBuffer);    
-        var arr = new Array();    
-        for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);    
-        var bstr = arr.join("");    
-        var workbook = xlsx.read(bstr, {type:"binary"});    
-        var first_sheet_name = workbook.SheetNames[0];    
-        var worksheet = workbook.Sheets[first_sheet_name];  
-        this.compressorList = xlsx.utils.sheet_to_json(worksheet,{raw:true});
-        // console.log(this.store);
-        // console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true}));    
-        var arraylist = xlsx.utils.sheet_to_json(worksheet,{raw:true});  
-        console.log(this.compressorList)
-        this.filelist = [];    
-        // console.log(this.filelist)  
-        
-        this.compressorList.forEach(element => {
-          var obj:CompressorObjectModel=new CompressorObjectModel();
-          obj.Id= element.__rowNum__,
-          obj.Date = element.Date,
-          obj.TD1Value= element.TD1;
-          this.CompressorObject.push(obj);
-          this.count+=1;
-        }); 
-        console.log(this.CompressorObject);
-        }   
+    if(this.FileUpload.name.split(".").pop() != 'csv' || this.selectedAsset==null || this.selectedTagNumber==null){
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: "File is not in csv format or Fields are empty" })
     }
-  Upload1() {
-      this.load = true;
-        this.http.post("api/CompressorProcessAPI/PostCompressor",this.CompressorObject).subscribe (res =>
-          alert(res)
-          ),
-          (err)=>{
-            console.log(err.message)
-          }
-      let interval = setInterval(() => {
-        this.value = this.value + Math.floor(Math.random() * 10) + 5;
-        this.progress = "Loading the data";
-        if (this.value >= 100) {
-          this.value = 100;
-          this.progress = "Completed loading of data : "+ this.count+" rows were added";
-          this.Validate();
-          clearInterval(interval);
-        }
-      }, 2000);
+    else{
+      const formData:FormData=new FormData();
+      formData.append("File",this.FileUpload);
+      formData.append("Asset",this.selectedAsset);
+      formData.append("TagNumber",this.selectedTagNumber);
+      console.log(formData);
+      this.http.post("api/FileUploadingAPI/Upload",formData).subscribe((res:any)=>{
+        console.log(res);
+        this.BatchId=res.Id;
+        this.Description=res.Description;
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: "File uploaded SuccessFully" })
+        this.uploadSuccess=true;
+      },
+      (err)=> {
+        console.log(err)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error while uploading" })
+      })
     }
+  }
 }

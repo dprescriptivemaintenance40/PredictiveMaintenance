@@ -1,7 +1,6 @@
 <p-toast></p-toast>
 <div class="card dpm-card w-100 p-3">
-    <div class="row" style="text-align: center;">
-        <!-- <div class="col-5">
+    <!-- <div class="col-5">
         <label for="myfile"> Upload Historical data :  </label>
         <input type="file" id="myfile">
     </div>
@@ -10,25 +9,42 @@
         Process
       </button>
     </div> -->
-        <div class="col-md-4 form-group">
-            <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file"
-                accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-          
+    <div class="row">
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Select Asset</label>
+            <select [(ngModel)]="selectedAsset">
+                <option *ngFor="let aList of Assetlist" [ngValue]="aList">{{aList}}</option>
+            </select><br>
+            <label style=" margin-right: 12px;">Tag Number</label>
+            <input type="text" [(ngModel)]="selectedTagNumber">
         </div>
-        <button class="btn btn-success btn-sm" style="margin-left: 10px;height: 40px;" (click)="Upload()">Process</button>
-        <div class="col-4">
-            <input type="checkbox" style="width: 50px;height: 20px;" [checked]="Manual" (change)="selectCheckBoxM()">
-            Manual
-            <input type="checkbox" style="width: 50px;height: 20px;" [checked]="Automated"
-                (change)="selectCheckBoxA($event)"> Automated
+        <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Upload File</label>
+            <div class="row">
+            <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file" accept=".csv">
+            </div>
+        </div>
+        <button class="btn btn-success btn-sm" style="margin-left: 12px;height: 40px;margin-top: 25px;"
+            (click)="Upload()">Process</button>
+        <div class="col-md-4 d-flex flex-column">
+            <div class="row">
+            <input type="checkbox" style="margin-left: 20px;width: 40px;height: 20px;margin-top: 25px;" [checked]="Manual" (change)="selectCheckBoxM()">
+            <span style="margin-top: 25px;">Manual</span> 
+            <input type="checkbox" style="width: 40px;height: 20px;margin-top: 25px;" [checked]="Automated"
+                (change)="selectCheckBoxA($event)"> 
+            <span style="margin-top: 25px;">Automated</span>
+            </div>
         </div>
     </div>
     <br><br>
     <div *ngIf="uploadSuccess">
+        <span>BatchId : {{BatchId}}</span><br>
+        <span>Description : {{Description}}</span><br>
         <span>Batch is uploading .....</span> <br>
+        <a href="#/Home/CompressorStatus">Check Status</a>
     </div>
     <br>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-6">
             <div *ngIf="load">
                 <span>{{progress}} </span> <i *ngIf="value==100" style="color: green;" class="pi pi-check-circle"></i>
@@ -63,5 +79,5 @@
         <div class="col-6">
             <img src="dist/DPM/assets/pipeline.png" style="width: 610px;height: 560px;" alt="">
         </div>
-    </div>
+    </div> -->
 </div>

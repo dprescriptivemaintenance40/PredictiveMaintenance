@@ -1,16 +1,12 @@
-﻿using CsvHelper;
-using DPM.Models.Prescriptive;
+﻿using DPM.Models.Prescriptive;
 using Microsoft.EntityFrameworkCore;
 using Plant.Models;
-using Plant.Models.Historical;
 using Plant.Models.Plant;
 using Plant.Models.PredictiveMaintenance;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.PredictiveChart;
-using System.Globalization;
-using static Plant.Models.EquipmentTables.CompressorDataProcess;
-using static Plant.Models.EquipmentTables.EquipmentDataProcess;
+
 
 namespace Plant.DAL
 {
@@ -21,15 +17,9 @@ namespace Plant.DAL
         }
 
         public DbSet<Equipment> Equipments { get; set; }
-        public DbSet<Edge> Edges { get; set; }
         public DbSet<Plants> Plants { get; set; }
-        public DbSet<Network> Networks { get; set; }
-        public DbSet<mst_Asset> mst_Assets { get; set; }
-        public DbSet<Pump> Pumps { get; set; }
-        public DbSet<Compressor> Compressors { get; set; }
-        public DbSet<ScrewCompressor> ScrewCompressors { get; set; }
-        public DbSet<CentrifugalCompressor> CentrifugalCompressors { get; set; }
-        public DbSet<FailureMode> FailureMode { get; set; }
+        public DbSet<mst_Asset> mst_Asset { get; set; }
+        public DbSet<Models.Plant.FailureMode> FailureMode { get; set; }
         public DbSet<ScrewParameter> ScrewParameters { get; set; }
         public DbSet<ScrewStagingTable> ScrewStagingTables { get; set; }
         public DbSet<ScrewCleaningTable> ScrewCleaningTables { get; set; }
@@ -49,13 +39,11 @@ namespace Plant.DAL
         public DbSet<ReciprocatingErrorTable> ReciprocatingErrorTables { get; set; }
         public DbSet<ReciprocatingProcessedTable> ReciprocatingProcessedTables { get; set; }
         public DbSet<ReciprocatingPredictedTable> ReciprocatingPredicteds { get; set; }
-        public DbSet<CompressorModel> CompressorsModel { get; set; }
-        public DbSet<PumpModel> PumpsModel { get; set; }
 
         //FMEA
         public DbSet<RCM> RCMs { get; set; }
         public DbSet<PrescriptiveLookupMasterModel> PrescriptiveLookupMassterModelData { get; set; }
-        public DbSet<FailureModes> FailureModes { get; set; }
+        public DbSet<Models.FailureModes> FailureModes { get; set; }
         public DbSet<MSS> MSS { get; set; }
 
         public DbSet<PrescriptiveCbaModel> PrescriptiveCbaModels { get; set; }
@@ -96,22 +84,7 @@ namespace Plant.DAL
         public DbSet<DataExplanation> DataExplanations { get; set; }
         public DbSet<PredictivePercentage> PredictivePercentages { get; set; }
 
-        //EquipmentDataProcessTables
-        public DbSet<EquipmentTable> EquipmentTables { get; set; }
-        public DbSet<PatternTable> PatternTables { get; set; }
-        public DbSet<EquipmentProcess> EquipmentProcesss { get; set; }
-        public DbSet<CompressorConstraint> CompressorConstraints { get; set; }
-        public DbSet<BatchTable> BatchTables { get; set; }
-        public DbSet<StagingTableCompressor> StagingTableSingles { get; set; }
-        public DbSet<CleanTableCompressor> CleanTableSingles { get; set; }
-        public DbSet<ErrorTableCompressor> ErrorTableSingles { get; set; }
-        public DbSet<ProcessedTableCompressor> ProcessedTableSingles { get; set; }
-        public DbSet<PredictedTableCompressor> PredictedTableSingles { get; set; }
-        //public DbSet<StagingTableCompressor> StagingTableSingles { get; set; }
-        //public DbSet<CleanTableCompressor> CleanTableSingles { get; set; }
-        //public DbSet<ErrorTableCompressor> ErrorTableSingles { get; set; }
-        //public DbSet<ProcessedTableCompressor> ProcessedTableSingles { get; set; }
-        //public DbSet<PredictedTableCompressor> PredictedTableSingles { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -119,65 +92,20 @@ namespace Plant.DAL
             modelBuilder.Entity<Plants>().ToTable("Plant");
             modelBuilder.Entity<Plants>().HasKey(c => c.PlantId);
 
-            modelBuilder.Entity<Network>().ToTable("Network");
-            modelBuilder.Entity<Network>().HasKey(C => C.NetworkId);
-            modelBuilder.Entity<Network>()
-                .HasOne(p => p.plant)
-                    .WithMany(b => b.networks)
-                    .HasForeignKey(a => a.PlantId);
+            modelBuilder.Entity<mst_Asset>().ToTable("mst_Asset");
+            modelBuilder.Entity<mst_Asset>().HasKey(c => c.AssetId);
 
-            //modelBuilder.Entity<TagNumber>()
-            //.ToTable("TagNumber")
-            //.HasDiscriminator<int>("TagNumberType")
-            //.HasValue<ScrewCompressor>(1)
-            //.HasValue<CentrifugalCompressor>(2)
-            //.HasValue<FailureMode>(3);
-
-            //modelBuilder.Entity<SafetyFactor>().ToTable("tblSafetyFactor");
-            //modelBuilder.Entity<SafetyFactor>().HasKey(c => c.SafetyFactorId);
-            //modelBuilder.Entity<SafetyFactor>()
-            //    .HasOne(p => p.plant)
-            //        .WithMany(b => b.safetyFactors)
-            //        .HasForeignKey(a => a.PlantId);
-
-            modelBuilder.Entity<Equipment>().ToTable("Equipment");
-            modelBuilder.Entity<Equipment>().HasKey(C => C.EquipmentId);
-            modelBuilder.Entity<Equipment>()
-                .HasOne(p => p.networks)
-                    .WithMany(b => b.equipmentList)
-                    .HasForeignKey(a => a.NetworkId);
-
-            modelBuilder.Entity<Edge>().ToTable("Edge");
-            modelBuilder.Entity<Edge>().HasKey(C => C.EdgeId);
-            modelBuilder.Entity<Edge>()
-                .HasOne(p => p.networks)
-                    .WithMany(b => b.edges)
-                    .HasForeignKey(a => a.NetworkId);
-
-            modelBuilder.Entity<CompressorModel>().ToTable("CompressorDetails");
-            modelBuilder.Entity<CompressorModel>().HasKey(c => c.CompressorId);
-            modelBuilder.Entity<CompressorModel>()
-             .HasOne(p => p.equipments)
-             .WithMany(p => p.compressorModel)
-             .HasForeignKey(p => p.EquipmentId);
-
-            modelBuilder.Entity<PumpModel>().ToTable("PumpDetails");
-            modelBuilder.Entity<PumpModel>().HasKey(c => c.PumpId);
-            modelBuilder.Entity<PumpModel>()
-             .HasOne(p => p.equipments)
-             .WithMany(p => p.pumpModel)
-             .HasForeignKey(p => p.EquipmentId);
 
             //FMEA
             modelBuilder.Entity<RCM>().ToTable("RCM");
             //modelBuilder.Entity<RCM>().HasKey(r => r.RCMId);
             modelBuilder.Entity<PrescriptiveLookupMasterModel>().ToTable("prescriptive_lookupmaster");
             modelBuilder.Entity<FailureModes>().ToTable("RCMFailureModel");
-            modelBuilder.Entity<FailureModes>().HasKey(r => r.FailureModeId);
+            modelBuilder.Entity<Models.FailureModes>().HasKey(r => r.FailureModeId);
             modelBuilder.Entity<MSS>().ToTable("MSS");
             modelBuilder.Entity<MSS>().HasKey(r => r.MSSId);
 
-            modelBuilder.Entity<FailureModes>()
+            modelBuilder.Entity<Models.FailureModes>()
                 .HasOne(r => r.RCM)
                 .WithMany(r => r.failureModes)
                 .HasForeignKey(r => r.RCMId);
@@ -334,7 +262,7 @@ namespace Plant.DAL
             modelBuilder.Entity<SIF>().ToTable("SIF");
             modelBuilder.Entity<SIF>().HasKey(c => c.SIFId);
             modelBuilder.Entity<SIF>()
-             .HasOne(p => p.equipments)
+             .HasOne(p => p.Equipment)
              .WithMany(p => p.sif)
              .HasForeignKey(p => p.EquipmentId);
 
@@ -374,93 +302,85 @@ namespace Plant.DAL
             modelBuilder.Entity<DataExplanation>().ToTable("DataExplanation");
             modelBuilder.Entity<PredictivePercentage>().ToTable("PredictivePercentage");
 
-            //EquipmentDataProcessTables
-            modelBuilder.Entity<EquipmentTable>().ToTable("EquipmentTable");
-            modelBuilder.Entity<EquipmentTable>().HasKey(c => c.Id);
-            modelBuilder.Entity<EquipmentTable>()
-                    .Property(p => p.NameOfEquipment)
-                    .HasColumnType("varchar(200)");
-            modelBuilder.Entity<EquipmentTable>()
-                    .Property(p => p.TypeOfEquipment)
-                    .HasColumnType("varchar(200)");
 
-            modelBuilder.Entity<PatternTable>().ToTable("Pattern");
-            modelBuilder.Entity<PatternTable>().HasKey(c => c.Id);
-
-            modelBuilder.Entity<EquipmentProcess>().ToTable("EquipmentProcess");
-            modelBuilder.Entity<EquipmentProcess>().HasKey(c => c.Id);
-            modelBuilder.Entity<EquipmentProcess>()
-                    .Property(p => p.DataInput)
-                    .HasColumnType("char");
-            modelBuilder.Entity<EquipmentProcess>()
-                    .Property(p => p.FolderPath)
-                    .HasColumnType("varchar(200)");
-            modelBuilder.Entity<EquipmentProcess>()
-                    .Property(p => p.Description)
-                    .HasColumnType("varchar(200)");
-
-            modelBuilder.Entity<EquipmentProcess>()
-                .HasOne(p => p.equipmentTable)
-                .WithMany(p => p.equipmentProcessList)
-                .HasForeignKey(p => p.EquipmentTableId);
-
-            modelBuilder.Entity<EquipmentProcess>()
-                .HasOne(p => p.patternTable)
-                .WithMany()
-                .HasForeignKey(p => p.PatternId)
-                .OnDelete(DeleteBehavior.ClientCascade);
-
-            modelBuilder.Entity<CompressorConstraint>().ToTable("Constraints");
-            modelBuilder.Entity<CompressorConstraint>().HasKey(c => c.Id);
-
-            modelBuilder.Entity<BatchTable>().ToTable("Batch");
-            modelBuilder.Entity<BatchTable>().HasKey(c => c.Id);
-            modelBuilder.Entity<BatchTable>()
-                    .Property(p => p.Description)
-                    .HasColumnType("varchar(200)");
-
-            modelBuilder.Entity<BatchTable>()
-               .HasOne(p => p.equipmentTable)
-               .WithMany()
-               .HasForeignKey(p => p.EquipmentTblId);
-
-            modelBuilder.Entity<BatchTable>()
-                .HasOne(p => p.equipmentProcess)
-                .WithMany()
-                .HasForeignKey(p => p.EquipmentProcessId)
-                .OnDelete(DeleteBehavior.ClientCascade);
-
-            modelBuilder.Entity<StagingTableCompressor>().ToTable("Compressor_Staging");
-            modelBuilder.Entity<StagingTableCompressor>().HasKey(c => c.Id);
-
-            modelBuilder.Entity<CleanTableCompressor>().ToTable("Compressor_Cleaning");
-            modelBuilder.Entity<CleanTableCompressor>().HasKey(c => c.Id);
-
-            modelBuilder.Entity<ErrorTableCompressor>().ToTable("Compressor_Error");
-            modelBuilder.Entity<ErrorTableCompressor>().HasKey(c => c.Id);
-
-            modelBuilder.Entity<ProcessedTableCompressor>().ToTable("Compressor_Processed");
-            modelBuilder.Entity<ProcessedTableCompressor>().HasKey(c => c.Id);
-
-            modelBuilder.Entity<PredictedTableCompressor>().ToTable("Compressor_Predicted");
-            modelBuilder.Entity<PredictedTableCompressor>().HasKey(c => c.Id);
-            //modelBuilder.Entity<StagingTableCompressor>().ToTable("Compressor_Staging");
-            //modelBuilder.Entity<StagingTableCompressor>().HasKey(c => c.Id);
-
-            //modelBuilder.Entity<CleanTableCompressor>().ToTable("Compressor_Cleaning");
-            //modelBuilder.Entity<CleanTableCompressor>().HasKey(c => c.Id);
-
-            //modelBuilder.Entity<ErrorTableCompressor>().ToTable("Compressor_Error");
-            //modelBuilder.Entity<ErrorTableCompressor>().HasKey(c => c.Id);
-
-            //modelBuilder.Entity<ProcessedTableCompressor>().ToTable("Compressor_Processed");
-            //modelBuilder.Entity<ProcessedTableCompressor>().HasKey(c => c.Id);
-
-            //modelBuilder.Entity<PredictedTableCompressor>().ToTable("Compressor_Predicted");
-            //modelBuilder.Entity<PredictedTableCompressor>().HasKey(c => c.Id);
 
 
             //Data Seeding
+            modelBuilder.Entity<Plants>()
+                .HasData(
+                  new Plants
+                  {
+                      PlantId=1,
+                      PlantName="Calvart",
+                      Location="Mumbai",
+                      OrganizationId=1
+                  }
+                );
+           modelBuilder.Entity<mst_Asset>()
+                .HasData(
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 1,
+                       AssetName = "Rotary"
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 2,
+                       AssetName = "Compressor",
+                       Id_fk = 1
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 3,
+                       AssetName = "Pump",
+                       Id_fk = 1
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 4,
+                       AssetName = "Screw Compressor",
+                       Id_fk = 2
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 5,
+                       AssetName = "Centrifugal Compressor",
+                       Id_fk = 2
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 6,
+                       AssetName = "Reciprocating Compressor",
+                       Id_fk = 2
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 7,
+                       AssetName = "Centrifugal Pump",
+                       Id_fk = 3
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 8,
+                       AssetName = "Reciprocating Pump",
+                       Id_fk = 3
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 9,
+                       AssetName = "Rotary Pump",
+                       Id_fk = 3
+                   }
+                );
             modelBuilder.Entity<SILClassificationMaster>()
                .HasData(
                 new SILClassificationMaster

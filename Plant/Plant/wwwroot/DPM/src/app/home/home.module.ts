@@ -27,7 +27,6 @@ import { DataInsightComponent } from './PredictiveMaintenance/ScrewCompressor/da
 import { ModelConfidenceComponent } from "./PredictiveMaintenance/ScrewCompressor/model-confidence/model-confidence.component";
 import { DataExplanationComponent } from "./PredictiveMaintenance/ScrewCompressor/data-explanation/data-explanation.component";
 import {DialogModule} from 'primeng/dialog';
-import { RFMComponent } from "./RFM/rfm.component";
 import { CBAComponent } from "./RCM/CBA/cba-add/cba-add.component";
 import { RiskMatrix5Component } from "./RCM/CBA/Shared/CBA/RiskMatrix5/riskmatrix5.component";
 import { RiskMatrix6Component } from "./RCM/CBA/Shared/CBA/RiskMatrix6/riskmatrix6.component";
@@ -63,7 +62,6 @@ import {AccordionModule} from 'primeng/accordion';
         DataInsightComponent,
         ModelConfidenceComponent,
         DataExplanationComponent,
-        RFMComponent,
         CBAComponent,
         RCMFunctionalAnalysis,
         RiskMatrix5Component,

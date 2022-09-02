@@ -3,8 +3,8 @@ using KiranaPasalManagementSystem.Response;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Plant.DAL;
-using static Plant.Models.EquipmentTables.CompressorDataProcess;
-using static Plant.Models.EquipmentTables.EquipmentDataProcess;
+using Plant.Models.Plant;
+using System.Reflection;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,34 +13,68 @@ namespace Plant.Controllers.PredictiveMaintenance
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompressorProcessAPI : ControllerBase
+    public class FileUploadingAPI : ControllerBase
     {
         private readonly PlantDBContext _Context;
         private readonly IConfiguration _config;
         
-        public CompressorProcessAPI(PlantDBContext plantDBContext, IConfiguration config)
+        public FileUploadingAPI(PlantDBContext plantDBContext, IConfiguration config)
         {
             _Context = plantDBContext;
             _config = config;
         }
 
-        // GET: api/<ValuesController>
         [HttpGet]
-        [Route("GetBatch")]
+        [Route("GetAsset")]
         public IActionResult Get()
         {
             List<object> batch = new List<object>();
-            List<BatchTable> batchTable = _Context.BatchTables.ToList<BatchTable>();
+            List<object> subAsset = new List<object>();
+            //List<object> asset = new List<object>();
+            var asset = 0;
+            List<mst_Asset> assetTable = _Context.mst_Asset.ToList<mst_Asset>();
+            foreach (var b in assetTable)
+            {
+                if (b.Id_fk == null)
+                {
+                    asset=b.AssetId;
+                }
+                else if(b.Id_fk == asset)
+                        {
+                            subAsset.Add(b.AssetId);
+                        }
+                    
+                else if (subAsset.Count != 0)
+                {
+                    foreach (var sa in subAsset)
+                    {
+                        if (b.Id_fk == Convert.ToInt32(sa))
+                        {
+                            batch.Add(b.AssetName);
+                        }
+                    }
+                }
+            }
+            return Ok(batch);
+        }
+
+        // GET: api/<ValuesController>
+        [HttpGet]
+        [Route("GetBatch")]
+        public IActionResult GetBatch()
+        {
+            List<object> batch = new List<object>();
+            List<FailureMode> batchTable = _Context.FailureMode.ToList<FailureMode>();
             foreach(var b in batchTable)
             {
                 List<object> list = new List<object>();
                 list.Add(b);
-                var staging = _Context.StagingTableSingles.Where(r => r.BatchId == b.Id).Count();
-                list.Add(staging);
-                var cleaning = _Context.CleanTableSingles.Where(r => r.BatchId == b.Id).Count();
-                list.Add(cleaning);
-                var errors = _Context.ErrorTableSingles.Where(r => r.BatchId == b.Id).ToList();
-                list.Add(errors);
+                //var staging = _Context.StagingTableSingles.Where(r => r.BatchId == b.Id).Count();
+                //list.Add(staging);
+                //var cleaning = _Context.CleanTableSingles.Where(r => r.BatchId == b.Id).Count();
+                //list.Add(cleaning);
+                //var errors = _Context.ErrorTableSingles.Where(r => r.BatchId == b.Id).ToList();
+                //list.Add(errors);
                 batch.Add(list);
             }
             return Ok(batch);
@@ -52,15 +86,15 @@ namespace Plant.Controllers.PredictiveMaintenance
 
         {
             List<object> batch = new List<object>();
-            List<BatchTable> batchTable = _Context.BatchTables.ToList<BatchTable>();
+            List<FailureMode> batchTable = _Context.FailureMode.ToList<FailureMode>();
             foreach (var b in batchTable)
             {
                 List<object> list = new List<object>();
                 list.Add(b);
-                var process = _Context.ProcessedTableSingles.Where(r => r.BatchId == b.Id).ToList();
-                list.Add(process);
-                var prediction = _Context.PredictedTableSingles.Where(r => r.BatchId == b.Id).ToList();
-                list.Add(prediction);
+                //var process = _Context.ProcessedTableSingles.Where(r => r.BatchId == b.Id).ToList();
+                //list.Add(process);
+                //var prediction = _Context.PredictedTableSingles.Where(r => r.BatchId == b.Id).ToList();
+                //list.Add(prediction);
                 batch.Add(list);
             }
             return Ok(batch);
@@ -74,7 +108,7 @@ namespace Plant.Controllers.PredictiveMaintenance
         }
 
         [HttpPost("Upload")]
-        public IActionResult Upload()
+        public IActionResult Upload([FromForm] string Asset, [FromForm] string TagNumber)
         {
             try
             {
@@ -85,17 +119,17 @@ namespace Plant.Controllers.PredictiveMaintenance
                 {
                     var fName = Path.GetFileName(file.FileName);
                     // var fileName = file.FileName + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_";
-                    BatchTable batch = new BatchTable();
+                    FailureMode batch = new FailureMode();
                     string batchname = "user";
                     batch.Description = batchname + "_" + Guid.NewGuid();
+                    batch.FailureModeName = Asset;
                     DateTime now = DateTime.Now;
                     batch.DateTimeBatchUploaded = now.ToString();
-                    batch.EquipmentProcessId = 1;
-                    batch.EquipmentTblId = 1;
-                    batch.IsCompleted = 1;
+                    batch.TagNumberId = TagNumber;
+                    batch.IsProcessCompleted = 1;
                     batch.DateTimeBatchCompleted = "Batch is processing";
                     var values = batch;
-                    _Context.BatchTables.Add(batch);
+                    _Context.FailureMode.Add(batch);
                     _Context.SaveChanges();
                     string destinationFileName = FilePath + "\\" + batch.Description + ".csv";
                     var fullPath = Path.Combine(FilePath, destinationFileName);

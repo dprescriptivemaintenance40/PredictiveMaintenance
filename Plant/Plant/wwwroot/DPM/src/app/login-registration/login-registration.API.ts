@@ -7,6 +7,6 @@ import { Injectable } from "@angular/core";
 
 export class LoginRegistrationConstantAPI{
 
-    public RegisterAPI : string = '/RegistrationAPI/Register'
-    public LoginAPI : string =  '/RegistrationAPI/Login'
+    public RegisterAPI : string = 'api/RegistrationAPI/Register'
+    public LoginAPI : string =  'api/RegistrationAPI/Login'
 }

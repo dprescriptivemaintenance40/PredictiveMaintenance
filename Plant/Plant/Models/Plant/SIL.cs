@@ -1,4 +1,6 @@
-﻿namespace Plant.Models
+﻿using Plant.Models.Plant;
+
+namespace Plant.Models
 {
     //public class SIS
     //{
@@ -66,7 +68,7 @@
         public List<Sensor> sensors { get; set; }
         public List<LogicSolver> logicSolver { get; set; }
         public List<FinalElement> finalElement { get; set; }
-        public Equipment equipments { get; set; }
+        public Equipment Equipment { get; set; }
     }
     //public class Elements
     //{
