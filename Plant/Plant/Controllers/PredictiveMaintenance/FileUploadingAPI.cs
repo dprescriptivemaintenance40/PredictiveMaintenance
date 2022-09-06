@@ -70,17 +70,51 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             List<object> batch = new List<object>();
             List<FailureMode> batchTable = _Context.FailureMode.ToList<FailureMode>();
-            foreach(var b in batchTable)
+            if (batchTable != null)
             {
-                List<object> list = new List<object>();
-                list.Add(b);
-                //var staging = _Context.StagingTableSingles.Where(r => r.BatchId == b.Id).Count();
-                //list.Add(staging);
-                //var cleaning = _Context.CleanTableSingles.Where(r => r.BatchId == b.Id).Count();
-                //list.Add(cleaning);
-                //var errors = _Context.ErrorTableSingles.Where(r => r.BatchId == b.Id).ToList();
-                //list.Add(errors);
-                batch.Add(list);
+                foreach (var b in batchTable)
+                {
+                    Equipment equipment = _Context.Equipments.Where(a => a.Id == b.TagNumberId).FirstOrDefault();
+                    if (equipment.AssetName == "ScrewCompressor")
+                    {
+                        List<object> list = new List<object>();
+                        list.Add(b);
+                        var staging = _Context.ScrewStagingTables.Where(r => r.SPId == b.Id).Count();
+                        list.Add(staging);
+                        var cleaning = _Context.ScrewCleaningTables.Where(r => r.SPId == b.Id).Count();
+                        list.Add(cleaning);
+                        var errors = _Context.ScrewErrorTables.Where(r => r.SPId == b.Id).ToList();
+                        list.Add(errors);
+                        list.Add(equipment.AssetName);
+                        batch.Add(list);
+                    }
+                    else if (equipment.AssetName == "CentrifugalCompressor" || equipment.AssetName == "CentrifugalPump")
+                    {
+                        List<object> list = new List<object>();
+                        list.Add(b);
+                        var staging = _Context.CentrifugalStagingTables.Where(r => r.CPId == b.Id).Count();
+                        list.Add(staging);
+                        var cleaning = _Context.CentrifugalCleaningTables.Where(r => r.CPId == b.Id).Count();
+                        list.Add(cleaning);
+                        var errors = _Context.CentrifugalErrorTables.Where(r => r.CPId == b.Id).ToList();
+                        list.Add(errors);
+                        list.Add(equipment.AssetName);
+                        batch.Add(list);
+                    }
+                    else if (equipment.AssetName == "ReciprocatingCompressor" || equipment.AssetName == "ReciprocatingPump" || equipment.AssetName == "Rotary Pump")
+                    {
+                        List<object> list = new List<object>();
+                        list.Add(b);
+                        var staging = _Context.ReciprocatingStagingTables.Where(r => r.RPId == b.Id).Count();
+                        list.Add(staging);
+                        var cleaning = _Context.ReciprocatingCleaningTables.Where(r => r.RPId == b.Id).Count();
+                        list.Add(cleaning);
+                        var errors = _Context.ReciprocatingErrorTables.Where(r => r.RPId == b.Id).ToList();
+                        list.Add(errors);
+                        list.Add(equipment.AssetName);
+                        batch.Add(list);
+                    }
+                }
             }
             return Ok(batch);
         }
@@ -113,24 +147,30 @@ namespace Plant.Controllers.PredictiveMaintenance
         }
 
         [HttpPost("Upload")]
-        public IActionResult Upload([FromForm] string Asset, [FromForm] string TagNumber)
+        public IActionResult Upload([FromForm] string Asset, [FromForm] string TagNumber, [FromForm] string FailureModeName)
         {
             try
             {
                 var file = Request.Form.Files[0];
-                string FilePath = @"G:\DPMBGProcess\ConsoleApp106\Tasks\DataFiles";
+                string FilePath = @"G:\DPMBGProcess\BGAutomateProcess\Tasks\DataFiles";
                 //   string newPath = Path.Combine(Guid.NewGuid().ToString() + '_' + folderName);
                 if (file.Length > 0)
                 {
                     var fName = Path.GetFileName(file.FileName);
                     // var fileName = file.FileName + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_";
+                    Equipment equipment = new Equipment();
+                    equipment.TagNumber = TagNumber;
+                    equipment.AssetName = Asset;
+                    _Context.Equipments.Add(equipment);
+                    _Context.SaveChanges();
+
                     FailureMode batch = new FailureMode();
                     string batchname = "user";
                     batch.Description = batchname + "_" + Guid.NewGuid();
-                    batch.FailureModeName = Asset;
+                    batch.FailureModeName = FailureModeName;
                     DateTime now = DateTime.Now;
                     batch.DateTimeBatchUploaded = now.ToString();
-                    batch.TagNumberId = TagNumber;
+                    batch.TagNumberId = equipment.Id;
                     batch.IsProcessCompleted = 1;
                     batch.DateTimeBatchCompleted = "Batch is processing";
                     var values = batch;

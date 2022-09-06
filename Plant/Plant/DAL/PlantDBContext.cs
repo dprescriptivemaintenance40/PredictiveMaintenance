@@ -342,42 +342,42 @@ namespace Plant.DAL
                    {
                        PlantId = 1,
                        AssetId = 4,
-                       AssetName = "Screw Compressor",
+                       AssetName = "ScrewCompressor",
                        Id_fk = 2
                    },
                    new mst_Asset
                    {
                        PlantId = 1,
                        AssetId = 5,
-                       AssetName = "Centrifugal Compressor",
+                       AssetName = "CentrifugalCompressor",
                        Id_fk = 2
                    },
                    new mst_Asset
                    {
                        PlantId = 1,
                        AssetId = 6,
-                       AssetName = "Reciprocating Compressor",
+                       AssetName = "ReciprocatingCompressor",
                        Id_fk = 2
                    },
                    new mst_Asset
                    {
                        PlantId = 1,
                        AssetId = 7,
-                       AssetName = "Centrifugal Pump",
+                       AssetName = "CentrifugalPump",
                        Id_fk = 3
                    },
                    new mst_Asset
                    {
                        PlantId = 1,
                        AssetId = 8,
-                       AssetName = "Reciprocating Pump",
+                       AssetName = "ReciprocatingPump",
                        Id_fk = 3
                    },
                    new mst_Asset
                    {
                        PlantId = 1,
                        AssetId = 9,
-                       AssetName = "Rotary Pump",
+                       AssetName = "RotaryPump",
                        Id_fk = 3
                    }
                 );

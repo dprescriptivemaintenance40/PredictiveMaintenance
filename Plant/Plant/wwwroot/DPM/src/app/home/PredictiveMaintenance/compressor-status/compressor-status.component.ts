@@ -18,6 +18,8 @@ export class CompressorStatusComponent implements OnInit {
   public list:any= [];
   public show:boolean=false;
   public Id:any;
+  public FMName:string;
+  public Assetname:string;
   public noError:boolean=false;
   constructor(private http:HttpClient) { }
 
@@ -26,16 +28,20 @@ export class CompressorStatusComponent implements OnInit {
   }
    
   getStatusData() {
-    this.http.get("api/CompressorProcessAPI/GetBatch").subscribe((res:any)=>{
+    this.http.get("api/FileUploadingAPI/GetBatch").subscribe((res:any)=>{
       console.log(res);
       this.GetStatus=res;
+      console.log(res)
       this.GetStatus.forEach(record =>{
+        record[0].Asset=record[4];
         this.batch.push(record[0]);
         this.stage=record[1];
         this.clean=record[2];
         this.Id=record[0].Id;
+        this.Assetname=record[4];
+        this.FMName=record[0].FailureModeName;
         this.errors=record[3];
-        this.Data.push(this.Id,this.stage,this.clean,record[3]);
+        this.Data.push(this.Id,this.Assetname,this.FMName,this.stage,this.clean,record[3]);
         this.list.push(this.Data);
         this.Data=[];
       })
@@ -49,7 +55,7 @@ export class CompressorStatusComponent implements OnInit {
       if(this.list[x][0]===id){
         this.Id=id;
         this.show=true;
-        if(this.list[x][3].length === 0){
+        if(this.list[x][5].length === 0){
            this.noError=true;
         }
       }

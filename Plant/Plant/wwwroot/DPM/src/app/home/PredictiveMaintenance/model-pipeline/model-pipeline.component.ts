@@ -23,6 +23,8 @@ export class ModelPipelineComponent implements OnInit {
   public Assetlist:any= [];
   selectedAsset = null;
   selectedTagNumber=null;
+  selectedFMName=null; 
+
   constructor(private messageService: MessageService,private http:HttpClient) {
   }
 
@@ -78,13 +80,14 @@ export class ModelPipelineComponent implements OnInit {
     this.FileUpload=event?.target?.files[0];
   }
   Upload(){
-    if(this.FileUpload.name.split(".").pop() != 'csv' || this.selectedAsset==null || this.selectedTagNumber==null){
+    if(this.FileUpload.name.split(".").pop() != 'csv' || this.selectedAsset==null || this.selectedTagNumber==null || this.selectedFMName==null){
       this.messageService.add({ severity: 'error', summary: 'Error', detail: "File is not in csv format or Fields are empty" })
     }
     else{
       const formData:FormData=new FormData();
       formData.append("File",this.FileUpload);
       formData.append("Asset",this.selectedAsset);
+      formData.append("FailureModeName",this.selectedFMName);
       formData.append("TagNumber",this.selectedTagNumber);
       console.log(formData);
       this.http.post("api/FileUploadingAPI/Upload",formData).subscribe((res:any)=>{

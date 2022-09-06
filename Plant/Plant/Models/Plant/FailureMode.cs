@@ -6,7 +6,7 @@ namespace Plant.Models.Plant
     {
         [Key]
         public int Id { get; set; }
-        public string TagNumberId { get; set; }
+        public int TagNumberId { get; set; }
         public string FailureModeName { get; set; }
         public string Description { get; set; }
         public string DateTimeBatchUploaded { get; set; }

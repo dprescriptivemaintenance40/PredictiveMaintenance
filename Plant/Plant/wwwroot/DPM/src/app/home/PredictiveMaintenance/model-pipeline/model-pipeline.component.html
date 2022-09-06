@@ -19,12 +19,13 @@
             <input type="text" [(ngModel)]="selectedTagNumber">
         </div>
         <div class="col-md-3 d-flex flex-column">
+            <label style=" margin-right: 12px;">Failure Mode Name</label>
+            <input type="text" [(ngModel)]="selectedFMName"><br>
             <label style=" margin-right: 12px;">Upload File</label>
-            <div class="row">
             <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file" accept=".csv">
-            </div>
+            
         </div>
-        <button class="btn btn-success btn-sm" style="margin-left: 12px;height: 40px;margin-top: 25px;"
+        <button class="btn btn-success btn-sm" style="margin-left: 12px;height: 40px;margin-top: 95px;"
             (click)="Upload()">Process</button>
         <div class="col-md-4 d-flex flex-column">
             <div class="row">
