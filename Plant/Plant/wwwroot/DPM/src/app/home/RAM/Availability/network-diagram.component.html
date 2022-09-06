@@ -1,44 +1,47 @@
 <div class="card dpm-card w-100 p-3">
-<p-accordion>
-    <p-accordionTab header="Equipment Data Table">
-        <p-table class="container" [value]="EquipmentDataList" responsiveLayout="scroll">
-            <ng-template pTemplate="colgroup">
-                <!-- <colgroup>
+    <p-accordion>
+        <p-accordionTab header="Equipment Data Table">
+            <p-table class="container" [value]="EquipmentDataList" responsiveLayout="scroll">
+                <ng-template pTemplate="colgroup">
+                    <!-- <colgroup>
                     <col style="width:5em;">
                     <col style="width:5em;">
                     <col style="width:5em;">
                     <col style="width:5em;">
                     <col style="width:5em;">
                 </colgroup> -->
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Equipments</th>
-                    <th>Failure rate PMH, Lamda, OREDA</th>
-                    <th>MDT(mean down time) hours</th>
-                    <th>Equipments Connected</th>
-                    <th>Logic</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-equi let-rowIndex="rowIndex">
-                <tr>
-                    <td>{{equi.equipmentName}}</td>
-                    <td>{{equi.lambda}}</td>
-                    <td>{{equi.mdt}}</td>
-                    <td>{{equi.selectedEquipments}}</td>
-                    <td>{{equi.logic}}</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </p-accordionTab>
-</p-accordion>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Equipments</th>
+                        <th>Failure rate PMH, Lamda, OREDA</th>
+                        <th>MDT(mean down time) hours</th>
+                        <th>Equipments Connected</th>
+                        <th>Logic</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-equi let-rowIndex="rowIndex">
+                    <tr>
+                        <td>{{equi.equipmentName}}</td>
+                        <td>{{equi.lambda}}</td>
+                        <td>{{equi.mdt}}</td>
+                        <td>{{equi.selectedEquipments}}</td>
+                        <td>{{equi.logic}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-accordionTab>
+    </p-accordion>
 </div>
 <br>
 <div class="card dpm-card w-100 p-3">
     <h3>Create Network Diagram</h3>
+    <div class="col-md-3 d-flex flex-column">
+        Calculated Unavailability:-<input type="text" class="form-control" aria-describedby="basic-addon1">
+    </div>
     <div>
-        <button style="float: right;" label="Save" type="button" class="btn btn-primary" pTooltip="Save Values" tooltipPosition="top"><i
-                class="pi pi-save"> Save</i></button>
+        <button style="float: right;" (click)="SaveNetwork()" label="Save" type="button" class="btn btn-primary" pTooltip="Save Values"
+            tooltipPosition="top"><i class="pi pi-save"> Save</i></button>
     </div>
 
     <div id="mynetwork" #siteConfigNetwork></div>

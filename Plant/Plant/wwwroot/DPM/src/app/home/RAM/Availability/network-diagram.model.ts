@@ -1,30 +1,43 @@
-export class Equipment {
+export class PlantNetwork {
+    public PlantId: number;
+    public PlantName: string = "";
+    public Location: string = "";
+    public Unavailability:number;
+    public equipment : Array<Equipments> = new Array<Equipments>();
+    public edge : Array<Edges> = new Array<Edges>();
+}
+
+export class Equipments {
     public EquipmentId: number;
+    public PlantId: number;
     public EquipmentNode: string = "";
-    public EquipmentName: string = "";
-    public equipmentWithCalculations: EquipmentWithCalculations;
-    public equipmentWithoutCalculations: EquipmentWithoutCalculations;
+    public EquipmentWithCalculations:any = [];
+    public EquipmentWithoutCalculations:any = [];
 }
 
 export class EquipmentWithoutCalculations {
     public EquipmentWithoutCalculationsId: number;
     public EquipmentId: number;
+    public EquipmentName: string = "";
     public Lambda: number;   //provided lambda
-    public MTBF: number;   //provided mtbf
+    public MDT: number;   //provided MDT
 }
 
 export class EquipmentWithCalculations {
     public EquipmentWithCalculationsId: number;
     public EquipmentId: number;
+    public EquipmentName: string = "";
     public EquimentsConnected: string = "";   //nodes connected
     public Logic: string = "";     //AND,OR Logic
     public Lambda: number;         //calculated lambda
-    public MTBF: number;          //calculated mtbf
+    public MDT: number;          //calculated MDT
+    public MTBF: number;   //calculated MTBF
 }
 
-export class Edge{
-    public EdgeId:number;
-    public EdgeName:string = "";
-    public EdgeSrc:string = "";     //from
-    public EdgeDestination:string = "";  //to
+export class Edges {
+    public EdgeId: number;
+    public PlantId: number;
+    public EdgeName: string = "";
+    public EdgeSrc: string = "";     //from
+    public EdgeDestination: string = "";  //to
 }

@@ -46,6 +46,14 @@ namespace Plant.DAL
         public DbSet<Models.FailureModes> FailureModes { get; set; }
         public DbSet<MSS> MSS { get; set; }
 
+        //RCA
+        //PlantNetwork
+        public DbSet<PlantNetwork> PlantNetwork { get; set; }
+        public DbSet<Equipments> Equipment { get; set; }
+        public DbSet<EquipmentWithoutCalculations> EquipmentWithoutCalculations { get; set; }
+        public DbSet<EquipmentWithCalculations> EquipmentWithCalculations { get; set; }
+        public DbSet<Edges> Edge { get; set; }
+
         public DbSet<PrescriptiveCbaModel> PrescriptiveCbaModels { get; set; }
         public DbSet<CBAFailureMode> CBAFailureModes { get; set; }
         public DbSet<CBAMaintenanceTask> CBAMaintenanceTasks { get; set; }
@@ -131,6 +139,29 @@ namespace Plant.DAL
                         .HasOne(p => p.CBAMaintenanceTasks)
                         .WithMany(b => b.CBAMainenanceIntervals)
                         .HasForeignKey(a => a.CMTId);
+
+            //NetworkDiagram
+            modelBuilder.Entity<PlantNetwork>().ToTable("PlantNetwork");
+            modelBuilder.Entity<Equipments>().ToTable("PlantEquipments");
+            modelBuilder.Entity<Equipments>()
+                        .HasOne(p => p.plantNetwork)
+                        .WithMany(b => b.equipment)
+                        .HasForeignKey(a => a.PlantId);
+            modelBuilder.Entity<EquipmentWithoutCalculations>().ToTable("EquipmentWithoutCalculations");
+            modelBuilder.Entity<EquipmentWithoutCalculations>()
+                        .HasOne(p => p.equipment)
+                        .WithMany(b => b.equipmentWithoutCalculations)
+                        .HasForeignKey(a => a.EquipmentId);
+            modelBuilder.Entity<EquipmentWithCalculations>().ToTable("EquipmentWithCalculations");
+            modelBuilder.Entity<EquipmentWithCalculations>()
+                        .HasOne(p => p.equipment)
+                        .WithMany(b => b.equipmentWithCalculations)
+                        .HasForeignKey(a => a.EquipmentId);
+            modelBuilder.Entity<Edges>().ToTable("PlantEdges");
+            modelBuilder.Entity<Edges>()
+                        .HasOne(p => p.plantNetwork)
+                        .WithMany(b => b.edge)
+                        .HasForeignKey(a => a.PlantId);
 
             //SIL Classification
 

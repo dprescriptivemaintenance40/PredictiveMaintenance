@@ -1,8 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { equal } from 'assert';
-import { numberToString } from 'pdf-lib';
-import { Equipment, Edge, EquipmentWithCalculations, EquipmentWithoutCalculations } from '../Availability/network-diagram.model';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { RCMContantAPI } from '../../RCM/FMEA/Shared/RCMConstant';
+import { PlantNetwork, Equipments, Edges, EquipmentWithCalculations, EquipmentWithoutCalculations } from '../Availability/network-diagram.model';
 declare var vis: any;
+
 @Component({
     selector: 'app-network-diagram',
     templateUrl: './network-diagram.component.html'
@@ -42,10 +45,18 @@ export class NetworkDiagram implements OnInit {
     public LambdaValuemultiplied: number = 1;
     public lambdamdtvalue: number = 0;
 
+    //Save
+    public NodeDataList: any = [];
+    public EdgeDataList: any = [];
+    public PlantDataList:any = [];
+
     public image: string = "";
     public SelectedList: any = [];
-    public equipment = new Equipment();
-    constructor() { }
+    public equipment = new Equipments();
+    constructor(private NetworkBLService: CommonBLService,
+        private messageService: MessageService,
+        private NetworkContantAPI: RCMContantAPI,
+        public router: Router,) { }
 
     ngOnInit() {
 
@@ -217,8 +228,8 @@ export class NetworkDiagram implements OnInit {
         let obj = {};
         obj['node'] = this.EquipmentNode;
         obj['equipmentName'] = this.CalculatedEquipmentName;
+        this.SelectedList = [];
         for (let index = 0; index < this.selectedEquipmentsName.length; index++) {
-            this.SelectedList = [];
             this.SelectedList.push(this.selectedEquipmentsName[index].equipmentName);
         }
         obj['selectedEquipments'] = this.SelectedList
@@ -300,5 +311,70 @@ export class NetworkDiagram implements OnInit {
             }
         });
 
+    }
+
+    public SaveNetwork() {
+        this.NodeDataList = this.network.body.data.nodes;
+        this.EdgeDataList = this.network.body.data.edges;
+        let networkDiagram = new PlantNetwork();
+        networkDiagram.PlantId = 0;
+        networkDiagram.PlantName = "calvart"
+        networkDiagram.Location = "Mumbai"
+        networkDiagram.Unavailability = 1;
+        this.NodeDataList.forEach(node => {
+            let equipment = new Equipments
+            equipment.EquipmentId = 0;
+            equipment.PlantId = networkDiagram.PlantId;
+            equipment.EquipmentNode = node.id;
+            var dataforPOC = this.EquipmentDataList.find(a => a['node'] === equipment.EquipmentNode);
+            if (dataforPOC) {
+                if (dataforPOC.logic) {
+                    let equipmentWithCalculations = new EquipmentWithCalculations();
+                    equipmentWithCalculations.EquipmentWithCalculationsId = 1;
+                    equipmentWithCalculations.EquipmentId = equipment.EquipmentId;
+                    equipmentWithCalculations.EquipmentName = dataforPOC.equipmentName;
+                    equipmentWithCalculations.EquimentsConnected = dataforPOC.selectedEquipments.toString();
+                    equipmentWithCalculations.Logic = dataforPOC.logic;
+                    equipmentWithCalculations.Lambda = dataforPOC.lambda;
+                    equipmentWithCalculations.MDT = dataforPOC.mdt;
+                    equipmentWithCalculations.MTBF = dataforPOC.mtbf;
+                    equipment.EquipmentWithCalculations.push(equipmentWithCalculations);
+                }
+                else {
+                    let equipmentWithoutCalculations = new EquipmentWithoutCalculations();
+                    equipmentWithoutCalculations.EquipmentWithoutCalculationsId = 1;
+                    equipmentWithoutCalculations.EquipmentId = equipment.EquipmentId;
+                    equipmentWithoutCalculations.EquipmentName = dataforPOC.equipmentName;
+                    equipmentWithoutCalculations.Lambda = dataforPOC.lambda;
+                    equipmentWithoutCalculations.MDT = dataforPOC.mdt;
+                    equipment.EquipmentWithoutCalculations.push(equipmentWithoutCalculations);
+                }
+            }
+            networkDiagram.equipment.push(equipment);
+        });
+        this.EdgeDataList.forEach(edgeData => {
+            let edge = new Edges();
+            edge.EdgeId = 1;
+            edge.PlantId = networkDiagram.PlantId;
+            edge.EdgeName = edgeData.id;
+            edge.EdgeSrc = edgeData.from;
+            edge.EdgeDestination = edgeData.to;
+            networkDiagram.edge.push(edge);
+        });
+        this.PlantDataList = networkDiagram;
+        var url: string = this.NetworkContantAPI.PlantNetwork
+        this.NetworkBLService.postWithoutHeaders(url, this.PlantDataList)
+            .subscribe(
+                res => {
+                    console.log(res);
+                    this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Updated PlantNetwork' });
+                    // this.router.navigateByUrl('/Home/RCMList');
+                },
+                err => {
+                    console.log(err.Message);
+                    console.log(err.error)
+                    this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' });
+                }
+            )
     }
 }

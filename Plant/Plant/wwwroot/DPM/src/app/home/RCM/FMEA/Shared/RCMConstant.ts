@@ -43,6 +43,8 @@ export class RCMContantAPI {
 
     //#endregion
 
+    //Network Diagram
+    public PlantNetwork:string = '/RCAAPI/SavePlantNetwork'
 
     //#region RCA API
 
