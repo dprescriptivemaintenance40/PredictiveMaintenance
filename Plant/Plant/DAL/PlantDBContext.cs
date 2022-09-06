@@ -6,6 +6,7 @@ using Plant.Models.PredictiveMaintenance;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.PredictiveChart;
+using Plant.Models.RCA;
 
 
 namespace Plant.DAL
