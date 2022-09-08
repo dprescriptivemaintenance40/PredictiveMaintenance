@@ -2,7 +2,7 @@ using Plant.Models.Plant;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Plant.Models
+namespace Plant.Models.RCM_Master
 {
     public class RCM
     {

@@ -281,7 +281,8 @@ export class FMEAComponent implements OnInit {
 
   ngOnInit() {
     this.title.setTitle('FMEA ADD |Dynamic Prescriptive Maintenence');
-    this.data1 = JSON.parse(localStorage.getItem('TestingOBj'))
+    this.data1 = JSON.parse(localStorage.getItem('TestingOBj'));
+    this.getAsset();
     setInterval(() => {
       this.dynamicDroppedPopup();
     }, 2000);
@@ -340,6 +341,17 @@ export class FMEAComponent implements OnInit {
     await localStorage.removeItem('PrescriptiveObject');
   }
 
+  public getAsset() {
+    var url: string = this.RCMConstantAPI.AssetData
+    this.RCMBLService.getWithoutParameters(url).subscribe(
+      (res: any) => {
+        console.log(res);
+      }, err => {
+        console.log(err.err);
+      }
+    )
+  }
+
   public uploadFile(event) {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf'
@@ -366,8 +378,6 @@ export class FMEAComponent implements OnInit {
       }
     }
   }
-
-
 
   CloseAttachmentModal() {
     if (this.fullPath.length > 4) {
@@ -493,7 +503,7 @@ export class FMEAComponent implements OnInit {
   getDropDownLookMasterData() {
     const params = new HttpParams()
       .set('MachineType', this.MachineType)
-      // .set('EquipmentType', this.EquipmentType)
+    // .set('EquipmentType', this.EquipmentType)
     this.httpObj.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
       // this.httpObj.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
 

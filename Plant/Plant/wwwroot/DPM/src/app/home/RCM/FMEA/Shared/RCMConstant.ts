@@ -8,6 +8,7 @@ export class RCMContantAPI {
 
    
     public FMEATagCheck: string = '/RCMAPI';
+    public AssetData:string = '/RCMAPI/GetAssetList'
     public FMEAConfiguration: string = '/PrescriptiveLookupMasterAPI';
 
 

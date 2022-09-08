@@ -7,7 +7,8 @@ using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.PredictiveChart;
 using Plant.Models.RCA;
-
+//using Plant.Models.RCM;
+using Plant.Models.RCM_Master;
 
 namespace Plant.DAL
 {
@@ -20,6 +21,8 @@ namespace Plant.DAL
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<Plants> Plants { get; set; }
         public DbSet<mst_Asset> mst_Asset { get; set; }
+        public DbSet<Models.RCM_Master.mst_application> mst_Application { get; set; }
+        public DbSet<Models.RCM_Master.mst_subUnits> mst_SubUnits { get; set; }
         public DbSet<Models.Plant.FailureMode> FailureMode { get; set; }
         public DbSet<ScrewParameter> ScrewParameters { get; set; }
         public DbSet<ScrewStagingTable> ScrewStagingTables { get; set; }
@@ -44,7 +47,7 @@ namespace Plant.DAL
         //FMEA
         public DbSet<RCM> RCMs { get; set; }
         public DbSet<PrescriptiveLookupMasterModel> PrescriptiveLookupMassterModelData { get; set; }
-        public DbSet<Models.FailureModes> FailureModes { get; set; }
+        public DbSet<Models.RCM_Master.FailureModes> FailureModes { get; set; }
         public DbSet<MSS> MSS { get; set; }
 
         //RCA
@@ -104,17 +107,22 @@ namespace Plant.DAL
             modelBuilder.Entity<mst_Asset>().ToTable("mst_Asset");
             modelBuilder.Entity<mst_Asset>().HasKey(c => c.AssetId);
 
+            modelBuilder.Entity<Models.RCM_Master.mst_application>().ToTable("fmeamst_application");
+            modelBuilder.Entity<Models.RCM_Master.mst_application>().HasKey(c => c.ApplicationId);
+
+            modelBuilder.Entity<Models.RCM_Master.mst_subUnits>().ToTable("fmeamst_subUnits");
+            modelBuilder.Entity<Models.RCM_Master.mst_subUnits>().HasKey(c => c.SubUnitsId);
 
             //FMEA
-            modelBuilder.Entity<RCM>().ToTable("RCM");
+            modelBuilder.Entity<Models.RCM_Master.RCM>().ToTable("RCM");
             //modelBuilder.Entity<RCM>().HasKey(r => r.RCMId);
             modelBuilder.Entity<PrescriptiveLookupMasterModel>().ToTable("prescriptive_lookupmaster");
             modelBuilder.Entity<FailureModes>().ToTable("RCMFailureModel");
-            modelBuilder.Entity<Models.FailureModes>().HasKey(r => r.FailureModeId);
+            modelBuilder.Entity<Models.RCM_Master.FailureModes>().HasKey(r => r.FailureModeId);
             modelBuilder.Entity<MSS>().ToTable("MSS");
             modelBuilder.Entity<MSS>().HasKey(r => r.MSSId);
 
-            modelBuilder.Entity<Models.FailureModes>()
+            modelBuilder.Entity<Models.RCM_Master.FailureModes>()
                 .HasOne(r => r.RCM)
                 .WithMany(r => r.failureModes)
                 .HasForeignKey(r => r.RCMId);
@@ -348,6 +356,7 @@ namespace Plant.DAL
                       OrganizationId=1
                   }
                 );
+
            modelBuilder.Entity<mst_Asset>()
                 .HasData(
                    new mst_Asset
@@ -413,6 +422,89 @@ namespace Plant.DAL
                        Id_fk = 3
                    }
                 );
+
+            modelBuilder.Entity<Models.RCM_Master.mst_application>()
+             .HasData(
+                new Models.RCM_Master.mst_application
+                {
+                    ApplicationId = 1,
+                    MstAssetId = 2,
+                    ApplicatonName = "Gas Processing"
+                },
+                new Models.RCM_Master.mst_application
+                {
+                    ApplicationId = 2,
+                    MstAssetId = 2,
+                    ApplicatonName = "Gas Export"
+                },
+               new Models.RCM_Master.mst_application
+               {
+                   ApplicationId = 3,
+                   MstAssetId = 2,
+                   ApplicatonName = "Gas Injection"
+               },
+               new Models.RCM_Master.mst_application
+               {
+                   ApplicationId = 4,
+                   MstAssetId = 2,
+                   ApplicatonName = "Lift Gas Compression"
+               },
+                new Models.RCM_Master.mst_application
+                {
+                    ApplicationId = 5,
+                    MstAssetId = 2,
+                    ApplicatonName = "Compressed Air"
+                },
+                 new Models.RCM_Master.mst_application
+                 {
+                     ApplicationId = 6,
+                     MstAssetId = 2,
+                     ApplicatonName = "Refigertion"
+                 }
+             );
+
+      
+
+            modelBuilder.Entity<Models.RCM_Master.mst_subUnits>()
+           .HasData(
+              new Models.RCM_Master.mst_subUnits
+              {
+                  SubUnitsId = 1,
+                  MstAssetId = 2,
+                  SubUnitsName = "Power Transmission"
+              },
+              new Models.RCM_Master.mst_subUnits
+              {
+                  SubUnitsId = 2,
+                  MstAssetId = 2,
+                  SubUnitsName = "Compressor"
+              },
+             new Models.RCM_Master.mst_subUnits
+             {
+                 SubUnitsId = 3,
+                 MstAssetId = 2,
+                 SubUnitsName = "Control and monitoring"
+             },
+             new Models.RCM_Master.mst_subUnits
+             {
+                 SubUnitsId = 4,
+                 MstAssetId = 2,
+                 SubUnitsName = "Lubricaton System"
+             },
+              new Models.RCM_Master.mst_subUnits
+              {
+                  SubUnitsId = 5,
+                  MstAssetId = 2,
+                  SubUnitsName = "Shaft seal system"
+              },
+               new Models.RCM_Master.mst_subUnits
+               {
+                   SubUnitsId = 6,
+                   MstAssetId = 2,
+                   SubUnitsName = "Miscellaneous"
+               }
+           );
+
             modelBuilder.Entity<SILClassificationMaster>()
                .HasData(
                 new SILClassificationMaster

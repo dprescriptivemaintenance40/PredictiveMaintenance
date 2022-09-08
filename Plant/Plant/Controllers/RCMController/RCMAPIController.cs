@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Plant.DAL;
 using Plant.Models;
+using Plant.Models.RCM_Master;
 using System.Net.Http.Headers;
 
 
@@ -20,6 +21,24 @@ namespace Plant.Controllers.RCMController
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
+        }
+
+        [HttpGet]
+        [Route("GetAssetList")]
+        public async Task<ActionResult<IEnumerable<Models.Plant.mst_Asset>>> GetAssetList()
+        {
+            try
+            {
+                //string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                return await _context.mst_Asset.OrderByDescending(a => a.AssetId)
+                                                           .ToListAsync();
+
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
         }
 
         [HttpGet]
