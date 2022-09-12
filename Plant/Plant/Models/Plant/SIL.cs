@@ -68,7 +68,7 @@ namespace Plant.Models
         public List<Sensor> sensors { get; set; }
         public List<LogicSolver> logicSolver { get; set; }
         public List<FinalElement> finalElement { get; set; }
-        public Equipment Equipment { get; set; }
+        public Asset_Equipment Equipment { get; set; }
     }
     //public class Elements
     //{

@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace Plant.Models.Plant
 {
-    public class Equipment
+    public class Asset_Equipment
     {
-        [Key]
         public int Id { get; set; }
         public string TagNumber { get; set; }
         public string AssetName { get; set; }  //eg. ScrewCompressor 
-        public List<FailureMode> failureMode { get; set; }
+        public List<Asset_FailureMode> asset_failureModes { get; set; }
         public List<SIF> sif { get; set; }
     }
 }

@@ -69,12 +69,12 @@ namespace Plant.Controllers.PredictiveMaintenance
         public IActionResult GetBatch()
         {
             List<object> batch = new List<object>();
-            List<FailureMode> batchTable = _Context.FailureMode.ToList<FailureMode>();
+            List<Asset_FailureMode> batchTable = _Context.Asset_FailureMode.ToList<Asset_FailureMode>();
             if (batchTable != null)
             {
                 foreach (var b in batchTable)
                 {
-                    Equipment equipment = _Context.Equipments.Where(a => a.Id == b.TagNumberId).FirstOrDefault();
+                    Asset_Equipment equipment = _Context.Asset_Equipments.Where(a => a.Id == b.EquipmentId).FirstOrDefault();
                     if (equipment.AssetName == "ScrewCompressor")
                     {
                         List<object> list = new List<object>();
@@ -125,7 +125,7 @@ namespace Plant.Controllers.PredictiveMaintenance
 
         {
             List<object> batch = new List<object>();
-            List<FailureMode> batchTable = _Context.FailureMode.ToList<FailureMode>();
+            List<Asset_FailureMode> batchTable = _Context.Asset_FailureMode.ToList<Asset_FailureMode>();
             foreach (var b in batchTable)
             {
                 List<object> list = new List<object>();
@@ -158,23 +158,23 @@ namespace Plant.Controllers.PredictiveMaintenance
                 {
                     var fName = Path.GetFileName(file.FileName);
                     // var fileName = file.FileName + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_";
-                    Equipment equipment = new Equipment();
+                    Asset_Equipment equipment = new Asset_Equipment();
                     equipment.TagNumber = TagNumber;
                     equipment.AssetName = Asset;
-                    _Context.Equipments.Add(equipment);
+                    _Context.Asset_Equipments.Add(equipment);
                     _Context.SaveChanges();
 
-                    FailureMode batch = new FailureMode();
+                    Asset_FailureMode batch = new Asset_FailureMode();
                     string batchname = "user";
                     batch.Description = batchname + "_" + Guid.NewGuid();
                     batch.FailureModeName = FailureModeName;
                     DateTime now = DateTime.Now;
                     batch.DateTimeBatchUploaded = now.ToString();
-                    batch.TagNumberId = equipment.Id;
+                    batch.EquipmentId = equipment.Id;
                     batch.IsProcessCompleted = 1;
                     batch.DateTimeBatchCompleted = "Batch is processing";
                     var values = batch;
-                    _Context.FailureMode.Add(batch);
+                    _Context.Asset_FailureMode.Add(batch);
                     _Context.SaveChanges();
                     string destinationFileName = FilePath + "\\" + batch.Description + ".csv";
                     var fullPath = Path.Combine(FilePath, destinationFileName);

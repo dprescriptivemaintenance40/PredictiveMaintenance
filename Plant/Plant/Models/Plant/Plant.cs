@@ -7,7 +7,6 @@ namespace Plant.Models
 {
     public class Plants
     {
-        [Key]
         public int PlantId { get; set; }
         public int OrganizationId { get; set; }
         public string PlantName { get; set; }

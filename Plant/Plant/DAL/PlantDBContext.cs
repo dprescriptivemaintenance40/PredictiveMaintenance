@@ -18,25 +18,29 @@ namespace Plant.DAL
         {
         }
 
-        public DbSet<Equipment> Equipments { get; set; }
         public DbSet<Plants> Plants { get; set; }
         public DbSet<mst_Asset> mst_Asset { get; set; }
+        public DbSet<Asset_Equipment> Asset_Equipments { get; set; }
+        public DbSet<Models.Plant.Asset_FailureMode> Asset_FailureMode { get; set; }
         public DbSet<Models.RCM_Master.mst_application> mst_Application { get; set; }
         public DbSet<Models.RCM_Master.mst_subUnits> mst_SubUnits { get; set; }
-        public DbSet<Models.Plant.FailureMode> FailureMode { get; set; }
+        
+
+        //Parameters
         public DbSet<ScrewParameter> ScrewParameters { get; set; }
         public DbSet<ScrewStagingTable> ScrewStagingTables { get; set; }
         public DbSet<ScrewCleaningTable> ScrewCleaningTables { get; set; }
         public DbSet<ScrewErrorTable> ScrewErrorTables { get; set; }
-
         public DbSet<ScrewProcessedTable> ScrewProcessedTables { get; set; }
         public DbSet<ScrewPredictedTable> ScrewPredictedTables { get; set; }
+
         public DbSet<CentrifugalParameter> CentrifugalParameters { get; set; }
         public DbSet<CentrifugalStagingTable> CentrifugalStagingTables { get; set; }
         public DbSet<CentrifugalCleaningTable> CentrifugalCleaningTables { get; set; }
         public DbSet<CentrifugalErrorTable> CentrifugalErrorTables { get; set; }
         public DbSet<CentrifugalProcessedTable> CentrifugalProcessedTables { get; set; }
         public DbSet<CentrifugalPredictedTable> CentrifugalPredictedTables { get; set; }
+
         public DbSet<ReciprocatingParameter> ReciprocatingParameters { get; set; }
         public DbSet<ReciprocatingStagingTable> ReciprocatingStagingTables { get; set; }
         public DbSet<ReciprocatingCleaningTable> ReciprocatingCleaningTables { get; set; }
@@ -106,6 +110,98 @@ namespace Plant.DAL
 
             modelBuilder.Entity<mst_Asset>().ToTable("mst_Asset");
             modelBuilder.Entity<mst_Asset>().HasKey(c => c.AssetId);
+            modelBuilder.Entity<mst_Asset>()
+               .HasOne(r => r.plants)
+               .WithMany(r => r.mst_Assets)
+               .HasForeignKey(r => r.PlantId);
+
+            modelBuilder.Entity<Asset_Equipment>().HasKey(c => c.Id);
+
+            modelBuilder.Entity<Asset_FailureMode>()
+               .HasOne(r => r.equipments)
+               .WithMany(r => r.asset_failureModes)
+               .HasForeignKey(r => r.EquipmentId);
+
+            modelBuilder.Entity<ScrewParameter>()
+               .HasOne(r => r.asset_failureModes)
+               .WithMany(r => r.screwParameter)
+               .HasForeignKey(r => r.FailureModeId);
+
+            modelBuilder.Entity<ScrewStagingTable>()
+               .HasOne(r => r.screwParameter)
+               .WithMany(r => r.screwStagingTable)
+               .HasForeignKey(r => r.SPId);
+            modelBuilder.Entity<ScrewCleaningTable>()
+               .HasOne(r => r.screwParameter)
+               .WithMany(r => r.screwCleaningTable)
+               .HasForeignKey(r => r.SPId);
+            modelBuilder.Entity<ScrewErrorTable>()
+               .HasOne(r => r.screwParameter)
+               .WithMany(r => r.screwErrorTable)
+               .HasForeignKey(r => r.SPId);
+            modelBuilder.Entity<ScrewProcessedTable>()
+               .HasOne(r => r.screwParameter)
+               .WithMany(r => r.screwProcessedTable)
+               .HasForeignKey(r => r.SPId);
+            modelBuilder.Entity<ScrewPredictedTable>()
+               .HasOne(r => r.screwParameter)
+               .WithMany(r => r.screwPredictedTable)
+               .HasForeignKey(r => r.SPId);
+
+
+            modelBuilder.Entity<CentrifugalParameter>()
+               .HasOne(r => r.asset_failureModes)
+               .WithMany(r => r.centrifugalParameter)
+               .HasForeignKey(r => r.FailureModeId);
+
+            modelBuilder.Entity<CentrifugalStagingTable>()
+               .HasOne(r => r.centrifugalParameter)
+               .WithMany(r => r.centrifugalStagingTable)
+               .HasForeignKey(r => r.CPId);
+            modelBuilder.Entity<CentrifugalCleaningTable>()
+               .HasOne(r => r.centrifugalParameter)
+               .WithMany(r => r.centrifugalCleaningTable)
+               .HasForeignKey(r => r.CPId);
+            modelBuilder.Entity<CentrifugalErrorTable>()
+               .HasOne(r => r.centrifugalParameter)
+               .WithMany(r => r.centrifugalErrorTable)
+               .HasForeignKey(r => r.CPId);
+            modelBuilder.Entity<CentrifugalProcessedTable>()
+               .HasOne(r => r.centrifugalParameter)
+               .WithMany(r => r.centrifugalProcessedTable)
+               .HasForeignKey(r => r.CPId);
+            modelBuilder.Entity<CentrifugalPredictedTable>()
+               .HasOne(r => r.centrifugalParameter)
+               .WithMany(r => r.centrifugalPredictedTable)
+               .HasForeignKey(r => r.CPId);
+
+
+            modelBuilder.Entity<ReciprocatingParameter>()
+               .HasOne(r => r.asset_failureModes)
+               .WithMany(r => r.reciprocatingParameter)
+               .HasForeignKey(r => r.FailureModeId);
+
+            modelBuilder.Entity<ReciprocatingStagingTable>()
+               .HasOne(r => r.reciprocatingParameter)
+               .WithMany(r => r.reciprocatingStagingTable)
+               .HasForeignKey(r => r.RPId);
+            modelBuilder.Entity<ReciprocatingCleaningTable>()
+               .HasOne(r => r.reciprocatingParameter)
+               .WithMany(r => r.reciprocatingCleaningTable)
+               .HasForeignKey(r => r.RPId);
+            modelBuilder.Entity<ReciprocatingErrorTable>()
+               .HasOne(r => r.reciprocatingParameter)
+               .WithMany(r => r.reciprocatingErrorTable)
+               .HasForeignKey(r => r.RPId);
+            modelBuilder.Entity<ReciprocatingProcessedTable>()
+               .HasOne(r => r.reciprocatingParameter)
+               .WithMany(r => r.reciprocatingProcessedTable)
+               .HasForeignKey(r => r.RPId);
+            modelBuilder.Entity<ReciprocatingPredictedTable>()
+               .HasOne(r => r.reciprocatingParameter)
+               .WithMany(r => r.reciprocatingPredictedTable)
+               .HasForeignKey(r => r.RPId);
+
 
             modelBuilder.Entity<Models.RCM_Master.mst_application>().ToTable("fmeamst_application");
             modelBuilder.Entity<Models.RCM_Master.mst_application>().HasKey(c => c.ApplicationId);
@@ -118,11 +214,11 @@ namespace Plant.DAL
             //modelBuilder.Entity<RCM>().HasKey(r => r.RCMId);
             modelBuilder.Entity<PrescriptiveLookupMasterModel>().ToTable("prescriptive_lookupmaster");
             modelBuilder.Entity<FailureModes>().ToTable("RCMFailureModel");
-            modelBuilder.Entity<Models.RCM_Master.FailureModes>().HasKey(r => r.FailureModeId);
+            modelBuilder.Entity<FailureModes>().HasKey(r => r.FailureModeId);
             modelBuilder.Entity<MSS>().ToTable("MSS");
             modelBuilder.Entity<MSS>().HasKey(r => r.MSSId);
 
-            modelBuilder.Entity<Models.RCM_Master.FailureModes>()
+            modelBuilder.Entity<FailureModes>()
                 .HasOne(r => r.RCM)
                 .WithMany(r => r.failureModes)
                 .HasForeignKey(r => r.RCMId);
