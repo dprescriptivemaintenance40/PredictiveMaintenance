@@ -58,6 +58,9 @@ export class CompressorStatusComponent implements OnInit {
         if(this.list[x][5].length === 0){
            this.noError=true;
         }
+        else{
+          this.noError=false;
+        }
       }
     }
   }

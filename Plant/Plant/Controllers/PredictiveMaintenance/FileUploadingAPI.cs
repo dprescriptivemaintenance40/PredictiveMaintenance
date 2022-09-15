@@ -77,42 +77,54 @@ namespace Plant.Controllers.PredictiveMaintenance
                     Asset_Equipment equipment = _Context.Asset_Equipments.Where(a => a.Id == b.EquipmentId).FirstOrDefault();
                     if (equipment.AssetName == "ScrewCompressor")
                     {
-                        List<object> list = new List<object>();
-                        list.Add(b);
-                        var staging = _Context.ScrewStagingTables.Where(r => r.SPId == b.Id).Count();
-                        list.Add(staging);
-                        var cleaning = _Context.ScrewCleaningTables.Where(r => r.SPId == b.Id).Count();
-                        list.Add(cleaning);
-                        var errors = _Context.ScrewErrorTables.Where(r => r.SPId == b.Id).ToList();
-                        list.Add(errors);
-                        list.Add(equipment.AssetName);
-                        batch.Add(list);
+                        ScrewParameter stageData = _Context.ScrewParameters.Where(r => r.FailureModeId == b.Id).FirstOrDefault();
+                        if (stageData != null)
+                        {
+                            List<object> list = new List<object>();
+                            list.Add(b);
+                            var staging = _Context.ScrewStagingTables.Where(r => r.SPId == stageData.Id).Count();
+                            list.Add(staging);
+                            var cleaning = _Context.ScrewCleaningTables.Where(r => r.SPId == stageData.Id).Count();
+                            list.Add(cleaning);
+                            var errors = _Context.ScrewErrorTables.Where(r => r.SPId == stageData.Id).ToList();
+                            list.Add(errors);
+                            list.Add(equipment.AssetName);
+                            batch.Add(list);
+                        }    
                     }
                     else if (equipment.AssetName == "CentrifugalCompressor" || equipment.AssetName == "CentrifugalPump")
                     {
-                        List<object> list = new List<object>();
-                        list.Add(b);
-                        var staging = _Context.CentrifugalStagingTables.Where(r => r.CPId == b.Id).Count();
-                        list.Add(staging);
-                        var cleaning = _Context.CentrifugalCleaningTables.Where(r => r.CPId == b.Id).Count();
-                        list.Add(cleaning);
-                        var errors = _Context.CentrifugalErrorTables.Where(r => r.CPId == b.Id).ToList();
-                        list.Add(errors);
-                        list.Add(equipment.AssetName);
-                        batch.Add(list);
+                        CentrifugalParameter stageData = _Context.CentrifugalParameters.Where(r => r.FailureModeId == b.Id).FirstOrDefault();
+                        if (stageData != null)
+                        {
+                            List<object> list = new List<object>();
+                            list.Add(b);
+                            var staging = _Context.CentrifugalStagingTables.Where(r => r.CPId == stageData.Id).Count();
+                            list.Add(staging);
+                            var cleaning = _Context.CentrifugalCleaningTables.Where(r => r.CPId == stageData.Id).Count();
+                            list.Add(cleaning);
+                            var errors = _Context.CentrifugalErrorTables.Where(r => r.CPId == stageData.Id).ToList();
+                            list.Add(errors);
+                            list.Add(equipment.AssetName);
+                            batch.Add(list);
+                        }
                     }
-                    else if (equipment.AssetName == "ReciprocatingCompressor" || equipment.AssetName == "ReciprocatingPump" || equipment.AssetName == "Rotary Pump")
+                    else if (equipment.AssetName == "ReciprocatingCompressor" || equipment.AssetName == "ReciprocatingPump" || equipment.AssetName == "RotaryPump")
                     {
-                        List<object> list = new List<object>();
-                        list.Add(b);
-                        var staging = _Context.ReciprocatingStagingTables.Where(r => r.RPId == b.Id).Count();
-                        list.Add(staging);
-                        var cleaning = _Context.ReciprocatingCleaningTables.Where(r => r.RPId == b.Id).Count();
-                        list.Add(cleaning);
-                        var errors = _Context.ReciprocatingErrorTables.Where(r => r.RPId == b.Id).ToList();
-                        list.Add(errors);
-                        list.Add(equipment.AssetName);
-                        batch.Add(list);
+                        ReciprocatingParameter stageData = _Context.ReciprocatingParameters.Where(r => r.FailureModeId == b.Id).FirstOrDefault();
+                        if (stageData != null)
+                        {
+                            List<object> list = new List<object>();
+                            list.Add(b);
+                            var staging = _Context.ReciprocatingStagingTables.Where(r => r.RPId == stageData.Id).Count();
+                            list.Add(staging);
+                            var cleaning = _Context.ReciprocatingCleaningTables.Where(r => r.RPId == stageData.Id).Count();
+                            list.Add(cleaning);
+                            var errors = _Context.ReciprocatingErrorTables.Where(r => r.RPId == stageData.Id).ToList();
+                            list.Add(errors);
+                            list.Add(equipment.AssetName);
+                            batch.Add(list);
+                        }
                     }
                 }
             }

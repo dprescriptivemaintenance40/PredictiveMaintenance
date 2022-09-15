@@ -46,7 +46,7 @@ namespace Plant.DAL
         public DbSet<ReciprocatingCleaningTable> ReciprocatingCleaningTables { get; set; }
         public DbSet<ReciprocatingErrorTable> ReciprocatingErrorTables { get; set; }
         public DbSet<ReciprocatingProcessedTable> ReciprocatingProcessedTables { get; set; }
-        public DbSet<ReciprocatingPredictedTable> ReciprocatingPredicteds { get; set; }
+        public DbSet<ReciprocatingPredictedTable> ReciprocatingPredictedTables { get; set; }
 
         //FMEA
         public DbSet<RCM> RCMs { get; set; }
