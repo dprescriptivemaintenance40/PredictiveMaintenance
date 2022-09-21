@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Plant.DAL;
 using Plant.Models.Plant;
+using System.Net;
 using System.Reflection;
 
 
@@ -138,19 +139,62 @@ namespace Plant.Controllers.PredictiveMaintenance
         {
             List<object> batch = new List<object>();
             List<Asset_FailureMode> batchTable = _Context.Asset_FailureMode.ToList<Asset_FailureMode>();
-            foreach (var b in batchTable)
+            if (batchTable != null)
             {
-                List<object> list = new List<object>();
-                list.Add(b);
-                //var process = _Context.ProcessedTableSingles.Where(r => r.BatchId == b.Id).ToList();
-                //list.Add(process);
-                //var prediction = _Context.PredictedTableSingles.Where(r => r.BatchId == b.Id).ToList();
-                //list.Add(prediction);
-                batch.Add(list);
+                foreach (var b in batchTable)
+                {
+                    Asset_Equipment equipment = _Context.Asset_Equipments.Where(a => a.Id == b.EquipmentId).FirstOrDefault();
+                    if (equipment.AssetName == "ScrewCompressor")
+                    {
+                        ScrewParameter stageData = _Context.ScrewParameters.Where(r => r.FailureModeId == b.Id).FirstOrDefault();
+                        if (stageData != null)
+                        {
+                            List<object> list = new List<object>();
+                            list.Add(b);
+                            var process = _Context.ScrewProcessedTables.Where(r => r.SPId == stageData.Id).ToList();
+                            list.Add(process);
+                            var prediction = _Context.ScrewPredictedTables.Where(r => r.SPId == stageData.Id).ToList();
+                            list.Add(prediction);
+                            list.Add(equipment.AssetName);
+                            batch.Add(list);
+                        }
+                    }
+                    else if (equipment.AssetName == "CentrifugalCompressor" || equipment.AssetName == "CentrifugalPump")
+                    {
+                        CentrifugalParameter stageData = _Context.CentrifugalParameters.Where(r => r.FailureModeId == b.Id).FirstOrDefault();
+                        if (stageData != null)
+                        {
+                            List<object> list = new List<object>();
+                            list.Add(b);
+                            var process = _Context.CentrifugalProcessedTables.Where(r => r.CPId == stageData.Id).ToList();
+                            list.Add(process);
+                            var prediction = _Context.CentrifugalPredictedTables.Where(r => r.CPId == stageData.Id).ToList();
+                            list.Add(prediction);
+                            list.Add(equipment.AssetName);
+                            batch.Add(list);
+                        }
+                    }
+                    else if (equipment.AssetName == "ReciprocatingCompressor" || equipment.AssetName == "ReciprocatingPump" || equipment.AssetName == "RotaryPump")
+                    {
+                        ReciprocatingParameter stageData = _Context.ReciprocatingParameters.Where(r => r.FailureModeId == b.Id).FirstOrDefault();
+                        if (stageData != null)
+                        {
+                            List<object> list = new List<object>();
+                            list.Add(b);
+                            var process = _Context.ReciprocatingProcessedTables.Where(r => r.RPId == stageData.Id).ToList();
+                            list.Add(process);
+                            var prediction = _Context.ReciprocatingPredictedTables.Where(r => r.RPId == stageData.Id).ToList();
+                            list.Add(prediction);
+                            list.Add(equipment.AssetName);
+                            batch.Add(list);
+                        }
+                    }
+                }
             }
             return Ok(batch);
         }
         
+
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
         public string Get(int id)
@@ -171,23 +215,45 @@ namespace Plant.Controllers.PredictiveMaintenance
                     var fName = Path.GetFileName(file.FileName);
                     // var fileName = file.FileName + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_";
                     Asset_Equipment equipment = new Asset_Equipment();
-                    equipment.TagNumber = TagNumber;
-                    equipment.AssetName = Asset;
-                    _Context.Asset_Equipments.Add(equipment);
-                    _Context.SaveChanges();
-
                     Asset_FailureMode batch = new Asset_FailureMode();
-                    string batchname = "user";
-                    batch.Description = batchname + "_" + Guid.NewGuid();
-                    batch.FailureModeName = FailureModeName;
-                    DateTime now = DateTime.Now;
-                    batch.DateTimeBatchUploaded = now.ToString();
-                    batch.EquipmentId = equipment.Id;
-                    batch.IsProcessCompleted = 1;
-                    batch.DateTimeBatchCompleted = "Batch is processing";
-                    var values = batch;
+                    Asset_Equipment CheckExists = _Context.Asset_Equipments.Where(a => a.TagNumber == TagNumber && a.AssetName == Asset).FirstOrDefault();
+                    if (CheckExists != null)
+                    {
+                        Asset_FailureMode CheckExistsFM = _Context.Asset_FailureMode.Where(a => a.EquipmentId == CheckExists.Id && a.FailureModeName == FailureModeName).FirstOrDefault();
+                        if (CheckExistsFM != null)
+                        {
+                            var response = "Dataset for the entered failure mode is already available. ";
+                            return BadRequest(response);
+                        }
+                        else
+                        {
+                            batch.Description = Asset + "_" + Guid.NewGuid();
+                            batch.FailureModeName = FailureModeName;
+                            DateTime now = DateTime.Now;
+                            batch.DateTimeBatchUploaded = now.ToString();
+                            batch.EquipmentId = CheckExists.Id;
+                            batch.IsProcessCompleted = 1;
+                            batch.DateTimeBatchCompleted = "Batch is processing";
+                        }
+                    }
+                    else
+                    {
+                        equipment.TagNumber = TagNumber;
+                        equipment.AssetName = Asset;
+                        _Context.Asset_Equipments.Add(equipment);
+                        _Context.SaveChanges();
+
+                        batch.Description = Asset + "_" + Guid.NewGuid();
+                        batch.FailureModeName = FailureModeName;
+                        DateTime now = DateTime.Now;
+                        batch.DateTimeBatchUploaded = now.ToString();
+                        batch.EquipmentId = equipment.Id;
+                        batch.IsProcessCompleted = 1;
+                        batch.DateTimeBatchCompleted = "Batch is processing";
+                    }
                     _Context.Asset_FailureMode.Add(batch);
                     _Context.SaveChanges();
+                    var values = batch;
                     string destinationFileName = FilePath + "\\" + batch.Description + ".csv";
                     var fullPath = Path.Combine(FilePath, destinationFileName);
                     using (var fl = new FileStream(fullPath, FileMode.Create))

@@ -23,7 +23,9 @@ export class ModelPipelineComponent implements OnInit {
   public Assetlist:any= [];
   selectedAsset = null;
   selectedTagNumber=null;
-  selectedFMName=null; 
+  selectedFMName=null;
+  public Error:boolean=false; 
+  ErrorMsg=null;
 
   constructor(private messageService: MessageService,private http:HttpClient) {
   }
@@ -80,8 +82,13 @@ export class ModelPipelineComponent implements OnInit {
     this.FileUpload=event?.target?.files[0];
   }
   Upload(){
-    if(this.FileUpload.name.split(".").pop() != 'csv' || this.selectedAsset==null || this.selectedTagNumber==null || this.selectedFMName==null){
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: "File is not in csv format or Fields are empty" })
+    this.Error=false;
+    this.uploadSuccess=false;
+    if(this.FileUpload.name.split(".").pop() != 'csv'){
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: "Selected File is not in csv format" })
+    }
+    else if(this.selectedAsset==null || this.selectedTagNumber==null || this.selectedFMName==null || this.FileUpload==null){
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: "Please fill all the fields" })
     }
     else{
       const formData:FormData=new FormData();
@@ -98,8 +105,10 @@ export class ModelPipelineComponent implements OnInit {
         this.uploadSuccess=true;
       },
       (err)=> {
+        this.Error=true;
+        this.ErrorMsg=err.error;
         console.log(err)
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error while uploading" })
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error from server side while uploading" })
       })
     }
   }
