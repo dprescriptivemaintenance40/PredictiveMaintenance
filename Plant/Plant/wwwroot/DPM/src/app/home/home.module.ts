@@ -39,6 +39,9 @@ import { PrescriptiveConsequencesComponent } from "./RCM/FMEA/prescriptive-conse
 import { NetworkDiagram } from "./RAM/Availability/network-diagram.component";
 import {MultiSelectModule} from 'primeng/multiselect'; 
 import {AccordionModule} from 'primeng/accordion';
+import { AvailabilityListComponent } from "./RAM/Availability Model List/availability-list.component";
+import { AvailabilityReportComponent } from "./RAM/Availability Model Report/availability-report.component";
+import { UpdateAvailabilityComponent } from "./RAM/Update Availability Model/update-availability.component";
 
 
 @NgModule({
@@ -71,7 +74,10 @@ import {AccordionModule} from 'primeng/accordion';
         PrescriptiveUpdateComponent,
         FMEASHEETComponent,
         PrescriptiveConsequencesComponent,
-        NetworkDiagram
+        NetworkDiagram,
+        AvailabilityListComponent,
+        AvailabilityReportComponent,
+        UpdateAvailabilityComponent
     ],
     imports: [    
         HomeRoutingModule,       

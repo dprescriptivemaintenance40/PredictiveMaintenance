@@ -61,6 +61,8 @@ namespace Plant.DAL
         public DbSet<EquipmentWithoutCalculations> EquipmentWithoutCalculations { get; set; }
         public DbSet<EquipmentWithCalculations> EquipmentWithCalculations { get; set; }
         public DbSet<Edges> Edge { get; set; }
+        public DbSet<mst_NetworkAsset> mst_NetworkAsset { get; set; }
+
 
         public DbSet<PrescriptiveCbaModel> PrescriptiveCbaModels { get; set; }
         public DbSet<CBAFailureMode> CBAFailureModes { get; set; }
@@ -202,6 +204,9 @@ namespace Plant.DAL
                .WithMany(r => r.reciprocatingPredictedTable)
                .HasForeignKey(r => r.RPId);
 
+
+            modelBuilder.Entity<mst_NetworkAsset>().ToTable("mst_NetworkAsset");
+            modelBuilder.Entity<mst_NetworkAsset>().HasKey(c => c.NetworkAssetId);
 
             modelBuilder.Entity<Models.RCM_Master.mst_application>().ToTable("fmeamst_application");
             modelBuilder.Entity<Models.RCM_Master.mst_application>().HasKey(c => c.ApplicationId);
@@ -453,7 +458,71 @@ namespace Plant.DAL
                   }
                 );
 
-           modelBuilder.Entity<mst_Asset>()
+            modelBuilder.Entity<mst_NetworkAsset>()
+             .HasData(
+               new mst_NetworkAsset
+               {
+                   NetworkAssetId = 1,
+                   PlantId = 1,
+                   AssetName = "PSU",
+                   AssetLambda = 100,
+                   AssetMdt = 24,
+                   AssetImage = "https://cdn-icons-png.flaticon.com/512/1368/1368352.png",
+                   TagNumber = "11-K-01A"
+               },
+                 new mst_NetworkAsset
+                 {
+                     NetworkAssetId = 2,
+                     PlantId = 1,
+                     AssetName = "Standby",
+                     AssetLambda = 500,
+                     AssetMdt = 168,
+                     AssetImage = "https://cdn-icons-png.flaticon.com/512/0/396.png",
+                     TagNumber = "11-K-01B"
+                 },
+                   new mst_NetworkAsset
+                   {
+                       NetworkAssetId = 3,
+                       PlantId = 1,
+                       AssetName = "Motor",
+                       AssetLambda = 50,
+                       AssetMdt = 168,
+                       AssetImage = "https://cdn-icons-png.flaticon.com/512/7016/7016867.png",
+                       TagNumber = "11-K-01C"
+                   },
+                     new mst_NetworkAsset
+                     {
+                         NetworkAssetId = 4,
+                         PlantId = 1,
+                         AssetName = "Detector",
+                         AssetLambda = 5,
+                         AssetMdt = 168,
+                         AssetImage = "https://cdn-icons-png.flaticon.com/512/2784/2784797.png",
+                         TagNumber = "11-K-01D"
+                     },
+                       new mst_NetworkAsset
+                       {
+                           NetworkAssetId = 5,
+                           PlantId = 1,
+                           AssetName = "Panel",
+                           AssetLambda = 10,
+                           AssetMdt = 24,
+                           AssetImage = "https://cdn-icons.flaticon.com/png/512/4115/premium/4115020.png?token=exp=1660819966~hmac=8892742671a5c444d1e50d54972375d9",
+                           TagNumber = "11-K-01E"
+                       },
+                        new mst_NetworkAsset
+                        {
+                            NetworkAssetId = 6,
+                            PlantId = 1,
+                            AssetName = "Pump",
+                            AssetLambda = 60,
+                            AssetMdt = 24,
+                            AssetImage = "https://cdn-icons-png.flaticon.com/512/2983/2983881.png",
+                            TagNumber = "11-K-01F"
+                        }
+             );
+
+            modelBuilder.Entity<mst_Asset>()
                 .HasData(
                    new mst_Asset
                    {

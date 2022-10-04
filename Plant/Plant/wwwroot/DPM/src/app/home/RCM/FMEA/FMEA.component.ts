@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { MenuItem } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { SafeUrl } from '@angular/platform-browser';
 import { FailureModes, RCM, MSS } from 'src/app/shared/Models/rcm.models';
 import { RCMContantAPI } from './Shared/RCMConstant';
@@ -236,6 +236,17 @@ export class FMEAComponent implements OnInit {
   public Type: string = "";
   public state: any = [];
 
+  public AssetDataList: any = [];
+  public ApplicationDataList: any = [];
+  public SubUnitDataList: any = []                                    ;
+  public AssetList: any = [];
+  public AssetsEquipment: any = [];
+  public AssetName: string = "";
+  public EquipmentClass: any = [];
+  public EquipmentTypeClass: any = [];
+  public ApplicationClass: any = [];
+  public SubUnitClass: any = [];
+   
   constructor(private messageService: MessageService,
     private httpObj: HttpClient,
     public formBuilder: FormBuilder,
@@ -342,16 +353,59 @@ export class FMEAComponent implements OnInit {
   }
 
   public getAsset() {
-    var url: string = this.RCMConstantAPI.AssetData
-    this.RCMBLService.getWithoutParameters(url).subscribe(
-      (res: any) => {
-        console.log(res);
-      }, err => {
-        console.log(err.err);
-      }
+    var asseturl: string = this.RCMConstantAPI.AssetData;
+    var applicationurl: string = this.RCMConstantAPI.ApplicationData;
+    var subuniturl: string = this.RCMConstantAPI.SubUnitData;
+    forkJoin([this.RCMBLService.getWithoutParameters(asseturl), this.RCMBLService.getWithoutParameters(applicationurl),
+    this.RCMBLService.getWithoutParameters(subuniturl)]).subscribe((res: any) => {
+      console.log(res);
+      this.AssetDataList = res[0];
+      this.ApplicationDataList = res[1];
+      this.SubUnitDataList = res[2];
+      console.log(this.AssetDataList)
+      this.AssetDataList.forEach(assets => {
+        if (assets.Id_fk == null) {
+          this.AssetList.push(assets.AssetName);
+          console.log(this.AssetList);
+        }
+        else if (assets.Id_fk != null) {
+          this.AssetsEquipment.push(assets.AssetName);
+          console.log(this.AssetsEquipment);
+        }
+      });
+    }, err => {
+      console.log(err.err);
+    }
     )
   }
 
+  public SetEquipmentClass() {
+    var datafromAsset = this.AssetDataList.find(a => a['AssetName'] === this.AssetName);
+    this.EquipmentClass = [];
+    this.AssetDataList.forEach(assets => {
+      if (datafromAsset.AssetId == assets.Id_fk)
+        this.EquipmentClass.push(assets.AssetName);
+    });
+  }
+
+  public SetEquipmentType() {
+    var datafromAsset = this.AssetDataList.find(a => a['AssetName'] === this.MachineType);
+    this.EquipmentTypeClass = [];
+    this.ApplicationClass = [];
+    this.SubUnitClass = [];
+    this.AssetDataList.forEach(assets => {
+      if (datafromAsset.AssetId == assets.Id_fk)
+        this.EquipmentTypeClass.push(assets.AssetName);
+    });
+    this.ApplicationDataList.forEach(application => {
+      if (datafromAsset.AssetId == application.MstAssetId)
+        this.ApplicationClass.push(application.ApplicatonName);
+    });
+    this.SubUnitDataList.forEach(subunit => {
+      if (datafromAsset.AssetId == subunit.MstAssetId)
+        this.SubUnitClass.push(subunit.SubUnitsName);
+    });
+  }
   public uploadFile(event) {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf'
@@ -908,6 +962,7 @@ export class FMEAComponent implements OnInit {
     this.isNewEntity = false;
     this.prescriptiveTreeBackEnable = false;
     this.RCMOBJ.MachineType = this.MachineType;
+    this.RCMOBJ.AssetName = this.AssetName;
     this.MachineType = "";
     this.isNewEntity = false;
     this.RCMOBJ.EquipmentType = this.EquipmentType;

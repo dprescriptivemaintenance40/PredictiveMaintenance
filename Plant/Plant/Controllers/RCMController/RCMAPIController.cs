@@ -32,7 +32,40 @@ namespace Plant.Controllers.RCMController
                 //string userId = User.Claims.First(c => c.Type == "UserID").Value;
                 return await _context.mst_Asset.OrderByDescending(a => a.AssetId)
                                                            .ToListAsync();
+            }
+            catch (Exception exe)
+            {
 
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetApplicationList")]
+        public async Task<ActionResult<IEnumerable<mst_application>>> GetApplicationList()
+        {
+            try
+            {
+                //string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                return await _context.mst_Application.OrderByDescending(a => a.ApplicationId)
+                                                           .ToListAsync();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetSubUnitList")]
+        public async Task<ActionResult<IEnumerable<mst_subUnits>>> GetSubUnitList()
+        {
+            try
+            {
+                //string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                return await _context.mst_SubUnits.OrderByDescending(a => a.SubUnitsId)
+                                                           .ToListAsync();
             }
             catch (Exception exe)
             {
@@ -122,6 +155,7 @@ namespace Plant.Controllers.RCMController
                 return BadRequest(exe.Message);
             }
         }
+
         [HttpGet]
         [Route("GetCBARecordsForReportById")]
         public async Task<ActionResult<PrescriptiveCbaModel>> GetCBARecordsForReportById(int id)

@@ -30,11 +30,18 @@
             </div>
 
             <div class="col-md-3 d-flex flex-column">
-                <label style=" margin-right: 12px;">Equipment Class</label>
-                <select [(ngModel)]="MachineType" class="form-select" class="form-control">
+                <label style=" margin-right: 12px;">Assets</label>
+                <select class="form-select" [(ngModel)]="AssetName" (change)="SetEquipmentClass()" class="form-control">
                     <option value="">Choose..</option>
-                    <option value="Pump" selected>Pump</option>
-                    <option value="Compressor" selected>Compressor</option>
+                    <option *ngFor="let AL of AssetList" [ngValue]="AL">{{AL}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-3 d-flex flex-column">
+                <label style=" margin-right: 12px;">Equipment Class</label>
+                <select [(ngModel)]="MachineType" (change)="SetEquipmentType()" class="form-select" class="form-control">
+                    <option value="">Choose..</option>
+                    <option  *ngFor="let EC of EquipmentClass" [ngValue]="EC">{{EC}}</option>
                 </select>
             </div>
 
@@ -42,11 +49,7 @@
                 <label style=" margin-right: 12px;">Type</label>
                 <select [(ngModel)]="EquipmentType" class="form-select" class="form-control">
                     <option value="">Choose..</option>
-                    <option value="Centrifugal">Centrifugal</option>
-                    <option value="Reciprocating">Reciprocating</option>
-                    <option value="Screw">Screw</option>
-                    <option value="Blowers/fans">Blowers/fans</option>
-                    <option value="Axial">Axial</option>
+                    <option *ngFor="let ET of EquipmentTypeClass" [ngValue]="ET">{{ET}}</option>
                 </select>
             </div>
 
@@ -54,12 +57,7 @@
                 <label style=" margin-right: 12px;">Appliation</label>
                 <select [(ngModel)]="Application" class="form-select" class="form-control">
                     <option value="">Choose..</option>
-                    <option value="Gas Processing">Gas Processing</option>
-                    <option value="Gas Export">Gas Export</option>
-                    <option value="Gas Injection">Gas Injection</option>
-                    <option value="Lift Gas Compression">Lift Gas Compression</option>
-                    <option value="Compressed Air">Compressed Air</option>
-                    <option value="Refrigeration">Refrigeration</option>
+                    <option *ngFor="let AC of ApplicationClass" [ngValue]="AC">{{AC}}</option>
                 </select>
             </div>
 
@@ -67,13 +65,7 @@
                 <label class="d-block">Sub Units</label>
                 <select [(ngModel)]="SubUnit" class="form-select" class="form-control">
                     <option value="">Choose..</option>
-                    <option value="Power Transmission">Power Transmission</option>
-                    <option value="Compressor">Compressor</option>
-                    <option value="Control and monitoring">Control and monitoring</option>
-                    <option value="Lubrication system">Lubrication system</option>
-                    <option value="Shaft seal system">Shaft seal system</option>
-                    <option value="Miscellaneous">Miscellaneous</option>
-                    <option value="Pump">Pump</option>
+                    <option *ngFor="let SU of SubUnitClass" [ngValue]="SU">{{SU}}</option>
                 </select>
             </div>
 

@@ -8,7 +8,9 @@ export class RCMContantAPI {
 
    
     public FMEATagCheck: string = '/RCMAPI';
-    public AssetData:string = '/RCMAPI/GetAssetList'
+    public AssetData:string = '/RCMAPI/GetAssetList';
+    public ApplicationData:string = '/RCMAPI/GetApplicationList';
+    public SubUnitData:string = '/RCMAPI/GetSubUnitList';
     public FMEAConfiguration: string = '/PrescriptiveLookupMasterAPI';
 
 
@@ -45,7 +47,12 @@ export class RCMContantAPI {
     //#endregion
 
     //Network Diagram
-    public PlantNetwork:string = '/RCAAPI/SavePlantNetwork'
+    public PlantNetwork:string = '/RCAAPI/SavePlantNetwork';
+    public GetPlantNetwork:string = '/RCAAPI/GetPlantNetworkList';
+    public GetPlantNetworkbyId = '/RCAAPI/GetPlantNetworkListbyId';
+    public NetworkMasterData = '/RCAAPI/GetNetworkMasterList';
+    public PlantMasterData = '/RCAAPI/GetMasterPlantData';
+    public PlantListSingleDelete: string = '/RCAAPI/DeletePlantModel';
 
     //#region RCA API
 

@@ -29,6 +29,9 @@ import { FMEASHEETComponent } from "./RCM/FMEA/fmea-sheet/fmea-sheet.component";
 import { CompressorStatusComponent } from "./PredictiveMaintenance/compressor-status/compressor-status.component";
 import { PrescriptiveConsequencesComponent } from "./RCM/FMEA/prescriptive-consequences/prescriptive-consequences.component";
 import { NetworkDiagram } from "./RAM/Availability/network-diagram.component";
+import { AvailabilityListComponent } from "./RAM/Availability Model List/availability-list.component";
+import { AvailabilityReportComponent } from "./RAM/Availability Model Report/availability-report.component";
+import { UpdateAvailabilityComponent } from "./RAM/Update Availability Model/update-availability.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -64,7 +67,10 @@ import { NetworkDiagram } from "./RAM/Availability/network-diagram.component";
                 { path: 'CompressorStatus', component: CompressorStatusComponent},
                 { path:'FMEASHEET',component:FMEASHEETComponent},
                 {path:'FMEASHEET',component:FMEASHEETComponent},
-                { path:'NetworkDiagram',component:NetworkDiagram}
+                { path:'NetworkDiagram',component:NetworkDiagram},
+                { path:'AvailabilityList',component:AvailabilityListComponent},
+                {path:'AvailabilityReport',component:AvailabilityReportComponent},
+                { path:'UpdateAvailability',component:UpdateAvailabilityComponent}
             ]
         }
     ])],

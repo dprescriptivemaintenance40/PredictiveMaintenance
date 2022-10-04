@@ -1,0 +1,73 @@
+<div class="card dpm-card w-100 p-3">
+    <p-accordion>
+        <p-accordionTab header="View Equipment Data Table">
+            <p-table class="container" [value]="EquipmentDataList" responsiveLayout="scroll">
+                <ng-template pTemplate="colgroup">
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Equipments</th>
+                        <th>Failure rate PMH, Lamda, OREDA</th>
+                        <th>MDT(mean down time) hours</th>
+                        <th>Equipments Connected</th>
+                        <th>Logic</th>
+                        <th>MTBF</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-equi let-rowIndex="rowIndex">
+                    <tr>
+                        <td>{{equi.equipmentName}}</td>
+                        <td>{{equi.lambda}}</td>
+                        <td>{{equi.mdt}}</td>
+                        <td>{{equi.selectedEquipments}}</td>
+                        <td>{{equi.logic}}</td>
+                        <td>{{equi.mtbf}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-accordionTab>
+    </p-accordion>
+</div>
+<br>
+<div class="card dpm-card w-100 p-3">
+    <h4>Network Diagram</h4>
+    <div class="row mb-4">
+        <div class="col-md-3 pl-0">
+          <label style="margin-left: 10px" class="d-block">
+            Plant Name:
+            <input type="text" [(ngModel)]="PlantName" class="form-control" />
+          </label>
+        </div>
+        <div class="col-md-3">
+            <label style="margin-left: 10px" class="d-block">
+                Plant Location:
+                <input type="text" [(ngModel)]="Location" class="form-control" />
+              </label>
+        </div>
+        <div class="col-md-3">
+            <label style="margin-left: 10px" class="d-block">
+                System UnAvailability:
+                <input type="text" [(ngModel)]="Unavailability" [readOnly]="true" class="form-control" />
+              </label>
+        </div>
+        <div class="col-md-3">
+            <label style="margin-left: 10px" class="d-block">
+                System Availability:
+                <input type="text" [(ngModel)]="Availability"  [readOnly]="true" class="form-control" />
+              </label>
+        </div>
+      </div>
+    <!-- <div> -->
+        <!-- <button style="float: right;" (click)="EditNetwork()" label="Save" type="button" class="btn btn-primary" pTooltip="Save Values"
+            tooltipPosition="top"><i class="pi pi-pencil"> Edit</i></button>
+    </div> -->
+    <div id="mynetwork" #siteConfigNetwork></div>
+
+    <style type="text/css">
+        #mynetwork {
+            width: 1180px;
+            height: 600px;
+            border: 1px solid lightgray;
+        }
+    </style>
+</div>

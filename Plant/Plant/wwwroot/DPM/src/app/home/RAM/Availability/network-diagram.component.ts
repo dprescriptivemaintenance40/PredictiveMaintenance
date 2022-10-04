@@ -10,15 +10,15 @@ declare var vis: any;
     selector: 'app-network-diagram',
     templateUrl: './network-diagram.component.html'
 })
-export class NetworkDiagram implements OnInit {
 
+export class NetworkDiagram implements OnInit {
     @ViewChild("siteConfigNetwork", { static: true }) networkContainer: ElementRef;
     public addData: boolean = false;
     public Enterdata: boolean = false;
     public CalculateData: boolean = false;
+    public CalculateUnavailability: boolean = false;
     public popup: any = [];
     public network: any;
-
 
     public nodeData: any = [];
 
@@ -34,6 +34,7 @@ export class NetworkDiagram implements OnInit {
     public Logic: string = "";
     public CalculatedLambda: number;
     public CalculatedMDT: number;
+    public CalculatedMTBF: number;
 
     public EquipmentDataList: any = [];
     public EquipmentsName: any = [];
@@ -48,24 +49,80 @@ export class NetworkDiagram implements OnInit {
     //Save
     public NodeDataList: any = [];
     public EdgeDataList: any = [];
-    public PlantDataList:any = [];
+    public PlantDataList: any = [];
+    public plantClass: PlantNetwork = new PlantNetwork();
 
     public image: string = "";
     public SelectedList: any = [];
     public equipment = new Equipments();
+
+    public MasterNetworkDataList: any = [];
+    public MasterPlantDataList: any = [];
+    public MasterPlantName: string[] = [];
+
+    public TagNumbers: any = [];
+    public SelectedTag: string = "";
+    public AssetImage: string = "";
+
     constructor(private NetworkBLService: CommonBLService,
         private messageService: MessageService,
         private NetworkContantAPI: RCMContantAPI,
         public router: Router,) { }
 
     ngOnInit() {
-
+        this.getMasterPlantData();
         var treeData = this.getTreeData();
         this.loadVisTree(treeData);     // RENDER STANDARD NODES WITH TEXT LABEL
     }
 
     save() {
         console.log(this.network);
+    }
+
+    public getMasterPlantData() {
+        var url: string = this.NetworkContantAPI.PlantMasterData;
+        this.NetworkBLService.getWithoutParameters(url)
+            .subscribe((res: any) => {
+                this.MasterPlantDataList = res;
+                this.MasterPlantDataList.forEach(plantData => {
+                    this.MasterPlantName.push(plantData.PlantName)
+                });
+            }, err => {
+                console.log(err.err);
+            }
+            )
+    }
+
+    public SetPlantLocation() {
+        var PlantData = this.MasterPlantDataList.find(a => a['PlantName'] === this.plantClass.PlantName);
+        this.plantClass.Location = PlantData.Location;
+        this.getNetworkMasterData();
+    }
+
+    public getNetworkMasterData() {
+        var url: string = this.NetworkContantAPI.NetworkMasterData;
+        this.NetworkBLService.getWithoutParameters(url)
+            .subscribe((res: any) => {
+                this.MasterNetworkDataList = res;
+                this.MasterNetworkDataList.forEach(masterData => {
+                    this.TagNumbers.push(masterData.TagNumber)
+                });
+            }, err => {
+                console.log(err.err);
+            }
+            )
+    }
+
+    public TagNumberSelect() {
+        this.EquipmentName = "";
+        this.Lambda = null;
+        this.MDT = null;
+        this.AssetImage = "";
+        var MasterData = this.MasterNetworkDataList.find(a => a['TagNumber'] === this.SelectedTag);
+        this.EquipmentName = MasterData.AssetName;
+        this.Lambda = MasterData.AssetLambda;
+        this.MDT = MasterData.AssetMdt;
+        this.AssetImage = MasterData.AssetImage;
     }
 
     loadVisTree(treedata) {
@@ -121,6 +178,7 @@ export class NetworkDiagram implements OnInit {
                     if (this.EquipmentNode == this.EquipmentDataList[index].node) {
                         if (!(this.EquipmentDataList[index].logic)) {
                             this.EquipmentName = this.EquipmentDataList[index].equipmentName;
+                            this.SelectedTag = this.EquipmentDataList[index].tagNumber;
                             this.MDT = this.EquipmentDataList[index].mdt;
                             this.Lambda = this.EquipmentDataList[index].lambda;
                             this.CalculatedMDT = null;
@@ -133,6 +191,9 @@ export class NetworkDiagram implements OnInit {
                         else if (this.EquipmentDataList[index].logic) {
                             this.CalculatedMDT = this.EquipmentDataList[index].mdt;
                             this.CalculatedLambda = this.EquipmentDataList[index].lambda;
+                            if (this.CalculateUnavailability == true) {
+                                this.CalculatedMTBF = this.EquipmentDataList[index].mtbf;
+                            }
                             this.selectedEquipmentsName = this.EquipmentDataList[index].selectedEquipments;
                             this.Logic = this.EquipmentDataList[index].logic;
                             this.CalculatedEquipmentName = this.EquipmentDataList[index].equipmentName;
@@ -151,6 +212,7 @@ export class NetworkDiagram implements OnInit {
                         this.selectedEquipmentsName = "";
                         this.Logic = "";
                         this.CalculatedEquipmentName = "";
+                        this.SelectedTag = "";
                     }
                 }
             }
@@ -188,12 +250,18 @@ export class NetworkDiagram implements OnInit {
         this.CalculateData = true;
     }
 
+    public DisplayUnavailability() {
+        this.CalculateUnavailability = true;
+    }
+
     public SaveNodeData() {
         let obj = {};
         obj['node'] = this.EquipmentNode;
         obj['equipmentName'] = this.EquipmentName;
         obj['lambda'] = this.Lambda;
         obj['mdt'] = this.MDT;
+        obj['tagNumber'] = this.SelectedTag;
+        obj['image'] = this.AssetImage;
         var nodeHover = [
             'Equipment Name : ' + this.EquipmentName,
             '<br/>' + 'Lambda : ' + this.Lambda,
@@ -201,22 +269,22 @@ export class NetworkDiagram implements OnInit {
         ]
         this.EquipmentsName.push(this.EquipmentName)
         this.EquipmentDataList.push(obj);
-        this.SetEquipmentImage();
+        // this.SetEquipmentImage();
         this.nodeData = this.network.body.data.nodes;
         this.nodeData.forEach(element => {
             if (element.id == this.EquipmentNode) {
                 element.label = this.EquipmentName;
-                if (this.image != "") {
-                    this.network.body.data.nodes.update({
-                        id: element.id, label: this.EquipmentName, title: nodeHover, image: this.image,
-                        shape: 'image',
-                    });
-                }
-                else {
-                    this.network.body.data.nodes.update({
-                        id: element.id, label: this.EquipmentName, title: nodeHover
-                    });
-                }
+                // if (this.image != "") {
+                this.network.body.data.nodes.update({
+                    id: element.id, label: this.EquipmentName, title: nodeHover, image: this.AssetImage,
+                    shape: 'image',
+                });
+                // }
+                // else {
+                //     this.network.body.data.nodes.update({
+                //         id: element.id, label: this.EquipmentName, title: nodeHover
+                //     });
+                // }
             }
         });
         this.network.redraw()
@@ -236,6 +304,9 @@ export class NetworkDiagram implements OnInit {
         obj['logic'] = this.Logic;
         obj['lambda'] = this.CalculatedLambda.toFixed(2);
         obj['mdt'] = this.CalculatedMDT.toFixed(2);
+        if (this.CalculateUnavailability == true) {
+            obj['mtbf'] = this.CalculatedMTBF.toFixed(2);
+        }
         var nodeHover = [
             'Equipment Name : ' + this.CalculatedEquipmentName,
             '<br/>' + 'Selected Equipments : ' + this.SelectedList,
@@ -245,7 +316,7 @@ export class NetworkDiagram implements OnInit {
         ]
         this.EquipmentsName.push(this.CalculatedEquipmentName);
         this.EquipmentDataList.push(obj);
-        this.SetEquipmentImage();
+        // this.SetEquipmentImage();
         this.nodeData = this.network.body.data.nodes;
         this.nodeData.forEach(element => {
             if (element.id == this.EquipmentNode) {
@@ -291,48 +362,55 @@ export class NetworkDiagram implements OnInit {
             this.CalculatedLambda = Number(this.LambdaValueplus);
             this.CalculatedMDT = Number(this.lambdamdtvalue / this.LambdaValueplus);
         }
+        if (this.CalculateUnavailability == true) {
+            this.CalculatedMTBF = Number(1000000 / this.CalculatedLambda / 8760);
+            this.plantClass.Unavailability = this.CalculatedMTBF / (this.CalculatedMTBF + this.CalculatedMTBF);
+            this.plantClass.Availability = Number((this.plantClass.Unavailability / 100) * 100)
+        }
     }
 
-    public SetEquipmentImage() {
-        this.EquipmentDataList.forEach(element => {
-            this.image = "";
-            if (element.equipmentName == 'PSU') {
-                this.image = "https://cdn-icons-png.flaticon.com/512/1368/1368352.png"
-            } else if (element.equipmentName == 'Standby') {
-                this.image = "https://cdn-icons-png.flaticon.com/512/0/396.png"
-            } else if (element.equipmentName == 'Detector') {
-                this.image = "https://cdn-icons-png.flaticon.com/512/2784/2784797.png"
-            } else if (element.equipmentName == 'Pump') {
-                this.image = "https://cdn-icons-png.flaticon.com/512/2983/2983881.png"
-            } else if (element.equipmentName == 'Motor') {
-                this.image = "https://cdn-icons-png.flaticon.com/512/7016/7016867.png"
-            } else if (element.equipmentName == 'Panel') {
-                this.image = "https://cdn-icons.flaticon.com/png/512/4115/premium/4115020.png?token=exp=1660819966~hmac=8892742671a5c444d1e50d54972375d9"
-            }
-        });
+    // public SetEquipmentImage() {
+    //     this.EquipmentDataList.forEach(element => {
+    //         this.image = "";
+    //         if (element.equipmentName == 'PSU') {
+    //             this.image = "https://cdn-icons-png.flaticon.com/512/1368/1368352.png"
+    //         } else if (element.equipmentName == 'Standby') {
+    //             this.image = "https://cdn-icons-png.flaticon.com/512/0/396.png"
+    //         } else if (element.equipmentName == 'Detector') {
+    //             this.image = "https://cdn-icons-png.flaticon.com/512/2784/2784797.png"
+    //         } else if (element.equipmentName == 'Pump') {
+    //             this.image = "https://cdn-icons-png.flaticon.com/512/2983/2983881.png"
+    //         } else if (element.equipmentName == 'Motor') {
+    //             this.image = "https://cdn-icons-png.flaticon.com/512/7016/7016867.png"
+    //         } else if (element.equipmentName == 'Panel') {
+    //             this.image = "https://cdn-icons.flaticon.com/png/512/4115/premium/4115020.png?token=exp=1660819966~hmac=8892742671a5c444d1e50d54972375d9"
+    //         }
+    //     });
 
-    }
+    // }
 
     public SaveNetwork() {
         this.NodeDataList = this.network.body.data.nodes;
         this.EdgeDataList = this.network.body.data.edges;
         let networkDiagram = new PlantNetwork();
         networkDiagram.PlantId = 0;
-        networkDiagram.PlantName = "calvart"
-        networkDiagram.Location = "Mumbai"
-        networkDiagram.Unavailability = 1;
+        networkDiagram.PlantName = this.plantClass.PlantName;
+        networkDiagram.Location = this.plantClass.Location;
+        networkDiagram.Unavailability = this.plantClass.Unavailability;
+        networkDiagram.Availability = this.plantClass.Availability;
         this.NodeDataList.forEach(node => {
             let equipment = new Equipments
             equipment.EquipmentId = 0;
             equipment.PlantId = networkDiagram.PlantId;
             equipment.EquipmentNode = node.id;
             var dataforPOC = this.EquipmentDataList.find(a => a['node'] === equipment.EquipmentNode);
+            equipment.EquipmentName = dataforPOC.equipmentName;
             if (dataforPOC) {
                 if (dataforPOC.logic) {
                     let equipmentWithCalculations = new EquipmentWithCalculations();
                     equipmentWithCalculations.EquipmentWithCalculationsId = 1;
                     equipmentWithCalculations.EquipmentId = equipment.EquipmentId;
-                    equipmentWithCalculations.EquipmentName = dataforPOC.equipmentName;
+                    // equipmentWithCalculations.EquipmentName = dataforPOC.equipmentName;
                     equipmentWithCalculations.EquimentsConnected = dataforPOC.selectedEquipments.toString();
                     equipmentWithCalculations.Logic = dataforPOC.logic;
                     equipmentWithCalculations.Lambda = dataforPOC.lambda;
@@ -344,9 +422,10 @@ export class NetworkDiagram implements OnInit {
                     let equipmentWithoutCalculations = new EquipmentWithoutCalculations();
                     equipmentWithoutCalculations.EquipmentWithoutCalculationsId = 1;
                     equipmentWithoutCalculations.EquipmentId = equipment.EquipmentId;
-                    equipmentWithoutCalculations.EquipmentName = dataforPOC.equipmentName;
+                    // equipmentWithoutCalculations.EquipmentName = dataforPOC.equipmentName;
                     equipmentWithoutCalculations.Lambda = dataforPOC.lambda;
                     equipmentWithoutCalculations.MDT = dataforPOC.mdt;
+                    equipmentWithoutCalculations.EquipmentImage = dataforPOC.image;
                     equipment.EquipmentWithoutCalculations.push(equipmentWithoutCalculations);
                 }
             }

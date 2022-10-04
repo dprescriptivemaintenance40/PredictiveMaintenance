@@ -3,6 +3,7 @@ export class PlantNetwork {
     public PlantName: string = "";
     public Location: string = "";
     public Unavailability:number;
+    public Availability:number;
     public equipment : Array<Equipments> = new Array<Equipments>();
     public edge : Array<Edges> = new Array<Edges>();
 }
@@ -11,6 +12,7 @@ export class Equipments {
     public EquipmentId: number;
     public PlantId: number;
     public EquipmentNode: string = "";
+    public EquipmentName: string = "";
     public EquipmentWithCalculations:any = [];
     public EquipmentWithoutCalculations:any = [];
 }
@@ -18,15 +20,14 @@ export class Equipments {
 export class EquipmentWithoutCalculations {
     public EquipmentWithoutCalculationsId: number;
     public EquipmentId: number;
-    public EquipmentName: string = "";
     public Lambda: number;   //provided lambda
     public MDT: number;   //provided MDT
+    public EquipmentImage:string = "";
 }
 
 export class EquipmentWithCalculations {
     public EquipmentWithCalculationsId: number;
     public EquipmentId: number;
-    public EquipmentName: string = "";
     public EquimentsConnected: string = "";   //nodes connected
     public Logic: string = "";     //AND,OR Logic
     public Lambda: number;         //calculated lambda

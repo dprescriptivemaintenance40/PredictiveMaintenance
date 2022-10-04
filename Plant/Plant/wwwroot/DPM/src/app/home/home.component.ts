@@ -137,6 +137,10 @@ export class HomeComponent implements OnInit {
           label: 'Network Diagram',
           url: '#/Home/NetworkDiagram',
         },
+        {
+          label: 'Availability Model List',
+          url: '#/Home/AvailabilityList',
+        }
       ]
     },
     {

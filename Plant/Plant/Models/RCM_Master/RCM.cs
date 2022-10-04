@@ -9,7 +9,7 @@ namespace Plant.Models.RCM_Master
         [Key]
         public int RCMId { get; set; }
         public string TagNumber { get; set; }
-        //public int OrganizationId { get; set; }
+        public string AssetName { get; set; }
         //public int EquipmentId { get; set; }
         public string MachineType { get; set; }
         public string EquipmentType { get; set; }
@@ -24,7 +24,6 @@ namespace Plant.Models.RCM_Master
         public string MSSAdded { get; set; }
         public string CBAAdded { get; set; }
         public string EquipmentCriticalityType { get; set; }
-        public List<Plant.Asset_FailureMode> failureMode { get; set; }
         public List<FailureModes> failureModes { get; set; }
         //public int OrgainzationId { get; internal set; }
         //[NotMapped]

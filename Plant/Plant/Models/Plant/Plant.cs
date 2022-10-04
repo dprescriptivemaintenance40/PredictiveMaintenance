@@ -7,6 +7,9 @@ namespace Plant.Models
 {
     public class Plants
     {
+        //internal object mst_NetworkAsset;
+        [Key]
+
         public int PlantId { get; set; }
         public int OrganizationId { get; set; }
         public string PlantName { get; set; }

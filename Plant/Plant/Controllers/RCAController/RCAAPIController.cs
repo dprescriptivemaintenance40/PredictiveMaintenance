@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Plant.DAL;
+using Plant.Models;
 using Plant.Models.RCA;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,8 +29,85 @@ namespace Plant.Controllers
         // GET api/<RCAController>/5
         [HttpGet("{id}")]
         public string Get(int id)
-        {
+        { 
             return "value";
+        }
+
+        [HttpGet]
+        [Route("GetMasterPlantData")]
+        public async Task<ActionResult<Plants>> GetMasterPlantData()
+        {
+            try
+            {
+                List<Plants> plants = await _Context.Plants
+                                                    .OrderBy(a => a.PlantId)
+                                                    .ToListAsync();
+                return Ok(plants);
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetNetworkMasterList")]
+        public async Task<ActionResult<mst_NetworkAsset>> GetNetworkMasterList()
+        {
+            try
+            {
+               List<mst_NetworkAsset> NetworkassetsList = await _Context.mst_NetworkAsset
+                                                                        .OrderBy(a => a.NetworkAssetId)
+                                                                        .ToListAsync();
+                return Ok(NetworkassetsList);
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetPlantNetworkList")]
+        public async Task<ActionResult<IEnumerable<PlantNetwork>>> GetPlantNetworkList()
+        {
+            try
+            {
+                return await _Context.PlantNetwork.Include(a => a.equipment)
+                                                   .ThenInclude(a => a.equipmentWithCalculations)
+                                                   .Include(a => a.equipment)
+                                                   .ThenInclude(a => a.equipmentWithoutCalculations)
+                                                   .Include(a => a.edge).OrderBy(a => a.PlantId)
+                                                   .ToListAsync();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetPlantNetworkListbyId")]
+        public async Task<ActionResult<PlantNetwork>> GetPlantNetworkListbyId(int id)
+        {
+            try
+            {
+                var plantModel = await _Context.PlantNetwork.Where(a => a.PlantId == id)
+                                                             .Include(a => a.equipment)
+                                                             .ThenInclude(a => a.equipmentWithCalculations)
+                                                             .Include(a => a.equipment)
+                                                             .ThenInclude(a => a.equipmentWithoutCalculations)
+                                                             .Include(a => a.edge)
+                                                             .FirstOrDefaultAsync();
+                return plantModel;
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
         }
 
         // POST api/<RCAController>
@@ -42,6 +121,7 @@ namespace Plant.Controllers
                 plantsNetwork.PlantName = plant.PlantName;
                 plantsNetwork.Location = plant.Location;
                 plantsNetwork.Unavailability = plant.Unavailability;
+                plantsNetwork.Availability = plant.Availability;
                 var equis = plant.equipment;
                 _Context.PlantNetwork.Add(plantsNetwork);
                 await _Context.SaveChangesAsync();
@@ -50,6 +130,7 @@ namespace Plant.Controllers
                     Equipments equipment = new Equipments();
                     equipment.PlantId = plantsNetwork.PlantId;
                     equipment.EquipmentNode = equi.EquipmentNode;
+                    equipment.EquipmentName = equi.EquipmentName;
                     var plantequiwithoutcal = equi.equipmentWithoutCalculations;
                     var plantequiwithcal = equi.equipmentWithCalculations;
                     _Context.Equipment.Add(equipment);
@@ -60,7 +141,6 @@ namespace Plant.Controllers
                         {
                             EquipmentWithCalculations equiwithcal = new EquipmentWithCalculations();
                             equiwithcal.EquipmentId = equipment.EquipmentId;
-                            equiwithcal.EquipmentName = plantequi.EquipmentName;
                             equiwithcal.Logic = plantequi.Logic;
                             equiwithcal.EquimentsConnected = plantequi.EquimentsConnected;
                             equiwithcal.Lambda = plantequi.Lambda;
@@ -78,9 +158,9 @@ namespace Plant.Controllers
                         {
                             EquipmentWithoutCalculations equiwithoutcal = new EquipmentWithoutCalculations();
                             equiwithoutcal.EquipmentId = equipment.EquipmentId;
-                            equiwithoutcal.EquipmentName = plantequicalc.EquipmentName;
                             equiwithoutcal.Lambda = plantequicalc.Lambda;
                             equiwithoutcal.MDT = plantequicalc.MDT;
+                            equiwithoutcal.EquipmentImage = plantequicalc.EquipmentImage;
                             _Context.EquipmentWithoutCalculations.Add(equiwithoutcal);
                             await _Context.SaveChangesAsync();
                         }
@@ -118,9 +198,33 @@ namespace Plant.Controllers
         }
 
         // DELETE api/<RCAController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("DeletePlantModel")]
+        public async Task<IActionResult> DeletePlantModel(int id)
         {
+            try
+            {
+
+                var PlantModel = await _Context.PlantNetwork.Where(a => a.PlantId == id)
+                                                             .Include(a => a.equipment)
+                                                             .ThenInclude(a => a.equipmentWithCalculations)
+                                                             .Include(a => a.equipment)
+                                                             .ThenInclude(a => a.equipmentWithoutCalculations)
+                                                             .Include(a => a.edge)
+                                                             .FirstOrDefaultAsync();
+                if (PlantModel == null)
+                {
+                    return NotFound();
+                }
+                _Context.PlantNetwork.Remove(PlantModel);
+                await _Context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
         }
     }
 }

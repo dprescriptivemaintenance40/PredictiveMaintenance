@@ -4,6 +4,7 @@ export class RCM
         // public OrganizationId : number = 0;
         public TagNumber : string = "";
         // public EquipmentId : number = 0;
+        public AssetName:string = "";
         public MachineType : string = "";
         public EquipmentType : string = "";
         public Application:string = "";

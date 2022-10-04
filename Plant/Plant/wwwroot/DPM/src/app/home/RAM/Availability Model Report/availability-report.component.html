@@ -1,0 +1,53 @@
+<div class="card dpm-card w-100 p-3">
+    <h3>Report on Availability Models</h3><br>
+    <h4>Process Plant Description:</h4><br>
+    <h4>Network Diagram:</h4><br>
+    <p-accordion>
+        <p-accordionTab header="Network Diagram Data Table">
+             <p-table class="container" [value]="NetworkDataTable" responsiveLayout="scroll">
+                <ng-template pTemplate="colgroup">
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Equipments</th>
+                        <th>Failure rate PMH, Lamda, OREDA</th>
+                        <th>MDT(mean down time) hours</th>
+                        <th>Equipments Connected</th>
+                        <th>Logic</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-equi let-rowIndex="rowIndex">
+                    <tr>
+                        <td>{{equi.EquipmentName}}</td>
+                        <td>{{equi.Lambda}}</td>
+                        <td>{{equi.MDT}}</td>
+                        <td>{{equi.EquimentsConnected}}</td>
+                        <td>{{equi.Logic}}</td>
+                    </tr>
+                </ng-template>
+            </p-table> 
+        </p-accordionTab>
+    </p-accordion>
+    <br>
+    <h4>Conclusion:</h4>
+    <div class="row mb-4">
+        <div class="col-md-3 pl-0">
+          <label style="margin-left: 10px" class="d-block">
+            System Availability Expected:
+            <input type="text" [(ngModel)]="PlantDataList.Availability" [readOnly]="true" class="form-control" />
+          </label>
+        </div>
+        <div class="col-md-3">
+            <label style="margin-left: 10px" class="d-block">
+                System MTBF:
+                <input type="text" [(ngModel)]="MTBF" [readOnly]="true" class="form-control" />
+              </label>
+        </div>
+        <div class="col-md-3">
+            <label style="margin-left: 10px" class="d-block">
+                System MDT:
+                <input type="text" [(ngModel)]="MDT" [readOnly]="true" class="form-control" />
+              </label>
+        </div>
+      </div>
+</div>
