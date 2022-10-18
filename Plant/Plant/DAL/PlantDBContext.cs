@@ -507,7 +507,7 @@ namespace Plant.DAL
                            AssetName = "Panel",
                            AssetLambda = 10,
                            AssetMdt = 24,
-                           AssetImage = "https://cdn-icons.flaticon.com/png/512/4115/premium/4115020.png?token=exp=1660819966~hmac=8892742671a5c444d1e50d54972375d9",
+                           AssetImage = "https://cdn-icons-png.flaticon.com/512/861/861185.png",
                            TagNumber = "11-K-01E"
                        },
                         new mst_NetworkAsset

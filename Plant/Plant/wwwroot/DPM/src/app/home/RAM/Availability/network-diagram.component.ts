@@ -338,6 +338,7 @@ export class NetworkDiagram implements OnInit {
         this.network.redraw()
         this.Enterdata = false;
         this.CalculateData = false;
+        this.CalculateUnavailability = false;
         this.addData = false;
     }
 
@@ -364,8 +365,8 @@ export class NetworkDiagram implements OnInit {
         }
         if (this.CalculateUnavailability == true) {
             this.CalculatedMTBF = Number(1000000 / this.CalculatedLambda / 8760);
-            this.plantClass.Unavailability = this.CalculatedMTBF / (this.CalculatedMTBF + this.CalculatedMTBF);
-            this.plantClass.Availability = Number((this.plantClass.Unavailability / 100) * 100)
+            this.plantClass.Unavailability = Number((this.CalculatedMTBF / (this.CalculatedMTBF + this.CalculatedMDT)).toFixed(2));
+            this.plantClass.Availability = Number(parseFloat(String( this.plantClass.Unavailability * 100)).toFixed(2));
         }
     }
 
