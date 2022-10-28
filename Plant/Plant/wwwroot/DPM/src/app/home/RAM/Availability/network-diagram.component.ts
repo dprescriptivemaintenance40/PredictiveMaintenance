@@ -75,9 +75,9 @@ export class NetworkDiagram implements OnInit {
         this.loadVisTree(treeData);     // RENDER STANDARD NODES WITH TEXT LABEL
     }
 
-    save() {
-        console.log(this.network);
-    }
+    // save() {
+    //     console.log(this.network);
+    // }
 
     public getMasterPlantData() {
         var url: string = this.NetworkContantAPI.PlantMasterData;
@@ -242,18 +242,6 @@ export class NetworkDiagram implements OnInit {
         return treeData;
     }
 
-    public EnterNodeData() {
-        this.Enterdata = true;
-    }
-
-    public CalculateNodeData() {
-        this.CalculateData = true;
-    }
-
-    public DisplayUnavailability() {
-        this.CalculateUnavailability = true;
-    }
-
     public SaveNodeData() {
         let obj = {};
         obj['node'] = this.EquipmentNode;
@@ -366,7 +354,7 @@ export class NetworkDiagram implements OnInit {
         if (this.CalculateUnavailability == true) {
             this.CalculatedMTBF = Number(1000000 / this.CalculatedLambda / 8760);
             this.plantClass.Unavailability = Number((this.CalculatedMTBF / (this.CalculatedMTBF + this.CalculatedMDT)).toFixed(2));
-            this.plantClass.Availability = Number(parseFloat(String( this.plantClass.Unavailability * 100)).toFixed(2));
+            this.plantClass.Availability = Number(parseFloat(String(this.plantClass.Unavailability * 100)).toFixed(2));
         }
     }
 
@@ -448,7 +436,7 @@ export class NetworkDiagram implements OnInit {
                 res => {
                     console.log(res);
                     this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Updated PlantNetwork' });
-                    // this.router.navigateByUrl('/Home/RCMList');
+                    this.router.navigateByUrl('/Home/AvailabilityList');
                 },
                 err => {
                     console.log(err.Message);

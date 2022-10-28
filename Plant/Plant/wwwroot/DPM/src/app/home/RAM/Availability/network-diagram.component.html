@@ -77,11 +77,11 @@
     <p-dialog header="Add Node Data" [(visible)]="addData" [modal]="true"
         [style]="{'max-height':'900px','width':'600px','overflow':'auto'}">
         <button type="button" class="btn btn-primary" pTooltip="Enter Values" tooltipPosition="top"><i
-                class="pi pi-pencil" (click)="EnterNodeData()">&nbsp; Enter Data</i></button>
+                class="pi pi-pencil" (click)="Enterdata=true">&nbsp; Enter Data</i></button>
         &nbsp;&nbsp; <button type="button" class="btn btn-primary" pTooltip="Calculate Values" tooltipPosition="top"><i
-                class="pi pi-pencil" (click)="CalculateNodeData()">&nbsp; Calculate Data</i></button>
+                class="pi pi-pencil" (click)="CalculateData=true">&nbsp; Calculate Data</i></button>
         &nbsp;&nbsp; <button type="button" class="btn btn-primary" pTooltip="Calculate Unavailability"
-            tooltipPosition="top"><i class="pi pi-pencil" (click)="DisplayUnavailability()">&nbsp; Calculate
+            tooltipPosition="top"><i class="pi pi-pencil" (click)="CalculateUnavailability=true">&nbsp; Calculate
                 Unavailability</i></button>
 
         <!-- <ng-template pTemplate="footer">

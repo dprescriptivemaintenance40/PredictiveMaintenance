@@ -15,6 +15,7 @@ namespace Plant.Models
         public string PlantName { get; set; }
         public string Location { get; set; }
         public List<mst_Asset> mst_Assets { get; set; }
+        public List<Asset_Equipment> Asset_Equipments { get; set; }
     }
 
 }

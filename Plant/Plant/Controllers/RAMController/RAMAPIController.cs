@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Plant.DAL;
 using Plant.Models;
-using Plant.Models.RCA;
+using Plant.Models.Plant;
+using Plant.Models.RAM;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,11 +11,11 @@ namespace Plant.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RCAAPIController : ControllerBase
+    public class RAMAPIController : ControllerBase
     {
         private readonly PlantDBContext _Context;
 
-        public RCAAPIController(PlantDBContext plantDBContext)
+        public RAMAPIController(PlantDBContext plantDBContext)
         {
             _Context = plantDBContext;
 
@@ -57,10 +58,18 @@ namespace Plant.Controllers
         {
             try
             {
-               List<mst_NetworkAsset> NetworkassetsList = await _Context.mst_NetworkAsset
-                                                                        .OrderBy(a => a.NetworkAssetId)
-                                                                        .ToListAsync();
-                return Ok(NetworkassetsList);
+                var result = (from asset in _Context.Asset_Equipments
+                              join networkData in _Context.mst_NetworkAsset
+                             on asset.Id equals networkData.Id
+                             select new
+                             {
+                                 asset.AssetName,
+                                 asset.AssetImage,
+                                 asset.TagNumber,
+                                 networkData.AssetLambda,
+                                 networkData.AssetMdt
+                             });
+                return Ok(result);
             }
             catch (Exception exe)
             {

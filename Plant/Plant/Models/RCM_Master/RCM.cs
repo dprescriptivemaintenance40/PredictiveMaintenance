@@ -13,7 +13,7 @@ namespace Plant.Models.RCM_Master
         //public int EquipmentId { get; set; }
         public string MachineType { get; set; }
         public string EquipmentType { get; set; }
-        public string Application { get; set; }
+        public string Application { get; set; } 
         public string SubUnit { get; set; }
         public string Function { get; set; }
         public string FunctionFailure { get; set; }

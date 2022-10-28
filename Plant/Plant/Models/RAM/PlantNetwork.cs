@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace Plant.Models.RCA
+namespace Plant.Models.RAM
 {
     public class PlantNetwork
     {

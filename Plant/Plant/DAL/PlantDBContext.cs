@@ -6,7 +6,7 @@ using Plant.Models.PredictiveMaintenance;
 using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.PredictiveChart;
-using Plant.Models.RCA;
+using Plant.Models.RAM;
 //using Plant.Models.RCM;
 using Plant.Models.RCM_Master;
 
@@ -117,8 +117,6 @@ namespace Plant.DAL
                .WithMany(r => r.mst_Assets)
                .HasForeignKey(r => r.PlantId);
 
-            modelBuilder.Entity<Asset_Equipment>().HasKey(c => c.Id);
-
             modelBuilder.Entity<Asset_FailureMode>()
                .HasOne(r => r.equipments)
                .WithMany(r => r.asset_failureModes)
@@ -204,9 +202,16 @@ namespace Plant.DAL
                .WithMany(r => r.reciprocatingPredictedTable)
                .HasForeignKey(r => r.RPId);
 
+            modelBuilder.Entity<Asset_Equipment>().ToTable("Asset_Equipments");
+            modelBuilder.Entity<Asset_Equipment>().HasKey(c => c.Id);
+            modelBuilder.Entity<Asset_Equipment>()
+               .HasOne(r => r.Plants)
+               .WithMany(r => r.Asset_Equipments)
+               .HasForeignKey(r => r.PlantId);
 
             modelBuilder.Entity<mst_NetworkAsset>().ToTable("mst_NetworkAsset");
             modelBuilder.Entity<mst_NetworkAsset>().HasKey(c => c.NetworkAssetId);
+
 
             modelBuilder.Entity<Models.RCM_Master.mst_application>().ToTable("fmeamst_application");
             modelBuilder.Entity<Models.RCM_Master.mst_application>().HasKey(c => c.ApplicationId);
@@ -458,67 +463,103 @@ namespace Plant.DAL
                   }
                 );
 
+            modelBuilder.Entity<Asset_Equipment>()
+            .HasData(
+              new Asset_Equipment
+              {
+                  Id = 1,
+                  PlantId = 1,
+                  AssetName = "PSU",
+                  AssetImage = "https://cdn-icons-png.flaticon.com/512/1368/1368352.png",
+                  TagNumber = "11-K-01A"
+              }, new Asset_Equipment
+              {
+                  Id = 2,
+                  PlantId = 1,
+                  AssetName = "Standby",
+                  AssetImage = "https://cdn-icons-png.flaticon.com/512/0/396.png",
+                  TagNumber = "11-K-01B"
+              },
+                   new Asset_Equipment
+                   {
+                       Id = 3,
+                       PlantId = 1,
+                       AssetName = "Motor",
+                       AssetImage = "https://cdn-icons-png.flaticon.com/512/7016/7016867.png",
+                       TagNumber = "11-K-01C"
+                   },
+                     new Asset_Equipment
+                     {
+                         Id = 4,
+                         PlantId = 1,
+                         AssetName = "Detector",
+                         AssetImage = "https://cdn-icons-png.flaticon.com/512/2784/2784797.png",
+                         TagNumber = "11-K-01D"
+                     },
+                       new Asset_Equipment
+                       {
+                           Id = 5,
+                           PlantId = 1,
+                           AssetName = "Panel",
+                           AssetImage = "https://cdn-icons-png.flaticon.com/512/861/861185.png",
+                           TagNumber = "11-K-01E"
+                       },
+                        new Asset_Equipment
+                        {
+                            Id = 6,
+                            PlantId = 1,
+                            AssetName = "Pump",
+                            AssetImage = "https://cdn-icons-png.flaticon.com/512/2983/2983881.png",
+                            TagNumber = "11-K-01F"
+                        }
+             );
+
+
+
+
             modelBuilder.Entity<mst_NetworkAsset>()
              .HasData(
                new mst_NetworkAsset
                {
                    NetworkAssetId = 1,
-                   PlantId = 1,
-                   AssetName = "PSU",
+                   Id = 1,
                    AssetLambda = 100,
-                   AssetMdt = 24,
-                   AssetImage = "https://cdn-icons-png.flaticon.com/512/1368/1368352.png",
-                   TagNumber = "11-K-01A"
+                   AssetMdt = 24
                },
                  new mst_NetworkAsset
                  {
                      NetworkAssetId = 2,
-                     PlantId = 1,
-                     AssetName = "Standby",
+                     Id = 2,
                      AssetLambda = 500,
-                     AssetMdt = 168,
-                     AssetImage = "https://cdn-icons-png.flaticon.com/512/0/396.png",
-                     TagNumber = "11-K-01B"
+                     AssetMdt = 168
                  },
                    new mst_NetworkAsset
                    {
                        NetworkAssetId = 3,
-                       PlantId = 1,
-                       AssetName = "Motor",
+                       Id = 3,
                        AssetLambda = 50,
-                       AssetMdt = 168,
-                       AssetImage = "https://cdn-icons-png.flaticon.com/512/7016/7016867.png",
-                       TagNumber = "11-K-01C"
+                       AssetMdt = 168
                    },
                      new mst_NetworkAsset
                      {
                          NetworkAssetId = 4,
-                         PlantId = 1,
-                         AssetName = "Detector",
+                         Id = 4,
                          AssetLambda = 5,
-                         AssetMdt = 168,
-                         AssetImage = "https://cdn-icons-png.flaticon.com/512/2784/2784797.png",
-                         TagNumber = "11-K-01D"
+                         AssetMdt = 168
                      },
                        new mst_NetworkAsset
                        {
                            NetworkAssetId = 5,
-                           PlantId = 1,
-                           AssetName = "Panel",
+                           Id = 5,
                            AssetLambda = 10,
                            AssetMdt = 24,
-                           AssetImage = "https://cdn-icons-png.flaticon.com/512/861/861185.png",
-                           TagNumber = "11-K-01E"
                        },
                         new mst_NetworkAsset
                         {
                             NetworkAssetId = 6,
-                            PlantId = 1,
-                            AssetName = "Pump",
+                            Id = 6,
                             AssetLambda = 60,
-                            AssetMdt = 24,
-                            AssetImage = "https://cdn-icons-png.flaticon.com/512/2983/2983881.png",
-                            TagNumber = "11-K-01F"
+                            AssetMdt = 24
                         }
              );
 

@@ -47,12 +47,12 @@ export class RCMContantAPI {
     //#endregion
 
     //Network Diagram
-    public PlantNetwork:string = '/RCAAPI/SavePlantNetwork';
-    public GetPlantNetwork:string = '/RCAAPI/GetPlantNetworkList';
-    public GetPlantNetworkbyId = '/RCAAPI/GetPlantNetworkListbyId';
-    public NetworkMasterData = '/RCAAPI/GetNetworkMasterList';
-    public PlantMasterData = '/RCAAPI/GetMasterPlantData';
-    public PlantListSingleDelete: string = '/RCAAPI/DeletePlantModel';
+    public PlantNetwork:string = '/RAMAPI/SavePlantNetwork';
+    public GetPlantNetwork:string = '/RAMAPI/GetPlantNetworkList';
+    public GetPlantNetworkbyId = '/RAMAPI/GetPlantNetworkListbyId';
+    public NetworkMasterData = '/RAMAPI/GetNetworkMasterList';
+    public PlantMasterData = '/RAMAPI/GetMasterPlantData';
+    public PlantListSingleDelete: string = '/RAMAPI/DeletePlantModel';
 
     //#region RCA API
 
