@@ -1,3 +1,4 @@
+ <!-- table to show all the assets data -->
 <div class="card dpm-card w-100 p-3">
     <p-accordion>
         <p-accordionTab header="Equipment Data Table">
@@ -29,13 +30,15 @@
     </p-accordion>
 </div>
 <br>
+ <!-- Inputs fields -->
 <div class="card dpm-card w-100 p-3">
     <h4>Create Network Diagram</h4>
     <div class="row mb-4">
         <div class="col-md-3 pl-0">
             <label style="margin-left: 10px" class="d-block">
                 Enter Plant Name:
-                <select class="form-select" (change)= "SetPlantLocation()" [(ngModel)]="plantClass.PlantName" class="form-control">
+                <select class="form-select" (change)="SetPlantLocation()" [(ngModel)]="plantClass.PlantName"
+                    class="form-control">
                     <option value="">Choose..</option>
                     <option *ngFor="let PN of MasterPlantName" [ngValue]="PN">{{PN}}</option>
                 </select>
@@ -60,13 +63,15 @@
             </label>
         </div>
     </div>
+
+     <!-- Save Button -->
     <div>
         <button style="float: right;" (click)="SaveNetwork()" label="Save" type="button" class="btn btn-primary"
             pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save"> Save</i></button>
     </div>
 
+    <!-- Vis.js Network Diagram -->
     <div id="mynetwork" #siteConfigNetwork></div>
-
     <style type="text/css">
         #mynetwork {
             width: 1180px;
@@ -74,6 +79,8 @@
             border: 1px solid lightgray;
         }
     </style>
+
+    <!-- Modal on Node Click -->
     <p-dialog header="Add Node Data" [(visible)]="addData" [modal]="true"
         [style]="{'max-height':'900px','width':'600px','overflow':'auto'}">
         <button type="button" class="btn btn-primary" pTooltip="Enter Values" tooltipPosition="top"><i
@@ -83,12 +90,9 @@
         &nbsp;&nbsp; <button type="button" class="btn btn-primary" pTooltip="Calculate Unavailability"
             tooltipPosition="top"><i class="pi pi-pencil" (click)="CalculateUnavailability=true">&nbsp; Calculate
                 Unavailability</i></button>
-
-        <!-- <ng-template pTemplate="footer">
-      <p-button icon="pi pi-check" (click)="ForecastData=false" label="Ok" styleClass="p-button-text"></p-button>
-    </ng-template> -->
     </p-dialog>
 
+    <!-- Modal of Enter Data button -->
     <p-dialog header="Enter Data" [(visible)]="Enterdata" [modal]="true"
         [style]="{'max-height':'900px','width':'400px','overflow':'auto'}">
         Select Tag Number:- <select class="form-select" (change)="TagNumberSelect()" [(ngModel)]="SelectedTag"
@@ -101,20 +105,16 @@
         Enter MDT:- <input type='number' [(ngModel)]="MDT" class="form-control"><br>
         <button style="float: right;" (click)="SaveNodeData()" label="Save" type="button" class="btn btn-primary"
             pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save"> Save</i></button>
-        <!-- <ng-template pTemplate="footer">
-      <p-button icon="pi pi-check" (click)="ForecastData=false" label="Ok" styleClass="p-button-text"></p-button>
-    </ng-template> -->
     </p-dialog>
 
+    <!-- Modal of Calculate Data button -->
     <p-dialog header="Calculate Data" [(visible)]="CalculateData" [modal]="true"
         [style]="{'max-height':'900px','width':'400px','overflow':'auto'}">
-        <!-- <h2>Predictive Maintenance</h2> -->
         Enter Equipment Name:-
         <input type="text" class="form-control" [(ngModel)]="CalculatedEquipmentName" name="" id=""><br>
         Chose Equipments Connected:-
         <p-multiSelect [options]="EquipmentDataList" defaultLabel="Select a Equipment"
             [(ngModel)]="selectedEquipmentsName" optionLabel="equipmentName"></p-multiSelect>
-        <!-- Choose Equipment Connected:- <input type="text" class="form-control" name="" id=""><br> -->
         Choose Logic:- <select class="form-select" (change)="CalculatedValues()" [(ngModel)]="Logic"
             class="form-control">
             <option value="">Choose..</option>
@@ -128,11 +128,9 @@
         <button style="float: right;" (click)="SaveCalculatedNodeData()" label="Save" type="button"
             class="btn btn-primary" pTooltip="Save Calculated Values" tooltipPosition="top"><i class="pi pi-save">
                 Save</i></button>
-        <!-- <ng-template pTemplate="footer">
-      <p-button icon="pi pi-check" (click)="ForecastData=false" label="Ok" styleClass="p-button-text"></p-button>
-    </ng-template> -->
     </p-dialog>
 
+    <!-- Modal of Calculate Unavailability button -->
     <p-dialog header="Calculate Unavailability" [(visible)]="CalculateUnavailability" [modal]="true"
         [style]="{'max-height':'900px','width':'400px','overflow':'auto'}">
         Enter Equipment Name:-

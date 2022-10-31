@@ -9,9 +9,9 @@ namespace Plant.Models.RAM
     {
         [Key]
         public int NetworkAssetId { get; set; }
-        public int Id { get; set; }
+        public int? AssetId { get; set; }
         public float AssetLambda { get; set; }
         public float AssetMdt { get; set; }
-        public Asset_Equipment AssetEquipments;
+        public Asset_Equipment AssetEquipments { get; set; }
     }
 }

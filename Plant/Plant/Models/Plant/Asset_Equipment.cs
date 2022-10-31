@@ -16,7 +16,7 @@ namespace Plant.Models.Plant
         public string AssetImage { get; set; }
         public List<Asset_FailureMode> asset_failureModes { get; set; }
         public List<SIF> sif { get; set; }
-        public mst_NetworkAsset mst_NetworkAssets;
+        public mst_NetworkAsset mst_NetworkAssets { get; set; }
         public Plants Plants;
     }
 }

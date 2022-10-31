@@ -25,6 +25,7 @@ export class AvailabilityListComponent implements OnInit {
         this.getNetworkkDiagramList();
     }
 
+    //gets the list of saved network diagram
     public getNetworkkDiagramList() {
         var url: string = this.RCMConstantAPI.GetPlantNetwork
         this.PlantBLService.getWithoutParameters(url)
@@ -37,22 +38,26 @@ export class AvailabilityListComponent implements OnInit {
             )
     }
 
+    //save plantobj in local storage for report
     public AvailabilityModelReport(p) {
         let PlantId = p.PlantId;
         localStorage.setItem('PlantObjId', PlantId);
         this.router.navigateByUrl('/Home/AvailabilityReport');
     }
 
+    //save plantobj in local storage to display the diagram
     public UpdateAvailabilityModel(p) {
         let PlantId = p.PlantId;
         localStorage.setItem('PlantObjId', PlantId);
         this.router.navigateByUrl('/Home/UpdateAvailability');
     }
 
+    //here we get plantid
     public DeletePlantRecords(p) {
         this.DeletePlantId = p.PlantId;
     }
 
+    //here we delete the record
     SoftDeletePantRecords() {
         var url: string = this.RCMConstantAPI.PlantListSingleDelete
         const params = new HttpParams()

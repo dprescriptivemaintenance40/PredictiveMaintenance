@@ -60,7 +60,7 @@ namespace Plant.Controllers
             {
                 var result = (from asset in _Context.Asset_Equipments
                               join networkData in _Context.mst_NetworkAsset
-                             on asset.Id equals networkData.Id
+                             on asset.Id equals networkData.AssetId
                              select new
                              {
                                  asset.AssetName,

@@ -24,6 +24,7 @@ export class AvailabilityReportComponent implements OnInit {
         this.GetPlantData();
     }
 
+    //here we get the plant id from local storage and make an api call to get plant record
     public GetPlantData() {
         let PlantDataId = localStorage.getItem('PlantObjId');
         var url: string = this.PlantConstantAPI.GetPlantNetworkbyId;
@@ -37,6 +38,7 @@ export class AvailabilityReportComponent implements OnInit {
             });
     }
 
+    //here we set the plant record in a table.
     public SetPlantData() {
         this.NetworkDataTable = [];
         this.PlantDataList.equipment.forEach(equi => {

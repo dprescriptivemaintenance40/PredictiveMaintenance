@@ -34,6 +34,7 @@ export class UpdateAvailabilityComponent implements OnInit {
 
     }
 
+     //here we get the plant id from local storage and make an api call to get plant record
     public GetPlantData() {
         let PlantDataId = localStorage.getItem('PlantObjId');
         var url: string = this.PlantConstantAPI.GetPlantNetworkbyId;
@@ -79,6 +80,7 @@ export class UpdateAvailabilityComponent implements OnInit {
         });
     }
 
+    //dispays nodes and edges on a screen
     loadVisTree(treedata) {
         var options = {
             interaction: {
@@ -100,6 +102,7 @@ export class UpdateAvailabilityComponent implements OnInit {
         });
     }
 
+    //creates a list of all nodes and edges
     getTreeData() {
         var nodes = [];
         var edges = [];
@@ -144,29 +147,10 @@ export class UpdateAvailabilityComponent implements OnInit {
             };
             edges.push(obj);
         });
-        // var nodes =[
-        //     {id: 1, label: 'Node 1', title: 'I am node 1!'},
-        //     {id: 2, label: 'Node 2', title: 'I am node 2!'},
-        //     {id: 3, label: 'Node 3'},
-        //     {id: 4, label: 'Node 4'},
-        //     {id: 5, label: 'Node 5'}
-        // ];
-
-        // create an array with edges
-        // var edges = [
-        //     {from: 1, to: 3},
-        //     {from: 1, to: 2},
-        //     {from: 2, to: 4},
-        //     {from: 2, to: 5}
-        // ];
         var treeData = {
             nodes: nodes,
             edges: edges
         };
         return treeData;
-    }
-
-    public EditNetwork() {
-
     }
 }

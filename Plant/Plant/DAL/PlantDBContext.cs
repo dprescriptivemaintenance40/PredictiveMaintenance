@@ -7,6 +7,7 @@ using Plant.Models.PredictiveMaintenance.DataExplanation;
 using Plant.Models.PredictiveMaintenance.ModelConfidence;
 using Plant.Models.PredictiveMaintenance.PredictiveChart;
 using Plant.Models.RAM;
+using System.Linq;
 //using Plant.Models.RCM;
 using Plant.Models.RCM_Master;
 
@@ -203,15 +204,18 @@ namespace Plant.DAL
                .HasForeignKey(r => r.RPId);
 
             modelBuilder.Entity<Asset_Equipment>().ToTable("Asset_Equipments");
-            modelBuilder.Entity<Asset_Equipment>().HasKey(c => c.Id);
+            modelBuilder.Entity<Asset_Equipment>().HasKey(r => r.Id);
             modelBuilder.Entity<Asset_Equipment>()
                .HasOne(r => r.Plants)
                .WithMany(r => r.Asset_Equipments)
                .HasForeignKey(r => r.PlantId);
 
             modelBuilder.Entity<mst_NetworkAsset>().ToTable("mst_NetworkAsset");
-            modelBuilder.Entity<mst_NetworkAsset>().HasKey(c => c.NetworkAssetId);
-
+            modelBuilder.Entity<mst_NetworkAsset>().HasKey(r => r.NetworkAssetId);
+            modelBuilder.Entity<mst_NetworkAsset>()
+              .HasOne(r => r.AssetEquipments)
+              .WithOne(r => r.mst_NetworkAssets)
+              .HasForeignKey<mst_NetworkAsset>(r => r.AssetId);
 
             modelBuilder.Entity<Models.RCM_Master.mst_application>().ToTable("fmeamst_application");
             modelBuilder.Entity<Models.RCM_Master.mst_application>().HasKey(c => c.ApplicationId);
@@ -522,42 +526,42 @@ namespace Plant.DAL
                new mst_NetworkAsset
                {
                    NetworkAssetId = 1,
-                   Id = 1,
+                   AssetId = 1,
                    AssetLambda = 100,
                    AssetMdt = 24
                },
                  new mst_NetworkAsset
                  {
                      NetworkAssetId = 2,
-                     Id = 2,
+                     AssetId = 2,
                      AssetLambda = 500,
                      AssetMdt = 168
                  },
                    new mst_NetworkAsset
                    {
                        NetworkAssetId = 3,
-                       Id = 3,
+                       AssetId = 3,
                        AssetLambda = 50,
                        AssetMdt = 168
                    },
                      new mst_NetworkAsset
                      {
                          NetworkAssetId = 4,
-                         Id = 4,
+                         AssetId = 4,
                          AssetLambda = 5,
                          AssetMdt = 168
                      },
                        new mst_NetworkAsset
                        {
                            NetworkAssetId = 5,
-                           Id = 5,
+                           AssetId = 5,
                            AssetLambda = 10,
                            AssetMdt = 24,
                        },
                         new mst_NetworkAsset
                         {
                             NetworkAssetId = 6,
-                            Id = 6,
+                            AssetId = 6,
                             AssetLambda = 60,
                             AssetMdt = 24
                         }

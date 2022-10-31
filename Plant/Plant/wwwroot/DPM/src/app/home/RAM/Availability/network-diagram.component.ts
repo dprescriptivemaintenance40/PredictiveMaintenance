@@ -75,10 +75,7 @@ export class NetworkDiagram implements OnInit {
         this.loadVisTree(treeData);     // RENDER STANDARD NODES WITH TEXT LABEL
     }
 
-    // save() {
-    //     console.log(this.network);
-    // }
-
+    //Here we are fetching the record from plant master data table
     public getMasterPlantData() {
         var url: string = this.NetworkContantAPI.PlantMasterData;
         this.NetworkBLService.getWithoutParameters(url)
@@ -99,6 +96,7 @@ export class NetworkDiagram implements OnInit {
         this.getNetworkMasterData();
     }
 
+    //Here we are fetching the record from network master data table
     public getNetworkMasterData() {
         var url: string = this.NetworkContantAPI.NetworkMasterData;
         this.NetworkBLService.getWithoutParameters(url)
@@ -113,6 +111,7 @@ export class NetworkDiagram implements OnInit {
             )
     }
 
+    //On Tag Number Selection displayed the value of the Assets.
     public TagNumberSelect() {
         this.EquipmentName = "";
         this.Lambda = null;
@@ -149,7 +148,7 @@ export class NetworkDiagram implements OnInit {
                 // "minVelocity": 0.75,
                 // "solver": "hierarchicalRepulsion"
             },
-            edges: {
+            edges: {                                    
                 smooth: { roundness: 0.0, }, shadow: true,
                 arrows: {
                     to: { enabled: true, scaleFactor: 1.56, type: "arrow" }
@@ -229,19 +228,19 @@ export class NetworkDiagram implements OnInit {
         });
     }
 
+     //By default first node in the screen
     getTreeData() {
         var nodes = [
             { id: 1, label: 'Node 1', title: 'I am node 1!' },
         ];
-
         // create an array with edges
-
         var treeData = {
             nodes: nodes
         };
         return treeData;
     }
 
+    //SaveNode Data in a List
     public SaveNodeData() {
         let obj = {};
         obj['node'] = this.EquipmentNode;
@@ -263,7 +262,7 @@ export class NetworkDiagram implements OnInit {
             if (element.id == this.EquipmentNode) {
                 element.label = this.EquipmentName;
                 // if (this.image != "") {
-                this.network.body.data.nodes.update({
+                this.network.body.data.nodes.update({ //To update node after adding/Calculating the data
                     id: element.id, label: this.EquipmentName, title: nodeHover, image: this.AssetImage,
                     shape: 'image',
                 });
@@ -280,6 +279,7 @@ export class NetworkDiagram implements OnInit {
         this.addData = false;
     }
 
+    //save calculated node data in a list
     public SaveCalculatedNodeData() {
         let obj = {};
         obj['node'] = this.EquipmentNode;
@@ -310,7 +310,7 @@ export class NetworkDiagram implements OnInit {
             if (element.id == this.EquipmentNode) {
                 element.label = this.CalculatedEquipmentName;
                 if (this.image != "") {
-                    this.network.body.data.nodes.update({
+                    this.network.body.data.nodes.update({ //To update node after adding/Calculating the data
                         id: element.id, label: this.CalculatedEquipmentName, title: nodeHover, image: this.image,
                         shape: 'image',
                     });
@@ -330,6 +330,7 @@ export class NetworkDiagram implements OnInit {
         this.addData = false;
     }
 
+//All Calculations code written here
     public CalculatedValues() {
         this.LambdaValueplus = 0;
         this.MdtValueplus = 0;
@@ -352,32 +353,13 @@ export class NetworkDiagram implements OnInit {
             this.CalculatedMDT = Number(this.lambdamdtvalue / this.LambdaValueplus);
         }
         if (this.CalculateUnavailability == true) {
-            this.CalculatedMTBF = Number(1000000 / this.CalculatedLambda / 8760);
-            this.plantClass.Unavailability = Number((this.CalculatedMTBF / (this.CalculatedMTBF + this.CalculatedMDT)).toFixed(2));
-            this.plantClass.Availability = Number(parseFloat(String(this.plantClass.Unavailability * 100)).toFixed(2));
+            this.CalculatedMTBF = Number(1000000 / this.CalculatedLambda / 8760); //System Calculated MTBF
+            this.plantClass.Unavailability = Number((this.CalculatedMTBF / (this.CalculatedMTBF + this.CalculatedMDT)).toFixed(2)); //System Calculated Unavailability 
+            this.plantClass.Availability = Number(parseFloat(String(this.plantClass.Unavailability * 100)).toFixed(2)); //System Calculated Availability 
         }
     }
 
-    // public SetEquipmentImage() {
-    //     this.EquipmentDataList.forEach(element => {
-    //         this.image = "";
-    //         if (element.equipmentName == 'PSU') {
-    //             this.image = "https://cdn-icons-png.flaticon.com/512/1368/1368352.png"
-    //         } else if (element.equipmentName == 'Standby') {
-    //             this.image = "https://cdn-icons-png.flaticon.com/512/0/396.png"
-    //         } else if (element.equipmentName == 'Detector') {
-    //             this.image = "https://cdn-icons-png.flaticon.com/512/2784/2784797.png"
-    //         } else if (element.equipmentName == 'Pump') {
-    //             this.image = "https://cdn-icons-png.flaticon.com/512/2983/2983881.png"
-    //         } else if (element.equipmentName == 'Motor') {
-    //             this.image = "https://cdn-icons-png.flaticon.com/512/7016/7016867.png"
-    //         } else if (element.equipmentName == 'Panel') {
-    //             this.image = "https://cdn-icons.flaticon.com/png/512/4115/premium/4115020.png?token=exp=1660819966~hmac=8892742671a5c444d1e50d54972375d9"
-    //         }
-    //     });
-
-    // }
-
+    //Code to Save Network Diagram
     public SaveNetwork() {
         this.NodeDataList = this.network.body.data.nodes;
         this.EdgeDataList = this.network.body.data.edges;
