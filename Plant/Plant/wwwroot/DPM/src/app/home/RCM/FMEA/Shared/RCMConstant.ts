@@ -11,6 +11,7 @@ export class RCMContantAPI {
     public AssetData:string = '/RCMAPI/GetAssetList';
     public ApplicationData:string = '/RCMAPI/GetApplicationList';
     public SubUnitData:string = '/RCMAPI/GetSubUnitList';
+    public AssetType:string = '/RCMAPI/GetAssetType';
     public FMEAConfiguration: string = '/PrescriptiveLookupMasterAPI';
 
 

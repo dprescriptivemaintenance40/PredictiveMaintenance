@@ -47,7 +47,7 @@
 
             <div class="col-md-3 d-flex flex-column">
                 <label style=" margin-right: 12px;">Type</label>
-                <select [(ngModel)]="EquipmentType" class="form-select" class="form-control">
+                <select [(ngModel)]="EquipmentType" (change)="SetTagNumber()" class="form-select" class="form-control">
                     <option value="">Choose..</option>
                     <option *ngFor="let ET of EquipmentTypeClass" [ngValue]="ET">{{ET}}</option>
                 </select>

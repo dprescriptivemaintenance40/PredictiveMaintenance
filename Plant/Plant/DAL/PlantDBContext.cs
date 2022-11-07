@@ -515,6 +515,30 @@ namespace Plant.DAL
                             AssetName = "Pump",
                             AssetImage = "https://cdn-icons-png.flaticon.com/512/2983/2983881.png",
                             TagNumber = "11-K-01F"
+                        },
+                        new Asset_Equipment
+                        {
+                            Id = 7,
+                            PlantId = 1,
+                            AssetName = "ScrewCompressor",
+                            AssetImage = "",
+                            TagNumber = "11-K-01G"
+                        },
+                        new Asset_Equipment
+                        {
+                            Id = 8,
+                            PlantId = 1,
+                            AssetName = "ReciprocatingCompressor",
+                            AssetImage = "",
+                            TagNumber = "11-K-01H"
+                        },
+                        new Asset_Equipment
+                        {
+                            Id = 9,
+                            PlantId = 1,
+                            AssetName = "CentrifugalCompressor",
+                            AssetImage = "",
+                            TagNumber = "11-K-01I"
                         }
              );
 

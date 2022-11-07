@@ -238,7 +238,8 @@ export class FMEAComponent implements OnInit {
 
   public AssetDataList: any = [];
   public ApplicationDataList: any = [];
-  public SubUnitDataList: any = []                                    ;
+  public SubUnitDataList: any = [];
+  public GetAssetData: any = [];;
   public AssetList: any = [];
   public AssetsEquipment: any = [];
   public AssetName: string = "";
@@ -246,7 +247,7 @@ export class FMEAComponent implements OnInit {
   public EquipmentTypeClass: any = [];
   public ApplicationClass: any = [];
   public SubUnitClass: any = [];
-   
+
   constructor(private messageService: MessageService,
     private httpObj: HttpClient,
     public formBuilder: FormBuilder,
@@ -406,6 +407,19 @@ export class FMEAComponent implements OnInit {
         this.SubUnitClass.push(subunit.SubUnitsName);
     });
   }
+  public SetTagNumber() {
+    var tagnumberurl = this.RCMConstantAPI.AssetType;
+    const params = new HttpParams()
+      .set('EquipmentType', this.EquipmentType)
+    this.httpObj.get('api/RCMAPI/GetAssetType', { params }).subscribe((res: any) => {
+      console.log(res);
+      this.TagNumber = res[0].TagNumber;
+    }, err => {
+      console.log(err.err);
+    }
+    )
+  }
+
   public uploadFile(event) {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf'

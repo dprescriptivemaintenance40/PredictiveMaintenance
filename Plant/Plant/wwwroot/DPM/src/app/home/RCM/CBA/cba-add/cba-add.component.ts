@@ -144,6 +144,7 @@ export class CBAComponent implements OnInit {
       })
   }
 
+  //here we make a call to client library 
   public getCBAClientCraftInJSon() {
     this.http.get<any>('dist/DPM/assets/Library/CBALibrary/cba_clientcrafts.json').subscribe(
       res => {
@@ -152,6 +153,7 @@ export class CBAComponent implements OnInit {
     )
   }
 
+    //here we make a call to contractor library 
   public getCBAContractorCraftInJSon() {
     this.http.get<any>('dist/DPM/assets/Library/CBALibrary/cba_contractorcrafts.json').subscribe(
       res => {
@@ -160,6 +162,7 @@ export class CBAComponent implements OnInit {
     )
   }
 
+  //here we make call to frequency library
   public getCBAFrequencyInJSon() {
     this.http.get<any>('dist/DPM/assets/Library/CBALibrary/cba_frequency.json').subscribe(
       res => {
@@ -179,6 +182,7 @@ export class CBAComponent implements OnInit {
     }
   }
 
+  //sheet is formed and displayed in UI.
   public cbasheet() {
     this.MSSIndex = 0;
     this.SelectBoxEnabled = false;
@@ -207,6 +211,7 @@ export class CBAComponent implements OnInit {
     this.SetCBAData();
   }
 
+  //contains list of columns to be dispayed in the sheet
   createColumns() {
     this.columns.push({ type: 'text', title: 'Failure Mode', wordWrap: true, width: "140" }),
       this.columns.push({ type: 'text', title: 'Maintenance Task', wordWrap: true, width: "140" }),
@@ -235,6 +240,7 @@ export class CBAComponent implements OnInit {
     this.columns.push({ type: 'numeric', title: 'Mei', width: "80" })
   }
 
+  //it is called on the change of values in a cell
   changed = async (instance, cell, x, y, value) => {
     this.SheetValue = this.jspreadsheet.getData();
     if (x == 3 || x == 4 || x == 5) {
@@ -388,6 +394,7 @@ export class CBAComponent implements OnInit {
     }
   }
 
+    //it is called on the selection of a cell
   selectionActive = async (instance, x1, y1, x2, y2, origin) => {
     if (x1 == 15 && this.SheetValue[y1][0] != "" && this.SheetValue[y1][15] == "") {
       this.Economicsy = y1;

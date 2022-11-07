@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Plant.DAL;
 using Plant.Models;
+using Plant.Models.Plant;
 using Plant.Models.RCM_Master;
 using System.Net.Http.Headers;
 
@@ -38,6 +39,29 @@ namespace Plant.Controllers.RCMController
 
                 return BadRequest(exe.Message);
             }
+        }
+
+
+        [HttpGet("{id}")]
+        [Route("GetAssetType")]
+        public IActionResult GetAssetType(string EquipmentType)
+        {
+            try
+            {
+                string ET = EquipmentType;
+                IQueryable<Asset_Equipment> asset_Equipment = _context.Asset_Equipments
+                                                              .Where(a => a.AssetName == ET)
+                                                              .OrderBy(a => a.Id)
+                                                              .AsQueryable();
+                var Data = asset_Equipment.ToList();
+                return Ok(Data);
+
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+
         }
 
         [HttpGet]
