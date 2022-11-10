@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Plant.DAL;
 using Plant.Models.Plant;
+using System.IO.Packaging;
 using System.Net;
 using System.Reflection;
 
@@ -90,6 +91,10 @@ namespace Plant.Controllers.PredictiveMaintenance
                             var errors = _Context.ScrewErrorTables.Where(r => r.SPId == stageData.Id).ToList();
                             list.Add(errors);
                             list.Add(equipment.AssetName);
+                            var process = _Context.ScrewProcessedTables.Where(r => r.SPId == stageData.Id).Count();
+                            list.Add(process);
+                            var prediction = _Context.ScrewPredictedTables.Where(r => r.SPId == stageData.Id).Count();
+                            list.Add(prediction);
                             batch.Add(list);
                         }    
                     }
@@ -107,6 +112,10 @@ namespace Plant.Controllers.PredictiveMaintenance
                             var errors = _Context.CentrifugalErrorTables.Where(r => r.CPId == stageData.Id).ToList();
                             list.Add(errors);
                             list.Add(equipment.AssetName);
+                            var process = _Context.CentrifugalProcessedTables.Where(r => r.CPId == stageData.Id).Count();
+                            list.Add(process);
+                            var prediction = _Context.CentrifugalPredictedTables.Where(r => r.CPId == stageData.Id).Count();
+                            list.Add(prediction);
                             batch.Add(list);
                         }
                     }
@@ -124,6 +133,10 @@ namespace Plant.Controllers.PredictiveMaintenance
                             var errors = _Context.ReciprocatingErrorTables.Where(r => r.RPId == stageData.Id).ToList();
                             list.Add(errors);
                             list.Add(equipment.AssetName);
+                            var process = _Context.ReciprocatingProcessedTables.Where(r => r.RPId == stageData.Id).Count();
+                            list.Add(process);
+                            var prediction = _Context.ReciprocatingPredictedTables.Where(r => r.RPId == stageData.Id).Count();
+                            list.Add(prediction);
                             batch.Add(list);
                         }
                     }
@@ -260,6 +273,25 @@ namespace Plant.Controllers.PredictiveMaintenance
                     {
                         file.CopyTo(fl);
                     }
+                    //string pkgLocation = @"E:\UploadTask.dtsx";
+
+                    //Package pkg;
+                    //DTSExecResult pkgResults;
+                    //Variables vars;
+
+                    //Application app = new Application();
+                    //pkg = app.LoadPackage(pkgLocation, null);
+
+                    //vars = pkg.Variables;
+                    //vars["FilePath"].Value = destinationFileName;
+                    //vars["AssetName"].Value = Asset;
+                    //vars["FMId"].Value = batch.Id;
+                    //pkgResults = pkg.Execute();
+
+                    //if (pkgResults == DTSExecResult.Success)
+                    //    Console.WriteLine("Package ran successfully");
+                    //else
+                    //    Console.WriteLine("Package failed");
                     return Ok(values);
                 }
                 else

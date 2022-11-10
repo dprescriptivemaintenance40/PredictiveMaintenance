@@ -13,6 +13,8 @@ export class CompressorStatusComponent implements OnInit {
   public batch: any = [];
   public stage: any;
   public clean:any;
+  public process: any;
+  public predict:any;
   public errors:any;
   public Data:any= [];
   public list:any= [];
@@ -37,11 +39,13 @@ export class CompressorStatusComponent implements OnInit {
         this.batch.push(record[0]);
         this.stage=record[1];
         this.clean=record[2];
+        this.process=record[5];
+        this.predict=record[6];
         this.Id=record[0].Id;
         this.Assetname=record[4];
         this.FMName=record[0].FailureModeName;
         this.errors=record[3];
-        this.Data.push(this.Id,this.Assetname,this.FMName,this.stage,this.clean,record[3]);
+        this.Data.push(this.Id,this.Assetname,this.FMName,this.stage,this.clean,record[3],this.process,this.predict);
         this.list.push(this.Data);
         this.Data=[];
       })

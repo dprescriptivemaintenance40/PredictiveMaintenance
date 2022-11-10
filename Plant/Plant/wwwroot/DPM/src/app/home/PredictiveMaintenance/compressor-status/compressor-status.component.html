@@ -38,13 +38,15 @@
                 <span><b> Cleaning Count </b> : {{l[4]}}</span><br>
                 <span><b> Errors </b> :</span><br>
                 <div *ngIf="noError">
-                    &nbsp;&nbsp;<span>No errors</span>
+                    &nbsp;&nbsp;<span>No errors</span><br>
                 </div>
                 <div *ngFor="let e of l[5];">
                     &nbsp;&nbsp;<span>Id : {{e.Id}}</span><br>
                     &nbsp;&nbsp;<span>Description : {{e.Description}}</span><br>
                     &nbsp;&nbsp;<span>Row Affected : {{e.rowAffected}}</span><br><br>
-                </div>
+                </div><br>
+                <span><b> ProcessedValues Count </b> : {{l[6]}}</span><br>
+                <span><b> PredictedValues Count </b> : {{l[7]}}</span><br>
             </div>
         </div>
     </div>
