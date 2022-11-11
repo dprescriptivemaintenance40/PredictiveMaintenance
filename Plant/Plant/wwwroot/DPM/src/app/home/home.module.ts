@@ -42,6 +42,7 @@ import {AccordionModule} from 'primeng/accordion';
 import { AvailabilityListComponent } from "./RAM/Availability Model List/availability-list.component";
 import { AvailabilityReportComponent } from "./RAM/Availability Model Report/availability-report.component";
 import { UpdateAvailabilityComponent } from "./RAM/Update Availability Model/update-availability.component";
+import { RadioButtonModule } from "primeng/radiobutton";
 
 
 @NgModule({
@@ -82,7 +83,7 @@ import { UpdateAvailabilityComponent } from "./RAM/Update Availability Model/upd
     imports: [    
         HomeRoutingModule,       
         SharedModule,FieldsetModule,TabViewModule,NgxCopyPasteModule,ProgressBarModule,DialogModule,
-        MultiSelectModule,AccordionModule
+        MultiSelectModule,AccordionModule,RadioButtonModule
     ],
     providers: [ExcelFormatService],
     bootstrap: [HomeComponent],exports:[HomeComponent]

@@ -21,6 +21,7 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
   providers: [MessageService],
 })
 export class FMEAComponent implements OnInit {
+  factorsradio: string = 'factors'
   displayModal: boolean;
   showModalDialog() {
     this.displayModal = true;
@@ -55,6 +56,8 @@ export class FMEAComponent implements OnInit {
   public prescriptiveSteps: boolean = false;
   public prescriptiveTree: boolean = false;
   public prescriptiveEffect: boolean = false;
+  public prescriptiverpn: boolean = false;
+  public prescriptivefactors: boolean = false;
   public effectFooter: boolean = true;
   public EquipmentType: string = "";
   public SubUnit: string = "";
@@ -125,6 +128,10 @@ export class FMEAComponent implements OnInit {
   public SafetyFactor: number = 0;
   public ProtectionFactor: number = 0;
   public FrequencyFactor: number = 0;
+  public SeverityFactor: number = 0;
+  public OccurenceFactor: number = 0;
+  public DetectionFactor: number = 0;
+  public RPN: number = 0;
   private FactoryToAddInFM: any = []
   public fullPath: string = ""
   public fileUpload: string = "";
@@ -768,7 +775,9 @@ export class FMEAComponent implements OnInit {
         )
       }
 
-      this.prescriptiveEffect = true
+      this.prescriptiveEffect = true;
+      this.prescriptivefactors = true;
+      this.prescriptiverpn = false;
       this.prescriptiveEffect1 = true
       this.prescriptiveFailureMode = false;
       this.activeIndex = 3
@@ -792,9 +801,10 @@ export class FMEAComponent implements OnInit {
   }
   async ADDFailuerEffect() {
     if (this.failuerModeLocalEffects !== ''
-      && this.failuerModeSystemEffects !== '' && this.DownTimeFactor !== 0
+      && this.failuerModeSystemEffects !== '' && (this.DownTimeFactor !== 0
       && this.ScrapeFactor !== 0 && this.SafetyFactor !== 0
-      && this.ProtectionFactor !== 0 && this.FrequencyFactor !== 0) {
+      && this.ProtectionFactor !== 0 && this.FrequencyFactor !== 0) || (this.SeverityFactor !== 0
+      && this.OccurenceFactor !== 0 && this.DetectionFactor !== 0)) {
       let LFNode = {
         label: "Local Effect",
         type: "person",
@@ -822,6 +832,10 @@ export class FMEAComponent implements OnInit {
       obj['SafetyFactor'] = this.SafetyFactor;
       obj['ProtectionFactor'] = this.ProtectionFactor;
       obj['FrequencyFactor'] = this.FrequencyFactor;
+      obj['SeverityFactor'] = this.SeverityFactor;
+      obj['OccurenceFactor'] = this.OccurenceFactor;
+      obj['DetectionFactor'] = this.DetectionFactor;
+      obj['RPN'] = this.SeverityFactor * this.OccurenceFactor * this.DetectionFactor;
       obj['AttachmentDBPath'] = this.dbPath;
       obj['AttachmentFullPath'] = this.fullPath;
       obj['Remark'] = this.Remark;
@@ -845,6 +859,10 @@ export class FMEAComponent implements OnInit {
       this.SafetyFactor = 0
       this.ProtectionFactor = 0
       this.FrequencyFactor = 0
+      this.SeverityFactor = 0;
+      this.OccurenceFactor = 0;
+      this.DetectionFactor = 0;
+      this.RPN = 0;
       this.FMCount += 1;
       if (this.FMCount <= this.FMChild.length - 1) {
         this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
@@ -854,16 +872,22 @@ export class FMEAComponent implements OnInit {
       this.Remark = "";
       this.fileUpload = "";
       this.FileId = "";
-    } else if (this.DownTimeFactor == 0) {
+    } else if (this.DownTimeFactor == 0 && this.factorsradio == 'factors') {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'DownTime Factor is Missing' });
-    } else if (this.ScrapeFactor == 0) {
+    } else if (this.ScrapeFactor == 0 && this.factorsradio == 'factors') {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Scrape Factor is Missing' });
-    } else if (this.SafetyFactor == 0) {
+    } else if (this.SafetyFactor == 0 && this.factorsradio == 'factors') {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Safety Factor is Missing' });
-    } else if (this.ProtectionFactor == 0) {
+    } else if (this.ProtectionFactor == 0 && this.factorsradio == 'factors') {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Protection Factor is Missing' });
-    } else if (this.FrequencyFactor == 0) {
+    } else if (this.FrequencyFactor == 0 && this.factorsradio == 'factors') {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Frequency Factor is Missing' });
+    } else if (this.SeverityFactor == 0 && this.factorsradio == 'rpn') {
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Severity Factor is Missing' });
+    } else if (this.OccurenceFactor == 0 && this.factorsradio == 'rpn') {
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Occurence Factor is Missing' });
+    } else if (this.DetectionFactor == 0 && this.factorsradio == 'rpn') {
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Detection Factor is Missing' });
     }
     const element = document.querySelector("#FactorstoLocal")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -879,6 +903,10 @@ export class FMEAComponent implements OnInit {
     obj['SafetyFactor'] = this.SafetyFactor
     obj['ProtectionFactor'] = this.ProtectionFactor
     obj['FrequencyFactor'] = this.FrequencyFactor
+    obj['SeverityFactor'] = this.SeverityFactor;
+    obj['OccurenceFactor'] = this.OccurenceFactor;
+    obj['DetectionFactor'] = this.DetectionFactor;
+    obj['RPN'] = this.SeverityFactor * this.OccurenceFactor * this.DetectionFactor;
     obj['AttachmentDBPath'] = this.dbPath
     obj['AttachmentFullPath'] = this.fullPath
     obj['Remark'] = this.Remark;
@@ -902,6 +930,10 @@ export class FMEAComponent implements OnInit {
     this.SafetyFactor = 0;
     this.ProtectionFactor = 0;
     this.FrequencyFactor = 0;
+    this.SeverityFactor = 0;
+    this.OccurenceFactor = 0;
+    this.DetectionFactor = 0;
+    this.RPN = 0;
     if (this.selectedModeData.label <= this.FMChild.length - 1) {
       this.FMLSEffectModeName = this.FMChild[this.selectedModeData.label].data.name;
     }
@@ -949,6 +981,10 @@ export class FMEAComponent implements OnInit {
       obj.SafetyFactor = this.FactoryToAddInFM[index].SafetyFactor
       obj.ProtectionFactor = this.FactoryToAddInFM[index].ProtectionFactor
       obj.FrequencyFactor = this.FactoryToAddInFM[index].FrequencyFactor
+      obj.SeverityFactor = this.FactoryToAddInFM[index].SeverityFactor
+      obj.OccurenceFactor = this.FactoryToAddInFM[index].OccurenceFactor
+      obj.DetectionFactor = this.FactoryToAddInFM[index].DetectionFactor
+      obj.RPN = this.FactoryToAddInFM[index].RPN
       obj.CriticalityFactor = this.treeResponseData.failureModes[index].CriticalityFactor;
       obj.Rating = this.treeResponseData.failureModes[index].Rating;
       obj.MaintainenancePractice = this.treeResponseData.failureModes[index].MaintainenancePractice;
@@ -1004,6 +1040,10 @@ export class FMEAComponent implements OnInit {
       obj.SafetyFactor = this.FactoryToAddInFM[index].SafetyFactor
       obj.ProtectionFactor = this.FactoryToAddInFM[index].ProtectionFactor
       obj.FrequencyFactor = this.FactoryToAddInFM[index].FrequencyFactor
+      obj.SeverityFactor = this.FactoryToAddInFM[index].SeverityFactor
+      obj.OccurenceFactor = this.FactoryToAddInFM[index].OccurenceFactor
+      obj.DetectionFactor = this.FactoryToAddInFM[index].DetectionFactor
+      obj.RPN = this.FactoryToAddInFM[index].RPN
       obj.AttachmentDBPath = this.FactoryToAddInFM[index].AttachmentDBPath
       obj.AttachmentFullPath = this.FactoryToAddInFM[index].AttachmentFullPath
       obj.Remark = this.FactoryToAddInFM[index].Remark
@@ -1127,6 +1167,23 @@ export class FMEAComponent implements OnInit {
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
+  fmeafactors() {
+    this.prescriptiverpn = false;
+    this.prescriptivefactors = true;
+    this.SeverityFactor = 0;
+    this.OccurenceFactor = 0;
+    this.DetectionFactor = 0;
+  }
+
+  fmearpn() {
+    this.prescriptiverpn = true;
+    this.prescriptivefactors = false;
+    this.DownTimeFactor = 0
+    this.ScrapeFactor = 0
+    this.SafetyFactor = 0
+    this.ProtectionFactor = 0
+    this.FrequencyFactor = 0
+  }
 
   FailuerEffectBack() {
     if (this.FMChild[0].children.length > 0) {
@@ -1142,8 +1199,14 @@ export class FMEAComponent implements OnInit {
         this.SafetyFactor = 0;
         this.ProtectionFactor = 0;
         this.FrequencyFactor = 0;
+        this.SeverityFactor = 0;
+        this.OccurenceFactor = 0;
+        this.DetectionFactor = 0;
+        this.RPN = 0;
         this.prescriptiveEffect = false;
         this.ADDFailureLSEDiasble = true;
+        this.prescriptivefactors = true;
+        this.prescriptiverpn = false;
         this.selectedModeData = "";
         this.fullPath = "";
         this.Remark = "";
@@ -1572,6 +1635,10 @@ export class FMEAComponent implements OnInit {
       this.SafetyFactor = this.FactoryToAddInFM[event.node.label - 1].SafetyFactor;
       this.ProtectionFactor = this.FactoryToAddInFM[event.node.label - 1].ProtectionFactor;
       this.FrequencyFactor = this.FactoryToAddInFM[event.node.label - 1].FrequencyFactor;
+      this.SeverityFactor = this.FactoryToAddInFM[event.node.label - 1].SeverityFactor;
+      this.OccurenceFactor = this.FactoryToAddInFM[event.node.label - 1].OccurenceFactor;
+      this.DetectionFactor = this.FactoryToAddInFM[event.node.label - 1].DetectionFactor;
+      this.RPN = this.FactoryToAddInFM[event.node.label - 1].RPN;
       this.dbPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentDBPath;
       this.Remark = this.FactoryToAddInFM[event.node.label - 1].Remark;
       this.fullPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentFullPath;

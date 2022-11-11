@@ -45,6 +45,10 @@ namespace Plant.Models.RCM_Master
         public int SafetyFactor { get; set; }
         public int ProtectionFactor { get; set; }
         public int FrequencyFactor { get; set; }
+        public int SeverityFactor { get; set; }
+        public int OccurenceFactor { get; set; }
+        public int DetectionFactor { get; set; }
+        public int RPN { get; set; }
         public int CriticalityFactor { get; set; }
         public string Rating { get; set; }
         public string MaintainenancePractice { get; set; }
