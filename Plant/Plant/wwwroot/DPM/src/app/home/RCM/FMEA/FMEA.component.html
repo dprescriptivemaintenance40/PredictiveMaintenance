@@ -267,13 +267,13 @@
     </div>
     <div class="col-md-6">
         <div *ngIf="prescriptiveEffect" class="stepsdemo-content dpm-card mt-2" id="scrollToTop">
-            <div class="row">
-                <p-radioButton (click)="fmeafactors()" [(ngModel)]="factorsradio"
+            <div class="row" style="margin-left: 20px;">
+                <p-radioButton (click)="fmeafactors()" style="margin-top: 20px;" [(ngModel)]="factorsradio"
                     value="factors" inputId="factors" checked></p-radioButton>
-                <label style="margin-left: 10px" class="d-block">FMEA Factors</label>
-                <p-radioButton [(ngModel)]="factorsradio" value="rpn" (click)="fmearpn()" inputId="rpn">
+                <label style="margin-left: 10px;margin-top: 20px;" class="d-block">FMEA Factors</label>
+                <p-radioButton [(ngModel)]="factorsradio" style="margin-left: 10px;margin-top: 20px;" value="rpn" (click)="fmearpn()" inputId="rpn">
                 </p-radioButton>
-                <label style="margin-left: 10px" class="d-block">FMEA RPN</label>
+                <label style="margin-left: 10px;margin-top: 20px;" class="d-block">FMEA RPN</label>
             </div>
             <div *ngIf="prescriptivefactors">
                 <p-card>

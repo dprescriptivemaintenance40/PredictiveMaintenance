@@ -49,6 +49,13 @@ namespace Plant.DAL
         public DbSet<ReciprocatingProcessedTable> ReciprocatingProcessedTables { get; set; }
         public DbSet<ReciprocatingPredictedTable> ReciprocatingPredictedTables { get; set; }
 
+        public DbSet<HXParameter> HXParameters { get; set; }
+        public DbSet<HXStagingTable> HXStagingTables { get; set; }
+        public DbSet<HXCleaningTable> HXCleaningTables { get; set; }
+        public DbSet<HXErrorTable> HXErrorTables { get; set; }
+        public DbSet<HXProcessedTable> HXProcessedTables { get; set; }
+        public DbSet<HXPredictedTable> HXPredictedTables { get; set; }
+
         //FMEA
         public DbSet<RCM> RCMs { get; set; }
         public DbSet<PrescriptiveLookupMasterModel> PrescriptiveLookupMassterModelData { get; set; }
@@ -202,6 +209,32 @@ namespace Plant.DAL
                .HasOne(r => r.reciprocatingParameter)
                .WithMany(r => r.reciprocatingPredictedTable)
                .HasForeignKey(r => r.RPId);
+
+            modelBuilder.Entity<HXParameter>()
+              .HasOne(r => r.asset_failureModes)
+              .WithMany(r => r.hXParameter)
+              .HasForeignKey(r => r.FailureModeId);
+
+            modelBuilder.Entity<HXStagingTable>()
+               .HasOne(r => r.hxParameter)
+               .WithMany(r => r.hxStagingTable)
+               .HasForeignKey(r => r.HXId);
+            modelBuilder.Entity<HXCleaningTable>()
+               .HasOne(r => r.hxParameter)
+               .WithMany(r => r.hxCleaningTable)
+               .HasForeignKey(r => r.HXId);
+            modelBuilder.Entity<HXErrorTable>()
+               .HasOne(r => r.hxParameter)
+               .WithMany(r => r.hxErrorTable)
+               .HasForeignKey(r => r.HXId);
+            modelBuilder.Entity<HXProcessedTable>()
+               .HasOne(r => r.hxParameter)
+               .WithMany(r => r.hxProcessedTable)
+               .HasForeignKey(r => r.HXId);
+            modelBuilder.Entity<HXPredictedTable>()
+               .HasOne(r => r.hxParameter)
+               .WithMany(r => r.hxhPredictedTable)
+               .HasForeignKey(r => r.HXId);
 
             modelBuilder.Entity<Asset_Equipment>().ToTable("Asset_Equipments");
             modelBuilder.Entity<Asset_Equipment>().HasKey(r => r.Id);
@@ -654,6 +687,19 @@ namespace Plant.DAL
                        AssetId = 9,
                        AssetName = "RotaryPump",
                        Id_fk = 3
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 10,
+                       AssetName = "Static"
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 11,
+                       AssetName = "HeatExchanger",
+                       Id_fk = 10
                    }
                 );
 

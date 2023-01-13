@@ -15,6 +15,7 @@ namespace Plant.Models.Plant
         public List<ScrewParameter> screwParameter { get; set; }
         public List<CentrifugalParameter> centrifugalParameter { get; set; }
         public List<ReciprocatingParameter> reciprocatingParameter { get; set; }
+        public List<HXParameter> hXParameter { get; set; }
         public Asset_Equipment equipments { get; set; }
     }
 }
