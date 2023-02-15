@@ -43,6 +43,7 @@ import { AvailabilityListComponent } from "./RAM/Availability Model List/availab
 import { AvailabilityReportComponent } from "./RAM/Availability Model Report/availability-report.component";
 import { UpdateAvailabilityComponent } from "./RAM/Update Availability Model/update-availability.component";
 import { RadioButtonModule } from "primeng/radiobutton";
+import { UnityHXModelComponent } from "./unity-hxmodel/unity-hxmodel.component";
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { RadioButtonModule } from "primeng/radiobutton";
         HomeComponent,
         DashboardComponent,
         VisComponent,
+        UnityHXModelComponent,
         FMEAComponent,
         FCAComponent,
         MSSComponent,

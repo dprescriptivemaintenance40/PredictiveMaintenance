@@ -23,6 +23,7 @@ export class CompressorStatusComponent implements OnInit {
   public FMName:string;
   public Assetname:string;
   public noError:boolean=false;
+  public StatusShow:String="Show";
   constructor(private http:HttpClient) { }
 
   ngOnInit(): void {
@@ -55,7 +56,12 @@ export class CompressorStatusComponent implements OnInit {
     )  
   }
   Show(id:any){
-    for(let x=0; x<this.list.length; x++){
+    if(this.StatusShow=="Hide"){
+      this.show=false;
+      this.StatusShow="Show";
+    }
+    else{
+     for(let x=0; x<this.list.length; x++){
       if(this.list[x][0]===id){
         this.Id=id;
         this.show=true;
@@ -66,6 +72,8 @@ export class CompressorStatusComponent implements OnInit {
           this.noError=false;
         }
       }
+     }
+     this.StatusShow="Hide";
     }
   }
 }

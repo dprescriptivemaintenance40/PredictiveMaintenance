@@ -52,9 +52,11 @@ namespace Plant.DAL
         public DbSet<HXParameter> HXParameters { get; set; }
         public DbSet<HXStagingTable> HXStagingTables { get; set; }
         public DbSet<HXCleaningTable> HXCleaningTables { get; set; }
+        public DbSet<HXCleaningTablesIncipient> HXCleaningTablesIncipients { get; set; }
         public DbSet<HXErrorTable> HXErrorTables { get; set; }
         public DbSet<HXProcessedTable> HXProcessedTables { get; set; }
         public DbSet<HXPredictedTable> HXPredictedTables { get; set; }
+        public DbSet<HXNewTable> HXNewTables { get; set; }
 
         //FMEA
         public DbSet<RCM> RCMs { get; set; }
@@ -222,6 +224,10 @@ namespace Plant.DAL
             modelBuilder.Entity<HXCleaningTable>()
                .HasOne(r => r.hxParameter)
                .WithMany(r => r.hxCleaningTable)
+               .HasForeignKey(r => r.HXId);
+            modelBuilder.Entity<HXCleaningTablesIncipient>()
+               .HasOne(r => r.hxParameter)
+               .WithMany(r => r.hxCleaningTablesIncipient)
                .HasForeignKey(r => r.HXId);
             modelBuilder.Entity<HXErrorTable>()
                .HasOne(r => r.hxParameter)
@@ -572,6 +578,14 @@ namespace Plant.DAL
                             AssetName = "CentrifugalCompressor",
                             AssetImage = "",
                             TagNumber = "11-K-01I"
+                        },
+                        new Asset_Equipment
+                        {
+                            Id = 10,
+                            PlantId = 1,
+                            AssetName = "HeatExchanger",
+                            AssetImage = "",
+                            TagNumber = "11-K-01J"
                         }
              );
 
@@ -700,6 +714,13 @@ namespace Plant.DAL
                        AssetId = 11,
                        AssetName = "HeatExchanger",
                        Id_fk = 10
+                   },
+                   new mst_Asset
+                   {
+                       PlantId = 1,
+                       AssetId = 12,
+                       AssetName = "HeatExchanger",
+                       Id_fk = 11
                    }
                 );
 

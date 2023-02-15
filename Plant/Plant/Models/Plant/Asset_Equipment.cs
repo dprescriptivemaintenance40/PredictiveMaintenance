@@ -13,7 +13,7 @@ namespace Plant.Models.Plant
         public int PlantId { get; set; }
         public string TagNumber { get; set; }
         public string AssetName { get; set; }  //eg. ScrewCompressor 
-        public string AssetImage { get; set; }
+        public string? AssetImage { get; set; }
         public List<Asset_FailureMode> asset_failureModes { get; set; }
         public List<SIF> sif { get; set; }
         public mst_NetworkAsset mst_NetworkAssets { get; set; }

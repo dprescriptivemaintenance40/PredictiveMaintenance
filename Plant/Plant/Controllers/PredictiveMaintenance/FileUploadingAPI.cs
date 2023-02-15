@@ -140,6 +140,27 @@ namespace Plant.Controllers.PredictiveMaintenance
                             batch.Add(list);
                         }
                     }
+                    else if (equipment.AssetName == "HeatExchanger" || equipment.AssetName == "HeatExchanger" || equipment.AssetName == "HeatExchanger")
+                    {
+                        HXParameter stageData = _Context.HXParameters.Where(r => r.FailureModeId == b.Id).FirstOrDefault();
+                        if (stageData != null)
+                        {
+                            List<object> list = new List<object>();
+                            list.Add(b);
+                            var staging = _Context.HXStagingTables.Where(r => r.HXId == stageData.Id).Count();
+                            list.Add(staging);
+                            var cleaning = _Context.HXCleaningTablesIncipients.Where(r => r.HXId == stageData.Id).Count();
+                            list.Add(cleaning);
+                            var errors = _Context.HXErrorTables.Where(r => r.HXId == stageData.Id).ToList();
+                            list.Add(errors);
+                            list.Add(equipment.AssetName);
+                            var process = _Context.HXProcessedTables.Where(r => r.HXId == stageData.Id).Count();
+                            list.Add(process);
+                            var prediction = _Context.HXErrorTables.Where(r => r.HXId == stageData.Id).Count();
+                            list.Add(prediction);
+                            batch.Add(list);
+                        }
+                    }
                 }
             }
             return Ok(batch);
@@ -251,8 +272,10 @@ namespace Plant.Controllers.PredictiveMaintenance
                     }
                     else
                     {
+                        equipment.PlantId = 1;
                         equipment.TagNumber = TagNumber;
                         equipment.AssetName = Asset;
+                        equipment.AssetImage = null;
                         _Context.Asset_Equipments.Add(equipment);
                         _Context.SaveChanges();
 

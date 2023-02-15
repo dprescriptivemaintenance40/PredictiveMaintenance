@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   }
   public MenuItems: any[] = [
     {
-      label: 'About-Us',
+      label: 'APM',
       url: '#/Home/aboutus',
       icon: 'pi pi-home',
     },
@@ -160,9 +160,12 @@ export class HomeComponent implements OnInit {
           label: 'SIL Search',
           url: '#/Home/report'
         }
-
       ]
-
+    },
+    {
+      label: 'HX 3D Model',
+      url: '#/Home/UnityHXModel',
+      icon: 'pi pi-home',
     }
   ];
 

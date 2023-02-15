@@ -32,6 +32,7 @@ import { NetworkDiagram } from "./RAM/Availability/network-diagram.component";
 import { AvailabilityListComponent } from "./RAM/Availability Model List/availability-list.component";
 import { AvailabilityReportComponent } from "./RAM/Availability Model Report/availability-report.component";
 import { UpdateAvailabilityComponent } from "./RAM/Update Availability Model/update-availability.component";
+import { UnityHXModelComponent } from "./unity-hxmodel/unity-hxmodel.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -44,6 +45,7 @@ import { UpdateAvailabilityComponent } from "./RAM/Update Availability Model/upd
                 { path: 'report', component: SILreportComponent },
                 { path: 'LandingPage', component: DashboardComponent },
                 { path: 'VisNetwork', component: VisComponent },
+                { path: 'UnityHXModel', component: UnityHXModelComponent },
                 { path: 'Configuration', component: PrescriptiveConfigurationComponent },
                 { path: 'FMEA', component: FMEAComponent },
                 { path: 'Consequences', component: PrescriptiveConsequencesComponent},
