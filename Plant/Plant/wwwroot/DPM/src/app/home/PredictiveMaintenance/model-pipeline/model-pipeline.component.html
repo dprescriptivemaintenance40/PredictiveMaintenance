@@ -15,12 +15,37 @@
             <select [(ngModel)]="selectedAsset">
                 <option *ngFor="let aList of Assetlist" [ngValue]="aList">{{aList}}</option>
             </select><br>
+            
             <label style=" margin-right: 12px;">Tag Number</label>
-            <input type="text" [(ngModel)]="selectedTagNumber">
+            <!-- <input type="text" [(ngModel)]="selectedTagNumber"> -->
+            <select *ngIf="selectedAsset == 'HeatExchanger'" [(ngModel)]="selectedTagNumber">
+                <option>11HE001</option>
+                <option>11HE002</option>
+            </select>
+            
+            <select *ngIf="selectedAsset == 'ScrewCompressor'" [(ngModel)]="selectedTagNumber">
+                <option>10K001</option>
+                <option>10K002</option>
+            </select>
+            
+            <input type="text" *ngIf="!(selectedAsset == 'ScrewCompressor'|| selectedAsset == 'HeatExchanger')" [(ngModel)]="selectedTagNumber"> 
         </div>
         <div class="col-md-3 d-flex flex-column">
             <label style=" margin-right: 12px;">Failure Mode Name</label>
-            <input type="text" [(ngModel)]="selectedFMName"><br>
+            <!-- <input type="text" [(ngModel)]="selectedFMName"><br> -->
+            <select *ngIf="selectedAsset == 'HeatExchanger'" [(ngModel)]="selectedFMName">
+                <option>Internal Tube Leak</option>
+                <option>Corrosion</option>
+            </select>
+            
+            <select *ngIf="selectedAsset == 'ScrewCompressor'" [(ngModel)]="selectedFMName">
+                <option>Screw seizure</option>
+                <option>Bearing damage</option>
+                <option>Mechanical Seal Leaking</option>
+            </select>
+            
+            <input type="text" *ngIf="!(selectedAsset == 'ScrewCompressor'|| selectedAsset == 'HeatExchanger')" [(ngModel)]="selectedFMName"><br>
+            
             <label style=" margin-right: 12px;">Upload File</label>
             <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file" accept=".csv">
             
@@ -41,8 +66,9 @@
     <div *ngIf="uploadSuccess">
         <span>FailureMode Id : {{BatchId}}</span><br>
         <span>Description : {{Description}}</span><br>
-        <span>Batch is uploading .....</span> <br>
-        <a href="#/Home/CompressorStatus">Check Status</a>
+        <span>File uploaded. <br> Batch is Processing.</span> <br><br>
+        <a *ngIf="asset=='HeatExchanger'" href="#/Home/UnityHXModel">See Heat Echanger Model</a>
+        <!-- <a href="#/Home/CompressorStatus">Check Status</a> -->
     </div>
     <div *ngIf="Error">
         <b><span>Error : {{ErrorMsg}}</span></b>

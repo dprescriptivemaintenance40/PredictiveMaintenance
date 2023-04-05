@@ -22,8 +22,8 @@ namespace Plant.Controllers
 
         }
         [HttpGet]
-        [Route("GetHXData")]
-        public IActionResult GetHXData()
+        [Route("GetData")]
+        public IActionResult GetData()
         {
             List<UnityData> Data = new List<UnityData>();
             //var Prodata = _Context.HXProcessedTables.ToList();
@@ -72,8 +72,8 @@ namespace Plant.Controllers
         }
             // GET: api/<UnityDataRequest>
         [HttpGet]
-        [Route("GetData")]
-        public IActionResult GetData()
+        [Route("GetHXData")]
+        public IActionResult GetHXData()
         {
             List<UnityData> Data = new List<UnityData>();
             //var Prodata = _Context.HXProcessedTables.ToList();

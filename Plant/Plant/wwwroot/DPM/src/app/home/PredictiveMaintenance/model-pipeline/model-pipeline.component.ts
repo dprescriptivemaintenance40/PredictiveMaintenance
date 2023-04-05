@@ -13,6 +13,7 @@ enum CheckBoxType { Manual, Automated, NONE };
 })
 export class ModelPipelineComponent implements OnInit {
 
+  public asset:string="";
   BatchId:number;
   Description:string;
   check_box_type = CheckBoxType;
@@ -82,6 +83,7 @@ export class ModelPipelineComponent implements OnInit {
     this.FileUpload=event?.target?.files[0];
   }
   Upload(){
+    this.asset=this.selectedAsset;
     this.Error=false;
     this.uploadSuccess=false;
     if(this.FileUpload.name.split(".").pop() != 'csv'){
@@ -111,5 +113,9 @@ export class ModelPipelineComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: "Error from server side while uploading" })
       })
     }
+    this.selectedTagNumber='';
+    this.selectedFMName='';
+    this.selectedAsset='';
+    this.FileUpload=null;
   }
 }

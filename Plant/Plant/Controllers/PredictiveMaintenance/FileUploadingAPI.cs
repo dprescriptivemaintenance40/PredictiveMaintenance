@@ -242,6 +242,7 @@ namespace Plant.Controllers.PredictiveMaintenance
             try
             {
                 var file = Request.Form.Files[0];
+                // string FilePath = @"C:\Users\Administrator\Desktop\DPMPublished\UploadedFiles";
                 string FilePath = @"G:\DPMBGProcess\BGAutomateProcess\Tasks\DataFiles";
                 //   string newPath = Path.Combine(Guid.NewGuid().ToString() + '_' + folderName);
                 if (file.Length > 0)

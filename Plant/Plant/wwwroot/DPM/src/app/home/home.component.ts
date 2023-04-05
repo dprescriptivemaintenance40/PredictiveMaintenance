@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   }
   public MenuItems: any[] = [
     {
-      label: 'APM',
+      label: 'About Us',
       url: '#/Home/aboutus',
       icon: 'pi pi-home',
     },
@@ -43,41 +43,42 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Predictive Maintenance',
+      url: '#/Home/ModelPipeline',
       icon: 'pi pi-home',
-      items: [
-            {
-              label: 'Constraints & Validations',
-              url: '#/Home/ConstraintValidation',
-            },
-            {
-              label: 'Model Pipeline',
-              url: '#/Home/ModelPipeline',
-            },
-            {
-              label: 'Status',
-              url: '#/Home/CompressorStatus'
-            },
-            {
-              label: 'Data Explanation',
-              url: '#/Home/DataExplanation',
-            },
-            {
-              label: 'Model Confidence',
-              url: '#/Home/ModelConfidence',
-            },
-            {
-              label: 'Predictive Charts',
-              url: '#/Home/PredictiveChart',
-            },
-            {
-              label: 'Data Insights',
-              url: '#/Home/DataInsight',
-            },
-            {
-              label: 'Predictive Reports',
-              url: '#/Home/PredictiveReport',
-            }
-          ]
+      // items: [
+      //       {
+      //         label: 'Constraints & Validations',
+      //         url: '#/Home/ConstraintValidation',
+      //       },
+      //       {
+      //         label: 'Model Pipeline',
+      //         url: '#/Home/ModelPipeline',
+      //       },
+      //       {
+      //         label: 'Status',
+      //         url: '#/Home/CompressorStatus'
+      //       },
+      //       {
+      //         label: 'Data Explanation',
+      //         url: '#/Home/DataExplanation',
+      //       },
+      //       {
+      //         label: 'Model Confidence',
+      //         url: '#/Home/ModelConfidence',
+      //       },
+      //       {
+      //         label: 'Predictive Charts',
+      //         url: '#/Home/PredictiveChart',
+      //       },
+      //       {
+      //         label: 'Data Insights',
+      //         url: '#/Home/DataInsight',
+      //       },
+      //       {
+      //         label: 'Predictive Reports',
+      //         url: '#/Home/PredictiveReport',
+      //       }
+      //     ]
     },
     {
       label: 'Strategic Analysis',
@@ -163,9 +164,17 @@ export class HomeComponent implements OnInit {
       ]
     },
     {
-      label: 'HX 3D Model',
-      url: '#/Home/UnityHXModel',
+      label: '3D Models',
       icon: 'pi pi-home',
+      items: [
+        {
+          label: 'Heat Exchanger',
+          url: '#/Home/UnityHXModel'
+        },
+        {
+          label: 'Screw Compressor'
+        }
+      ]
     }
   ];
 
