@@ -10,7 +10,7 @@ import { VisComponent } from "./Vis/Vis.component";
 import { MSSComponent } from "./RCM/MSS/mss.component";
 import {DashboardComponent} from "./dashboard/dashboard.component"
 import { AboutComponent } from "./About-us/about.component";
-import { SILreportComponent } from "./SIL/SILReport/SILreport.component";
+import { SILreportComponent } from "./SIL/SILReport/SilReport.component";
 import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
 import { SILComponent } from "../home/SIL/SILCreation/Sil_Creation.component";
 import {FieldsetModule} from 'primeng/fieldset';

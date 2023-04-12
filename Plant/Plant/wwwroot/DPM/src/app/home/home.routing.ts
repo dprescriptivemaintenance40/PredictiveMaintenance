@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { AuthGuard } from "src/app/auth.guard";
+import { AuthGuard } from "src/app/Auth.guard";
 import { RouterModule } from "@angular/router";
 import { AboutComponent } from "./About-us/about.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -8,7 +8,7 @@ import { FCAComponent } from "./RCM/FCA/fca.component";
 import { FMEAComponent } from "./RCM/FMEA/FMEA.component";
 import { MSSComponent } from "./RCM/MSS/mss.component";
 import { RCMListComponent } from "./RCM/RCM-List/rcm-list.component";
-import { SILreportComponent } from "./SIL/SILReport/SILreport.component";
+import { SILreportComponent } from "./SIL/SILReport/SilReport.component";
 import { SILComponent } from "../home/SIL/SILCreation/Sil_Creation.component";
 import { VisComponent } from "./Vis/Vis.component";
 import { SilWorksheetComponent } from "./SIL/SILWorksheet/SilWorksheet.component";
@@ -33,13 +33,14 @@ import { AvailabilityListComponent } from "./RAM/Availability Model List/availab
 import { AvailabilityReportComponent } from "./RAM/Availability Model Report/availability-report.component";
 import { UpdateAvailabilityComponent } from "./RAM/Update Availability Model/update-availability.component";
 import { UnityHXModelComponent } from "./unity-hxmodel/unity-hxmodel.component";
+import { SilReportComponent } from "./SIL/SilTemplate/SilReport.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
         {
             path: '', component: HomeComponent,
             children: [
-                { path: '', redirectTo: 'aboutus', pathMatch: 'full' },
+                { path: '', redirectTo: 'ModelPipeline', pathMatch: 'full' },
                 { path: 'report', component: DashboardReportComponent },
                 { path: 'aboutus', component: AboutComponent },
                 { path: 'report', component: SILreportComponent },

@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginRegistrationComponent } from './login-registration/login-registration.component';
 import { SilReportComponent } from './home/SIL/SilTemplate/SilReport.component';
 import { DashboardReportComponent } from './home/DashboardReport/dashboardReport.component';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './Auth.guard';
 
 
 @NgModule({

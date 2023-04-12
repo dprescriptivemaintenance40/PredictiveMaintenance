@@ -32,7 +32,7 @@ token:any;
     this.service.Login(this.loginRequest).subscribe(
       res=>{
         this.cookies.set('access_token',res.token);
-        this.route.navigateByUrl('/Home/aboutus')
+        this.route.navigateByUrl('/Home/ModelPipeline')
       },err=>{
         console.log(err);
         alert("Incorrent Credentials")
