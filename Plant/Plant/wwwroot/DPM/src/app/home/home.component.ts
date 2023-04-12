@@ -30,6 +30,153 @@ export class HomeComponent implements OnInit {
   public MenuClosed() {
     this.menuOpened = false;
   }
+  // public MenuItems: any[] = [
+  //   {
+  //     label: 'About Us',
+  //     url: '#/Home/aboutus',
+  //     icon: 'pi pi-home',
+  //   },
+  //   {
+  //     label: 'Dashboard',
+  //     url: '#/Home/LandingPage',
+  //     icon: 'pi pi-home',
+  //   },
+  //   {
+  //     label: 'Predictive Maintenance',
+  //     url: '#/Home/ModelPipeline',
+  //     icon: 'pi pi-home',
+  //     // items: [
+  //     //       {
+  //     //         label: 'Constraints & Validations',
+  //     //         url: '#/Home/ConstraintValidation',
+  //     //       },
+  //     //       {
+  //     //         label: 'Model Pipeline',
+  //     //         url: '#/Home/ModelPipeline',
+  //     //       },
+  //     //       {
+  //     //         label: 'Status',
+  //     //         url: '#/Home/CompressorStatus'
+  //     //       },
+  //     //       {
+  //     //         label: 'Data Explanation',
+  //     //         url: '#/Home/DataExplanation',
+  //     //       },
+  //     //       {
+  //     //         label: 'Model Confidence',
+  //     //         url: '#/Home/ModelConfidence',
+  //     //       },
+  //     //       {
+  //     //         label: 'Predictive Charts',
+  //     //         url: '#/Home/PredictiveChart',
+  //     //       },
+  //     //       {
+  //     //         label: 'Data Insights',
+  //     //         url: '#/Home/DataInsight',
+  //     //       },
+  //     //       {
+  //     //         label: 'Predictive Reports',
+  //     //         url: '#/Home/PredictiveReport',
+  //     //       }
+  //     //     ]
+  //   },
+  //   {
+  //     label: 'Strategic Analysis',
+  //     icon: 'pi pi-chart-line',
+  //     items: [
+  //       {
+  //         label: 'Develop maintenance strategy',
+  //         items: [
+  //           {
+  //             label: 'RCM (Relaibility Centered Maintenance)',
+  //             items: [
+  //               {
+  //                 label: 'Configuration',
+  //                 url: '#/Home/Configuration'
+  //               },
+  //               {
+  //                 label: 'FMEA',
+  //                 url: '#/Home/FMEA'
+  //               },
+  //               {
+  //                 label: 'FCA',
+  //                 url: '#/Home/FCA',
+  //               },
+  //               {
+  //                 label: 'MSS',
+  //                 url: '#/Home/MSS',
+  //               },
+  //               {
+  //                 label: 'CBA',
+  //                 url: '#/Home/CBA',
+  //               },
+  //             ]
+  //           },
+  //         ]
+  //       }
+  //     ]
+  //   },
+  //   // {
+  //   //   label: 'FMEA Add',
+  //   //   url: '#/Home/Prescriptive/ADD'
+  //   // },
+  //   // {
+  //   //   label: 'FCA',
+  //   //   url: '#/Home/FCA',
+  //   //   icon: 'pi pi-home',
+  //   // },
+  //   // {
+  //   //   label: 'MSS',
+  //   //   url: '#/Home/MSS',
+  //   //   icon: 'pi pi-home',
+  //   // },
+  //   {
+  //     label: 'RAM',
+  //     icon: 'pi pi-home',
+  //     items: [
+  //       {
+  //         label: 'Network Diagram',
+  //         url: '#/Home/NetworkDiagram',
+  //       },
+  //       {
+  //         label: 'Availability Model List',
+  //         url: '#/Home/AvailabilityList',
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     label: 'RCM Maintenance',
+  //     url: '#/Home/RCMList',
+  //     icon: 'pi pi-home',
+  //   },
+  //   {
+  //     label: 'SIL',
+  //     icon: 'pi pi-home',
+  //     items: [
+  //       {
+  //         label: 'SIL Design',
+  //         url: '#/Home/SIL',
+
+  //       }, {
+  //         label: 'SIL Search',
+  //         url: '#/Home/report'
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     label: '3D Models',
+  //     icon: 'pi pi-home',
+  //     items: [
+  //       {
+  //         label: 'Heat Exchanger',
+  //         url: '#/Home/UnityHXModel'
+  //       },
+  //       {
+  //         label: 'Screw Compressor'
+  //       }
+  //     ]
+  //   }
+  // ];
   public MenuItems: any[] = [
     {
       label: 'File Upload',
