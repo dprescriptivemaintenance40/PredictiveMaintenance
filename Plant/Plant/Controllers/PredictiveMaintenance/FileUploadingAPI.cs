@@ -244,7 +244,7 @@ namespace Plant.Controllers.PredictiveMaintenance
             {
                 var file = Request.Form.Files[0];
                 // string FilePath = @"C:\Users\Administrator\Desktop\DPMPublished\UploadedFiles";
-                string FilePath = @"G:\DPMBGProcess\BGAutomateProcess\Tasks\DataFiles";
+                string FilePath = @"E:\DPMproject";
                 //   string newPath = Path.Combine(Guid.NewGuid().ToString() + '_' + folderName);
                 if (file.Length > 0)
                 {
@@ -298,25 +298,36 @@ namespace Plant.Controllers.PredictiveMaintenance
                     {
                         file.CopyTo(fl);
                     }
-                    string pkgLocation = @"E:\UploadTask.dtsx";
+                    try
+                    {
+                        string pkgLocation = @"D:\Users\bistd\OneDrive\Documents\GitHub\HXETLProcess\HeatExchenger_ETLsln\HeatExchenger_ETL";
 
-                    Package pkg;
-                    DTSExecResult pkgResults;
-                    Variables vars;
+                        Package ssisPackage;
+                        Application app;
+                        DTSExecResult results;
+                        Variables vars;
 
-                    Application app = new Application();
-                    pkg = app.LoadPackage(pkgLocation, null);
+                        app = new Application();
+                        ssisPackage = app.LoadPackage(pkgLocation, null);
 
-                    vars = pkg.Variables;
-                    vars["Desc"].Value = batch.Description;
-                    vars["FilePath"].Value = destinationFileName;
-                    pkgResults = pkg.Execute();
+                        vars = ssisPackage.Variables;
+                        vars["Desc"].Value = batch.Description;
+                        vars["FilePath"].Value = destinationFileName;
+                        results = ssisPackage.Execute();
 
-                    if (pkgResults == DTSExecResult.Success)
-                        Console.WriteLine("Package ran successfully");
-                    else
-                        Console.WriteLine("Package failed");
-                    return Ok(values);
+                        if (results == DTSExecResult.Success)
+                            Console.WriteLine("Package ran successfully");
+                        else
+                            Console.WriteLine("Package failed");
+                        return Ok(values);
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest(e.Message);
+                    }
+
                 }
                 else
                 {

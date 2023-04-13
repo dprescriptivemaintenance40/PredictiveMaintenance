@@ -37,6 +37,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="MicrosoftSqlServerManagedDTS" Version="4.0.12" />
     <PackageReference Include="NPOI" Version="2.5.5" />
   </ItemGroup>
 
