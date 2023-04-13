@@ -11,7 +11,7 @@ import { ConfigModule } from './shared/config.service';
 import { SilReportComponent } from './home/SIL/SilTemplate/SilReport.component';
 import { CompressorStatusComponent } from './home/PredictiveMaintenance/compressor-status/compressor-status.component';
 import { authInterceptorProviders } from './Token.Interceptor';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './Auth.guard';
 import { CookieService } from 'ngx-cookie-service';
 // import { AuthGuard } from './auth.guard';
 

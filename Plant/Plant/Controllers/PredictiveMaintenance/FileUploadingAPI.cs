@@ -2,6 +2,7 @@
 using KiranaPasalManagementSystem.Response;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.SqlServer.Dts.Runtime;
 using Plant.DAL;
 using Plant.Models.Plant;
 using System.IO.Packaging;
@@ -297,25 +298,24 @@ namespace Plant.Controllers.PredictiveMaintenance
                     {
                         file.CopyTo(fl);
                     }
-                    //string pkgLocation = @"E:\UploadTask.dtsx";
+                    string pkgLocation = @"E:\UploadTask.dtsx";
 
-                    //Package pkg;
-                    //DTSExecResult pkgResults;
-                    //Variables vars;
+                    Package pkg;
+                    DTSExecResult pkgResults;
+                    Variables vars;
 
-                    //Application app = new Application();
-                    //pkg = app.LoadPackage(pkgLocation, null);
+                    Application app = new Application();
+                    pkg = app.LoadPackage(pkgLocation, null);
 
-                    //vars = pkg.Variables;
-                    //vars["FilePath"].Value = destinationFileName;
-                    //vars["AssetName"].Value = Asset;
-                    //vars["FMId"].Value = batch.Id;
-                    //pkgResults = pkg.Execute();
+                    vars = pkg.Variables;
+                    vars["Desc"].Value = batch.Description;
+                    vars["FilePath"].Value = destinationFileName;
+                    pkgResults = pkg.Execute();
 
-                    //if (pkgResults == DTSExecResult.Success)
-                    //    Console.WriteLine("Package ran successfully");
-                    //else
-                    //    Console.WriteLine("Package failed");
+                    if (pkgResults == DTSExecResult.Success)
+                        Console.WriteLine("Package ran successfully");
+                    else
+                        Console.WriteLine("Package failed");
                     return Ok(values);
                 }
                 else
