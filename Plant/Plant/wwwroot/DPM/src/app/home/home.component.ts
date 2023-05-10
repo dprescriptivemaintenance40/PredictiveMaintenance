@@ -43,21 +43,21 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Predictive Maintenance',
-      url: '#/Home/ModelPipeline',
+      // url: '#/Home/ModelPipeline',
       icon: 'pi pi-home',
-      // items: [
+      items: [
       //       {
       //         label: 'Constraints & Validations',
       //         url: '#/Home/ConstraintValidation',
       //       },
-      //       {
-      //         label: 'Model Pipeline',
-      //         url: '#/Home/ModelPipeline',
-      //       },
-      //       {
-      //         label: 'Status',
-      //         url: '#/Home/CompressorStatus'
-      //       },
+            {
+              label: 'Model Pipeline',
+              url: '#/Home/ModelPipeline',
+            },
+            {
+              label: 'Status',
+              url: '#/Home/CompressorStatus'
+            }
       //       {
       //         label: 'Data Explanation',
       //         url: '#/Home/DataExplanation',
@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit {
       //         label: 'Predictive Reports',
       //         url: '#/Home/PredictiveReport',
       //       }
-      //     ]
+           ]
     },
     {
       label: 'Strategic Analysis',
@@ -171,12 +171,24 @@ export class HomeComponent implements OnInit {
           label: 'Heat Exchanger',
           url: '#/Home/UnityHXModel'
         },
-        {
-          label: 'Screw Compressor'
-        }
+        // {
+        //   label: 'Screw Compressor'
+        // }
       ]
     }
   ];
+  // public MenuItems: any[] = [
+  //   {
+  //     label: 'File Upload',
+  //     url: '#/Home/ModelPipeline',
+  //     icon: 'pi pi-home',
+  //   },
+  //   {
+  //     label: '3D Model',
+  //     icon: 'pi pi-home',
+  //     url: '#/Home/UnityHXModel'
+  //   }
+  // ];
 
   constructor(public builder: FormBuilder,
     public http: HttpClient,

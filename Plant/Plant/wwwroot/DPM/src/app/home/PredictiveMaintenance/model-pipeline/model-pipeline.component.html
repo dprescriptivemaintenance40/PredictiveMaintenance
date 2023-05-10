@@ -17,11 +17,11 @@
             </select><br>
             
             <label style=" margin-right: 12px;">Tag Number</label>
-            <!-- <input type="text" [(ngModel)]="selectedTagNumber"> -->
-            <select *ngIf="selectedAsset == 'HeatExchanger'" [(ngModel)]="selectedTagNumber">
+            <input type="text" *ngIf="selectedAsset == 'HeatExchanger'" list="HX" [(ngModel)]="selectedTagNumber"> 
+            <datalist id="HX" *ngIf="selectedAsset == 'HeatExchanger'" [(ngModel)]="selectedTagNumber">
                 <option>11HE001</option>
                 <option>11HE002</option>
-            </select>
+            </datalist>
             
             <select *ngIf="selectedAsset == 'ScrewCompressor'" [(ngModel)]="selectedTagNumber">
                 <option>10K001</option>
@@ -32,7 +32,7 @@
         </div>
         <div class="col-md-3 d-flex flex-column">
             <label style=" margin-right: 12px;">Failure Mode Name</label>
-            <!-- <input type="text" [(ngModel)]="selectedFMName"><br> -->
+            <!-- <input type="text" *ngIf="selectedAsset == 'HeatExchanger'" list="HX" [(ngModel)]="selectedFMName"><br> -->
             <select *ngIf="selectedAsset == 'HeatExchanger'" [(ngModel)]="selectedFMName">
                 <option>Internal Tube Leak</option>
                 <option>Corrosion</option>

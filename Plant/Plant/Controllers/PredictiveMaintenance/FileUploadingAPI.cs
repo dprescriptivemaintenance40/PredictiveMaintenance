@@ -140,7 +140,7 @@ namespace Plant.Controllers.PredictiveMaintenance
                             batch.Add(list);
                         }
                     }
-                    else if (equipment.AssetName == "HeatExchanger" || equipment.AssetName == "HeatExchanger" || equipment.AssetName == "HeatExchanger")
+                    else if (equipment.AssetName == "HeatExchanger")
                     {
                         HXParameter stageData = _Context.HXParameters.Where(r => r.FailureModeId == b.Id).FirstOrDefault();
                         if (stageData != null)
@@ -156,7 +156,7 @@ namespace Plant.Controllers.PredictiveMaintenance
                             list.Add(equipment.AssetName);
                             var process = _Context.HXProcessedTables.Where(r => r.HXId == stageData.Id).Count();
                             list.Add(process);
-                            var prediction = _Context.HXErrorTables.Where(r => r.HXId == stageData.Id).Count();
+                            var prediction = _Context.HXPredictedTables.Where(r => r.HXId == stageData.Id).Count();
                             list.Add(prediction);
                             batch.Add(list);
                         }
@@ -229,21 +229,15 @@ namespace Plant.Controllers.PredictiveMaintenance
         }
         
 
-        // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         [HttpPost("Upload")]
         public IActionResult Upload([FromForm] string Asset, [FromForm] string TagNumber, [FromForm] string FailureModeName)
         {
             try
             {
                 var file = Request.Form.Files[0];
-                // string FilePath = @"C:\Users\Administrator\Desktop\DPMPublished\UploadedFiles";
-                string FilePath = @"G:\DPMBGProcess\BGAutomateProcess\Tasks\DataFiles";
+                //string FilePath = @"C:\Users\Administrator\Desktop\DPMPublished\UploadedFiles";
+                // string FilePath = @"G:\DPMBGProcess\BGAutomateProcess\Tasks\DataFiles";
+                string FilePath = @"E:\DPM\HXETLProcess\HeatExchenger_ETLsln\DataFile";
                 //   string newPath = Path.Combine(Guid.NewGuid().ToString() + '_' + folderName);
                 if (file.Length > 0)
                 {
@@ -322,6 +316,39 @@ namespace Plant.Controllers.PredictiveMaintenance
                 {
                     return BadRequest();
                 }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        public IActionResult RunPackage(string Filepath, string desc, object values)
+        {
+            try
+            {
+                string pkgLocation = @"E:\DPM\HXETLProcess\HeatExchenger_ETLsln\HeatExchenger_ETL\UploadTask.dtsx";
+
+                Package ssisPackage;
+                Application app;
+                DTSExecResult results;
+                Variables vars;
+
+                app = new Application();
+                ssisPackage = app.LoadPackage(pkgLocation, null);
+
+                vars = ssisPackage.Variables;
+                vars["Desc"].Value = desc;
+                vars["FilePath"].Value = Filepath;
+                results = ssisPackage.Execute();
+
+                if (results == DTSExecResult.Success)
+                    Console.WriteLine("Package ran successfully");
+                else
+                    Console.WriteLine("Package failed");
+                return Ok(values);
+
+
             }
             catch (Exception e)
             {

@@ -5,7 +5,7 @@
     <Controller_SelectedScaffolderCategoryPath>root/Common/Api</Controller_SelectedScaffolderCategoryPath>
     <ActiveDebugProfile>IIS Express</ActiveDebugProfile>
     <WebStackScaffolding_ControllerDialogWidth>650.4</WebStackScaffolding_ControllerDialogWidth>
-    <NameOfLastUsedPublishProfile>G:\PredictiveMaintenance\Plant\Plant\Properties\PublishProfiles\FolderProfile9.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>G:\PredictiveMaintenance\Plant\Plant\Properties\PublishProfiles\FolderProfile2.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
