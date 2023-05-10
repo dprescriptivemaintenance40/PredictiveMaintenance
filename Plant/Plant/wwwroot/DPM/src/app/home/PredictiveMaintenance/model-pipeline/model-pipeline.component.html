@@ -1,4 +1,4 @@
-<p-toast></p-toast>
+
 <div class="card dpm-card w-100 p-3">
     <!-- <div class="col-5">
         <label for="myfile"> Upload Historical data :  </label>
@@ -15,20 +15,21 @@
             <select [(ngModel)]="selectedAsset">
                 <option *ngFor="let aList of Assetlist" [ngValue]="aList">{{aList}}</option>
             </select><br>
-            
+
             <label style=" margin-right: 12px;">Tag Number</label>
-            <input type="text" *ngIf="selectedAsset == 'HeatExchanger'" list="HX" [(ngModel)]="selectedTagNumber"> 
+            <input type="text" *ngIf="selectedAsset == 'HeatExchanger'" list="HX" [(ngModel)]="selectedTagNumber">
             <datalist id="HX" *ngIf="selectedAsset == 'HeatExchanger'" [(ngModel)]="selectedTagNumber">
                 <option>11HE001</option>
                 <option>11HE002</option>
             </datalist>
-            
+
             <select *ngIf="selectedAsset == 'ScrewCompressor'" [(ngModel)]="selectedTagNumber">
                 <option>10K001</option>
                 <option>10K002</option>
             </select>
-            
-            <input type="text" *ngIf="!(selectedAsset == 'ScrewCompressor'|| selectedAsset == 'HeatExchanger')" [(ngModel)]="selectedTagNumber"> 
+
+            <input type="text" *ngIf="!(selectedAsset == 'ScrewCompressor'|| selectedAsset == 'HeatExchanger')"
+                [(ngModel)]="selectedTagNumber">
         </div>
         <div class="col-md-3 d-flex flex-column">
             <label style=" margin-right: 12px;">Failure Mode Name</label>
@@ -37,77 +38,63 @@
                 <option>Internal Tube Leak</option>
                 <option>Corrosion</option>
             </select>
-            
+
             <select *ngIf="selectedAsset == 'ScrewCompressor'" [(ngModel)]="selectedFMName">
                 <option>Screw seizure</option>
                 <option>Bearing damage</option>
                 <option>Mechanical Seal Leaking</option>
             </select>
-            
-            <input type="text" *ngIf="!(selectedAsset == 'ScrewCompressor'|| selectedAsset == 'HeatExchanger')" [(ngModel)]="selectedFMName"><br>
-            
+
+            <input type="text" *ngIf="!(selectedAsset == 'ScrewCompressor'|| selectedAsset == 'HeatExchanger')"
+                [(ngModel)]="selectedFMName"><br>
+
             <label style=" margin-right: 12px;">Upload File</label>
             <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file" accept=".csv">
-            
-        </div>
-        <button class="btn btn-success btn-sm" style="margin-left: 12px;height: 40px;margin-top: 95px;"
-            (click)="Upload()">Process</button>
-        <div class="col-md-4 d-flex flex-column">
-            <div class="row">
-            <input type="checkbox" style="margin-left: 20px;width: 40px;height: 20px;margin-top: 25px;" [checked]="Manual" (change)="selectCheckBoxM()">
-            <span style="margin-top: 25px;">Manual</span> 
-            <input type="checkbox" style="width: 40px;height: 20px;margin-top: 25px;" [checked]="Automated"
-                (change)="selectCheckBoxA($event)"> 
-            <span style="margin-top: 25px;">Automated</span>
-            </div>
+
         </div>
     </div>
-    <br><br>
-    <div *ngIf="uploadSuccess">
-        <span>FailureMode Id : {{BatchId}}</span><br>
-        <span>Description : {{Description}}</span><br>
-        <span>File uploaded. <br> Batch is Processing.</span> <br><br>
-        <a *ngIf="asset=='HeatExchanger'" href="#/Home/UnityHXModel">See Heat Echanger Model</a>
-        <!-- <a href="#/Home/CompressorStatus">Check Status</a> -->
-    </div>
-    <div *ngIf="Error">
-        <b><span>Error : {{ErrorMsg}}</span></b>
-    </div>
-    <br>
-    <!-- <div class="row">
-        <div class="col-6">
-            <div *ngIf="load">
+        <button class="btn btn-success btn-sm" style="margin-left: 600px;height: 40px;width:200px;margin-top: 40px;"
+            (click)="Upload()">Process File</button>
+        <br><br>
+
+        <div *ngIf="Error">
+            <b><span>Error : {{ErrorMsg}}</span></b>
+        </div>
+
+        <div class="row">
+            <div class="column">
+                <p-progressBar *ngIf="load" [value]="value"></p-progressBar>
                 <span>{{progress}} </span> <i *ngIf="value==100" style="color: green;" class="pi pi-check-circle"></i>
-                <p-progressBar [value]="value" [style]="{'width': '600px'}"></p-progressBar>
-            </div><br>
-            <div *ngIf="validate">
-                <span>{{progress1}} : {{ validating}}</span> <i *ngIf="value1==100" style="color: green;"
-                    class="pi pi-check-circle"></i>
-                <p-progressBar [value]="value1" [style]="{'width': '600px'}"></p-progressBar>
-            </div><br>
-            <div *ngIf="calculate">
-                <span>{{progress2}} </span> <i *ngIf="value2==100" style="color: green;" class="pi pi-check-circle"></i>
-                <p-progressBar [value]="value2" [style]="{'width': '600px'}"></p-progressBar>
-            </div><br>
-            <div *ngIf="aggregate">
-                <span>{{progress3}}</span> <i *ngIf="value3==100" style="color: green;" class="pi pi-check-circle"></i>
-                <p-progressBar [value]="value3" [style]="{'width': '600px'}"></p-progressBar>
-            </div><br>
-            <div *ngIf="extrapolation">
-                <span>{{progress4}} </span> <i *ngIf="value4==100" style="color: green;" class="pi pi-check-circle"></i>
-                <p-progressBar [value]="value4" [style]="{'width': '600px'}"></p-progressBar>
-            </div><br>
-            <div *ngIf="predict">
-                <span>{{progress5}} </span> <i *ngIf="value5==100" style="color: green;" class="pi pi-check-circle"></i>
-                <p-progressBar [value]="value5" [style]="{'width': '600px'}"></p-progressBar>
-            </div><br><br>
-            <div *ngIf="dataExplanation">
-                <span>Their is 2% of data which needs explanation </span> <br>
-                <a href="#/Home/DataExplanation">Let's see Data Explanation</a>
+                
+            </div>
+            <div class="column">
+                <p-progressBar *ngIf="validate" [value]="value1"></p-progressBar>
+                <span>{{progress1}} ... {{ validating}}</span> <i *ngIf="value1==100" class="pi pi-check-circle"
+                    style="font-size:20px; margin-top:1px;color:green"></i>
+            </div>
+            <div class="column">
+                <p-progressBar *ngIf="calculate" [value]="value2">{{value2}}%</p-progressBar>
+                <span>{{progress2}} </span> <i *ngIf="value2==100" class="pi pi-check-circle"
+                    style="font-size:20px; margin-top:1px;color:green"></i>
+            </div>
+            <div class="column">
+                <p-progressBar *ngIf="processing" [value]="value3">{{value3}}%
+                </p-progressBar>
+                <span>{{progress3}}</span> <i *ngIf="value3==100" class="pi pi-check-circle"
+                    style="font-size:20px; margin-top:1px;color:green"></i>
+            </div>
+            <div class="column">
+                <p-progressBar *ngIf="predict" [value]="value4">{{value4}}%
+                </p-progressBar>
+                <span>{{progress4}} </span> <i *ngIf="value4==100" class="pi pi-check-circle"
+                    style="font-size:20px; margin-top:1px;color:green"></i>
             </div>
         </div>
-        <div class="col-6">
-            <img src="dist/DPM/assets/pipeline.png" style="width: 610px;height: 560px;" alt="">
+        <div *ngIf="uploadSuccess">
+            <span>FailureMode Id : {{BatchId}}</span><br>
+            <span>Description : {{Description}}</span><br>
+            <span>File uploaded.</span> <br><br>
+            <a *ngIf="asset=='HeatExchanger'" href="#/Home/UnityHXModel">Go to Heat Exchanger Model</a>
+            <!-- <a href="#/Home/CompressorStatus">Check Status</a> -->
         </div>
-    </div> -->
 </div>

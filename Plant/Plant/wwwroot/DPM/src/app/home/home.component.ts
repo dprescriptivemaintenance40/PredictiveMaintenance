@@ -228,7 +228,58 @@ export class HomeComponent implements OnInit {
            ]
     },
     {
-      label: '3D Model',
+      label: 'Strategic Analysis',
+      icon: 'pi pi-chart-line',
+      items: [
+        {
+          label: 'Develop maintenance strategy',
+          items: [
+            {
+              label: 'RCM (Relaibility Centered Maintenance)',
+              items: [
+                {
+                  label: 'Configuration',
+                  url: '#/Home/Configuration'
+                },
+                {
+                  label: 'FMEA',
+                  url: '#/Home/FMEA'
+                },
+                {
+                  label: 'FCA',
+                  url: '#/Home/FCA',
+                },
+                {
+                  label: 'MSS',
+                  url: '#/Home/MSS',
+                },
+                {
+                  label: 'CBA',
+                  url: '#/Home/CBA',
+                },
+              ]
+            },
+          ]
+        }
+      ]
+    },
+    // {
+    //   label: 'FMEA',
+    //   url: '#/Home/Prescriptive/ADD',
+    //   icon: 'pi pi-home',
+    // },
+    // {
+    //   label: 'FCA',
+    //   url: '#/Home/FCA',
+    //   icon: 'pi pi-home',
+    // },
+    // {
+    //   label: 'MSS',
+    //   url: '#/Home/MSS',
+    //   icon: 'pi pi-home',
+    // },
+    {
+      label: 'RAM',
       icon: 'pi pi-home',
       items: [
         {

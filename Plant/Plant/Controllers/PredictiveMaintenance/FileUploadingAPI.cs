@@ -272,8 +272,8 @@ namespace Plant.Controllers.PredictiveMaintenance
                         equipment.TagNumber = TagNumber;
                         equipment.AssetName = Asset;
                         equipment.AssetImage = null;
-                        _Context.Asset_Equipments.Add(equipment);
-                        _Context.SaveChanges();
+                        //_Context.Asset_Equipments.Add(equipment);
+                        //_Context.SaveChanges();
 
                         batch.Description = Asset + "_" + Guid.NewGuid();
                         batch.FailureModeName = FailureModeName;
@@ -283,8 +283,8 @@ namespace Plant.Controllers.PredictiveMaintenance
                         batch.IsProcessCompleted = 1;
                         batch.DateTimeBatchCompleted = "Batch is processing";
                     }
-                    _Context.Asset_FailureMode.Add(batch);
-                    _Context.SaveChanges();
+                    //_Context.Asset_FailureMode.Add(batch);
+                    //_Context.SaveChanges();
                     var values = batch;
                     string destinationFileName = FilePath + "\\" + batch.Description + ".csv";
                     var fullPath = Path.Combine(FilePath, destinationFileName);
@@ -292,35 +292,36 @@ namespace Plant.Controllers.PredictiveMaintenance
                     {
                         file.CopyTo(fl);
                     }
-                    try
-                    {
-                        string pkgLocation = @"D:\Users\bistd\OneDrive\Documents\GitHub\HXETLProcess\HeatExchenger_ETLsln\HeatExchenger_ETL";
+                    return Ok(values);
+                    //try
+                    //{
+                    //    string pkgLocation = @"D:\Users\bistd\OneDrive\Documents\GitHub\HXETLProcess\HeatExchenger_ETLsln\HeatExchenger_ETL";
 
-                        Package ssisPackage;
-                        Application app;
-                        DTSExecResult results;
-                        Variables vars;
+                    //    Package ssisPackage;
+                    //    Application app;
+                    //    DTSExecResult results;
+                    //    Variables vars;
 
-                        app = new Application();
-                        ssisPackage = app.LoadPackage(pkgLocation, null);
+                    //    app = new Application();
+                    //    ssisPackage = app.LoadPackage(pkgLocation, null);
 
-                        vars = ssisPackage.Variables;
-                        vars["Desc"].Value = batch.Description;
-                        vars["FilePath"].Value = destinationFileName;
-                        results = ssisPackage.Execute();
+                    //    vars = ssisPackage.Variables;
+                    //    vars["Desc"].Value = batch.Description;
+                    //    vars["FilePath"].Value = destinationFileName;
+                    //    results = ssisPackage.Execute();
 
-                        if (results == DTSExecResult.Success)
-                            Console.WriteLine("Package ran successfully");
-                        else
-                            Console.WriteLine("Package failed");
-                        return Ok(values);
+                    //    if (results == DTSExecResult.Success)
+                    //        Console.WriteLine("Package ran successfully");
+                    //    else
+                    //        Console.WriteLine("Package failed");
+                    //    return Ok(values);
 
 
-                    }
-                    catch (Exception e)
-                    {
-                        return BadRequest(e.Message);
-                    }
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    return BadRequest(e.Message);
+                    //}
 
                 }
                 else
@@ -334,38 +335,7 @@ namespace Plant.Controllers.PredictiveMaintenance
             }
         }
 
-        public IActionResult RunPackage(string Filepath, string desc, object values)
-        {
-            try
-            {
-                string pkgLocation = @"E:\DPM\HXETLProcess\HeatExchenger_ETLsln\HeatExchenger_ETL\UploadTask.dtsx";
-
-                Package ssisPackage;
-                Application app;
-                DTSExecResult results;
-                Variables vars;
-
-                app = new Application();
-                ssisPackage = app.LoadPackage(pkgLocation, null);
-
-                vars = ssisPackage.Variables;
-                vars["Desc"].Value = desc;
-                vars["FilePath"].Value = Filepath;
-                results = ssisPackage.Execute();
-
-                if (results == DTSExecResult.Success)
-                    Console.WriteLine("Package ran successfully");
-                else
-                    Console.WriteLine("Package failed");
-                return Ok(values);
-
-
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
+        
 
         // POST api/<ValuesController>
         [HttpPost]
