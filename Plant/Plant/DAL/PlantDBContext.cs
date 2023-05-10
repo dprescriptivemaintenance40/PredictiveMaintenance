@@ -19,6 +19,11 @@ namespace Plant.DAL
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
+
         public DbSet<Plants> Plants { get; set; }
         public DbSet<mst_Asset> mst_Asset { get; set; }
         public DbSet<Asset_Equipment> Asset_Equipments { get; set; }

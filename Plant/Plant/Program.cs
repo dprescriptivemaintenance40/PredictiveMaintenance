@@ -34,11 +34,13 @@ var tokenValidationParameters = new TokenValidationParameters
     ValidateLifetime = true,
     ClockSkew = TimeSpan.Zero
 };
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 });
+
 //builder.Services.AddCors(options =>
 //                        options.AddPolicy("MyAllowSpecificOrigins",
 //                          builder =>

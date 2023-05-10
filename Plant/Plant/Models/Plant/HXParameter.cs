@@ -146,8 +146,8 @@ namespace Plant.Models.Plant
         public float HeatEnergy { get; set; }
         public float LMTD { get; set; }
         public float Area { get; set; }
-        public float Incipient { get; set; }
-        public float Degrade { get; set; }
+        public short Incipient { get; set; }
+        public short Degrade { get; set; }
         public HXParameter hxParameter { get; set; }
     }
     public class HXPredictedTable
@@ -167,14 +167,11 @@ namespace Plant.Models.Plant
         public float PT2 { get; set; }
         public float PS1 { get; set; }
         public float PS2 { get; set; }
-        public float Mass { get; set; }
-        public float SpecificHeat { get; set; }
-        public float HTC { get; set; }
         public float HeatEnergy { get; set; }
         public float LMTD { get; set; }
         public float Area { get; set; }
-        public int Incipient { get; set; }
-        public int Degrade { get; set; }
+        public short Incipient { get; set; }
+        public short Degrade { get; set; }
         public HXParameter hxParameter { get; set; }
     }
     public class HXNewTable

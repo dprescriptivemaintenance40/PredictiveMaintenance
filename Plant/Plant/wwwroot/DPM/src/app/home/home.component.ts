@@ -179,16 +179,113 @@ export class HomeComponent implements OnInit {
   // ];
   public MenuItems: any[] = [
     {
-      label: 'File Upload',
-      url: '#/Home/ModelPipeline',
+      label: 'About Us',
+      url: '#/Home/aboutus',
       icon: 'pi pi-home',
+    },
+    {
+      label: 'Dashboard',
+      url: '#/Home/LandingPage',
+      icon: 'pi pi-home',
+    },
+    {
+      label: 'Predictive Maintenance',
+      // url: '#/Home/ModelPipeline',
+      icon: 'pi pi-home',
+      items: [
+      //       {
+      //         label: 'Constraints & Validations',
+      //         url: '#/Home/ConstraintValidation',
+      //       },
+            {
+              label: 'Model Pipeline',
+              url: '#/Home/ModelPipeline',
+            },
+            {
+              label: 'Status',
+              url: '#/Home/CompressorStatus'
+            }
+      //       {
+      //         label: 'Data Explanation',
+      //         url: '#/Home/DataExplanation',
+      //       },
+      //       {
+      //         label: 'Model Confidence',
+      //         url: '#/Home/ModelConfidence',
+      //       },
+      //       {
+      //         label: 'Predictive Charts',
+      //         url: '#/Home/PredictiveChart',
+      //       },
+      //       {
+      //         label: 'Data Insights',
+      //         url: '#/Home/DataInsight',
+      //       },
+      //       {
+      //         label: 'Predictive Reports',
+      //         url: '#/Home/PredictiveReport',
+      //       }
+           ]
     },
     {
       label: '3D Model',
       icon: 'pi pi-home',
-      url: '#/Home/UnityHXModel'
+      items: [
+        {
+          label: 'Network Diagram',
+          url: '#/Home/NetworkDiagram',
+        },
+        {
+          label: 'Availability Model List',
+          url: '#/Home/AvailabilityList',
+        }
+      ]
+    },
+    {
+      label: 'RCM Maintenance',
+      url: '#/Home/RCMList',
+      icon: 'pi pi-home',
+    },
+    {
+      label: 'SIL',
+      icon: 'pi pi-home',
+      items: [
+        {
+          label: 'SIL Design',
+          url: '#/Home/SIL',
+
+        }, {
+          label: 'SIL Search',
+          url: '#/Home/report'
+        }
+      ]
+    },
+    {
+      label: '3D Models',
+      icon: 'pi pi-home',
+      items: [
+        {
+          label: 'Heat Exchanger',
+          url: '#/Home/UnityHXModel'
+        },
+        // {
+        //   label: 'Screw Compressor'
+        // }
+      ]
     }
   ];
+  // public MenuItems: any[] = [
+  //   {
+  //     label: 'File Upload',
+  //     url: '#/Home/ModelPipeline',
+  //     icon: 'pi pi-home',
+  //   },
+  //   {
+  //     label: '3D Model',
+  //     icon: 'pi pi-home',
+  //     url: '#/Home/UnityHXModel'
+  //   }
+  // ];
 
   constructor(public builder: FormBuilder,
     public http: HttpClient,
